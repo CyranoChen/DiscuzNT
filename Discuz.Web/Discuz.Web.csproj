@@ -42,6 +42,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Discuz.Web.Admin, Version=3.6.711.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDLL\Discuz.Web.Admin.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\RefDLL\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -450,10 +454,6 @@
     <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
       <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
       <Name>Discuz.Plugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="admin\Discuz.Web.Admin.csproj">
-      <Project>{a3263b57-6e20-4a9f-8d1f-9a020cf95f08}</Project>
-      <Name>Discuz.Web.Admin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

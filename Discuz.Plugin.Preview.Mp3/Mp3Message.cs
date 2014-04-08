@@ -9,7 +9,7 @@ namespace Discuz.Plugin.Preview.Mp3
 {
     public class Mp3Message
     {
-        private string title, artist, album, pubyear, track, genre, size, type, bps, url;
+        private string title, artist, album, pubyear, track, genre, size, type, bps;
         /// <summary>
         /// 文件标题
         /// </summary>
