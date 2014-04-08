@@ -1,0 +1,83 @@
+<%if {infloat}!=1%>
+<div class="wrap s_clear" id="wrap">
+<div class="main login">
+	<div class="message">
+		<h1>{config.forumtitle} 提示信息</h1>
+		<p>您无权进行当前操作，这可能因以下原因之一造成</p>
+		<p><b>{msgbox_text}</b></p>
+		<p>您还没有登录，请填写下面的登录表单后再尝试访问。</p>
+	</div>
+	<hr class="solidline"/>
+	<div class="nojs">
+	<div class="float" id="floatlayout_login" style="width: 600px; height: 300px;">
+	<form id="formlogin" name="formlogin" method="post" action="{rooturl}login.aspx" onsubmit="submitLogin(this);">
+	<input type="hidden" value="2592000" name="cookietime"/>
+		<h1 style="margin-bottom:10px;">会员登录</h1>
+		<table cellpadding="0" cellspacing="0" class="formtable">
+		<tbody>
+			<tr>
+				<th><label for="username">用户名</label></th>
+				<td><input type="text" id="username" name="username" size="25" maxlength="40" tabindex="2" class="txt" />  <a href="{rooturl}register.aspx" tabindex="-1" accesskey="r" title="立即注册 (ALT + R)" class="lightlink">立即注册</a>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="password">密码</label></th>
+				<td><input type="password" name="password" size="25" tabindex="3" class="txt"/> <a href="{rooturl}getpassword.aspx" tabindex="-1" accesskey="g" title="忘记密码 (ALT + G)" class="lightlink">忘记密码</a>
+				</td>
+			</tr>
+		<%if {config.secques}==1%>
+			<tr>
+				<th><label for="questionid">安全问题</label></th>
+				<td>
+					<select name="questionid" tabindex="4">
+					<option value="0">&nbsp;</option>
+					<option value="1">母亲的名字</option>
+					<option value="2">爷爷的名字</option>
+					<option value="3">父亲出生的城市</option>
+					<option value="4">您其中一位老师的名字</option>
+					<option value="5">您个人计算机的型号</option>
+					<option value="6">您最喜欢的餐馆名称</option>
+					<option value="7">驾驶执照的最后四位数字</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="answer">答案</label></th>
+				<td><input type="text" name="answer" size="25" tabindex="5" class="txt" /></td>
+			</tr>
+		<%/if%>
+			<tr>
+				<th> </th>
+				<td>
+					<button type="submit" name="loginsubmit" id="loginsubmit" value="true" tabindex="6">会员登录</button>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</form>
+	</div>
+	</div>
+</div>
+</div>
+<%else%>
+<div class="msgbox" style="background:none;text-align:left;">
+	<div class="msg_inner error_msg">
+		<p>您无权进行当前操作，这可能因以下原因之一造成</p>
+		<p><b>{msgbox_text}</b></p>
+		<p>您还没有登录，请的登录后再尝试访问。</p>
+	</div>
+</div>
+	<script type="text/javascript" reload="1">
+	setTimeout("floatwin('close_newthread');floatwin('close_reply');floatwin('close_edit');floatwin('open_login', '{forumurl}login.aspx', 600, 410)",1000);
+	</script>
+<%/if%>	
+<script type="text/javascript">
+        <%if {infloat}!=1%>
+		document.getElementById("username").focus();
+        <%/if%>
+		function submitLogin(loginForm)
+		{
+		    loginForm.action = '{rooturl}login.aspx?loginsubmit=true&reurl=' + escape(window.location);
+			loginForm.submit();
+		}
+</script>

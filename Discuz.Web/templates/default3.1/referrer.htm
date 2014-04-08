@@ -1,0 +1,138 @@
+<%template _header%>
+<%if {infloat}!=1%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>
+			推荐主题</strong>
+	</div>
+</div>
+<%/if%>
+<link rel="stylesheet" href="{forumurl}templates/{templatepath}/css.css" type="text/css" media="all" />
+<script src="javascript/referrer.js"></script>
+<%if page_err==0%>
+<%if {ispost}%>
+	<%if {infloat}==1%>	
+	<script type="text/javascript">
+		$('returnmessage').className='';
+		location.href='{rooturl}{msgbox_url}';	
+	</script>
+	<%else%>
+	<%template _msgbox%>
+	<%/if%>
+<%else%>
+	<%if {infloat}==0%>
+<div class="wrap s_clear" id="wrap">
+<div class="main">
+	<div class="nojs" style="position:relative;">
+	<div id="floatwinnojs">
+	<%/if%>
+	<%if {infloat}==1%>
+	<div id="floatlayout_referrer" class="float" style="width: 600px; height: 410px;">
+	<%else%>
+	<div id="floatlayout_referrer" class="float">
+	<%/if%>
+	<h3 class="float_ctrl">
+		<em id="returnmessage">推荐</em>
+		<%if {infloat}==1%>
+			<span>
+				<a id="creditlink" href="javascript:;"></a>
+				<a title="关闭" onclick="floatwin('close_referrer')" class="float_close" href="javascript:;">关闭</a>
+			</span>
+		<%/if%>
+	</h3>
+	<div class="postbox">
+		<%if {infloat}==1%>
+		<form method="post" name="referrerform" id="referrerform" action="{rooturl}referrer.aspx?infloat=1&" enctype="multipart/form-data" onsubmit="return validatereferrer();">	
+		<%else%>
+		<form method="post" name="postform" id="postform" action="" enctype="multipart/form-data" onsubmit="return validatereferrer();">	
+		<%/if%>
+		<input id="poster" name="poster" type="hidden" class="txt" />
+		<input id="postdatetime" name="postdatetime" type="hidden" class="txt" />
+		<input id="blockid" name="blockid" type="hidden" class="txt" value="1"/>
+
+		<div id="getPages" style="display:none">page1</div>
+
+		<div class="float_referrer s_clear">
+			<label>区块名称:</label><input id="blockname" name="blockname" type="text" class="txt" value=""/>
+			<cite class="tips"><a id="getblocks" onclick="getlist('page')">按页面选择区块</a></cite>
+		</div>
+		<div id="getblocks_menu" class="popupmenu_popup blocks" style="display:none;">
+			<div class="close_blocks">
+				<a title="关闭" onclick="close_getblocks_menu()" class="float_close" href="javascript:;">关闭</a>
+			</div>
+			<div id="pageslayer"></div>
+			<div id="blockslayer" style="display:none;"></div>
+		</div>
+		<div class="float_referrer s_clear">
+			<label>区块标题:</label><input id="topicTitle" name="topicTitle" type="text" class="txt" value="{title}"/>
+		</div>
+		<div class="float_referrer s_clear">
+			<label>区块图片:</label><input id="selectImage" name="selectImage" type="text" class="txt" value="选择图片"/><cite class="tips"><a id="getimages" onclick="getlist('image',{topicid})">选择</a></cite>
+		</div>
+		<div id="imageList" class="float_referrer s_clear" style="display:none;">
+			<div id="playlist" class="playList">
+				<div class="plBd" id="plBd">
+					<ul id='imagelistsider'>
+					</ul>
+				</div>
+				<div class="next"><a id="previous" href="javascript:;">下一页</a></div>
+				<div class="previous"><a id="next" href="javascript:;">上一页</a></div>
+			</div>
+		</div>
+		<div id="largeimage" style="display:none;"></div>
+		<script src="javascript/referrer_imagelist.js"></script>
+		<div class="float_referrer"><label>区块内容:</label><textarea id="summary" name="summary"  class="txtarea" cols="70" rows="5">{summary}</textarea></div>
+		<div id="moreconf" class="float_referrer">
+			<button name="add" type="submit" id="add">确定</button>
+		</div>
+	</form>
+	</div>
+	</div>
+	<%if {infloat}==0%>
+	</div>
+	</div>
+</div>
+</div>
+	<%/if%>
+	</div>
+	<%/if%>
+<%else%>
+    <%if {ispost}%>
+		<%if {needlogin}%>
+			<%template _login%>
+		<%else%>
+		 <%if {infloat}==1%>
+         <p>{msgbox_text}</p>
+		 <%else%>
+		   <%template _errmsgbox%>
+		 <%/if%>
+		<%/if%>
+	<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+	 <%if {infloat}==1%>
+	<div class="floatbox floatbox1">
+	<h3 class="float_ctrl">
+		<span>
+			<a href="javascript:;" class="float_close" onclick="floatwin('close_newthread');" title="关闭">关闭</a>
+		</span>
+	</h3>
+	<div class="gateform">
+	<h3>{msgbox_text}</h3>
+	</div>
+	</div>
+	 <%else%>
+	   <%template _errmsgbox%>
+	 <%/if%>
+	<%/if%>
+	
+	<%/if%>
+  </div>
+<%/if%>
+<%if {infloat}!=1%>
+<script type="text/javascript"  src="{jsdir}/template_calendar.js"></script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

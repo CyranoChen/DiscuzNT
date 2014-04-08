@@ -1,0 +1,1 @@
+<%@ Page Inherits="Discuz.Space.feeds" CodeBehind="feeds.aspx.cs" Language="c#" AutoEventWireup="false" %>

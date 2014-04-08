@@ -1,0 +1,173 @@
+<%inherits "Discuz.Album.Pages.usercpalbummanage"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+       <a href="{config.forumurl}" class="title">{config.forumtitle}</a>  &raquo;  <a href="usercp.aspx">用户中心</a>  &raquo;  <strong>管理相册</strong>
+	</div>
+</div>
+<script type="text/javascript">
+	function checkPublicAndPrivate(val)
+	{
+		if(val == 0)
+		{
+			$('password').value = '';
+			$('password').readOnly = true;
+		}
+		else
+		{
+			$('password').readOnly = false;
+			$('password').focus();
+		}
+	}
+	function submitForm()
+	{
+		
+		if($("albumtitle").value == "")
+		{
+			alert("相册名称不能为空!");
+			return false;
+		}
+		if($("albumcate").value == "")
+		{
+			alert("请选择相册分类!");
+			return false;
+		}
+		if($("albumdescription").value.length > 200) 
+		{
+			alert('链接描述长度最大为200字'); 
+			return false;
+		}
+		if($("private").checked && $("password").value == "")
+		{
+			alert("选择私人相册必须拥有一个授权密码!");
+			return false;
+		}
+		return true;
+	}
+	function delAlert(title)
+	{
+		if(!confirm("你真的要删除 " + title + " 吗？删除的相册与相册内的图片将无法恢复!"))
+		{
+			event.cancelBubble = true;
+			return false;				
+		}
+	}
+</script>
+<div class="wrap with_side s_clear" id="wrap">
+    <%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+	<h1>管理相册</h1>
+	<%template _albummenu%>
+<%if {page_err}==0%>
+	<%if ispost%>
+		<%template _usercpmsgbox%>
+	<%else%>
+		<ul id="photo">
+		<%if albumcount>0%>
+		<%loop singleAlbumInfo albumInfoArray%>
+		<li>
+		<div class="pictureimg">
+			<a href='usercpspacemanagephoto.aspx?albumid={singleAlbumInfo[Albumid]}' title='点击管理相册内容'>
+			<img src='{singleAlbumInfo[Logo]}' alt='{singleAlbumInfo[Title]}' title='{singleAlbumInfo[Description]}' style='border: 1px solid #ccc; padding:4px' />
+			</a>
+			<%if {singleAlbumInfo[Type]}!="0"%>
+			<span style='position:relative;left:-30px;top:0px;z-index:1'><img src='{spaceurl}space/manage/images/lock.gif' width='21' height='30'  title="私有相册" alt="私有相册"></span>
+			<%/if%>
+		</div>
+		<h4>{singleAlbumInfo[Title]}</h4>
+		<p>时间:{singleAlbumInfo[Createdatetime]}</p>
+		<p>{singleAlbumInfo[Imgcount]}张图片  <a href="usercpspacephotoadd.aspx?albumid={singleAlbumInfo[Albumid]}">增加图片</a>&nbsp;&nbsp;<a href='usercpspacemanagealbum.aspx?page={pageid}&mod=edit&albumid={singleAlbumInfo[Albumid]}#edit'>编辑</a>
+			<%csharp%>
+				string temptitle = singleAlbumInfo["Title"].ToString().Trim().Replace("&quot;","\&quot;");
+			<%/csharp%> 
+		&nbsp;&nbsp;<a href='usercpspacemanagealbum.aspx?mod=delete&albumid={singleAlbumInfo[Albumid]}' onclick='return delAlert("{temptitle}")'>删除</a></p>
+		</li>
+		<%/loop%>
+		<%else%>
+		<div class="zerothreads">暂无相册</div>
+		<%/if%>
+		</ul>
+		<hr class="solidline"/>
+		<div class="cpbox s_clear">
+			<div class="pages_btns">
+			    <%if pagecount>1%>
+				<div class="pages">
+					{pagenumbers} <em>{pageid}/{pagecount}页</em> 
+				</div>
+				<%/if%>
+				<%if {allownewalbum}%>
+					<a href="###" onclick="BOX_show('neworeditalbum');"><strong>新建{config.albumname}</strong></a>
+				<%/if%>
+			</div>
+		</div>
+	<%/if%>
+<%else%>
+	<%template _usercperrmsgbox%>
+<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<div id="BOX_overlay" style="background:#000; position: absolute; z-index:100; filter:alpha(opacity=50);-moz-opacity: 0.6;opacity: 0.6;"></div>
+<%if {page_err}==0 && {allownewalbum}%>						
+<script type="text/javascript" src="javascript/template_album.js"></script>
+<div id="neworeditalbum" style="display:none; background:#FFF; padding:10px; border:1px solid #999; width:400px;text-align:left;">
+	<form action="" method="post" id="Form1">
+	<h3 style="line-height:270%;"><a name="edit" />{mod}</a></h3>
+	<table cellspacing="0" cellpadding="0" class="formtable" summary="{mod}">	
+	<tbody>
+		<tr>
+			<th><label for="albumtitle">相册名称</label></th>
+			<td><input name="albumtitle" type="text" id="albumtitle" size="40" maxlength="50" value="{title}"  class="txt"/>
+				<input type="hidden" name="albumid" value="{albumid}" id="albumid">
+				<input type="hidden" name="active" id="active" value="">
+			</td>
+		</tr>
+		<tr>
+			<th><label for="albumcate">相册分类</label></th>
+			<td>
+			<select name="albumcate" id="albumcate" value="{title}">
+				<option value=""></option>
+				<%loop (AlbumCategoryInfo) albumcate albumcates%>
+					<option value="{albumcate.albumcateid}"
+					<%if {albumcateid}=={albumcate.albumcateid}%>
+					selected
+					<%/if%>
+					>{albumcate.title}</option>
+				<%/loop%>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="albumdescription">描述</label></th>
+			<td><textarea name="albumdescription" cols="40" rows="6" id="albumdescription" class="txtarea">{description}</textarea></td>
+		</tr>
+		<tr>
+			<th><label for="public">是否公开:</label></th>
+			<td><input id="public" type="radio" name="type" value="0" onclick='checkPublicAndPrivate(0)' <%if type==0%>checked="checked"<%/if%>>公开相册&nbsp;&nbsp;&nbsp;
+				<input id="private" type="radio" name="type" value="1" onclick='checkPublicAndPrivate(1)' <%if type==1%>checked="checked"<%/if%>>私人相册
+			</td>
+		</tr>
+		<tr>
+			<th><label for="password">密码</label></th>
+			<td><input name="password" type="text" id="password" size="40" maxlength="50" value="{albumpassword}"<%if type==0%>readonly="readonly"<%/if%>/>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="Submit" value="确定" onclick="return submitForm()" /> &nbsp; <input type="button" name="Submit" value="取消"  onclick="window.location='usercpspacemanagealbum.aspx';" /></td>
+		</tr>
+	</tbody>
+	</table>
+	</form>
+</div>
+	<%if {albumid}!=0%>
+		<script type="text/javascript">BOX_show('neworeditalbum');
+		<%if {albumid}==-1%>
+			$('albumid').value = "0";
+		<%/if%>
+		</script>
+	<%/if%>
+<%/if%>
+<%template _footer%>

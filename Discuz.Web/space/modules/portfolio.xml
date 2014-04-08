@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module> 
+<ModulePrefs title="Stock Portfolio" description="Enter up to 5 stocks you've purchased, and total value and earnings."
+ scrolling="true" scaling="false"
+ thumbnail="http://sav74sac.googlepages.com/portfolioThumb.png" screenshot="http://sav74sac.googlepages.com/portfolio.png"
+ author="Steve V" author_email="sav74sac@hotmail.com" author_affiliation="Personal" author_location="Sacramento, CA" category="finance" > 
+<Require feature="settitle"/>
+<Require feature="dynamic-height"/>
+</ModulePrefs>
+<UserPref name="myTitle" display_name="Portfolio Title" default_value="My Portfolio"></UserPref>
+<UserPref name="showCharts" display_name="Show Charts" datatype="bool" default_value="false"></UserPref>
+<UserPref name="myHoldings" display_name="symbol,shares,price" datatype="list"
+ default_value="GOOG,15,461" required="true"/> 
+<Content type="html"> 
+<![CDATA[ 
+<TABLE id="tblHoldings" align="center" style="font-size:12px; font-family:sans-serif;" border=1 cellspacing=0>
+<TR style="font-weight:bold"><TD>Symbol</TD><TD>Price</TD><TD>Value</TD><TD>Earned</TD><TD>&nbsp;</TD></TR>
+</TABLE>
+
+<SCRIPT>
+
+//declare variables
+var prefs = new _IG_Prefs(__MODULE_ID__);
+_IG_SetTitle(prefs.getString("myTitle"), __MODULE_ID__);
+var userHoldings = prefs.getArray("myHoldings");
+var arrHoldings = new Array();
+
+//load arrHoldings objects from user prefs
+for (i=0; i<userHoldings.length; i++){	
+	arrItem = userHoldings[i].split(",");
+	arrHoldings[arrItem[0]] = new objHolding(arrItem[0], arrItem[1], arrItem[2]);
+	_IG_FetchContent('http://finance.yahoo.com/q?s=' + escape(arrItem[0]), _IG_Callback(displayHolding, arrItem[0]));
+}
+
+//--------------- functions ---------------------------
+
+
+//holding object definition
+function objHolding(symbol,shares,price){
+	this.symbol = symbol;
+	this.shares = parseInt(shares);
+	this.price = parseFloat(price);
+	this.currPrice = 0;
+	this.currValue = 0;
+	this.earned = 0;
+	this.color = 'black';
+}
+
+//fetch content to read stock values
+function displayHolding(str, symbol){
+	//get current price
+	iStart = str.indexOf("</small><big><b>");
+	if (iStart>0){
+		iEnd = str.indexOf("</b>", iStart);
+		arrHoldings[symbol].currPrice = parseFloat(str.substring(iStart + 16, iEnd));
+	}
+
+	//calculate values
+	arrHoldings[symbol].currValue = Math.round(arrHoldings[symbol].shares * arrHoldings[symbol].currPrice);
+	arrHoldings[symbol].earned = Math.round(arrHoldings[symbol].currValue - (arrHoldings[symbol].shares * arrHoldings[symbol].price));
+	arrHoldings[symbol].color = (arrHoldings[symbol].earned>0) ? "green" : "red" ;
+
+	//add table row
+	var newrow = document.getElementById("tblHoldings").insertRow(-1);
+	newcell = newrow.insertCell(-1); newcell.innerHTML = '<B><A target="_new" href="http://www.google.com/finance?q=' + escape(symbol) + '">' + symbol + '</A></B>';
+	newcell = newrow.insertCell(-1); newcell.innerHTML = '$' + arrHoldings[symbol].currPrice;
+	newcell = newrow.insertCell(-1); newcell.innerHTML = '$' + arrHoldings[symbol].currValue;
+	newcell = newrow.insertCell(-1); newcell.innerHTML = '<font color="' + arrHoldings[symbol].color + '">$' + arrHoldings[symbol].earned + '</font>';
+	newcell = newrow.insertCell(-1); newcell.innerHTML = '<A href="javascript:details(\'' + symbol + '\')">[?]</A>';
+	if (prefs.getBool("showCharts")){
+		newrow = document.getElementById("tblHoldings").insertRow(-1);
+		newcell = newrow.insertCell(-1);
+		newcell.colSpan = 5;
+		newcell.innerHTML = '<img border=0 src="http://www.stockmorph.com/sparklines/spark_chart.php?s=' + escape(symbol) + '&y=1&m=1&w=200&h=40">';
+	}
+	_IG_AdjustIFrameHeight();
+}
+
+function details(symbol){
+	var obj = arrHoldings[symbol];
+	alert('Symbol: ' + obj.symbol + '\n' +
+		'Holdings: ' + obj.shares + ' shares\n' + 
+		'Purchase Price: $' + obj.price + '/share\n' + 
+		'Current Price: $' + obj.currPrice + '/share\n' + 
+		'Current Value: $' + obj.currValue + '\n' + 
+		'Earnings: $' + obj.earned);
+}
+
+</SCRIPT>
+
+]]> 
+</Content> 
+</Module>

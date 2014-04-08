@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs title="友情链接"  directory_title="友情链接" description="友情链接" category="基本" author="Discuz!NT" author_email="daizhj@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality" controller="Discuz.Space.Modules.LinkModule, Discuz.Space.Modules">
+        <Require feature="dynamic-height" />
+        <Require feature="analytics" />
+        <Require feature="settitle" />
+    </ModulePrefs>
+    <Content type="html">
+      友情链接
+    </Content>
+</Module>

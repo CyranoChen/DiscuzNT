@@ -1,0 +1,167 @@
+<%inherits "Discuz.Album.Pages.usercpphotomanage"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+       <a href="{config.forumurl}" class="title">{config.forumtitle}</a>  &raquo;  <a href="usercp.aspx">用户中心</a>  &raquo;  <a href="usercpspacemanagealbum.aspx">管理{config.albumname}</a>  &raquo;  <strong>管理图片</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+   <%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+	<h1>管理图片</h1>
+	<%template _albummenu%>	
+<%if page_err==0%>
+	<%if ispost%>
+	<%template _usercpmsgbox%>
+	<%else%>
+	<form id="photolist" name="photolist" action="" method="post">
+	<h3>{currentalbumname}(<strong style="color:#000;font-weight:bold;">{photocount}</strong>)</h3>
+	<ul id="photo">
+	    <%if photocount>0%>
+		<%loop singlePhotoInfo photoList%>
+		<li>
+			<div class="photo_img">
+			<a href='showphoto.aspx?photoid={singlePhotoInfo[photoid]}' target='_blank'>
+			<img src='{singlePhotoInfo[TFileName]}' border='0' title='{singlePhotoInfo[Description]}' style="max-width: 150px; max-height: 150px;"></a>
+			<%if singlePhotoInfo["isattachment"].ToString()=="1"%>
+			<span style='position:relative;left:-15px;top:0px;z-index:1'><img src='templates/{templatepath}/album/images/attphoto.gif' width='30' height='37' border='0' title="来自附件"></span>
+			<%/if%>
+			</div>
+			<div class="phtot_detail">
+			<input type='checkbox' name='photoid' value='{singlePhotoInfo[PhotoId]}' /> {singlePhotoInfo[PhotoOrder]}&nbsp;&nbsp; <a href="usercpeditphoto.aspx?photoid={singlePhotoInfo[photoid]}">编辑</a>
+			<br />{singlePhotoInfo[title]}
+			<br />
+			时间：{singlePhotoInfo[PostDate]}
+			</div>
+		</li>
+		<%/loop%>
+		<%else%>
+		<div class="zerothreads">暂无图片</div>
+		<%/if%>
+	</ul>
+	<hr class="solidline"/>
+	<div class="cpbox s_clear">
+		<div class="pages_btns">
+		    <%if pagecount>1%>
+			<div class="pages">
+				{pagenumbers} <em>{pageid}/{pagecount}页</em> 
+			</div>
+			<%/if%>
+			<input type="checkbox" onclick="checkAll(this.checked,this.form)" />全选&nbsp;&nbsp;
+			<a href="###" onclick="return delePhoto($('photolist'))">删除图片</a>&nbsp;&nbsp;
+			<a href="###" onclick="if(changeAlbum($('photolist'))) $('photolist').submit();">转移图片</a>到
+			<select name="alibumList" id="alibumList">
+			<%loop alibum albumList%>
+				<option value="{alibum[albumid]}">{alibum[title]}</option>
+			<%/loop%>
+			</select>
+			&nbsp;&nbsp;
+			将
+			<select name="logoList" id="logoList">
+			<%loop logo logoList%>
+				<option value="{logo[photoid]}">{logo[PhotoOrder]}</option>
+			<%/loop%>
+			</select>
+			<a href="###" onclick="return setLogo($('photolist'))">设置为封面</a>
+			&nbsp;&nbsp;<a href="usercpspacephotoadd.aspx?albumid={albumid}">增加图片</a>
+			<input type="hidden" name="active" id="active" value="" />
+		</div>
+	</div>
+	</form>
+
+	<%/if%>
+<%else%>
+	<%template _usercperrmsgbox%>
+<%/if%>
+	</div>
+	</div>
+<script type="text/javascript">
+	function checkAll(bCheck,theform)
+	{
+		for (var i = 0;i < theform.elements.length;i++)
+		{
+			var e = theform.elements[i];
+			if (e.name == "photoid")
+				e.checked = bCheck;
+		}
+	}
+	
+	function delePhoto(theform)
+	{
+		var checkPhoto = isCheckPhoto(theform);	
+		if(!checkPhoto)
+		{
+			alert("您没有选中所要删除的图片！");
+			return false;
+		}
+		else
+		{
+			if(confirm("您真要删除下面所选图片吗？删除后将无法恢复！"))
+			{
+				$("active").value = "delete";
+				theform.submit();
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+	
+	function changeAlbum(theform)
+	{
+		var checkPhoto = isCheckPhoto(theform);	
+		if(!checkPhoto)
+		{
+			alert("您没有选中所要转移的图片！");
+			return false;
+		}
+		else
+		{
+			o = $("alibumList");
+			if(confirm("您确认要将相册中所选图片转移到 " + o.options[o.selectedIndex].text + " 相册中吗？"))
+			{
+				$("active").value = "change";
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+	
+	function setLogo(theform)
+	{
+		o = $("logoList");
+		var currentablumname = '{currentalbumname}';
+		if (confirm("您确认要将 " + o.options[o.selectedIndex].text + " 图片设置为当前相册\"" + currentablumname + "\"的封面吗？"))
+		{
+			$("active").value = "setlogo";
+			theform.submit();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function isCheckPhoto(theform)
+	{
+		var checkPhoto = false;
+		for (var i=0;i<theform.elements.length;i++)
+		{
+			var e = theform.elements[i];
+			if (e.name == "photoid" && e.checked)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+</script>
+</div>
+<%template _copyright%>
+<%template _footer%>

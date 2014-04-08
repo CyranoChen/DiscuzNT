@@ -1,0 +1,2 @@
+﻿<%@ Page %>
+<html><head><script src='javascript/ifpc.js'></script><script>var l=window.location+'';_IFPC.processRequest(l.substring(l.indexOf('#')+1));if(!window.ActiveXObject){window.location='about:blank';}</script></head></html>

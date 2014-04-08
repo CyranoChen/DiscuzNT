@@ -1,0 +1,11 @@
+﻿<%if {userid}>0%>
+<div class="cm_header itemtitle s_clear">
+	<ul>
+		<li <%if pagename=="usercpcreditspay.aspx"%>class="current"<%/if%>><a href="usercpcreditspay.aspx"><span>积分兑换</span></a></li>
+		<li <%if pagename=="usercpcreditstransfer.aspx"%>class="current"<%/if%>><a href="usercpcreditstransfer.aspx"><span>积分转帐</span></a></li>
+		<li <%if pagename=="usercpcreditspayoutlog.aspx"%>class="current"<%/if%>><a href="usercpcreditspayoutlog.aspx"><span>支出记录</span></a></li>
+		<li <%if pagename=="usercpcreditspayinlog.aspx"%>class="current"<%/if%>><a href="usercpcreditspayinlog.aspx"><span>收入记录</span></a></li>
+		<li <%if pagename=="usercpcreaditstransferlog.aspx"%>class="current"<%/if%>><a href="usercpcreaditstransferlog.aspx"><span>兑换与转帐记录</span></a></li>
+	</ul>
+</div>
+<%/if%>

@@ -1,0 +1,14 @@
+﻿<%if {config.enablespace}==1%>
+<div class="cm_header itemtitle s_clear">
+<%if {userid}>0 && {user.spaceid}>0%>
+	<ul>
+		<li <%if {pagename}=="usercpspacepostblog.aspx"||{pagename}=="usercpspacemanageblog.aspx"||{pagename}=="usercpspaceeditblog.aspx"%>class="current"<%/if%>><a href="usercpspacemanageblog.aspx"><span>管理日志</span></a></li>
+		<li <%if {pagename}=="usercpspacelinklist.aspx"||{pagename}=="usercpspacelinkadd.aspx"||{pagename}=="usercpspacelinkedit.aspx"%>class="current"<%/if%>><a href="usercpspacelinklist.aspx"><span>友情链接</span></a></li>
+		<li <%if {pagename}=="usercpspacecomment.aspx"%>class="current"<%/if%>><a href="usercpspacecomment.aspx"><span>管理评论</span></a></li>
+		<li  <%if {pagename}=="usercpspacemanagecategory.aspx"||{pagename}=="usercpspacecategoryadd.aspx"||{pagename}=="usercpspacecategoryedit.aspx"%>class="current"<%/if%>><a href="usercpspacemanagecategory.aspx"><span>管理分类</span></a></li>
+		<li <%if {pagename}=="usercpspacemanageattachment.aspx"%>class="current"<%/if%>><a href="usercpspacemanageattachment.aspx"><span>管理附件</span></a></li>
+		<li <%if {pagename}=="usercpspaceset.aspx"%>class="current"<%/if%>><a href="usercpspaceset.aspx"><span>基本设置</span></a></li>
+	</ul>
+<%/if%>
+</div>	
+<%/if%>

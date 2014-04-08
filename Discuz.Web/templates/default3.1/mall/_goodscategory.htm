@@ -1,0 +1,24 @@
+﻿<script type="text/javascript">
+var enablemall = parseInt('{config.enablemall}');
+</script>
+[<a href="javascript:;" onclick="setCategory('goodscategoryid');boxShow('editcategoryinfo');">选择...</a>]
+<%if {config.enablemall}==1%>
+				<div id="BOX_overlay" style="background: #000; position: absolute; z-index:100; filter:alpha(opacity=50);-moz-opacity: 0.6;opacity: 0.6;"></div>
+					<div id="editcategoryinfo" style="display: none; background :#fff; padding:10px; border:1px solid #999; width:740px;">
+					
+					<h3 style="line-height:270%;margin-top:15px;"><a name="edit" />请选择已绑定版块的商品分类(不带*号):</a></h3>
+					<div class="CompartLine">&nbsp;</div>
+					<div id="categoryselector">
+					<ul id="categorylevel0" class=""></ul>
+					<ul id="categorylevel1" class="blank"/></ul>
+					<ul id="categorylevel2" class="blank"/></ul>
+					<ul id="categorylevel3" class="blank"/></ul>
+					</div>
+					<div style="padding-top:5px;text-align:center;" >					
+					<input type="button" name="submit" value="确定" onclick="submitCategory();" /> &nbsp; 
+					<input type="button" name="cancel" value="取消" onclick="boxRemove('editcategoryinfo');" /> &nbsp; 							
+					</div>
+				</div>
+<%/if%>
+
+<script language="javascript" src="javascript/template_goodsadmin.js"></script>

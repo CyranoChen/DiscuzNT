@@ -1,0 +1,97 @@
+﻿<%inherits "Discuz.Mall.Pages.usercpshoplink"%>
+<%template _header%>
+
+<!--header end-->
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <strong>友情链接列表</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+
+<!--主体-->
+<div class="controlpannel">
+<%template _menu%>
+	<div class="pannelcontent">
+		<div class="pcontent">
+		<!--panneldetail start-->
+			<div class="panneldetail">
+				<%template _shopmenu%>
+				<!--pannelbody start-->
+                <div class="pannelbody">
+					<div class="pannellist">
+					
+					<%if page_err==0%>
+						<%if ispost%>
+							<%template _msgbox%>
+						<%else%>
+						
+					<form id="shoplink" name="shoplink" method="post" action="">
+					   <script type="text/javascript">
+					       function checkgoodsbox(form,objtag) {
+                               for(var i = 0; i < form.elements.length; i++) {
+                                   var e = form.elements[i];
+                                   if(e.name == "shoplinkid") {
+                                       e.checked = objtag.checked;
+                                   }
+                               }
+                               objtag.checked = !objtag.checked;
+                           }
+                       </script>
+                       <input type="hidden" id="operation" name="operation" value="add"/>
+					   <input type="submit" id="shoplinksubmit" name="shoplinksubmit" style="display: none" />
+					   <%if {shoplinkinfolist.count}<16%>
+					   <div style="text-align:center;background:#F5F5F5 none repeat scroll 0%;border:1px solid #DDDDDD;font-size:14px;margin-top:10px;padding:10px;">
+					        店主姓名: <input type="text" value="" maxlength="50" size="20" id="username" name="username">
+                  	        <button class="mallbutton" type="button" onclick="javascript:$('operation').value='add';$('shoplinksubmit').click();">添加</button>
+                       </div>
+                       <%/if%>   
+					    <div class="shopsearch"><strong>友情链接列表</strong></div>
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th></th> 
+                                    <th>店铺名称</th>
+                                    <th>排序位置</th>
+                                </tr>
+                            </thead>
+                            <!--NtGoodsList start-->
+                            <%loop (Shoplinkinfo) shoplink shoplinkinfolist%>
+		                    <tbody>
+                                <tr class="messagetable" onmouseover="this.className='messagetableon'" onmouseout="this.className='messagetable'">
+                                    <td style="width: 30px;"><input name="shoplinkid" type="checkbox" id="shoplink_{shoplink.id}" value="{shoplink.id}" style="margin-top:8px;" /></td>
+                                    <td style="width: 120px; padding:2px 0;"><a href="shop.aspx?shopid={shoplink.linkshopid}" target="_blank">{shoplink.name}</a></td>
+                                    <td align="center"><input value="{shoplink.displayorder}" name="displayorder_{shoplink.id}" size="2"/></td>
+                                </tr>
+                            </tbody>
+                            <!--NtGoodsList end-->                         
+                            <%/loop%>
+                        </table>   
+					   
+					   <div style="text-align:center;background:#F5F5F5 none repeat scroll 0%;border:1px solid #DDDDDD;font-size:14px;margin-top:10px;padding:10px;">
+					        <a href="javascript:;"  onclick="checkgoodsbox($('goodslist'),this)" checked="true" class="selectall">全选</a>&nbsp;&nbsp;&nbsp;
+                  	        <button class="mallbutton" type="button" onclick="javascript:$('operation').value='delete';$('shoplinksubmit').click();">删除</button> 
+                  	        <button class="mallbutton" type="button" onclick="javascript:$('operation').value='updatedisplayorder';$('shoplinksubmit').click();">更新显示顺序</button>
+                  	        注：目前系统允许您最多添加 16 个友情链接，您当前已经添加 {shoplinkinfolist.count} 个。
+                       </div>
+					</form>
+						<%/if%>
+					<%else%>
+					<%template _usercperrmsgbox%>
+					<%/if%>
+					 
+			        </div>
+			    </div>   
+			    <!--pannelbody end-->
+    	   </div>
+    	   <!--panneldetail end-->
+	   </div>
+   </div>
+</div>
+<!--主体-->
+<%template _copyright%>
+<%template _footer%>

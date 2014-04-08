@@ -1,0 +1,16 @@
+﻿<%if {userid}>0%>
+<div class="cm_header itemtitle s_clear">
+	<ul>
+		<li <%if {typeid}==0%>class="current"<%/if%>><a href="usercpsubscribe.aspx?typeid=0"><span>收藏的主题</span></a></li>
+		<%if {config.enablealbum}==1%>
+		<li <%if {typeid}==1%>class="current"<%/if%>><a href="usercpsubscribe.aspx?typeid=1"><span>收藏的{config.albumname}</span></a></li>
+		<%/if%>
+		<%if {config.enablespace}==1 && {user.spaceid}>0%>
+		<li <%if {typeid}==2%>class="current"<%/if%>><a href="usercpsubscribe.aspx?typeid=2"><span>收藏的日志</span></a></li>
+		<%/if%>
+		<%if {config.enablemall}==1%>		
+		<li <%if {typeid}==3%>class="current"<%/if%>><a href="usercpsubscribe.aspx?typeid=3"><span>收藏的商品</span></a></li>
+		<%/if%>
+	</ul>
+</div>
+<%/if%>

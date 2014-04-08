@@ -1,0 +1,397 @@
+﻿<%inherits "Discuz.Mall.Pages.usercpmygoods"%>
+<%template _header%>
+<!--header end-->
+<%if page_err==0%>
+
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <strong>我的商品</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+
+<!--主体-->
+<div class="controlpannel">
+<%template _menu%>
+	<div class="pannelcontent">
+		<div class="pcontent">
+			<div class="panneldetail">
+				<div class="panneltabs">
+				   <a href="usercpmygoods.aspx?item=tradestats" <%if {item}=="tradestats"%>class="current"<%/if%>>交易统计</a>
+				   <a id="buyergoods" onMouseOver="showMenu(this.id);" onMouseOut="showMenu(this.id);" href="usercpmygoods.aspx?item=buytrade" onclick="javascript:window.location.href=this.href;"  class="<%if {item}=="buytrade"%>current<%/if%> dropmenu">我是买家</a>
+                   <a id="sellergoods" onMouseOver="showMenu(this.id);" onMouseOut="showMenu(this.id);" href="usercpmygoods.aspx?item=selltrade" onclick="javascript:window.location.href=this.href;" class="<%if {item}=="selltrade"%>current<%/if%> dropmenu">我是卖家</a>
+                   <a href="eccredit.aspx?uid={userid}" target="_blank">信用评价</a>
+				</div>	
+				
+				<ul class="popupmenu_popup headermenu_popup" id="buyergoods_menu" style="display: none">
+		           <li><a href="usercpmygoods.aspx?item=buytrade<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">进行中的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=attention<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">关注的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=eccredit<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">评价的交易</a></li>
+                   <li><a href="usercpmygoods.aspx?item=buytrade&filter=success<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">成功的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=refund<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">退款的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=closed<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">失败的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=unstart<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">未生效的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=buytrade&filter=all<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">全部交易</a></li>
+                </ul>
+              	<ul class="popupmenu_popup headermenu_popup" id="sellergoods_menu" style="display: none">
+		           <li><a href="usercpmygoods.aspx?item=selltrade<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">进行中的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=attention<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">关注的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=eccredit<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">评价的交易</a></li>
+                   <li><a href="usercpmygoods.aspx?item=selltrade&filter=success<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">成功的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=refund<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">退款的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=closed<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">失败的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=unstart<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">未生效的交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=all<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">全部交易</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=onsell<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">出售中的商品</a></li>
+		           <li><a href="usercpmygoods.aspx?item=selltrade&filter=allgoods<%if {goodsidlist}!=""%>&goodsid={goodsidlist}<%/if%>">全部商品</a></li>
+		        <%if {config.enablemall}==2%>
+                   <li><a href="postgoods.aspx" target="_blank">我要卖</a></li>
+                <%/if%>
+                </ul>
+                <div class="pannelbody">
+					<div class="pannellist mallcount">
+<%if page_err==0%>
+	<%if ispost%>
+			<%template _msgbox%>
+	<%else%>
+	
+                <%if {item}=="tradestats"%>
+	            <div class="tradestats">
+					<table cellspacing="0" cellpadding="0" width="100%">
+					<thead>
+						<tr>
+							<td colspan="2">买家提醒区</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th><a href="usercpmygoods.aspx?item=buytrade">我买入的商品</a></th>
+							<td>
+                                <%if {tradestatisticinfo.buyertrading}>0%>
+								    <a href="usercpmygoods.aspx?item=buytrade">您有 {tradestatisticinfo.Buyertrading} 个正在进行中的交易</a>
+								<%/if%>   
+								<%if {tradestatisticinfo.buyerattention}>0%>
+								    <a href="usercpmygoods.aspx?item=buytrade&filter=attention">您有 {tradestatisticinfo.buyerattention} 个交易需要关注</a>
+								<%/if%>
+								<%if {tradestatisticinfo.buyerrate}>0%>
+								    <a href="usercpmygoods.aspx?item=buytrade&filter=eccredit">您有 {tradestatisticinfo.buyerrate} 个需要评价的交易</a> 
+								<%/if%>
+								<!--<br />
+								<div class="lighttxt" style="padding-left: 1em">包括如下内容:<div style="padding-left: 2em">2 个交易，等待您付款<br /></div></div>-->
+							</td>
+						</tr>
+						<tr>
+							<th><a href="usercpmygoods.aspx?item=buytrade&filter=unstart" title="(您)买家确认但卖家未确认的交易">未生效的交易</a></th>	
+							<td></td>						
+						</tr>
+					</tbody>
+
+					<thead>
+						<tr>
+							<td colspan="2">卖家提醒区</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th><a href="usercpmygoods.aspx?item=selltrade&filter=onsell">出售中的商品</a></th>
+							<td>
+							    <%if {reccount}>0%>
+							       <a href="usercpmygoods.aspx?item=selltrade&filter=onsell">您有 {reccount} 个正在出售中的商品</a>
+							    <%else%>
+							        您目前没有正在出售中的商品
+							    <%/if%>
+							</td>
+						</tr>
+						<tr>
+							<th><a href="usercpmygoods.aspx?item=selltrade">交易中的商品</a></th>
+							<td><%if {tradestatisticinfo.sellertrading}>0%>
+								    <a href="usercpmygoods.aspx?item=selltrade">您有 {tradestatisticinfo.sellertrading} 个正在进行中的交易</a><br />
+								<%/if%>  
+								<%if {tradestatisticinfo.sellerattention}>0%>
+								    <a href="usercpmygoods.aspx?item=selltrade&filter=attention">您有 {tradestatisticinfo.sellerattention} 个交易需要关注</a>
+								<%/if%> 
+								<%if {tradestatisticinfo.sellerrate}>0%>
+								    <br /><a href="usercpmygoods.aspx?item=selltrade&filter=eccredit">您有 {tradestatisticinfo.sellerrate} 个需要评价的交易</a> 
+								<%/if%>
+						</td>
+						</tr>
+						<tr>
+							<th><a href="usercpmygoods.aspx?item=selltrade&filter=unstart" title="(您)卖家未确认的交易">未生效的交易</a></th>	
+							<td></td>				
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<td colspan="2">交易统计</td>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="2">售出商品总数: {tradestatisticinfo.Sellnumbersum}<br />销售成交总额: {tradestatisticinfo.Selltradesum} 元 </td>
+						</tr>
+						<tr>
+							<td colspan="2">买入商品总数: {tradestatisticinfo.Buynumbersum}<br />买入成交总额: {tradestatisticinfo.Buytradesum} 元 </td>
+						</tr>
+					</tbody>
+					</table>
+			
+		    </div>
+		    <%else%>
+
+                        <div class="shopsearch">
+                            <!--
+                            <div class="mysearch">
+                                <input type="hidden" id="item" name="item" value="{item}">
+                                <input type="hidden" id="filter" name="filter" value="{filter}">
+                                商品名称<input class="colorblue" value="" name="srchkey" size="27" /><button class="lightbutton" value="true" type="submit" name="submit">搜索</button>
+                            </div>
+                            -->
+                            <strong>我是
+                                <%if {item}=="buytrade"%>买家<%/if%>
+                                <%if {item}=="selltrade"%>卖家<%/if%>
+                                 —— 
+                                <%if {filter}==""%>进行中的交易<%/if%>
+                                <%if {filter}=="attention"%>进行中的交易<%/if%>
+                                <%if {filter}=="eccredit"%>评价的交易<%/if%>
+                                <%if {filter}=="success"%>成功的交易<%/if%>
+                                <%if {filter}=="refund"%>退款的交易<%/if%>
+                                <%if {filter}=="closed"%>失败的交易<%/if%>
+                                <%if {filter}=="unstart"%>未生效的交易<%/if%>
+                                <%if {filter}=="all"%>全部交易<%/if%>
+                                <%if {filter}=="onsell"%>出售中的商品<%/if%>
+                                <%if {filter}=="allgoods"%>全部商品<%/if%>
+                            </strong>
+                        </div>
+                        
+                    <%if {filter}=="allgoods" || {filter}=="onsell"%>
+                    <form id="goodslist" name="goodslist" method="post" action="">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <script type="text/javascript">
+	                        function checkGoodsBox(form,objtag)	{
+		                        for(var i = 0; i < form.elements.length; i++) {
+			                        var e = form.elements[i];
+			                        if(e.name == "goodsid") {
+				                        e.checked = objtag.checked;
+			                        }
+		                        }
+		                        objtag.checked = !objtag.checked;
+	                        }
+                        </script>                    
+                            <thead>
+                                <tr>
+                                    <th colspan="3">商品名称</th>
+                                    <th>查看交易</th>
+                                    <%if {filter}=="allgoods"%>
+                                    <th>上架</th> 
+                                    <th>关闭</th> 
+                                    <%/if%>
+                                    <th>售出数</th>
+                                    <th>库存数</th>
+                                    <th>销售额(元)</th>
+                                    <th>最后交易</th>
+                                </tr>
+                            </thead>
+                            <!--NtGoodsList start-->
+                            <%loop (Goodsinfo) goodsinfo goodslist%>
+		                    <tbody>
+                                <tr class="messagetable" onmouseover="this.className='messagetableon'" onmouseout="this.className='messagetable'">
+                                    <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodsinfo.goodsid})%>
+                                    <td style="width: 30px;"><input name="goodsid" type="checkbox" id="goodsid_{goodsinfo.goodsid}" value="{goodsinfo.goodsid}" style="margin-top:8px;"/></td>
+                                    <td style="width: 120px; padding:2px 0;"><a href="{aspxrewriteurl}" target="_blank">
+                                        <a href="{aspxrewriteurl}" target="_blank">
+                                        <%if {goodsinfo.goodspic}==""%>
+				                            <img width="80" src="templates/{templatepath}/images/NoPhoto.jpg" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+				                        <%else%>
+				                            <img width="80" src="upload/{goodsinfo.goodspic}" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+                                        <%/if%>		
+                                        </a>
+                                    </td>
+                                    <td style="text-align: left;"><a href="{aspxrewriteurl}" target="_blank">{goodsinfo.title}</a> <a href="editgoods.aspx?goodsid={goodsinfo.goodsid}" target="_blank">[编辑]</a></td>
+                                    <td><a href="usercpmygoods.aspx?item=selltrade&goodsid={goodsinfo.goodsid}" target="_blank">进入</td>
+                                    <%if {filter}=="allgoods"%>
+                                        <%if {goodsinfo.displayorder}>=0%>
+                                            <td>已上架</td>
+                                        <%else%>
+                                            <td>未上架</td>
+                                        <%/if%>
+                                        <%if {goodsinfo.closed}==1%>
+                                            <td>已关闭</td>
+                                        <%else%>
+                                            <td>未关闭</td>
+                                        <%/if%>
+                                    
+                                    <%/if%>
+                                    <td>{goodsinfo.totalitems}</td>
+                                    <td class="fontfamily">{goodsinfo.amount}</td>
+                                    <td>{goodsinfo.tradesum}</td>
+                                    <td>
+                                        <%if {goodsinfo.lastbuyer}!=""%>
+                                        {goodsinfo.lasttrade}<br/>
+                                        by <a href="userinfo.aspx?username={goodsinfo.lastbuyer}">{goodsinfo.lastbuyer}</a>
+                                        <%else%>
+                                            暂无交易
+                                        <%/if%>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!--NtGoodsList end-->                         
+                            <%/loop%>
+                     </table>      
+					 </form>
+					 <div class="pannelmessage">
+							<div class="pannelleft" style="width: 160px;">
+								<a href="javascript:;"  onclick="checkGoodsBox($('goodslist'),this)" checked="true" class="selectall">全选</a>&nbsp;&nbsp;&nbsp;
+								<input type="hidden" id="operation" name="operation" value="deletegoods">
+								<a href="###" onclick="$('operation').value = 'deletegoods';$('goodslist').submit();" class="selectall">删除</a> 
+								<!--
+								<a href="###" onclick="$('goodslist').submit()" class="selectall">上架</a>
+								<a href="###" onclick="$('goodslist').submit()" class="selectall">下架</a>-->
+							</div>
+					 </div>
+                     <%/if%>       
+	                 
+	                 <%if {istradeloglist}%>
+	                 <table width="100%" cellspacing="0" cellpadding="0" border="0">
+		                    <thead>
+                                <tr>
+                                    <th colspan="2">商品名称</th>
+                                    <th><%if {item}=="buytrade"%>卖家<%/if%>
+                                        <%if {item}=="selltrade"%>买家<%/if%></th>
+                                    <th>交易金额（元）</th>
+                                    <th>交易状态</th>
+                                    <%if {isshowrate}%>
+                                    <th>信用评价</th>
+                                    <%/if%>
+                                </tr>
+                            </thead>
+                           <%loop __mygoodstradelog goodstradeloglist%> 
+		                    <!--NtTradeLogList start-->
+		                    <tbody>
+                                <tr class="messagetable" onmouseover="this.className='messagetableon'" onmouseout="this.className='messagetable'">
+                                    <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({__mygoodstradelog[goodsid]})%>
+                                    <td style="width: 120px;vertical-align:middle;">
+                                        <a href="{aspxrewriteurl}" target="_blank">
+                                        <%if {__mygoodstradelog[goodspic]}==""%>
+				                            <img src="templates/{templatepath}/images/NoPhoto.jpg" width="80" onerror="this.onerror=null;this.src='{__mygoodstradelog[goodspic]}';"  title="{__mygoodstradelog[title]}" style="margin-top:2px;">
+				                        <%else%>
+				                            <img src="upload/{__mygoodstradelog[goodspic]}" width="80" onerror="this.onerror=null;this.src='{__mygoodstradelog[goodspic]}';"  title="{__mygoodstradelog[title]}" style="margin-top:2px;">
+                                        <%/if%>		
+                                        </a>
+                                    </td>
+                                    <td style="text-align: left;"><a href="{aspxrewriteurl}" target="_blank">{__mygoodstradelog[title]}</a></td>
+                                    <td><%if {item}=="buytrade"%>
+                                            <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({__mygoodstradelog[sellerid]})%>
+                                            <a href="{aspxrewriteurl}" target="_blank">{__mygoodstradelog[seller]}</a>
+                                        <%/if%>
+                                        <%if {item}=="selltrade"%>
+                                            <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({__mygoodstradelog[buyerid]})%>
+                                            <a href="{aspxrewriteurl}" target="_blank">{__mygoodstradelog[buyer]}</a>
+                                        <%/if%>
+                                    </td>
+                                    <td class="fontfamily">{__mygoodstradelog[tradesum]}</td>   
+                                    <td>
+                                        <a href="<%if {__mygoodstradelog[offline]}=="1"%>offlinetrade<%else%>onlinetrade<%/if%>.aspx?goodstradelogid={__mygoodstradelog[id]}" target="_blank">	
+                                        <%if {__mygoodstradelog[status]}=="0"%>
+				                            未生效的交易
+				                        <%/if%> 
+				                        <%if {__mygoodstradelog[status]}=="1"%>
+				                            等待买家付款
+				                        <%/if%>   
+				                        <%if {__mygoodstradelog[status]}=="2"%>
+				                            交易已创建, 等待卖家确认
+				                        <%/if%>  
+				                        <%if {__mygoodstradelog[status]}=="3"%>
+				                            确认买家付款中,暂勿发货
+				                        <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="4"%>
+			                                买家已付款,等待卖家发货
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="5"%>
+			                                卖家已发货,买家确认中
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="6"%>
+			                                买家确认收到货,等待支付宝打款给卖家
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="7"%>
+			                                交易成功结束
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="8"%>
+			                                交易中途关闭(未完成)
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="10"%>
+			                                等待卖家同意退款
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="11"%>
+			                                卖家拒绝买家条件，等待买家修改条件
+			                            <%/if%>  
+    		                            <%if {__mygoodstradelog[status]}=="12"%>
+			                                卖家同意退款，等待买家退货
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="13"%>
+			                                等待卖家收货
+			                            <%/if%>  
+			                            <%if {__mygoodstradelog[status]}=="17"%>
+			                                退款成功
+			                            <%/if%></a>
+                                        <p class="fontfamily">{__mygoodstradelog[lastupdate]}</p>
+                                    </td>
+                                     <td> 
+                                     <%if {isshowrate}%>
+                                       <%if {__mygoodstradelog[ratestatus]}=="0"%>
+                                          <a href ="goodsrate.aspx?goodstradelogid={__mygoodstradelog[id]}" target="_blank">评价</a>
+                                       <%/if%>
+                                       
+                                       <%if {item}=="selltrade" && {__mygoodstradelog[ratestatus]}=="1"%>
+                                          等待对方评价
+                                       <%else%>
+                                            <%if {item}=="buytrade" && {__mygoodstradelog[ratestatus]}=="2"%>
+                                            等待对方评价
+                                            <%/if%>
+                                       <%/if%>
+                                       
+                                       <%if {item}=="selltrade" && {__mygoodstradelog[ratestatus]}=="2"%>
+                                          对方已评<BR /><a href ="goodsrate.aspx?goodstradelogid={__mygoodstradelog[id]}" target="_blank">评价</a>
+                                       <%else%>
+                                            <%if {item}=="buytrade" && {__mygoodstradelog[ratestatus]}=="1"%>
+                                            对方已评<BR /><a href ="goodsrate.aspx?goodstradelogid={__mygoodstradelog[id]}" target="_blank">评价</a>
+                                            <%/if%>
+                                       <%/if%>
+                                       
+                                       <%if {__mygoodstradelog[ratestatus]}=="3"%>
+                                          双方已评
+                                       <%/if%>
+                                     <%/if%>  
+                                     </td>
+                                </tr>
+                            </tbody>
+                            <!--NtTradeLogList end-->
+                        <%/loop%>
+		                </table>
+		                <%/if%>
+						<div class="pages_btns" style="margin-top:10px;">
+							<div class="pages">
+								<em>{pageid}/{pagecount}页</em>{pagenumbers}
+								<kbd>跳转<input name="gopage" type="text" id="gopage" onKeyDown="if(event.keyCode==13) { window.location='usercpmygoods.aspx?item={item}&filter={filter}&page=' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1);}" size="4" maxlength="9"/>页</kbd>
+							</div>
+						</div>
+           <%/if%>     
+                    </div>
+                </div>
+			</div>
+	<%/if%>
+<%/if%>
+		</div>
+	</div>
+</div>
+</div>
+<!--主体-->
+<%else%>
+		<%template _errmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

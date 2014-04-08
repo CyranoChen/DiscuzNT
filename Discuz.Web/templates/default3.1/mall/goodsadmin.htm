@@ -1,0 +1,210 @@
+﻿<%inherits "Discuz.Mall.Pages.goodsadmin"%>
+<%template _header%>
+<div id="foruminfo">
+	<div class="userinfo">
+		<h2><a href="{config.forumurl}">{config.forumtitle}</a>  &raquo; <span> {forumnav}</span>  &raquo; <strong>{operationtitle}</strong></h2>
+	</div>
+</div>
+<%if {request[operation]}==""%>
+<%if page_err==0%>
+<div class="mainbox">
+<form id="moderate" name="moderate" method="post" action="goodsadmin.aspx?action=moderate&operation={operation}">
+		<input type="hidden" name="goodsid" value="{goodslist}" />
+		<input type="hidden" name="categoryid" value="{categoryid}" />
+<%if {config.aspxrewrite}==1%>
+		<input type="hidden" name="referer" value="showgoodslist-{categoryid}{config.extname}" />
+<%else %>	
+		<input type="hidden" name="referer" value="showgoodslist.aspx?categoryid={categoryid}">
+<%/if%>
+<%if {operation}=="delposts"%><input type="hidden" size="10" name="postid" ID="postid" value="postidlist" /><%/if%>
+	<h3>{operationtitle}</h3>
+	<table cellpadding="0" cellspacing="0" border="0" summary="管理商品">
+		<tbody>
+		<tr>
+			<th>用户名:</th>
+			<td>&nbsp;{username}&nbsp;<a href="logout.aspx?userkey={userkey}">退出登录</a></td>
+		</tr>
+		</tbody>
+		<%if {operation}=="highlight"%>
+		<tbody>
+		<tr>
+			<th>字体样式:</th>
+			<td>
+				<input type="checkbox" name="highlight_style_b" value="B" /> <strong>粗体</strong>
+				<input type="checkbox" name="highlight_style_i" value="I" /> <em>斜体</em>
+				<input type="checkbox" name="highlight_style_u" value="U" /> <u>下划线</u>
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th>字体颜色:</th>
+			<td>					
+				<script type="text/javascript" src="javascript/template_colorpicker.js"></script>
+				<input type="text" value="" name="highlight_color" id="highlight_color" size="7" />
+				<select name="highlight_colorselect" id="highlight_colorselect" onChange="selectoptioncolor(this)" style="margin-bottom:2px;">
+					<option value="">默认</option>  
+					<option style="background:#FF0000" value="#FF0000"></option>  
+					<option style="background:#FFA500" value="#FFA500"></option> 
+					<option style="background:#FFFF00" value="#FFFF00"></option> 
+					<option style="background:#008000" value="#008000"></option> 
+					<option style="background:#00FFFF" value="#00FFFF"></option> 
+					<option style="background:#0000FF" value="#0000FF"></option> 
+					<option style="background:#800080" value="#800080"></option> 
+					<option style="background:#808080" value="#808080"></option>
+				</select>
+				<img class="img" title="选择颜色" src="templates/{templatepath}/images/colorpicker.gif" id=s_bgcolor onclick="IsShowColorPanel(this);" style="cursor:hand; border:0px;" />
+			</td>
+		</tr>
+		</tbody>
+		<%/if%>
+		<%if {operation}=="close"%>
+		<!--
+		<tbody>
+		<tr>
+			<th>操作：</th>
+			<td>
+				<input type="radio" value="1" name="close" checked="checked"/> 关闭商品
+			</td>
+		</tr>
+		</tbody>
+		-->
+		<%/if%>
+		<%if {operation}=="movecategory"%>
+		<tbody>
+		<tr>
+			<th>商品分类:</th>
+			<td>
+			 <%if {goodscategoryinfo}==null || {goodscategoryinfo.categoryname}==""%>
+			    <input type="hidden" id="goodscategoryid" name="goodscategoryid" value="-1"/>			    
+				<span id="goodstypeinfo">暂无分类</span>				 
+			 <%else%>
+			    <input type="hidden" id="goodscategoryid" name="goodscategoryid" value="{goodscategoryinfo.categoryid}"/>
+				<span id="goodstypeinfo">{goodscategoryinfo.categoryname}</span>
+			 <%/if%>
+			 
+			 
+			 <%template _goodscategory%>
+			</td>
+		</tr>
+		</tbody>
+		<script language="javascript" src="javascript/goodscategories.js"></script>
+        <script language="javascript" src="javascript/template_goodsadmin.js"></script>
+		<%/if%>
+		
+		
+			
+			
+		<%if {operation}!="identify"%>
+		<tbody>
+		<tr>
+			<th>操作原因:</th>
+			<td>
+			<select id="selectreason" name="selectreason" size="6" style="width: 8em;height:8em; " onchange="this.form.reason.value=this.value" >
+			  <option value="">自定义</option>
+			  <option value="">--------</option>
+			  <option value="广告/SPAM">广告</option>
+			  <option value="恶意灌水">恶意灌水</option>
+			  <option value="违规内容">违规内容</option>
+			  <option value="文不对题">文不对题</option>
+			  <option value="屡教不改">屡教不改</option>
+			  <option value="已经过期">已经过期</option>
+			</select>
+			<textarea name="reason" style="height: 8em; width:20em; margin-bottom:-2px;" onkeydown="if(this.value.length>200){ alert('操作原因不能多于200个字符');return false; }"></textarea>
+			</td>
+		</tr>
+		</tbody>
+		<%/if%>
+		<%if {donext}==1%>
+		<tbody>
+		<tr>
+			<th>后续:</th>
+			<td>
+			<input name="next" type="radio" checked="checked" value="" />无
+			<%if {operation}!="highlight"%>
+			<input type="radio" value="highlight" name="next" />高亮显示
+			<%/if%>
+			<%if {operation}!="close"%>
+			<input type="radio" value="close" name="next" />关闭商品
+			<%/if%>
+			</td>
+		</tr>
+		</tbody>
+		<%/if%>
+		<tbody>
+		<tr>
+			<th>&nbsp;</th>
+			<td>
+			<input type="submit" value="提  交" name="modsubmit" />
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+</form>
+</div>
+<%if {operation}=="highlight"%>
+<div id="ColorPicker" title="ColorPicker" style="display:none;cursor:crosshair;border: black 1px solid;position: absolute; z-index: 10;background-color: aliceblue; width:250px;background: #FFFFFF;padding: 4px; margin-left:150px;" onmouseover="ShowColorPanel();">
+	<table border="0" cellPadding="0" cellSpacing="10" onmouseover="ShowColorPanel();">
+	<tr>
+	<td>
+	<table border="0" cellPadding="0" cellSpacing="0" id="ColorTable" style="cursor:crosshair;"  onmouseover="ShowColorPanel();">
+	<script type="text/javascript">
+	function wc(r, g, b, n){
+		r = ((r * 16 + r) * 3 * (15 - n) + 0x80 * n) / 15;
+		g = ((g * 16 + g) * 3 * (15 - n) + 0x80 * n) / 15;
+		b = ((b * 16 + b) * 3 * (15 - n) + 0x80 * n) / 15;
+
+		document.write('<td BGCOLOR=#' + ToHex(r) + ToHex(g) + ToHex(b) + ' title="#' + ToHex(r) + ToHex(g) + ToHex(b) + '" height=8 width=8 onmouseover="ColorTableMouseOver(this)" onmousedown="ColorTableMouseDown(this)"  onmouseout="ColorTableMouseOut(this)" ></TD>');
+	}
+	var cnum = new Array(1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0);
+	for(i = 0; i < 16; i ++){
+		document.write('<TR>');
+		for(j = 0; j < 30; j ++){
+			n1 = j % 5;
+			n2 = Math.floor(j / 5) * 3;
+			n3 = n2 + 3;
+
+			wc((cnum[n3] * n1 + cnum[n2] * (5 - n1)),
+			(cnum[n3 + 1] * n1 + cnum[n2 + 1] * (5 - n1)),
+			(cnum[n3 + 2] * n1 + cnum[n2 + 2] * (5 - n1)), i);
+		}
+		document.writeln('</TR>');
+	}
+	</script>
+	</table></td>
+	<td>
+	<table border="0" cellPadding="0" cellSpacing="0" id="GrayTable" style="CURSOR: hand;cursor:crosshair;"  onmouseover="ShowColorPanel();">
+	<script type="text/javascript">
+	for(i = 255; i >= 0; i -= 8.5)
+	document.write('<tr BGCOLOR=#' + ToHex(i) + ToHex(i) + ToHex(i) + '><td TITLE=' + Math.floor(i * 16 / 17) + ' height=4 width=20 onmouseover="GrayTableMouseOver(this)" onmousedown="GrayTableMouseDown(this)"  onmouseout="GrayTableMouseOut(this)" ></td></tr>');
+	</script>
+	</table></td></tr></table>
+	<table border="0" cellPadding="0" cellSpacing="10" onmouseover="ShowColorPanel();">
+	<tr>
+	<td rowSpan="2">选中色彩
+	<table border="1" cellPadding="0" cellSpacing="0" height="30" id="ShowColor" width="40" bgcolor="">
+	<tr>
+	<td></td></tr></table></td>
+	<td rowSpan=2>基色: <span id="RGB"></span><br />亮度: <span id="GRAY">120</span><br />代码: <input id="SelColor" size="7" value="" border="0" name="SelColor" /></TD>
+	<td><input type="button" onclick="javascript:ColorPickerOK();" value="确定" ID="ok" class="lightbutton" /></td></tr>
+	<tr>
+	<td><input type="button" onclick="javascript:document.getElementById('highlight_color').value='';document.getElementById('s_bgcolor').style.background='#FFFFFF';HideColorPanel();" value="取消" ID="Button2" NAME="Button2" class="lightbutton"  /></td></tr></table>
+</div>
+	<!--colorpicker层显示结束-->
+	
+
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+<%/if%>
+<%else%>
+	<%if page_err==0%>
+	<%template _msgbox%>
+	<%else%>
+	<%template _errmsgbox%>
+	<%/if%>
+<%/if%>
+</div>
+<%template _copyright%>
+<%template _footer%>

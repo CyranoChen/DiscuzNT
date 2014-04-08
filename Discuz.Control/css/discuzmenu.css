@@ -1,0 +1,78 @@
+﻿body {
+	Margin:0px;
+}
+
+.clsMenuBar {
+	background-color:#fff7f7;
+	border:0px;
+
+		
+}
+
+.clsMenuBarCell {
+	font:normal normal bolder 8pt sans-serif;
+	color:black;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 4px;
+}
+
+.clsSubMenuPopUp {
+	background-color:#fff7f7;
+	position: absolute;
+	display: none;
+	
+	border:1px solid gray;
+	width:153px;
+}
+
+.clsSubMenuItem
+{
+	background-color:#fff7f7;
+	cursor: hand;
+	font:normal normal bolder 8pt sans-serif;
+	
+	padding-bottom: 2px;
+	padding-left: 2px;
+	padding-right: 0px;
+	padding-top: 2px;
+	text-decoration: none;	
+	width:151px;
+	top:0px;
+	left:0px;
+	height:22px;
+	BACKGROUND-IMAGE: url('../images/lookxpback.gif'); 
+	BACKGROUND-REPEAT: repeat-y;
+}
+
+.clsMenuItem {
+	background-color:#fff7f7;
+	cursor: hand;
+	font:normal normal bolder 8pt sans-serif;
+	padding-bottom: 3px;
+	padding-left: 4px;
+	padding-right: 6px;
+	padding-top: 4px;
+	text-decoration: none;	
+	width:100%;
+	top:0px;
+	left:0px;
+	height:22px;
+}
+
+.clsmenuleft {
+	
+	top:0px;
+	left:0px;
+}
+
+
+.clsSubMenuItemTable
+{
+	background-color:transparent;
+	cursor: hand;
+	font:normal normal bolder 8pt sans-serif;
+	padding:0px;
+	border:0px;
+}

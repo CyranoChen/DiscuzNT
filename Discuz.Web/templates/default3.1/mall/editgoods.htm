@@ -1,0 +1,441 @@
+﻿<%inherits "Discuz.Mall.Pages.editgoods"%>
+<%template _header%>
+<script type="text/javascript" src="javascript/template_calendar.js"></script>
+<script type="text/javascript" src="javascript/ajax.js"></script>
+<script type="text/javascript">
+var postminchars = parseInt('{config.minpostsize}');
+var postmaxchars = parseInt('{config.maxpostsize}');
+var disablepostctrl = parseInt('{disablepost}');
+var tradepost = 1;
+</script>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <strong>{goodscategoryinfo.pathlist}</strong> &raquo; <strong>编辑商品</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+<div class="mainbox">
+<h3>编辑商品</h3>
+<form method="post" name="postform" id="postform" action="" enctype="multipart/form-data" onsubmit="">
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="navformcommend"  colspan="2">商品信息</td>
+	</tr>
+	<tbody>
+	<tr>
+		<th>商品类目:</th>
+		<td>
+			
+			 <%if {goodscategoryinfo}==null || {goodscategoryinfo.categoryname}==""%>
+			    <input type="hidden" id="goodscategoryid" name="goodscategoryid" value="-1"/>			    
+				<span id="goodstypeinfo">暂无分类</span>				 
+			 <%else%>
+			    <input type="hidden" id="goodscategoryid" name="goodscategoryid" value="{goodscategoryinfo.categoryid}"/>
+				<span id="goodstypeinfo">{goodscategoryinfo.categoryname}</span>
+			 <%/if%>
+			 
+			 <%template _goodscategory%>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>商品类型:</th>
+		<td>
+			<select id="quality" name="quality" tabindex="51">
+				<option value="1" <%if {goodsinfo.quality}==1%>selected<%/if%>>全新</option>
+				<option value="2" <%if {goodsinfo.quality}==2%>selected<%/if%>>二手</option>
+			</select>
+			<select id="itemtype"  name="itemtype" tabindex="52">
+				<option value="1" <%if {goodsinfo.itemtype}==1%>selected<%/if%>>商品</option>
+				<option value="2" <%if {goodsinfo.itemtype}==2%>selected<%/if%>>服务</option>
+				<option value="3" <%if {goodsinfo.itemtype}==3%>selected<%/if%>>拍卖</option>
+				<option value="4" <%if {goodsinfo.itemtype}==4%>selected<%/if%>>捐赠</option>
+				<option value="5" <%if {goodsinfo.itemtype}==5%>selected<%/if%>>邮费</option>
+				<option value="6" <%if {goodsinfo.itemtype}==6%>selected<%/if%>>奖金</option>
+			</select>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>商品标题:</th>
+		<td>
+			<span id="ticketTitle" style="display: none;"></span>
+			<input id="title" name="title" maxlength="60" size="40" value="{goodsinfo.title}" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" >
+			<%if {canhtmltitle}%>
+				<a id="titleEditorButton" href="###" onclick="">高级编辑</a>
+				<script type="text/javascript" src="javascript/dnteditor.js"></script>
+				<div id="titleEditorDiv" style="display: none;">
+				<textarea name="htmltitle" id="htmltitle" cols="80" rows="10"></textarea>
+				<script type="text/javascript">
+					var forumpath = '{forumpath}';
+					var templatepath = '{templatepath}';
+					var temptitle = $('faketitle');
+					var titleEditor = null;
+					function AdvancedTitleEditor() {
+						$('title').style.display = 'none';
+						$('titleEditorDiv').style.display = '';
+						$('titleEditorButton').style.display = 'none';
+
+						titleEditor = new DNTeditor('htmltitle', '500', '50', '{htmltitle}'==''?$('title').value:'{htmltitle}');
+						titleEditor.OnChange = function(){
+							//temptitle.innerHTML = html2bbcode(titleEditor.GetHtml().replace(/<[^>]*>/ig, ''));
+						}
+						titleEditor.Basic = true;
+						titleEditor.IsAutoSave = false;
+						titleEditor.Style = forumpath + 'templates/' + templatepath + '/editor.css';
+						titleEditor.BasePath = forumpath;
+						titleEditor.ReplaceTextarea();
+
+					}
+
+					$('titleEditorButton').onclick = function(){
+						AdvancedTitleEditor();
+					};
+
+				</script>
+				</div>
+				<%if {htmltitle}!=""%>
+					<script type="text/javascript">				
+						AdvancedTitleEditor();
+					</script>
+				<%/if%>
+			<%/if%>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>上传图片:</th>
+		<td>
+			<div style="float:left; padding-top:25px;">
+			<input type="file" onchange="PhotoView(this.value,document.getElementById('previewImage'))" id="upfilegoodspic" name="postfile" size="40" class="colorfocus" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';"/> 
+			<br/><span class="posttip">图片限定jpg或gif格式, 请确保图片在浏览器中可以正常打开.</span> &nbsp; &nbsp;&nbsp;
+			</div>
+			<div style="float:left; border: 1px solid #DDD; width: 75px; height: 75px; text-align:center;line-height:75px;" id="previewImage">
+			<%if {goodsinfo.goodspic}!=""%>
+				<img width="75" height="75" src="/upload/{goodsinfo.goodspic}" border="0" alt="" />
+			<%else%>
+				暂无图片
+			<%/if%>
+			</div>
+		</td>
+	</tr>
+	</tbody>
+	<!--编辑器代码段开始-->
+	 <%template _editor%>
+	<!--编辑器代码段结束-->
+	<%if {allowviewattach} && {canpostattach}%> 
+	<tbody>
+	<tr>
+		<th>&nbsp;</th>
+		<td><input type="button" value="查看已上传附件>>" onclick="expandoptions('attachfilelist');" class="lightbutton"/></td>
+	</tr>
+	</tbody>	
+	<!--附件列表开始-->
+	<tbody>
+	<tr>
+	    <td colspan="2"  style="border-top:none;">
+	    <div id="attachfilelist" style="display:none">
+        <%if {attachmentlist.count}>0%>
+				<script type="text/javascript">
+				var attachments = new Array();
+				var attachimgurl = new Array();
+				function restore(aid) {
+				obj = $('attach' + aid);
+				objupdate = $('attachupdate' + aid);
+				obj.style.display = '';
+				objupdate.innerHTML = '<input type="file" name="attachupdated" style="display: none;">';
+				
+				}
+				function attachupdate(aid) {
+				obj = $('attach' + aid);
+				objupdate = $('attachupdate' + aid);
+				obj.style.display = 'none';
+				objupdate.innerHTML = '<input type="file" name="attachupdated" class="colorblue" onfocus="this.className=\'colorfocus\';" onblur="this.className=\'colorblue\';"  size="15" /><input type="hidden" value="' + aid + '" name="attachupdatedid" /> <input  onfocus="this.className=\'colorfocus\';" onblur="this.className=\'colorblue\';" class="colorblue" type="button" value="取 &nbsp; 消" onclick="restore(\'' + aid + '\')" />';
+				}
+				function insertAttachTag(aid) {
+				if (bbinsert && wysiwyg) {
+				insertText('[attach]' + aid + '[/attach]', false);
+				} else {
+				AddText('[attach]' + aid + '[/attach]');
+				}
+				}
+				function insertAttachimgTag(aid) {
+				if (bbinsert && wysiwyg) {
+				var attachimgurl = eval('attachimgurl_' + aid);
+				insertText('<img src="' + attachimgurl[0] + '" border="0" aid="attachimg_' + aid + '" alt="" />', false);
+				} else {
+				AddText('[attachimg]' + aid + '[/attachimg]');
+				}
+				}
+				</script>
+	    <table width="100%" border="0" align="center" cellpadding="4" cellspacing="0">
+              <tr style="line-height:25px;">
+                <td width="5%" align="center">删除</td>
+                <td width="5%" >附件ID</td>
+                <td width="25%">文件名</td>
+                <td width="15%">时间</td>
+                <td width="10%">附件大小</td>
+                <td width="5%">阅读权限</td>
+                <td width="20%">描述</td>
+              </tr>
+              <%loop (Goodsattachmentinfo) attachment attachmentlist%>
+              <%if {strtoint({attachment.goodsid})}=={goodsinfo.goodsid}%>
+              <tr onmouseover="this.style.backgroundColor='#fff'" onmouseout="this.style.backgroundColor='#F5FBFF'">
+                <td align="center"><input class="checkbox" name="deleteaid" value="{attachment.aid}" type="checkbox"></td>
+                <td >{attachment.aid}<input type="hidden" value="{attachment.aid}" name="attachupdateid" /></td>
+                <td>
+					<div id="attach{attachment.aid}">
+						<a href="###" class="right" onclick="attachupdate('{attachment.aid}')">[更新]</a>
+						<a href="###" class="right" onclick="<%if {attachment.filetype}.IndexOf("image")>-1%>insertAttachimgTag('{attachment.aid}');<%else%>insertAttachTag('{attachment.aid}');<%/if%>" title="点击这里将本附件插入帖子内容中当前光标的位置">[插入]</a>
+						<script type="text/javascript">attachimgurl_{attachment.aid} = ['attachment.aspx?attachmentid={attachment.aid}', 400];</script>
+						<span id="imgpreview_{attachment.aid}" <%if {attachment.filetype}.IndexOf("image")>-1%>onmouseover="if($('imgpreview_{attachment.aid}_image').width > 400)$('imgpreview_{attachment.aid}_image').width = 400;showMenu(this.id, 0, 0, 1, 0);"<%/if%>><a href="attachment.aspx?attachmentid={attachment.aid}">{attachment.attachment}</a></span><%if {attachment.filetype}.IndexOf("image")>-1%><div class="popupmenu_popup" id="imgpreview_{attachment.aid}_menu" style="display: none;margin-left:20px;"><img id="imgpreview_{attachment.aid}_image" src="upload/{attachment.filename}" onerror="this.onerror=null;this.src='{attachment.filename}';" /></div><%/if%>
+					</div>
+					<span id="attachupdate{attachment.aid}"><input type="file" name="attachupdated" style="display: none;"></span>
+				</td>
+                <td>{attachment.postdatetime}</td>
+                <td>{attachment.filesize} 字节</td>
+                <td><input type="text" name="attachupdatereadperm" size="1" class="colorblue" onfocus="this.className='colorfocus';" onblur="this.className='colorblue';" value={attachment.readperm} /></td>
+                <td><input type="text" name="attachupdatedesc" size="25" class="colorblue" onfocus="this.className='colorfocus';" onblur="this.className='colorblue';" value={attachment.description} /></td>
+              </tr>
+              <%/if%>
+              <%/loop%>
+			</table>
+        <%/if%>
+        </div>
+		<%/if%>
+		</td>
+	</tr>
+	</tbody>
+		<!--附件列表结束-->
+	<tbody>
+	<tr>
+		<th>总数:</th>
+		<td>
+			 <input maxlength="6" size="5" value="{goodsinfo.amount}" name="amount" class="colorblue" id="amount">&nbsp;件
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2">交易信息</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>商品原价:</th>
+		<td>
+			<input id="costprice" maxlength="12" size="12" name="costprice" value="{goodsinfo.costprice}" type="text" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';">元 
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>商品现价:</th>
+		<td>
+			<input id="price" maxlength="12" size="12" name="price" value="{goodsinfo.price}" type="text" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';">元 
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>所在地点:</th>
+		<td>{goodsinfo.locus} &nbsp;								
+			<select class="input_gray" style="width: 130px;"  id="locus_1" name="locus_1"></select>
+			城市:<select class="input_gray" style="width: 90px;" id="locus_2" name="locus_2"></select>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>物流方式:</th>
+		<td>
+			<input class="radio" type="radio" name="transport" value="0" tabindex="160"  <%if {goodsinfo.transport}==0%>checked<%/if%> onclick="$('logisticssetting').style.display='none'" /> 虚拟物品或无需邮递
+			<input class="radio" type="radio" name="transport" value="1" tabindex="161"  <%if {goodsinfo.transport}==1%>checked<%/if%> onclick="$('logisticssetting').style.display=''" /> 卖家承担运费
+			<input class="radio" type="radio" name="transport" value="2" tabindex="162"  <%if {goodsinfo.transport}==2%>checked<%/if%> onclick="$('logisticssetting').style.display=''" /> 买家承担运费
+			<input class="radio" type="radio" name="transport" value="3" tabindex="163"  <%if {goodsinfo.transport}==3%>checked<%/if%> onclick="$('logisticssetting').style.display=''" /> 支付给物流公司
+		</td>
+	</tr>
+	</tbody>
+	<tbody id="logisticssetting" style="<%if {goodsinfo.transport}==0%>display:none;<%else%>display:;<%/if%>">
+	<tr>
+		<th>运费:</th>
+		<td>
+			平邮 <input type="text" id="postage_mail" name="postage_mail" size="3" value="<%if {goodsinfo.ordinaryfee}>0%>{goodsinfo.ordinaryfee}<%/if%>" tabindex="164" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" /> 元 <em class="tips">(不填表示不提供平邮)</em><br />
+			快递 <input type="text" id="postage_express" name="postage_express" size="3" value="<%if {goodsinfo.expressfee}>0%>{goodsinfo.expressfee}<%/if%>" tabindex="165" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" /> 元 <em class="tips">(不填表示不提供快递)</em><br />
+			EMS  <input type="text" id="postage_ems" name="postage_ems" size="3" value="<%if {goodsinfo.emsfee}>0%>{goodsinfo.emsfee}<%/if%>" tabindex="166"  class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" /> 元 <em class="tips">(不填表示不提供 EMS)</em><br />
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>发票:</th>
+		<td>
+			<input <%if {goodsinfo.invoice}==0%>checked="checked"<%/if%>  value="0" name="invoice" id="invoiceN" type="radio"><label for="invoiceN">无</label>
+			<input <%if {goodsinfo.invoice}==1%>checked="checked"<%/if%>  value="1" name="invoice" id="invoiceY" type="radio"><label for="invoiceY">有</label>    	    
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>保修期:</th>
+		<td>
+			<input type="text"  value="<%if {goodsinfo.repair}!=0 %>{goodsinfo.repair}<%/if%>" name="repair" id="repair" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';"> 单位:天, 不填表示不提供保修
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2">支付宝</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>交易方式:</th>
+		<td> 					
+			<input id="tradetype_1" name="tradetype" onclick="$('tradeaccount').style.display = ''" value="1" <%if {goodsinfo.tradetype}==1%>checked<%/if%>  type="radio" > 支付宝在线交易 
+			<input id="tradetype_2" name="tradetype" onclick="$('tradeaccount').style.display = 'none'" value="0" <%if {goodsinfo.tradetype}==0%>checked<%/if%> type="radio"> 线下交易
+		</td>
+	</tr>
+	</tbody>
+	<tbody id="tradeaccount" style="display: <%if {goodsinfo.tradetype}==1%>;<%else%>none<%/if%>">
+	<tr>
+		<th>支付宝账户:</th>
+		<td> 	
+			<input type="text" id="account" name="account" size="30" value="{goodsinfo.account}" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" />
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2"><span style="color:#999; font-size:10px; padding-right:2px;"></span>其它信息</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>开始时间:</th>
+		<td>
+			<input id="serverdatetime" name="serverdatetime" value="{serverdatetime}" type="hidden">
+			<input name="_now" value="0" id="_now0" onclick="setTimeEnableAndInStock(false, 0)" type="radio"><label for="_now0">立刻</label>
+			<br>
+			<input name="_now" value="1" id="_now1" onclick="setTimeEnableAndInStock(true, 1)" type="radio"><label for="_now1">设定</label>
+			<select disabled="disabled" id="_date" name="_date" onchange="changeDate()"></select>
+			<select disabled="disabled" id="_hour" name="_hour" onchange="changeHour()"></select>时
+			<select disabled="disabled" id="_minute" name="_minute" onchange="setMinute()"></select>分
+			<span class="posttip" style="font-size: 12px;" id="durainfo">您可以设定商品的正式开始销售时间</span>
+			<br>
+			<input name="_now"  value="2" id="inStock" onclick="setTimeEnableAndInStock(false, 2)" type="radio"><label for="inStock">暂不设置</label>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th>有效期至:</th>
+		<td> 
+			<input name="expiration" type="text" id="expiration" size="20" value="{goodsinfo.expiration}" style="cursor:default" class="colorblue" onClick="showcalendar(event, 'expiration', 'cal_startdate', 'cal_enddate', '{expiration}');" readonly="readonly" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" /></span>
+			<input type="hidden" name="cal_startdate" id="cal_startdate" size="20"  value="{goodsinfo.expiration}">
+			<input type="hidden" name="cal_enddate" id="cal_enddate" size="20"  value="">
+		</td>
+	</tr>
+	</tbody>
+<%if {enabletag}%>
+	<tbody>
+	<tr>
+		<th>标签(Tags):</th>
+		<td><input type="text" name="tags" id="tags" value="{goodstags}" class="colorblue" onblur="this.className='colorblue';" onfocus="this.className='colorfocus';" /><input type="button" onclick="relatekw();" value="可用标签" />(用空格隔开多个标签，最多可填写 5 个)</td>
+	</tr>
+	</tbody>
+<%/if%>
+<%if {config.enablemall}==2%>
+	<tbody>
+	<tr>
+		<th>推荐商品:</th>
+		<td>
+			<input name="recommend" id="recommend" type="checkbox" <%if {goodsinfo.recommend}==1%>checked<%/if%>>
+		</td>
+	</tr>
+	</tbody>
+<%/if%>
+
+<%if {config.enablemall}==2%>
+	<tbody>
+	<tr>	    
+		<th>上架:</th>
+		<td>
+			<input name="displayorder" id="displayorder" type="checkbox" <%if {goodsinfo.displayorder}>=0%>checked<%/if%>>
+		</td>
+	</tr>
+	</tbody>
+<%/if%>
+		  
+<%if {config.enablemall}==1%>
+   <%if {goodsinfo.displayorder}<0%>
+	<tbody>
+	<tr>
+		<th>状态:</th>
+		<td>
+			 <%if {goodsinfo.displayorder}==-1%>
+				 回收站
+			 <%/if%>
+			 <%if {goodsinfo.displayorder}==-2%>
+				 待审核
+			 <%/if%>
+		</td>
+	</tr>
+	</tbody>
+   <%/if%>
+   <%if {useradminid}==1 || {goodsinfo.Selleruid}=={userid}%> 
+	<tbody>
+	<tr>	    
+		<th>上架:</th>
+		<td>
+			<input name="displayorder" id="displayorder" type="checkbox" <%if {goodsinfo.displayorder}>=0%>checked<%/if%>>
+		</td>
+	</tr>
+	</tbody>
+    <%/if%>
+<%/if%>	 
+<%if {isseccode}%>
+	<tbody>
+	<tr>
+		<th>验证码</th>
+		<td>
+			<div style="position: relative;">
+			<%template _vcode%>
+			</div>
+		</td>
+	</tr>
+	</tbody>
+<%/if%>
+	<tbody>
+	<tr>
+		<td colspan="2" class="formarea">
+			    <input name="goodssubmit" id="postsubmit" value="编辑商品" class="sbutton" style="margin-bottom: -3px; margin-right: 10px;" type="submit">
+		</td>
+	</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script language="javascript" src="javascript/goodscategories.js"></script>
+<script language="javascript" src="javascript/locations.js"></script>
+<script language="javascript" src="javascript/template_editgoods.js"></script>
+</div>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

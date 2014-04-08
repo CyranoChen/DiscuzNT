@@ -1,0 +1,8 @@
+﻿<div class="cm_header itemtitle s_clear">
+	<ul>
+		<li <%if {typeid}==0%>class="current"<%/if%>><a href="myattachment.aspx"><span>全部</span></a></li>
+		<%loop (AttachmentType) list Attachments.AttachTypeList()%>
+		<li <%if {typeid}=={list.TypeId}%>class="current"<%/if%>><a href="?typeid={list.TypeId}"><span>{list.TypeName}</span></a></li>
+		<%/loop%>
+	</ul>
+</div>

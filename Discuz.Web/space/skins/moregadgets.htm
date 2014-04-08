@@ -1,0 +1,194 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="ASP.net,论坛,space,blog" />
+		<meta name="description" content="Discuz!NT 个人空间" />
+		<title>添加更多内容 - ${config.Spacetitle} - Powered by Discuz!NT</title>
+		<link href="skins/themes/space.css" rel="stylesheet" type="text/css" id="css" />
+		<link rel="stylesheet" type="text/css" href="skins/themes/${config.ThemePath}/style.css" />
+		<script type="text/javascript" src="javascript/space.js"></script>
+		<style>
+			#category{
+				line-height:240%;
+			}
+			#category li{
+				border-bottom:1px solid #eee;
+				text-align:center;
+			}
+			#list h3{
+				font-weight:bold;
+			}
+			.AddModule{
+				line-height:30px;
+			}
+					.AddModule span{
+						padding:2px;
+						border:1px solid #333;
+					}
+					.PageList strong{
+						color:#333;
+					}
+		</style>
+	</head>
+	<body>
+<div id="topbar" style="left: 0px; top: 0px; position: absolute"><a href="./">返回我的首页</a></div>
+<div align="right" class="menu"><div id="duser"#* style="font-size:84%;padding-bottom:4px"*# width=100%><nobr>&nbsp;<a href="${forumurlnopage}usercp.aspx"><b>${username}</b></a>&nbsp;|&nbsp;<a href="./?uid=${userid}">我的空间</a>(<a href="manage">管理</a>)&nbsp;|&nbsp;<a href="${forumurlnopage}">返回论坛</a>&nbsp;|&nbsp;<a href="${forumurlnopage}logout.aspx?userkey=${userkey}">退出</a></nobr></div></div>
+<script>_DS_DD_init();</script>
+<div id="doc">
+<div id="nhdrwrap">
+<div id="nhdrwrapinner">
+<div id="nhdrwrapsizer">
+<div class="title">${config.Spacetitle}</div>
+<div class="subtitle">${config.Description}</div>
+
+<noscript><div id="noscript_msg" class="msg"><div id="noscript_box" class="msg_box">本功能需要JavaScript支持，开启以获得更多功能。</div></div></noscript>
+<script>_DS_time.stop("parse_header");</script>
+<div id="new_user_demo" align="center"></div>
+
+</div> 
+
+<div id="tabs"><ul><li class="tab spacer">&nbsp;</li>
+<li id="tab_view" class="tab selectedtab" style="display:block"><span id="tab_view_title">添加更多内容</span></li>
+</ul></div></div> </div>
+
+<div id="modules">
+<table width="100%" align="center" cellpadding="0" cellspacing="0" id="t_1">
+	<tr>
+		<td valign="top" class="col" id="col_1" style="width: 23%;">
+		<div class="modbox">
+			<h2 class="modtitle"></h2>
+			<div id="m_b" class="modboxin" >
+				<div id="category"></div>
+			</div>
+		</div>
+		</td>
+		<td width="2%;">&nbsp;</td>
+		<td valign="top" class="col" id="col_2" style="width: 75%;">
+		<div class="modbox">
+			<h2 class="modtitle"></h2>
+			<div id="m_b" class="modboxin" >
+						<div id="list"></div>
+			</div>
+		</div>		
+		</td>
+	</tr>
+</table>
+
+</div>
+</div>
+
+
+<div id="footer">
+#parse("_footer.htm")
+</div>
+		
+		
+	<script type="text/javascript">
+			function addModuleMayRedirect(module_url, redirecturl)
+			{
+				if(redirecturl&&redirecturl!="")
+				{
+					_dlsetp(module_url,_esc(redirecturl));
+					
+				}else 
+				{
+					_xsetp(module_url);					
+				}
+			}
+			var url = window.location.toString();
+			url = url.substring(0, url.lastIndexOf("/") + 1) + "modules/moregadgets.xml";
+			function initCategorys()
+			{
+				_sendx(url,function (response){
+
+					if (response == null || typeof(response) != "object" || response.firstChild == null)
+					{	
+						_gel("category").innerHTML = "无效的数据";
+						return;
+					}
+					
+					var categorys = response.getElementsByTagName("Category");
+
+					var html = '';
+					for (var i = 0; i < categorys.length; i++)
+					{
+						var category = categorys[i];
+						html += '<li><div style="cursor: pointer" onclick="getGadgetsByCategory(\'' + category.getAttribute("name") + '\', 1)">' + category.getAttribute("name") + '</div></li>';
+					}
+					_gel("category").innerHTML = html;
+					if (categorys.length > 1)
+					{
+						getGadgetsByCategory(categorys[0].getAttribute("name"), 1);
+					}
+					
+					}, true, null);
+			}
+			function getGadgetsByCategory(categoryName, pageIndex)
+			{
+				_sendx(url,function (response){
+
+				if (response == null || typeof(response) != "object" || response.firstChild == null)
+				{	
+					_gel("list").innerHTML = "无效的数据";
+					return;
+				}
+
+				var categorys = response.getElementsByTagName("Category");
+				var pageSize = 24;
+				var pageCount = 0;
+				for (var i = 0; i < categorys.length; i++)
+				{
+					var category = categorys[i];
+					html = '';
+					if (category.getAttribute("name") == categoryName)
+					{
+						var gadgets = category.getElementsByTagName("Gadget");
+						pageCount = Math.ceil(gadgets.length/pageSize);
+						for (var d = 0; d < gadgets.length; d++)
+						{
+							if (d < (pageIndex - 1) * pageSize)
+							{								
+								continue;
+							}
+							else if (d >= pageIndex * pageSize)
+							{								
+								break;
+							}
+							else
+							{
+								var gadget = gadgets[d];
+								html += '<h3>' + gadget.getAttribute("name") + '</h3>';
+								html += '<img src="' + gadget.getAttribute("snapshot") + '" />';
+								html += '<div class="AddModule" style="cursor: pointer" onclick="alert(addModuleMayRedirect(\'action=addmodule&t=${tabid}&x=' + gadget.getAttribute("url") + '\',\'\'));"><span>立即添加</span></div>';
+								html += '<div style="border-bottom: 1px dashed #999;margin-top:10px;margin-bottom:10px;"></div>';
+							}
+						}
+						break;
+					}
+				}
+
+				//页码
+				var pagehtml = '';
+				if (pageCount > 0)
+				{
+					pagehtml = '<div class="PageList">共 <strong>' + pageCount + '</strong> 页, 当前第<strong> ' + pageIndex + '</strong> 页';
+					if (pageIndex > 1)
+					{
+						pagehtml += '<a href="###" onclick="getGadgetsByCategory(\'' + categoryName + '\', ' + (pageIndex - 1) + ')">上一页</a>';
+					}
+					if (pageIndex < pageCount)
+					{
+						pagehtml += ' <a href="###" onclick="getGadgetsByCategory(\'' + categoryName + '\', ' + (pageIndex + 1) + ')">下一页</a>';
+					}
+					pagehtml += '</div>';
+					
+				}
+
+				
+				_gel("list").innerHTML = html + pagehtml;
+				}, true, null);
+			}
+			initCategorys();
+		</script>
+	</body>
+</html>

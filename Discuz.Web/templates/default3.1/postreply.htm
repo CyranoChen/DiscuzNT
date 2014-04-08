@@ -1,0 +1,148 @@
+﻿<%template _header%>
+<%if {infloat}!=1%>
+<script type="text/javascript"  src="{jsdir}/template_calendar.js"></script>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a>  <%if {forum.Pathlist}!=""%>&raquo;{ShowForumAspxRewrite(forum.Pathlist.Trim(),forumid,forumpageid)} &raquo; <%/if%>
+		<a href="{ShowTopicAspxRewrite(topicid,0)}">{topictitle}</a> &raquo; <strong>回复主题</strong>
+	</div>
+</div>
+<%/if%>
+<script type="text/javascript" reload="1" >
+var postminchars = parseInt({config.minpostsize});
+var postmaxchars = parseInt({config.maxpostsize});
+var disablepostctrl = parseInt({disablepost});
+var forumpath = "{forumpath}";
+var posturl=forumpath+'postreply.aspx?topicid={topicid}&forumpage={forumpageid}';
+var postaction='postreply.aspx?infloat=1&topicid={topicid}&';
+
+function closereply()
+{
+		if($('floatwin_reply'))
+        $('floatwin_reply').parentNode.removeChild($('floatwin_reply')); 
+		if($('floatwin_reply_mask'))
+		 $('floatwin_reply_mask').parentNode.removeChild($('floatwin_reply_mask'));
+}
+</script>
+<%if page_err==0%>
+<%if {ispost}%>
+<%if {infloat}==1%>
+    <%if {needaudit}%>
+		 <script type="text/javascript">
+		     $('returnmessage').className = '';
+		     //submithandle_newthread('forumdisplay.php?fid=5', '非常感谢您的参与，管理员设置了发回复需要进行审核，您的回复通过审核后将被显示出来。');
+		     floatwin('open_confirm', -1, 390, 130);
+		     $('floatwin_confirm').innerHTML = '<div><h3 class="float_ctrl"><em id="floatwin_confirm_title">提示信息</em><span><a href="javascript:;" class="float_close" onclick="floatwinreset = 1;floatwin(\'close_confirm\');">&nbsp;</a></span></h3></div><div id="floatwin_confirm_content">非常感谢您的参与，管理员设置了发回复需要进行审核，您的回复通过审核后将被显示出来。<br><button onclick="location.href=\'{rooturl}{msgbox_url}\';floatwin(\'close_confirm\')">确定</button></div>'
+		     floatwinreset = 1;
+		     closeEditorwin();
+		 </script>
+    <%else%>
+	    <script type="text/javascript">
+	    $('returnmessage').className='';
+	    location.href='{rooturl}{msgbox_url}';	
+        location.reload();	
+        </script>
+    <%/if%>
+<%else%>
+<%template _msgbox%>
+<%/if%>
+<%else%>
+	<%if {infloat}==0%>
+<div class="wrap s_clear" id="wrap">
+<div class="main">
+	<div class="nojs" style="position:relative;">
+	<div id="floatwinnojs">
+	<%/if%>
+	<script>
+	function geteditormessage(theform)
+	{
+    	var message = wysiwyg ? html2bbcode(getEditorContents()) : (!theform.parseurloff.checked ? parseurl(theform.message.value) : theform.message.value);
+	    theform.message.value = message;
+	}
+	</script>
+	<div id="floatlayout_reply" class="float" <%if {infloat}==1%>style="width: 600px; height: 410px;"<%/if%>>
+		<%if {infloat}==1%>
+		<form method="post" name="postform" id="postform" action="postreply.aspx?infloat=1&topicid={topicid}&" enctype="multipart/form-data" onsubmit="return validate(this)">
+        <%else%>
+        <form method="post" name="postform" id="postform" action="" enctype="multipart/form-data" onsubmit="return validate(this)">
+        <%/if%>		
+			<%template _post%>
+			<script type="text/javascript" reload="1">
+			openEditor();
+			<%if {canpostattach}%>
+			initAttach();
+			<%/if%>
+			</script>
+			<div style="display: none;">
+				<p class="textmsg" id="divshowuploadmsg" style="display:none"></p>
+				<p class="textmsg succ" id="divshowuploadmsgok" style="display:none"></p>
+				<input type="hidden" name="uploadallowmax" value="10">
+				<input type="hidden" name="uploadallowtype" value="jpg,gif">
+				<input type="hidden" name="thumbwidth" value="300">
+				<input type="hidden" name="thumbheight" value="250">
+				<input type="hidden" name="noinsert" value="0">
+			</div>
+			<%if {infloat}==0%>
+			<div class="postbox" id="realmoreinfo" style="display: none;" style="margin:0;margin-bottom:10px;">
+					<div id="newpost" class="post">					
+						<p><input name="continuereply" type="checkbox" <%if {continuereply}!=""%>checked<%/if%> /> 连续回复</p>
+					</div>
+					
+				</div>
+				<script type="text/javascript">$("moreinfo").innerHTML = $("realmoreinfo").innerHTML;$("moreinfo").className="postbox"</script>
+				<%/if%>
+		</form>
+	</div>
+	<%if {infloat}==0%>
+	</div>
+	</div>
+	</div>
+	</div>
+</div>
+	<%/if%>
+	<script type="text/javascript" reload="1" >
+		if (getQueryString('restore') == 1)
+		{
+			loadData(true);
+		}
+	</script>
+<%/if%>
+<%else%>
+	
+	    <%if {ispost}%>
+		<%if {needlogin}%>
+			<%template _login%>
+		<%else%>
+		 <%if {infloat}==1%>
+         {msgbox_text}
+		 <%else%>
+		   <%template _errmsgbox%>
+		 <%/if%>
+		<%/if%>
+	<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+	 <%if {infloat}==1%>
+	<div class="floatbox floatbox1">
+	<h3 class="float_ctrl">
+		<span>
+			<a href="javascript:;" class="float_close" onclick="floatwin('floatwin_reply');" title="关闭">关闭</a>
+		</span>
+	</h3>
+	<div class="gateform">
+	<h3>{msgbox_text}</h3>
+	</div>
+	</div>
+	 <%else%>
+	   <%template _errmsgbox%>
+	 <%/if%>
+		<script type="text/javascript">setcookie("dnt_title", '', 1);</script>
+	<%/if%>
+	
+	<%/if%>
+	
+	
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

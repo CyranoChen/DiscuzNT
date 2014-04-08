@@ -1,0 +1,121 @@
+﻿/*
+Offical Style for Discuz!NT(R)
+URL: http://NT.discuz.net
+(C) 2001-2009 Comsenz Inc.
+*/
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Common Style ~~~~ */
+*{word-wrap:break-word;}	
+body{background:#FFF;text-align:center;}
+body,td,input,textarea,select,button{color:#444;font:12px/1.6em Verdana,Helvetica,Arial,sans-serif;}
+input,select,button{vertical-align:middle;}
+body,ul,li,dl,dd,p,h1,h2,h3,h4,h5,h6,form,fieldset{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{font-size:1em;}
+ul li{list-style:none;}
+a{text-decoration:none; color:#000;}
+a:hover{text-decoration:underline;}
+a img{border:none;}
+em,cite,strong,th{text-align:left;font-style:normal;}
+table{empty-cells:show;border-collapse:collapse;}
+.hidden {display:none;}
+.right{float:right;}
+.left{float:left;}
+.s_clear{zoom:1;}
+.f_clear{clear:both;}
+.wrap{overflow:hidden;zoom:1;width:960px;text-align:left;margin:0 auto;}
+/*header*/
+#submenu{height:28px;line-height:28px;background:#FFF url(../images/submenubg.gif) repeat-x 50% 100%;}
+	#submenu a{margin:0 2px;padding:4px 0;}
+	#submenu a.drop{padding-right:14px;}
+	#submenu a.inbox,#submenu a.usercp,#submenu .avataonline{background-image:url(../images/icon_subnav.gif);background-repeat:no-repeat;background-position:0 4px;padding-left:1.5em;}
+		#submenu a.usercp{background-position:0 -24px;}
+		#submenu .avataonline{background-position:0 -50px;}
+		#submenu cite{background:url(../images/icon_num.gif) no-repeat 50% 1px;padding:1px 6px;}
+		*html #submenu form{padding:2px 0;}
+	.pipe{color:#CBCBCB;}
+.btnsearch{border:0;background:url(../images/icon_search.gif) no-repeat 0 0;width:21px;height:21px;}
+	*html #quicksearch{display:block;float:left;height:18px;line-height:18px;padding-top:4px;}
+#header{overflow:hidden;background:#0094D9 url(../images/headbg.gif) repeat-x 50% 0; border-bottom:3px solid #B2D5F3;  }
+	#header .wrap{position:relative;padding:20px 0 28px;}
+	#header h2{float:left;padding-top:13px;}
+	#menu{position:absolute;right:0;bottom:-1px;height:28px;}
+		#menu li{float:left;display:inline;text-align:center;margin-left:5px;}
+			#menu li a{float:left;display:inline;text-decoration: none;color:#FFF;font-size:14px;font-weight:bold;padding:0 8px;background:url(../images/menubg.gif) repeat-x 0 0;line-height:28px;}
+			#menu li a:hover,#menu li.current{background:url(../images/menubg.gif) repeat-x 0 -28px;color:#004886;}
+			#menu li.current a{background:none;color:#004886;}
+#nav{padding:10px 0;background:#FFF url(../images/navbg.gif) repeat-x 50% 0;}
+	#nav .title{font-weight:700;color:#09c;}
+	#nav em{color:#09c;}
+		#nav span img {margin-bottom:-2px;}
+/*header*/
+/*menu*/
+.drop,.dropmenu{background:url(../images/icon_drop.gif) no-repeat 96% 45%;padding-right:14px;cursor:pointer;}
+.popupmenu_popup{overflow:hidden;zoom:1;line-height:normal;padding:10px;border:1px solid #CAD9EA;background:#FFF url(../images/portalbox_bg.gif);background-repeat:repeat-x;background-position: 0 1px;text-align:left;}
+.headermenu_popup{width:170px; }
+	.headermenu_popup li{float: left;width: 7em;line-height: 24px;height: 24px;overflow: hidden;border-bottom: 1px solid #E8E8E8;}
+#viewpro_menu { margin-left: -30px; text-align: center; }
+	*html #viewpro_menu { margin-left: -30px;margin-top:5px}
+	#viewpro_menu img { height:48px; width: 48px; margin: 2px auto; }
+	#viewpro_menu li { text-align: left; }
+	.userinfolist { float: left; }
+	li.popuser { text-indent: 20px; padding: 4px; background: url(../images/usericon.gif) no-repeat 0 50%; }
+	li.poplink { text-indent: 20px; padding: 4px; background: url(../images/space.gif) no-repeat 0 50%; color: #999; }
+/*end menu*/
+#styleswitcher_menu { overflow: visible; }
+	#styleswitcher_menu, #styleswitcher_menu ul li, #styleswitcher_menu ul li.current a, #styleswitcher_menu ul li a { white-space: nowrap; }
+	#styleswitcher_menu ul li.current { font-weight: bold; }
+		#styleswitcher_menu ul li.current a { color: #666; }
+	#styleswitcher_menu li.current { font-weight: bold; }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Layout & Block Style~~~~ */
+.space_main{overflow:hidden;width:700px;}
+.space_side{overflow:hidden;width:250px;}
+.modulebox{ border:1px solid #B6CAE0; margin-bottom:10px; background:#FFF;}
+	.modulebox h2{height:30px;line-height:30px;background:#F5FAFE;color:#0578BC;text-indent:10px; font-weight:bold;}
+	.modulebox h2 a{color:#0578BC;}
+	.hotblog,.sidebox{ clear:both; margin-bottom:10px; }
+	
+	ul.space_list{clear:both;overflow:hidden;margin:10px 5px;}
+		ul.space_list li cite{float:right;color:#090;margin-left:6px;}
+	.hot_space{clear:both;overflow:hidden;}
+		.hot_space ul{overflow:hidden;zoom:1;margin:10px 5px;}
+		.hot_space li{  float:left; width:48%; padding:4px 0;}
+			.hot_space img{ float:left; border:1px solid #CCC; padding:2px; margin:2px 4px;}
+			.hot_space h4 a{font-size:14px; color:#09C; line-height:260%; }
+			.hot_space p{ color:#666;}
+			.hot_space em{ color:#069; padding-right:8px;}
+	.comment_blog {float:left; width:49%;}
+	.browser_blog {float:right; width:49%;}
+
+	.sidebox{overflow:hidden;zoom:1;border:1px solid #99CC66; padding:8px 16px; background:#FFF url(images/side_bg.gif) repeat-x 0 0;}
+		.sidebox h2,.sidebox h4{ clear:both; color:#FF6600; line-height:220%;}
+		.sidebox ul{margin:6px auto;}
+			.newslist li{word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:98%;}
+			.sidebox li em{font-weight:bold; color:#0578BC;}
+		#spacehottags li{display: inline;float:left;padding-right:8px;white-space:nowrap;}	
+	
+	.ntblog { overflow:hidden; border-bottom:1px dashed #B5C9E0; margin:0 10px;}
+		.ntblog h3 { background:url(images/bloglist.gif) no-repeat left 4px;line-height:24px; margin-left:15px; padding-left:20px; margin-top:10px; padding-bottom:10px;}
+		.ntblog h4 { height:28px;line-height:28px; padding-left:35px; font-weight:normal;}
+		.ntblog p { overflow:hidden;text-indent:2em; padding:3px 35px; line-height:160%; word-break:break-all; word-wrap:break-word;}
+/*RotateImage*/
+	div.MzRotateImage_ControlBar{z-index:2; margin-top: 1px; text-align: right; position: relative;}
+		div.MzRotateImage_ControlBar input{width: 18px; height: 20px; color: #fff; cursor: pointer; text-align: center; background: #000; border: solid 1px #fff; border-right: solid 0px #ddd;}
+		div.MzRotateImage_ControlBar input.active{background-color: #cc0000;}
+		.MzRotateImage .active h3{line-height:220%; padding-left:4px;}
+/*RotateImage*/
+/*Error*/
+.box { background: #FFF; border: 1px solid #DCE6F1; padding: 1px; margin-bottom: 10px; }
+.message { margin: 3em 10em 5em !important; }
+	.message h1 { line-height: 26px; border: 1px solid; background: #FFF url(../images/portalbox_bg.gif) repeat-x  0 0; border-color: #FFF #FFF #CAD9EA #FFF; padding-left: 1em; margin-bottom: 1em; }
+	.message p { margin: 1.5em 1em; }
+	.message a { color: #069; }
+/*Error*/
+/*footer*/
+#ad_footerbanner { padding-bottom:10px; text-align:center;}
+#ad_headerbanner{float:right;margin-bottom:14px;}
+#footer{padding:12px 0;}
+	#footlinks{float:right;margin-top:-3px;text-align:right;}
+	#footer img{float:left;margin: 0 10px 0 0;}
+	#copyright, #debuginfo{font: 0.83em/1.5em Verdana, Arial, Helvetica, sans-serif; }
+		#copyright strong a{color:#0954A6; }
+		#copyright em {color:#FF9D25; }
+/*footer*/

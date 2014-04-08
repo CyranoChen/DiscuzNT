@@ -1,0 +1,14 @@
+﻿<%if {userid}>0%>
+<ul class="f_tab">
+	<li <%if {typeid}==0%>class="cur_tab"<%/if%>><a href="usercpsubscribe.aspx?typeid=0">收藏的主题</a></li>
+	<%if {config.enablealbum}==1%>
+	<li <%if {typeid}==1%>class="cur_tab"<%/if%>><a href="usercpsubscribe.aspx?typeid=1">收藏的{config.albumname}</a></li>
+	<%/if%>
+	<%if {config.enablespace}==1 && {user.spaceid}>0%>
+	<li <%if {typeid}==2%>class="cur_tab"<%/if%>><a href="usercpsubscribe.aspx?typeid=2">收藏的日志</a></li>
+	<%/if%>
+	<%if {config.enablemall}==1%>		
+	<li <%if {typeid}==3%>class="cur_tab"<%/if%>><a href="usercpsubscribe.aspx?typeid=3">收藏的商品</a></li>
+	<%/if%>
+</ul>
+<%/if%>

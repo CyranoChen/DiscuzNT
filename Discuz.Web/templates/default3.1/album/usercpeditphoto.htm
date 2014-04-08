@@ -1,0 +1,79 @@
+<%inherits "Discuz.Album.Pages.usercpphotoedit"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+       <a href="{config.forumurl}" class="title">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <a href="usercpspacemanagealbum.aspx">管理相册</a>  &raquo;  <strong>编辑图片</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+	<h1>编辑 {photo.title}</h1>
+	<%template _albummenu%>
+<%if page_err==0%>
+	<%if ispost%>
+	<%template _usercpmsgbox%>
+	<%else%>
+	<form action="" method="post">
+	<table cellspacing="0" cellpadding="0" class="formtable" summary="编辑{photo.title}">
+	<tbody>
+		<tr>
+			<th><label for="形象图"></label></th>
+			<td class="photo_img" style="text-align:left;"><img src="{photo.filename}" alt="形象图"/></td>
+		</tr>
+		<tr>
+			<th><label for="title">标题</label></th>
+			<td><input name="title" id="title" type="text" value="{photo.title}" size="25" maxlength="20" class="txt"/></td>
+		</tr>
+		<tr>
+			<th><label for="description">描述</label></th>
+			<td><textarea name="description" rows="4" maxlength="200" class="txtarea" cols="50">{photo.description}</textarea></td>
+		</tr>
+		<%if {config.enabletag}==1%>
+		<tr>
+			<th><label for="phototag">标签</label></th>
+			<td><input name="phototag" type="text" id="phototag" size="25" maxlength="55" value="{tags}" class="txt"/></td>
+		</tr>
+		<%/if%>
+		<tr>
+			<th><label><a href="###" onclick="openadvance();">图片选项</a></label></th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr id="status" style="display: none;">
+			<th><label>评论设置</label></th>
+			<td>
+				<input type="radio" name="commentstatus" value="0" <%if {commentstatus}==0%>checked="checked"<%/if%> />只有我可以评论	
+				<input type="radio" name="commentstatus" value="2" <%if {commentstatus}==2%>checked="checked"<%/if%> />注册用户可以评论
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="Submit" value="提交"/></td>
+		</tr>
+	</tbody>
+	</table>
+	</form>
+	<%/if%>
+<%else%>
+	<%template _usercperrmsgbox%>
+<%/if%>
+	</div>
+	</div>
+</div>
+<script type="text/javascript">
+function openadvance()
+{
+	var div = $("status");
+	if (div.style.display != "none")
+	{
+		div.style.display = "none";
+	}
+	else
+	{
+		div.style.display = "";
+	}
+}
+</script>
+<%template _copyright%>
+<%template _footer%>

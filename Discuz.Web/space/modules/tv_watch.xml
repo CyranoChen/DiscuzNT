@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="TV Watch" title_url="http://www.ew.com" render_inline="required" author="EW.com" author_email="sophia.feedback+tvwatch@gmail.com" screenshot="/ig/modules/tv_watch_content/screenshot.png" thumbnail="/ig/modules/tv_watch_content/thumbnail.png" category="lifestyle" description="Tonight's best TV, last night's recaps, and all the news you need from Entertainment Weekly's EW.com.">
+</ModulePrefs>
+<UserPref name="tab" default_value="0" datatype="hidden"/>
+<Content type="html">
+<![CDATA[
+<style>
+  .tab_unselected__MODULE_ID__, .tab_selected__MODULE_ID__, .tab_spacer__MODULE_ID__ {
+    text-align:center;
+    font-size:12px;
+    }
+
+  TD.tab_unselected__MODULE_ID__ DIV.tab_inner__MODULE_ID__ {
+    border: 1px solid #aaaaaa;
+    border-bottom: 0px;
+    color: black;
+    padding-top: 2px;
+    padding-bottom:1px;
+  }
+
+  TD.tab_selected__MODULE_ID__, TD.tab_unselected__MODULE_ID__ {
+    width:33%;
+  }
+  TD.tab_selected__MODULE_ID__ DIV.tab_inner__MODULE_ID__ {
+    border: 1px solid #676767;
+    border-bottom: 0px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight:bold;
+    color: #3366cc;
+  }
+
+  TD.tab_unselected__MODULE_ID__ {
+    cursor:pointer;cursor:hand;
+  }
+
+  TD.tab_unselected__MODULE_ID__ DIV.tab_outer__MODULE_ID__ {
+    background-color: #dddddd;
+    border-bottom: 1px solid #676767;
+  }
+
+  .tab_spacer__MODULE_ID__ {
+    padding-top:4px;
+    padding-left:2px;
+    border-bottom: 1px solid #676767;
+  }
+
+  .tab_content__MODULE_ID__ {
+    border-top: 0px;
+    display:none;
+    padding-bottom:6px;
+    padding-top:6px;
+    font-size:12px;
+  }
+  .tab_content__MODULE_ID__ table {
+    font-size:12px;
+  }
+  .line__MODULE_ID__ {
+    border-top:1px solid #676767;
+    width:100%;
+  }
+  #TV__MODULE_ID__ {
+    padding-top:6px;
+    padding-bottom:6px;
+  }
+  .sourceLink__MODULE_ID__ A:link {
+    color:#7777cc;
+  }
+  .sourceLink__MODULE_ID__ A:visited {
+    color:#7777cc;
+  }
+  .newsTable__MODULE_ID__ TD {
+    padding-top:6px;
+    padding-bottom:6px;
+  }
+  .daysTable__MODULE_ID__ {
+    color:#3366cc;
+    border-spacing:0;
+    border-collapse:collapse;
+    margin-top:4px;
+  }
+  .daysTable__MODULE_ID__ td{
+    border:1px #aaaaaa solid;
+    text-align:center;
+    font-size:10px;
+    width:14%;
+  }
+  .TVTitle__MODULE_ID__ {
+   font-weight:bolder;
+  }
+  .timeInfo__MODULE_ID__ {
+    color:#3366cc;
+    font-size:10px;
+  }
+  .day_unselected__MODULE_ID__ {
+    background-color:white;
+    cursor:pointer;cursor:hand;
+  }
+  .day_selected__MODULE_ID__ {
+    background-color:#bbcced;
+    color:#224499;
+  }
+  .day_content__MODULE_ID__ {
+    padding-top:6px;
+    display:none;
+  }
+  .tonightImg__MODULE_ID__ {
+    border: 1px solid black;
+    margin-right:12px;
+    margin-bottom:1px;
+    margin-top:2px;
+    float:left;
+    position:relative;
+  }
+  .tonightInfo__MODULE_ID__ {
+    color:#3366cc;
+    font-size:10px;
+    font-weight:lighter;
+  }
+  .logo__MODULE_ID__ {
+    border-style:none;
+    margin-right:5px;
+    padding-top:2px;
+  }
+  .lostPromo__MODULE_ID__ {
+    padding-top:6px;
+    color:#676767;
+    font-size:smaller;
+  }
+  .lostPromo__MODULE_ID__ a:link, .lostPromo__MODULE_ID__ a:visited {
+    padding-top:6px;
+    color:#7777cc;
+    font-size:smaller;
+  }
+  .date__MODULE_ID__ {
+    font-weight:bolder;
+    padding-bottom:4px;
+  }
+</style>
+
+<table style="margin-top:6px" cellpadding=0 cellspacing=0 border=0 width=100%>
+  <tr>
+    <td>
+      <div class="tab_spacer__MODULE_ID__">
+        &nbsp;
+      </div>
+    </td>
+    <td class="tab_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabTo(this.id)" id=tab0__MODULE_ID__>
+      <div class="tab_outer__MODULE_ID__">
+        <div class="tab_inner__MODULE_ID__">
+          Tonight
+        </div>
+      </div>
+    </td>
+    <td><div class="tab_spacer__MODULE_ID__">&nbsp;</div></td>
+    <td class="tab_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabTo(this.id)" id=tab1__MODULE_ID__>
+      <div class="tab_outer__MODULE_ID__">
+        <div class="tab_inner__MODULE_ID__">
+          Recaps
+        </div>
+      </div>
+    </td>
+    <td><div class="tab_spacer__MODULE_ID__">&nbsp;</div></td>
+    <td class="tab_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabTo(this.id)" id=tab2__MODULE_ID__>
+      <div class="tab_outer__MODULE_ID__">
+        <div class="tab_inner__MODULE_ID__">
+          News
+        </div>
+      </div>
+    </td>
+    <td><div class="tab_spacer__MODULE_ID__">&nbsp;</div></td>
+</tr>
+</table>
+
+<div class="tab_content__MODULE_ID__" id="Tonight__MODULE_ID__">
+  <table class=daysTable__MODULE_ID__ cellpadding=0 cellspacing=0 width=100%>
+    <tr>
+      <td id=mon__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        MON
+      </td>
+      <td id=tue__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        TUE
+      </td>
+      <td id=wed__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        WED
+      </td>
+      <td id=thu__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        THU
+      </td>
+      <td id=fri__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        FRI
+      </td>
+      <td id=sat__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        SAT
+      </td>
+      <td id=sun__MODULE_ID__ class="day_unselected__MODULE_ID__" onclick="TV__MODULE_ID__.tabToDay(this.id)">
+        SUN
+      </td>
+    </tr>
+  </table>
+  <div class=day_content__MODULE_ID__ id=day0_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day1_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day2_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day3_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day4_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day5_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day6_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+  <div class=day_content__MODULE_ID__ id=day7_content__MODULE_ID__>
+    Loading&hellip;
+  </div>
+</div>
+<div class="tab_content__MODULE_ID__" id="Recaps__MODULE_ID__">Loading&hellip;</div>
+<div class="tab_content__MODULE_ID__" id="News__MODULE_ID__">Loading&hellip;</div>
+<div class="line__MODULE_ID__"></div>
+
+<script>
+  var TV__MODULE_ID__ = {
+
+
+    STORIES_TPL : "<b>STORIES_TITLE</b>" +
+               "<table class=newsTable__MODULE_ID__ cellpadding=0 cellspacing=0><tr>HEADLINES</tr></table>SOURCE",
+    HEADLINE_TPL : "<tr>HEADLINE_IMG<td valign=top colspan=HEADLINE_COLS><a href='HEADLINE_LINK'>HEADLINE_TITLE</a><br>HEADLINE_DESC</td></tr>",
+
+    TONIGHT_TPL : "<div class=date__MODULE_ID__>TONIGHT_DATE</div><img class=tonightImg__MODULE_ID__ src=\"TONIGHT_IMG\">TONIGHT_CONTENT SOURCE",
+    SOURCE_TPL : "<div class=sourceLink__MODULE_ID__><a href='SOURCE_LINK'><img class=logo__MODULE_ID__ src='/ig/modules/tv_watch_content/logo.jpg'>SOURCE_NAME</a></div>",
+
+
+
+    prefs : null,
+    tabs : ["tab0__MODULE_ID__", "tab1__MODULE_ID__", "tab2__MODULE_ID__"],
+    tabContents : ["Tonight__MODULE_ID__", "Recaps__MODULE_ID__", "News__MODULE_ID__"],
+    days : ["mon__MODULE_ID__", "tue__MODULE_ID__", "wed__MODULE_ID__", "thu__MODULE_ID__", "fri__MODULE_ID__", "sat__MODULE_ID__", "sun__MODULE_ID__"],
+    parsed : [false, false, false],
+    daysHTML : [null, null, null, null, null, null, null],
+    TONIGHT : 0,
+    RECAPS : 1,
+    NEWS : 2,
+
+    months : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    dayNames : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+
+    load : function() {
+      TV__MODULE_ID__.prefs = new _IG_Prefs(__MODULE_ID__);
+      var currentTab = TV__MODULE_ID__.tabs[TV__MODULE_ID__.prefs.getInt("tab")];
+      TV__MODULE_ID__.tabTo(currentTab);
+    },
+
+    parseAndDisplayTabContent : function(tabindex) {
+      switch(tabindex) {
+        case TV__MODULE_ID__.TONIGHT:
+          _IG_FetchXmlContent("http://rss.ew.com/web/ew/rss/google/tv/tonightbestdate/index.xml", TV__MODULE_ID__.parseAndDisplayTonight);
+          break;
+        case TV__MODULE_ID__.RECAPS:
+          _IG_FetchXmlContent("http://rss.ew.com/web/ew/rss/google/tv/watch/index.xml", TV__MODULE_ID__.parseAndDisplayRecaps);
+          break;
+        case TV__MODULE_ID__.NEWS:
+          _IG_FetchXmlContent("http://rss.ew.com/web/ew/rss/google/tv/headlines/index.xml", TV__MODULE_ID__.parseAndDisplayNews);
+          break;
+      }
+    },
+
+    parseAndDisplayTonight : function(xmlDoc) {
+      var items = xmlDoc.getElementsByTagName("item");
+      TV__MODULE_ID__.parsed[TV__MODULE_ID__.TONIGHT] = true;
+      for (var i = 0; i < items.length; i++) {
+        var item = items.item(i);
+        var description = TV__MODULE_ID__.childValue(item, "description");
+        var link = TV__MODULE_ID__.childValue(item, "link");
+        var img = TV__MODULE_ID__.childValue(item, "guid");
+        var pubDate = TV__MODULE_ID__.childValue(item, "pubDate");
+        var slash = pubDate.indexOf("/");
+        var month = pubDate.substring(0, slash);
+        var day = pubDate.substring(slash + 1, pubDate.length);
+        var date = TV__MODULE_ID__.dayNames[i] + ", ";
+        date = date + TV__MODULE_ID__.months[month - 1] + " ";
+        date = date + day;
+        description = description.replace(/<span class="led2">MUST WATCH OF THE WEEK<\/span><br>/g, "");
+        description = description.replace(/<span class="led2">Must Watch of the Week<\/span><br>/g, "");
+        description = description.replace(/<p>/g, "");
+        description = description.replace(/span>/g, "a> ");
+        description = description.replace(/<br><span class="led">/g, "</span> <a href='" + link + "'>");
+        description = description.replace(/<span class="led">/g, "</span> <a href='" + link + "'>");
+        var endPar = description.search(/<\/p>/);
+        var dayHTML = TV__MODULE_ID__.TONIGHT_TPL;
+        dayHTML = dayHTML.replace(/TONIGHT_IMG/, img);
+        var numEntries = 0;
+        var tonightContent = "";
+        while(endPar != -1) {
+          var entryHTML = "";
+          var spanIndex = description.search(/<span/);
+          var timeInfo = description.substring(0, spanIndex);
+          timeInfo = timeInfo.replace(/<br>/g, " ");
+          entryHTML += "<span class=timeInfo__MODULE_ID__>" + timeInfo + " </span>";
+          entryHTML += "<span class=tonightInfo__MODULE_ID__>" + description.substring(spanIndex, endPar) + "</span>";
+          tonightContent +=  entryHTML + "<div style='padding-top:6px'>";
+          description = description.substring(endPar + 4, description.length);
+          endPar = description.search(/<\/p>/);
+          numEntries++;
+          if (numEntries == 3) {
+            break;
+          }
+        }
+        dayHTML = dayHTML.replace(/TONIGHT_DATE/, date);
+        dayHTML = dayHTML.replace(/TONIGHT_CONTENT/, tonightContent);
+        var sourceHTML = TV__MODULE_ID__.SOURCE_TPL;
+        sourceHTML = sourceHTML.replace(/SOURCE_LINK/, link);
+        sourceHTML = sourceHTML.replace(/SOURCE_NAME/, "More of tonight's best TV &raquo;");
+        dayHTML = dayHTML.replace(/SOURCE/, sourceHTML);
+        _gel("day" + i + "_content__MODULE_ID__").innerHTML = dayHTML;
+      }
+    },
+
+    parseAndDisplayRecaps : function(xmlDoc) {
+      TV__MODULE_ID__.parsed[TV__MODULE_ID__.RECAPS] = true;
+      var html = TV__MODULE_ID__.parseStories(xmlDoc);
+      var sourceHTML = TV__MODULE_ID__.SOURCE_TPL;
+      sourceHTML = sourceHTML.replace(/SOURCE_LINK/, "http://www.ew.com/ew/tvwatch");
+      sourceHTML = sourceHTML.replace(/SOURCE_NAME/, "More TV recaps &raquo;");
+      html = html.replace(/SOURCE/, sourceHTML);
+      _gel("Recaps__MODULE_ID__").innerHTML = html;
+    },
+
+    parseStories : function(xmlDoc) {
+      var title = TV__MODULE_ID__.value(xmlDoc.getElementsByTagName("title").item(0));
+      var items = xmlDoc.getElementsByTagName("item");
+      html = TV__MODULE_ID__.STORIES_TPL;
+      if (title.substring(0, 4) == "Last") {
+        title = "";
+      }
+      html = html.replace(/STORIES_TITLE/, title);
+      headlinesHTML = "";
+      var len = Math.min(items.length, 3);
+      for (var i = 0; i < len; i++) {
+        var item = items.item(i);
+        var rowHTML = TV__MODULE_ID__.HEADLINE_TPL;
+        var img = "";
+        var colspan = 2;
+        link = TV__MODULE_ID__.childValue(item, "link");
+        if (item.getElementsByTagName("guid").length != 0) {
+        img = "<td valign=top><a href='" + link + "'><img style='border-width:1px;margin-right:12px' src='" + TV__MODULE_ID__.childValue(item,"guid") + "'></a></td>";
+          colspan = 1;
+        }
+        rowHTML = rowHTML.replace(/HEADLINE_LINK/, link);
+        rowHTML = rowHTML.replace(/HEADLINE_IMG/, img);
+        var title = TV__MODULE_ID__.childValue(item, "title");
+        var description = TV__MODULE_ID__.childValue(item, "description");
+        if (title.substring(2,6) == "Lost") {
+          description = description + TV__MODULE_ID__.addLostLink();
+        }
+        rowHTML = rowHTML.replace(/HEADLINE_TITLE/, title);
+        rowHTML = rowHTML.replace(/HEADLINE_DESC/, description);
+        rowHTML = rowHTML.replace(/HEADLINE_COLS/, colspan);
+        headlinesHTML += rowHTML;
+      }
+      html = html.replace(/HEADLINES/, headlinesHTML);
+      return html;
+    },
+
+    addLostLink : function() {
+      var html = "<div class=lostPromo__MODULE_ID__>" +
+        "Don't miss out on future &#147Lost&#148 stories.<br>" +
+          "<a href='/ig/add?moduleurl=lost.xml'>" +
+            "Add EW.com's &#147Lost&#148 coverage now."
+          "</a>" +
+        "</div>";
+      return html;
+    },
+
+    parseAndDisplayNews : function(xmlDoc) {
+      TV__MODULE_ID__.parsed[TV__MODULE_ID__.NEWS] = true;
+      var html = TV__MODULE_ID__.parseStories(xmlDoc);
+      var sourceHTML = TV__MODULE_ID__.SOURCE_TPL;
+      sourceHTML = sourceHTML.replace(/SOURCE_LINK/, "http://www.ew.com/ew/tvnews");
+      sourceHTML = sourceHTML.replace(/SOURCE_NAME/, "More TV news &raquo;");
+      html = html.replace(/SOURCE/, sourceHTML);
+      _gel("News__MODULE_ID__").innerHTML = html;
+    },
+
+    childValue : function(parent, tagname) {
+      return TV__MODULE_ID__.value(parent.getElementsByTagName(tagname).item(0));
+    },
+
+    value : function(element) {
+      return element.firstChild.nodeValue;
+    },
+
+    tabToDay : function(id) {
+      var el = _gel(id);
+      if (el.className.indexOf("day_unselected__MODULE_ID__") != -1) {
+        for (var i = 0; i < TV__MODULE_ID__.days.length; i++) {
+          var dayTab = document.getElementById(TV__MODULE_ID__.days[i]);
+          var dayContent = document.getElementById("day" + i + "_content__MODULE_ID__");
+          if (id == TV__MODULE_ID__.days[i]) {
+            dayTab.className = "day_selected__MODULE_ID__";
+            dayContent.style.display = "block";
+          } else {
+            dayTab.className = "day_unselected__MODULE_ID__";
+            dayContent.style.display = "none";
+          }
+        }
+      }
+    },
+
+    tabTo : function(id) {
+      var el = _gel(id);
+      if (el.className.indexOf("tab_unselected__MODULE_ID__") != -1) {
+        for (var i = 0; i < TV__MODULE_ID__.tabs.length; i++) {
+          var tab = document.getElementById("tab" + i + "__MODULE_ID__");
+          var content = document.getElementById(TV__MODULE_ID__.tabContents[i]);
+          if (id == TV__MODULE_ID__.tabs[i]) {
+            TV__MODULE_ID__.prefs.set("tab", i);
+            if (!TV__MODULE_ID__.parsed[i]) {
+              TV__MODULE_ID__.parseAndDisplayTabContent(i);
+            }
+            if (i == TV__MODULE_ID__.TONIGHT) {
+              var day = TV__MODULE_ID__.getDay();
+              TV__MODULE_ID__.tabToDay(TV__MODULE_ID__.days[day]);
+            }
+            tab.className = "tab_selected__MODULE_ID__";
+            content.style.display = "block";
+          } else {
+            tab.className = "tab_unselected__MODULE_ID__";
+            content.style.display = "none";
+          }
+        }
+      }
+    },
+
+    getDay : function() {
+      return ((new Date()).getDay() + 6) % 7;
+    }
+  };
+
+  _IG_RegisterOnloadHandler(TV__MODULE_ID__.load);
+
+</script>
+
+<!-- Google Analytics Urchin Tracker -->
+<iframe src="/ig/modules/tv_watch_content/urchin.html" frameborder=0 width=1 height=1></iframe>
+
+]]>
+</Content>
+</Module>

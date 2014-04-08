@@ -1,0 +1,155 @@
+﻿<%inherits "Discuz.Mall.Pages.buygoods"%>
+<%template _header%>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+<div id="foruminfo">
+	<div id="nav">
+		<a id="A1" href="forumindex.aspx">{config.forumtitle}</a>  &raquo; {goodscategoryinfo.pathlist}  &raquo; <strong>购买商品</strong>
+	</div>
+</div>	
+<script language="javascript" src="javascript/template_trade.js"></script>
+<script type="text/javascript">
+zoomstatus = parseInt(1);
+var feevalue = 0;
+var price = {goodsinfo.price};
+</script>
+<form method="post" id="tradepost" name="tradepost" action="buygoods.aspx?goodsid={goodsinfo.goodsid}">
+<div class="box tradeinfo">
+	<h1>{goodsinfo.title}</h1>
+	<div class="imageviewer" style="padding:20px 0;">
+			<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodsinfo.goodsid})%>
+			<a href="{aspxrewriteurl}">
+				<%if {goodsinfo.goodspic}==""%>
+					<img id="goodspic" style="width:80px;" src="templates/{templatepath}/images/mall/nogoods_small.gif" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  alt="{goodsinfo.title}">
+				 <%else%>
+					<img id="goodspic" style="width:80px;" src="upload/{goodsinfo.goodspic}" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  alt="{goodsinfo.title}">
+				 <%/if%>
+			</a>
+	</div>
+	<div class="itemsummary" style="margin-left:-40px;">
+		<ul id="priceinfo">
+			<li class="currentprice" style="padding-bottom: 5px;"><span style="margin-top: 5px;">现价:</span><em>{goodsinfo.price}</em>元</li>
+
+			<li class="location"><span>所在地:</span>{goodsinfo.locus}</li>
+			<li><span>卖家:</span>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodsinfo.selleruid})%>
+				<a href="{aspxrewriteurl}" target="_blank">{goodsinfo.seller}</a> 
+				<%if {goodsinfo.tradetype}==1%>
+					<a href="https://www.alipay.com/trade/i_credit.do?email={goodsinfo.account}" target="_blank"><img src="templates/{templatepath}/images/alipaysmall.gif" border="0" />支付宝账户信用信息</a>
+				<%/if%>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="mainbox">
+		<h3><%if {goodstradelog.id}<=0 %>
+		   确认购买信息
+		<%else%> 
+		   交易单  
+		<%/if%></h3>
+		<table summary="确认购买信息" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<th>支付总额</th>
+				<td><strong id="caculate"></strong>&nbsp;元</td>
+			</tr>
+			<tr>
+				<th><label for="number">购买数量</label></th>
+				<td><input type="text" id="number" name="number" onkeyup="calcsum()" value="1" /></td>
+			</tr>
+			<tr>
+				<th>物流方式</th>
+				<td>
+				    <input type="hidden" id="transport" name="transport" value="{goodsinfo.transport}" />
+					<%if {goodsinfo.transport}==0%>
+					    虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodsinfo.transport}==1%>
+					    卖家承担运费
+					<%/if%>
+					<%if {goodsinfo.transport}>1%>
+					    <%if {goodsinfo.transport}==2%>
+					        买家承担运费
+					    <%/if%>
+					    <%if {goodsinfo.transport}==3%>
+					        买家收到货物后直接支付给物流公司
+					    <%/if%>
+					    <%if {goodsinfo.ordinaryfee}>0%>
+	    				    <label><input class="radio" type="radio" id="postage_mail" name="fee" value="{goodsinfo.ordinaryfee}" checked="checked" <%if {goodsinfo.transport}==2%>onclick="$('transport').value = 1;feevalue = {goodsinfo.ordinaryfee};calcsum();"<%/if%> /> 平邮 {goodsinfo.ordinaryfee} 元</label>
+	    				    <script type="text/javascript">feevalue = {goodsinfo.ordinaryfee}</script>
+    				    <%/if%>
+    				    <%if {goodsinfo.emsfee}>0%>
+	    				    <label><input class="radio" type="radio" id="postage_ems" name="fee" value="{goodsinfo.emsfee}" checked="checked" <%if {goodsinfo.transport}==2%>onclick="$('transport').value = 2;feevalue = {goodsinfo.emsfee};calcsum();"<%/if%> /> EMS {goodsinfo.emsfee} 元</label>
+	    				    <script type="text/javascript">feevalue = {goodsinfo.emsfee}</script>
+    				    <%/if%>
+    				    <%if {goodsinfo.expressfee}>0%>
+	    				    <label><input class="radio" type="radio" id="postage_express" name="fee" value="{goodsinfo.expressfee}" checked="checked" <%if {goodsinfo.transport}==2%>onclick="$('transport').value = 3;feevalue = {goodsinfo.expressfee};calcsum();"<%/if%> /> 快递 {goodsinfo.expressfee} 元</label>
+	    				    <script type="text/javascript">feevalue = {goodsinfo.expressfee}</script>
+    				    <%/if%>
+					<%/if%>		
+			    
+				    				 
+				</td>
+			</tr>
+			<tr>
+				<th>交易方式</th>
+				<td>
+				    <%if {goodsinfo.tradetype}==1%>
+						<label><input type="radio" class="radio" name="offline" value="0" checked="checked" /> 支付宝在线交易</label> <label><input type="radio" class="radio" name="offline" value="1" /> 线下交易</label>
+				    <%else%>
+				        <label>线下交易<input type="hidden" class="radio" name="offline" value="1" /></label>
+				    <%/if%>									
+    			</td>
+			</tr>
+			<tr>
+				<th><label for="buyername">收货人姓名</label></th>
+				<td><input type="text" id="buyername" name="buyername" maxlength="50" value="{goodstradelog.buyername}" /></td>
+			</tr>
+			<tr>
+				<th><label for="buyercontact">收货地址</label></th>
+				<td><input type="text" id="buyercontact" name="buyercontact" maxlength="100" size="80" value="{goodstradelog.buyercontact}" /></td>
+			</tr>
+			<tr>
+				<th><label for="buyerzip">收货人邮编</label></th>
+				<td><input type="text" id="buyerzip" name="buyerzip" maxlength="10" value="{goodstradelog.buyerzip}"" /></td>
+			</tr>
+			<tr>
+				<th><label for="buyerphone">收货人电话</label></th>
+				<td><input type="text" id="buyerphone" name="buyerphone" maxlength="20" value="{goodstradelog.buyerphone}"" /></td>
+			</tr>
+			<tr>
+				<th><label for="buyermobile">收货人手机</label></th>
+				<td><input type="text" id="buyermobile" name="buyermobile" maxlength="20" value="{goodstradelog.buyermobile}"" /></td>
+			</tr>
+			<tr>
+				<th><label for="buyermsg">备注信息</label><div class="tips">200 字以内</div></th>
+				<td>
+					<textarea id="buyermsg" name="buyermsg" style="width: 95%" rows="3">{goodstradelog.buyermsg}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+					<button class="mallbutton" type="submit" name="tradesubmit" value="true">确认购买</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</form>
+
+<script type="text/javascript">
+function calcsum() {
+	$('caculate').innerHTML = parseFloat(price * $('tradepost').number.value + feevalue).toFixed(2);
+}
+calcsum();
+</script>
+</div>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>	

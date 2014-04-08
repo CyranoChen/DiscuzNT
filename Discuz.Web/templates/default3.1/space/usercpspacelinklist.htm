@@ -1,0 +1,82 @@
+﻿<%inherits "Discuz.Space.Pages.usercpspacelinklist"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>友情链接</strong>
+	</div>
+</div>
+<script type="text/javascript">
+	function checkCheckBox(form,objtag)
+	{
+		for(var i = 0; i < form.elements.length; i++) 
+		{
+			var e = form.elements[i];
+			if(e.name == "linkid") 
+			{
+				e.checked = objtag.checked;
+			}
+		}
+		objtag.checked = !objtag.checked;
+	}
+</script>
+<div class="wrap with_side s_clear" id="wrap">
+   <%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent datalist">
+		<h1>友情链接</h1>
+		<%template _spacemenu%>	
+	<%if page_err==0%>
+		<%if ispost%>
+		<%template _usercpmsgbox%>
+		<%else%>
+		<form id="linklist" name="linklist" method="post" action="">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datatable">
+			<tbody>
+			<%if linkcount>0%>
+			<tr class="colplural">
+				<th width="30%">链接名称</th>
+				<th width="20%">URL</th>
+				<th width="40%">链接描述</th>
+				<th width="10%">&nbsp;</th>
+			</tr>
+			<%loop currentlink linklist%>
+			<tr>
+				<td class="datatitle">
+					<input name="linkid" type="checkbox" id="linkid{currentlink[linkid]}" value="{currentlink[linkid]}"/>
+					<span title="{currentlink[linktitle]}">{currentlink[shortlinktitle]}</span> 
+					<a href="usercpspacelinkedit.aspx?linkid={currentlink[linkid]}">[编辑]</a>
+				</td>
+				<td style="text-align:left;"><a href="{currentlink[linkurl]}" target="_blank">{currentlink[shortlinkurl]}</a></td>
+				<td style="text-align:left;">{currentlink[description]}&nbsp;</td>
+				<td><a href="###" onclick="$('linkid{currentlink[linkid]}').checked=true;$('linklist').submit();">删除</a></td>
+			</tr>
+			<%/loop%>
+			<%else%>
+			<div class="zerothreads">暂无友情链接</div>
+		    <%/if%>
+			</tbody>
+		</table>
+		</form>
+		<div class="cpbox s_clear">
+			<div class="pages_btns">
+			   <%if linkcount>0%>
+				<div class="pages">
+					{pagenumbers} <em>{pageid}/{pagecount}页</em> 
+				</div>
+				<a href="javascript:;"  onclick="checkCheckBox($('linklist'),this)" checked="true">全选</a>
+				<span class="pipe">|</span>
+				<a href="###" onclick="$('linklist').submit()">删除</a>
+				<span class="pipe">|</span>
+				<%/if%>
+				<a href="usercpspacelinkadd.aspx"><strong>增加链接</strong></a>
+			</div>
+		</div>
+		<%/if%>
+	<%else%>
+		<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

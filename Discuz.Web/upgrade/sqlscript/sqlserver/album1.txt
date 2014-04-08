@@ -1,0 +1,74 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_createphototags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_createphototags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_deletephototags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_deletephototags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_getphotolistbytag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_getphotolistbytag]
+GO
+
+CREATE  PROCEDURE [dnt_createphototags]
+@tags nvarchar(55),
+@photoid int,
+@userid int,
+@postdatetime datetime
+AS
+BEGIN
+	exec [dnt_createtags] @tags, @userid, @postdatetime
+
+	UPDATE [dnt_tags] SET [pcount]=[pcount]+1,[count]=[count]+1
+	WHERE EXISTS (SELECT [item] FROM [dnt_split](@tags, ' ') AS [newtags] WHERE [newtags].[item] = [tagname])
+	
+	INSERT INTO [dnt_phototags] (tagid, photoid)
+	SELECT tagid, @photoid FROM [dnt_tags] WHERE EXISTS (SELECT * FROM [dnt_split](@tags, ' ') WHERE [item] = [dnt_tags].[tagname])
+END
+
+GO
+
+
+CREATE PROCEDURE [dnt_deletephototags]
+	@photoid int
+ AS
+BEGIN       
+	UPDATE [dnt_tags] SET [count]=[count]-1,[fcount]=[fcount]-1 
+	WHERE EXISTS (SELECT [tagid] FROM [dnt_phototags] WHERE [photoid] = @photoid AND [tagid] = [dnt_tags].[tagid])
+
+    DELETE FROM [dnt_phototags] WHERE [photoid] = @photoid	
+END
+
+GO
+
+
+
+CREATE PROCEDURE [dnt_getphotolistbytag]	
+	@tagid int,
+	@pageindex int,
+	@pagesize int
+AS
+BEGIN
+	DECLARE @strSQL varchar(2000)
+	IF @pageindex = 1
+	BEGIN
+		SET @strSQL='SELECT TOP ' + STR(@pagesize) + ' [p].[photoid], [p].[title],[p].[filename],[p].[filesize],[p].[username],[p].[userid], [p].[postdate],[p].[comments],[p].[views]  
+		FROM [dnt_phototags] AS [pt], [dnt_photos] AS [p], [dnt_albums] AS [a] 
+		WHERE [p].[photoid] = [pt].[photoid] AND [p].[albumid] = [a].[albumid] AND [a].[type] = 0 AND [pt].[tagid] = ' + STR(@tagid) + ' 
+		ORDER BY [p].[photoid] DESC'
+	END
+	ELSE
+	BEGIN
+		SET @strSQL='SELECT TOP ' + STR(@pagesize) + ' [p].[photoid], [p].[title],[p].[filename],[p].[filesize],[p].[username],[p].[userid], [p].[postdate],[p].[comments],[p].[views]  
+		FROM [dnt_phototags] AS [pt], [dnt_photos] AS [p], [dnt_albums] AS [a] 
+		WHERE [p].[photoid] = [pt].[photoid] AND [p].[albumid] = [a].[albumid] AND [a].[type] = 0 AND [pt].[tagid] = ' + STR(@tagid) + ' 
+		AND [p].[photoid] < (SELECT MIN([photoid]) FROM (SELECT TOP ' + STR((@pageindex-1)*@pagesize) + ' 
+		[p].[photoid] FROM [dnt_phototags] AS [pt], [dnt_photos] AS [p], [dnt_albums] AS [a] 
+		WHERE [p].[photoid] = [pt].[photoid] AND [p].[albumid] = [a].[albumid] AND [a].[type] = 0 AND [pt].[tagid] = ' + STR(@tagid) + ' 
+		ORDER BY [p].[photoid] DESC) as tblTmp) 
+		ORDER BY [p].[photoid] DESC'
+	END
+	EXEC(@strSQL)
+END
+
+GO

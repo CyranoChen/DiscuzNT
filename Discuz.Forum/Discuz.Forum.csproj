@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A44D0E57-6EF1-4DF0-A73F-A7BA86B6C495}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Discuz.Forum</RootNamespace>
+    <AssemblyName>Discuz.Forum</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FileAlignment>4096</FileAlignment>
+    <BaseAddress>4194304</BaseAddress>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\AdminCaches.cs" />
+    <Compile Include="Avatars.cs" />
+    <Compile Include="BBCodes.cs" />
+    <Compile Include="CreditOrders.cs" />
+    <Compile Include="DiscuzMethodes.cs" />
+    <Compile Include="EPayments.cs" />
+    <Compile Include="ForumHots.cs" />
+    <Compile Include="Identifys.cs" />
+    <Compile Include="AdminGroups.cs" />
+    <Compile Include="Admin\AdminCatchForumInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminConfigs.cs" />
+    <Compile Include="Admin\AdminForums.cs" />
+    <Compile Include="Admin\AdminForumStats.cs" />
+    <Compile Include="Admin\AdminMedalLogs.cs" />
+    <Compile Include="Admin\AdminModeratorLogs.cs" />
+    <Compile Include="Admin\AdminPaymentLogs.cs" />
+    <Compile Include="Admin\AdminRateLogs.cs" />
+    <Compile Include="Admin\AdminTemplates.cs" />
+    <Compile Include="Admin\AdminTopics.cs" />
+    <Compile Include="Admin\AdminUserGroups.cs" />
+    <Compile Include="Admin\AdminUsers.cs" />
+    <Compile Include="Admin\AdminVistLogs.cs" />
+    <Compile Include="Admin\DiscuzControlContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Admin\SpaceThemes.cs" />
+    <Compile Include="Advertisements.cs" />
+    <Compile Include="Announcements.cs" />
+    <Compile Include="Attachments.cs" />
+    <Compile Include="AttachPaymentLogs.cs" />
+    <Compile Include="BanWords.cs" />
+    <Compile Include="Bonus.cs" />
+    <Compile Include="Caches.cs" />
+    <Compile Include="CreditsLogs.cs" />
+    <Compile Include="Databases.cs" />
+    <Compile Include="Debates.cs" />
+    <Compile Include="Editors.cs" />
+    <Compile Include="Emails.cs" />
+    <Compile Include="Favorites.cs" />
+    <Compile Include="Feeds.cs" />
+    <Compile Include="Focuses.cs" />
+    <Compile Include="ForumCacheStrategy.cs" />
+    <Compile Include="ForumLinks.cs" />
+    <Compile Include="Forums.cs" />
+    <Compile Include="ForumPageTemplate.cs" />
+    <Compile Include="ForumTags.cs" />
+    <Compile Include="ForumUtils.cs" />
+    <Compile Include="FTPs.cs" />
+    <Compile Include="Help.cs" />
+    <Compile Include="HttpModule.cs" />
+    <Compile Include="Invitation.cs" />
+    <Compile Include="Ips.cs" />
+    <Compile Include="IpSearch.cs" />
+    <Compile Include="LoginLogs.cs" />
+    <Compile Include="Admin\MenuManage.cs" />
+    <Compile Include="Medals.cs" />
+    <Compile Include="Moderators.cs" />
+    <Compile Include="Navs.cs" />
+    <Compile Include="Notices.cs" />
+    <Compile Include="OnlineUsers.cs" />
+    <Compile Include="PageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentLogs.cs" />
+    <Compile Include="Polls.cs" />
+    <Compile Include="Posts.cs" />
+    <Compile Include="PrivateMessages.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduledEvents\Event.cs" />
+    <Compile Include="ScheduledEvents\EventLogs.cs" />
+    <Compile Include="ScheduledEvents\EventManager.cs" />
+    <Compile Include="ScheduledEvents\IEvent.cs" />
+    <Compile Include="Scoresets.cs" />
+    <Compile Include="Searches.cs" />
+    <Compile Include="Smilies.cs" />
+    <Compile Include="Statistics.cs" />
+    <Compile Include="Stats.cs" />
+    <Compile Include="Sync.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="Templates.cs" />
+    <Compile Include="TopicAdmins.cs" />
+    <Compile Include="Topics.cs" />
+    <Compile Include="TopicStats.cs" />
+    <Compile Include="TopicTypes.cs" />
+    <Compile Include="UBB.cs" />
+    <Compile Include="Urls.cs" />
+    <Compile Include="UserAuthority.cs" />
+    <Compile Include="UserCredits.cs" />
+    <Compile Include="Users.cs" />
+    <Compile Include="UserGroups.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Cache\Discuz.Cache.csproj">
+      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Name>Discuz.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
+      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Name>Discuz.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
+      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Name>Discuz.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
+      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Name>Discuz.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
+      <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
+      <Name>Discuz.Plugin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

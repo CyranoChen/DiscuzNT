@@ -1,0 +1,75 @@
+﻿<dl class="<%if {attachment.attachimgpost}==1%>t_attachlist_img<%else%>t_attachlist<%/if%> attachimg">
+	<dt>
+	<%if {attachment.attachimgpost}==1%>
+	<img class="absmiddle" border="0" alt="" src="images/attachicons/image.gif"/>
+	<%else if {attachment.filename}.Trim().ToLower().EndsWith("rar")||{attachment.filename}.Trim().ToLower().EndsWith("zip")%>
+	<img class="absmiddle" border="0" alt="" src="images/attachicons/rar.gif"/>
+	<%else%>
+	<img class="absmiddle" border="0" alt="" src="images/attachicons/attachment.gif"/>
+	<%/if%>
+	<strong>
+	<%if {attachment.attachprice}<=0%>
+	   <a target="_blank" onclick="return ShowDownloadTip();" href="attachment.aspx?attachmentid={attachment.aid}">{attachment.attachment}</a>
+	<%else%>
+		<%if {attachment.isbought}==1 || {post.posterid}=={userid}%>
+		   <a target="_blank" onclick="return ShowDownloadTip();"  href="attachment.aspx?attachmentid={attachment.aid}">{attachment.attachment}</a>
+		<%else%>
+		   <%if {usergroupinfo.radminid}==1 || {ismoder}==1%>
+			  <a target="_blank"  onclick="return ShowDownloadTip();" href="attachment.aspx?attachmentid={attachment.aid}">{attachment.attachment}</a>
+		   <%else%>
+			  {attachment.attachment}
+		   <%/if%>
+		<%/if%>
+	<%/if%>
+	</strong>
+	<em>(<script type="text/javascript">ShowFormatBytesStr({attachment.filesize});</script>)</em>
+<%set (bool) {viewattach} = false %>									    
+<%if {attachment.attachprice}>0%>
+	<p>
+	售价({Scoresets.GetTopicAttachCreditsTransName()}):<strong>{attachment.attachprice} </strong>									
+	[<a onclick="BOX_show('attachpaymentlog', {attachment.aid});" href="javascript:void(0);">记录</a>]
+	<%set {viewattach} = {attachment.isbought}==1%>
+	<%if {post.posterid}!={userid} && !{viewattach}%>
+	  <%if {usergroupinfo.radminid}!=1 && {ismoder}!=1%>
+		[<a onclick="BOX_show('buyattach', {attachment.aid});" href="javascript:void(0);">购买</a>] 
+	  <%/if%>
+	<%/if%>	
+	</p>
+<%/if%>					
+	</dt>
+	<dd>
+	<p style="padding:3px 0;"><%if {attachment.description}!=""%>{attachment.description}<%/if%><span style="color:#666">({attachment.postdatetime})</span></p>
+	<%if {attachment.preview}!=""%>
+	<p>{attachment.preview}</p>
+	<%/if%>
+	<p>
+<%if {post.posterid}=={userid} || {usergroupinfo.radminid}==1%>
+	 <%set {viewattach} = true%>  
+<%/if%>									
+	<a name="attach{attachment.aid}"></a>
+<%if {UserAuthority.DownloadAttachment(forum,userid,usergroupinfo)}%><!--当用户有下载附件权限时-->
+	<%if {config.showimages}==1%>
+		<%if {config.attachimgpost}==1%>
+			<%if {attachment.attachimgpost}==1%>
+			  <%if {attachment.attachprice}<=0 || {viewattach}%>
+				<img alt="{attachment.attachment}" 
+				<%if {config.showattachmentpath}==1%>
+					<%if {attachment.filename}.IndexOf("http")>=0%>
+						src="{attachment.filename}"
+					<%else%>   
+						src="upload/{attachment.filename}"
+					<%/if%> 
+				<%else%> 
+					src="attachment.aspx?attachmentid={attachment.aid}"
+				<%/if%>
+			onmouseover="attachimg(this, 'mouseover')" onload="attachimg(this, 'load');" onclick="zoom(this, this.src);" />
+			  <%/if%>
+			<%/if%>
+		<%/if%>
+	<%/if%>
+<%else%>
+	<span class=\"attachnotdown\">您所在的用户组无法下载或查看附件</span>
+<%/if%>	
+	</p>
+	</dd>										
+</dl>

@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Discuz.Entity</RootNamespace>
+    <AssemblyName>Discuz.Entity</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aggregation\PhotoAggregationInfo.cs" />
+    <Compile Include="Forum\AdminGroupInfo.cs" />
+    <Compile Include="Album\AlbumCategoryInfo.cs" />
+    <Compile Include="Album\AlbumInfo.cs" />
+    <Compile Include="Album\AlbumInfoCollection.cs" />
+    <Compile Include="Forum\AdShowInfo.cs" />
+    <Compile Include="Forum\AdShowInfoCollection.cs" />
+    <Compile Include="Forum\AnnouncementInfo.cs" />
+    <Compile Include="Forum\ArchiverForumInfo.cs" />
+    <Compile Include="Forum\RateLogInfo.cs" />
+    <Compile Include="Forum\AttachmentInfo.cs" />
+    <Compile Include="Forum\AttachPaymentlogInfo.cs" />
+    <Compile Include="Forum\AttachPaymentlogInfoCollection.cs" />
+    <Compile Include="Forum\BatchSetParams.cs" />
+    <Compile Include="Album\PhotoCommentInfo.cs" />
+    <Compile Include="Album\PhotoCommentInfoCollection.cs" />
+    <Compile Include="Album\PhotoStatus.cs" />
+    <Compile Include="Forum\BonusLogInfo.cs" />
+    <Compile Include="Forum\CreditOrderInfo.cs" />
+    <Compile Include="Forum\InviteCodeInfo.cs" />
+    <Compile Include="Forum\TemplateAboutInfo.cs" />
+    <Compile Include="Forum\CreditsOperationType.cs" />
+    <Compile Include="Forum\CustomEditorButtonInfo.cs" />
+    <Compile Include="Forum\DebatePostExpandInfo.cs" />
+    <Compile Include="Forum\DebateInfo.cs" />
+    <Compile Include="Forum\EnumValue.cs" />
+    <Compile Include="Forum\EnumValueCollection.cs" />
+    <Compile Include="Forum\FavoriteType.cs" />
+    <Compile Include="Forum\ForumSpecialUserPower.cs" />
+    <Compile Include="Forum\MagicType.cs" />
+    <Compile Include="Forum\MyAttachmentInfo.cs" />
+    <Compile Include="Forum\MyAttachmentInfoCollection.cs" />
+    <Compile Include="Forum\MySqlInfo.cs" />
+    <Compile Include="Forum\NoticeInfo.cs" />
+    <Compile Include="Forum\NoticeInfoCollection.cs" />
+    <Compile Include="Forum\OrderDirection.cs" />
+    <Compile Include="Forum\PollInfo.cs" />
+    <Compile Include="Forum\PollOptionInfoCollection.cs" />
+    <Compile Include="Forum\PollOptionInfo.cs" />
+    <Compile Include="Forum\PostOrderType.cs" />
+    <Compile Include="Forum\ReceivePMSettingType.cs" />
+    <Compile Include="Forum\ShowbonusPagePostInfo.cs" />
+    <Compile Include="Forum\TopicOrderType.cs" />
+    <Compile Include="Forum\TopicTimeType.cs" />
+    <Compile Include="Forum\TrendType.cs" />
+    <Compile Include="Forum\UserAction.cs" />
+    <Compile Include="Forum\SimpleForumInfo.cs" />
+    <Compile Include="Forum\UserLogInfo.cs" />
+    <Compile Include="Forum\UserPostCountInfo.cs" />
+    <Compile Include="Global\AdTypeEnum.cs" />
+    <Compile Include="Global\NavInfo.cs" />
+    <Compile Include="Global\IpInfo.cs" />
+    <Compile Include="Global\SearchType.cs" />
+    <Compile Include="Global\StatInfo.cs" />
+    <Compile Include="Global\StatVarInfo.cs" />
+    <Compile Include="Global\TagInfo.cs" />
+    <Compile Include="Global\TagInfoCollection.cs" />
+    <Compile Include="Global\VerifyImageInfo.cs" />
+    <Compile Include="Help\HelpInfo.cs" />
+    <Compile Include="Forum\TopicIdentify.cs" />
+    <Compile Include="Forum\TopicIdentifyCollection.cs" />
+    <Compile Include="Mall\GoodsAttachmentInfo.cs" />
+    <Compile Include="Mall\GoodsattachmentinfoCollection.cs" />
+    <Compile Include="Mall\Goodscategoryinfo.cs" />
+    <Compile Include="Mall\GoodsInfo.cs" />
+    <Compile Include="Mall\GoodsinfoCollection.cs" />
+    <Compile Include="Mall\Goodsleavewordinfo.cs" />
+    <Compile Include="Mall\GoodsleavewordinfoCollection.cs" />
+    <Compile Include="Mall\Goodsrateinfo.cs" />
+    <Compile Include="Mall\GoodsrateinfoCollection.cs" />
+    <Compile Include="Mall\Goodstradeloginfo.cs" />
+    <Compile Include="Mall\GoodstradeloginfoCollection.cs" />
+    <Compile Include="Mall\Goodsusercreditinfo.cs" />
+    <Compile Include="Mall\GoodsusercreditinfoCollection.cs" />
+    <Compile Include="Mall\Locationinfo.cs" />
+    <Compile Include="Mall\Shopcategoryinfo.cs" />
+    <Compile Include="Mall\Shopinfo.cs" />
+    <Compile Include="Mall\Shoplinkinfo.cs" />
+    <Compile Include="Mall\ShoplinkinfoCollection.cs" />
+    <Compile Include="Mall\Shopthemeinfo.cs" />
+    <Compile Include="PageActionEnum\FriendsEnum.cs" />
+    <Compile Include="Space\FeatureType.cs" />
+    <Compile Include="Forum\ForumInfo.cs" />
+    <Compile Include="Forum\IndexPageForumInfo.cs" />
+    <Compile Include="Forum\IndexPageForumInfoCollection.cs" />
+    <Compile Include="Forum\ModeratorInfo.cs" />
+    <Compile Include="Space\ModuleContent.cs" />
+    <Compile Include="Space\ModuleContentType.cs" />
+    <Compile Include="Space\ModuleDefInfo.cs" />
+    <Compile Include="Space\ModuleDefInfoCollection.cs" />
+    <Compile Include="Space\ModuleInfo.cs" />
+    <Compile Include="Space\ModuleInfoCollection.cs" />
+    <Compile Include="Space\ModulePref.cs" />
+    <Compile Include="Space\ModuleRequire.cs" />
+    <Compile Include="Space\ModuleRequireCollection.cs" />
+    <Compile Include="Space\ModuleType.cs" />
+    <Compile Include="Forum\OnlineUserInfo.cs" />
+    <Compile Include="Forum\OnlineUserInfoCollection.cs" />
+    <Compile Include="Album\PhotoInfo.cs" />
+    <Compile Include="Album\PhotoInfoCollection.cs" />
+    <Compile Include="Forum\PostInfo.cs" />
+    <Compile Include="Forum\PostpramsInfo.cs" />
+    <Compile Include="Forum\PrivateMessageInfo.cs" />
+    <Compile Include="Forum\PrivateMessageInfoCollection.cs" />
+    <Compile Include="Forum\SearchCacheInfo.cs" />
+    <Compile Include="Forum\ShowtopicPageAttachmentInfo.cs" />
+    <Compile Include="Forum\ShowtopicPageAttachmentInfoCollection.cs" />
+    <Compile Include="Forum\ShowtopicPagePostInfo.cs" />
+    <Compile Include="Forum\ShowtopicPagePostInfoCollection.cs" />
+    <Compile Include="Space\SpaceAttachmentInfo.cs" />
+    <Compile Include="Space\SpaceCategoryInfo.cs" />
+    <Compile Include="Space\SpaceCommentInfo.cs" />
+    <Compile Include="Space\SpaceConfigInfo.cs" />
+    <Compile Include="Space\SpaceLinkInfo.cs" />
+    <Compile Include="Space\SpacePostCategoryInfo.cs" />
+    <Compile Include="Space\SpacePostInfo.cs" />
+    <Compile Include="Space\SpaceStatusType.cs" />
+    <Compile Include="Space\TabInfo.cs" />
+    <Compile Include="Space\TabInfoCollection.cs" />
+    <Compile Include="Forum\TemplateInfo.cs" />
+    <Compile Include="Forum\TemplateInfoCollection.cs" />
+    <Compile Include="Forum\ThemeInfo.cs" />
+    <Compile Include="Forum\ThemeInfoCollection.cs" />
+    <Compile Include="Forum\ThumbnailType.cs" />
+    <Compile Include="Forum\TopicInfo.cs" />
+    <Compile Include="Forum\TopicView.cs" />
+    <Compile Include="Forum\TopicViewCollection.cs" />
+    <Compile Include="Forum\UserExtcreditsInfo.cs" />
+    <Compile Include="Forum\UserGroupInfo.cs" />
+    <Compile Include="Forum\UserInfo.cs" />
+    <Compile Include="Space\UserPref.cs" />
+    <Compile Include="Space\UserPrefCollection.cs" />
+    <Compile Include="Space\UserPrefDataType.cs" />
+    <Compile Include="Space\UserPrefsSaved.cs" />
+    <Compile Include="Album\AlbumCategoryInfoCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,561 @@
+﻿<%template _header%>
+<script type="text/javascript">
+var templatepath = "{templatepath}";
+var postminchars = parseInt({config.minpostsize});
+var postmaxchars = parseInt({config.maxpostsize});
+var disablepostctrl = parseInt({disablepostctrl});
+var forumpath = "{forumpath}";
+var ismoder = {ismoder};
+var userid = parseInt('{userid}');
+var forumallowhtml =true;
+var imagedir = "{imagedir}";
+</script>
+<%if {enabletag}%>
+<script type="text/javascript" src="cache/tag/closedtags.txt"></script>
+<script type="text/javascript" src="cache/tag/colorfultags.txt"></script>
+<%/if%>
+<script type="text/javascript"  src="{jsdir}/template_showtopic.js"></script>
+<script type="text/javascript" src="{jsdir}/bbcode.js"></script>
+<script type="text/javascript" src="{jsdir}/ajax.js"></script>
+<script type="text/javascript" src="{jsdir}/post.js"></script>
+<script type="text/javascript" src="{jsdir}/template_debate.js"></script>
+<script type="text/javascript" src="{jsdir}/post_editor.js"></script>
+<%if {page_err}==0%>
+<div class="wrap cl pageinfo">
+	<div id="nav">
+		<%if {usergroupinfo.allowsearch}>0%>
+			<%template _quicksearch%>
+		<%/if%>
+	<a id="forumlist" href="{forumpath}" <%if {config.forumjump}==1%>onmouseover="showMenu(this.id);" onmouseout="showMenu(this.id);"<%/if%> class="title">{config.forumtitle}</a> &raquo; {ShowForumAspxRewrite(forum.Pathlist.Trim(),forumid,forumpageid)}
+	<%set (int){ishtmltitle} = Topics.GetMagicValue(topic.Magic, MagicType.HtmlTitle)%>
+	<%if {ishtmltitle}==1%>
+	  &raquo; <strong>{Topics.GetHtmlTitle(topic.Tid)}</strong>
+	<%else%>
+	  &raquo; <strong>{topic.Title}</strong>
+	<%/if%>
+	</div>
+</div>
+<div class="wrap cl">
+<%if {config.forumjump}==1%>
+	{Caches.GetForumListMenuDivCache(usergroupid,userid,config.Extname)}
+<%/if%>
+<div class="main viewthread">
+	<div id="postsContainer">
+	<table cellspacing="0" cellpadding="0" summary="辩论主题">	
+		<tr>
+		<td class="postauthor">
+		<%if {debatepost.posterid}!=-1%>
+			<!-- member menu -->
+			<div class="popupmenu_popup userinfopanel" id="{debatepost.posterid}" style="display:none; clip: rect(auto auto auto auto); position absolute;" initialized ctrlkey="userinfo2">
+				<div class="popavatar">
+					<div id="{debatepost.posterid}_ma"></div>
+					<ul class="profile_side">
+						<li class="post_pm"><a href="usercppostpm.aspx?msgtoid={debatepost.posterid}" onclick="floatwin('open_postpm', this.href, 600, 410, '600,0');doane(event);" target="_blank">发送短消息</a></li>
+					</ul>
+				</div>
+				<div class="popuserinfo">
+					<dl class="cl">
+						<dt>UID</dt><dd>{debatepost.posterid}</dd>
+						<dt>精华</dt><dd><%if {debatepost.digestposts}>0%><a href="search.aspx?posterid={debatepost.posterid}&type=digest">{debatepost.digestposts}</a><%else%>{debatepost.digestposts}<%/if%></dd>
+					<%if {score[1]}!=""%>
+						<dt>{score[1]}</dt><dd>{debatepost.extcredits1} {scoreunit[1]}</dd>
+					<%/if%>
+					<%if {score[2]}!=""%>
+						<dt>{score[2]}</dt><dd>{debatepost.extcredits2} {scoreunit[2]}</dd>
+					<%/if%>
+					<%if {score[3]}!=""%>
+						<dt>{score[3]}</dt><dd>{debatepost.extcredits3} {scoreunit[3]}</dd>
+					<%/if%>
+					<%if {score[4]}!=""%>
+						<dt>{score[4]}</dt><dd>{debatepost.extcredits4} {scoreunit[4]}</dd>
+					<%/if%>
+					<%if {score[5]}!=""%>
+						<dt>{score[5]}</dt><dd>{debatepost.extcredits5} {scoreunit[5]}</dd>
+					<%/if%>
+					<%if {score[6]}!=""%>
+						<dt>{score[6]}</dt><dd>{debatepost.extcredits6} {scoreunit[6]}</dd>
+					<%/if%>
+					<%if {score[7]}!=""%>
+						<dt>{score[7]}</dt><dd>{debatepost.extcredits7} {scoreunit[7]}</dd>
+					<%/if%>
+					<%if {score[8]}!=""%>
+						<dt>{score[8]}</dt><dd>{debatepost.extcredits8} {scoreunit[8]}</dd>
+					<%/if%>
+					<%if {debatepost.location}!=""%>
+						<dt>来自</dt><dd>{debatepost.location}</dd>
+					<%/if%>
+					</dl>
+					<div class="imicons cl">
+						<%if {debatepost.msn}!=""%>
+						<a href="mailto:{debatepost.msn}" target="_blank" class="msn">{debatepost.msn}</a>
+						<%/if%>
+						<%if {debatepost.skype}!=""%>
+						<a href="skype:{debatepost.skype}" target="_blank" class="skype">{debatepost.skype}</a>
+						<%/if%>
+						<%if {debatepost.icq}!=""%>
+						<a href="http://wwp.icq.com/scripts/search.dll?to={debatepost.icq}" target="_blank" class="icq">{debatepost.icq}</a>
+						<%/if%>
+						<%if {debatepost.qq}!=""%>
+						<a href="http://wpa.qq.com/msgrd?V=1&Uin={debatepost.qq}&Site={config.forumtitle}&Menu=yes" target="_blank" class="qq">{debatepost.qq}</a>
+						<%/if%>
+						<%if {debatepost.yahoo}!=""%>
+						<a href="http://edit.yahoo.com/config/send_webmesg?.target={debatepost.yahoo}&.src=pg" target="_blank" class="yahoo">{debatepost.yahoo}</a>
+						<%/if%>
+					</div>
+					<div class="imicons cl">
+						<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({debatepost.posterid})%>
+						<a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a>
+						<a href="search.aspx?posterid={debatepost.posterid}" class="all_topic">搜索帖子</a>
+					<%if {useradminid}>0%>
+					<%if {admininfo.allowviewip}==1%>
+						<a onclick="floatwin('open_getip', this.href, 400, 170, '600,0');doane(event);"  href="getip.aspx?pid={debatepost.pid}&topicid={topicid}" title="查看IP" class="ip">查看IP</a>
+					<%/if%>
+					<%if {admininfo.allowbanuser}==1%>
+						<a href="useradmin.aspx?action=banuser&uid={debatepost.posterid}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" title="禁止用户" class="forbid_user">禁止用户</a>
+					<%/if%>
+					<%/if%>
+					</div>
+				</div>
+			</div>
+			<!-- member menu -->
+			<%/if%>
+			<%if {debatepost.posterid}!=-1%>
+			<div class="poster">
+				<span  <%if {debatepost.onlinestate}==1%>class="onlineyes" title="在线"<%else%>class="onlineno" title="未在线"<%/if%>>{debatepost.poster}</span>
+			</div>
+			<div id="{debatepost.posterid}_a">
+			<%if {config.showavatars}==1%>
+			<div class="avatar">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(debatepost.Posterid) %>
+			    <img src="{avatarurl}" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';" onmouseover="showauthor(this,{debatepost.posterid})"/>
+			</div>
+			<%/if%>
+			<%if {debatepost.nickname}!=""%>
+			<p>昵称<em>:{debatepost.nickname}</em></p>
+			<%/if%>
+			</div>
+			<p>
+			<script type="text/javascript">
+				ShowStars({debatepost.stars}, {config.starthreshold});
+			</script>
+			</p>
+			<ul class="otherinfo">
+		<%if {config.userstatusby}==1%>
+			<li><label>组别</label>{debatepost.status}</li>
+		<%/if%>
+			<li><label>性别</label><script type="text/javascript">document.write(displayGender({debatepost.gender}));</script></span></li>
+		<%if {debatepost.bday}!=""%>
+			<li><label>生日</label>{debatepost.bday}</li>
+		<%/if%>
+			<li><label>来自</label>{debatepost.location}</li>
+			<li><label>积分</label>{debatepost.credits}</li>
+			<li><label>帖子</label>{debatepost.posts}</li>
+			<li><label>注册时间</label><%if {debatepost.joindate}!=""%><%datetostr({debatepost.joindate},"yyyy-MM-dd")%><%/if%></li>
+			</ul>
+			<%if {debatepost.medals}!=""%>
+			<div class="medals">{debatepost.medals}</div>
+			<%/if%>
+		<%else%>
+			<div style="padding-left:15px;">
+			    <em>{debatepost.poster}-{debatepost.ip}</em>
+				<%if {useradminid}>0 && {admininfo.allowviewip}==1%>
+					<a href="getip.aspx?pid={debatepost.pid}&topicid={topicid}" onclick="floatwin('open_getip', this.href, 400, 170, '600,0');doane(event);" title="查看IP"><img src="{imagedir}/ip.gif" alt="查看IP"/></a>
+				<%/if%>
+			</div>
+			<p><em>未注册</em></p>
+		<%/if%>
+		</td>
+		<td class="postcontent">
+			<div class="topictitle">
+				<h1>{debatepost.title}<span>开始时间 <em><%datetostr({debatepost.postdatetime}, "yyyy-MM-dd HH:mm")%></em> -- 结束时间 <em><%datetostr({debateexpand.terminaltime}, "yyyy-MM-dd HH:mm")%></em></span></h1>
+			</div>
+			<div class="pi">
+				<div class="postinfo">
+					{debatepost.poster}
+					<em>
+						发表于<%datetostr({debatepost.postdatetime},"yyyy-MM-dd HH:mm")%>
+					</em>
+				</div>
+			</div>
+			<div class="postmessage defaultpost">
+				<div class="t_msgfont">
+				    <%if {debatepost.id}==1%>
+					    <div id="firstpost">
+			                <div id="topictag"></div>
+				    <%/if%>
+						{debatepost.message}
+						<div class="debate_show">
+							<p>正方观点</p>
+							{debateexpand.positiveopinion}
+							<p>反方观点</p>
+							{debateexpand.negativeopinion}
+						</div>
+					<%if {debatepost.id}==1%>
+					</div>
+					<%/if%>
+				</div>
+			<%if {enabletag}%>				
+				<script type="text/javascript">
+					function forumhottag_callback(data)
+					{
+						tags = data;
+					}
+				</script>
+				<script type="text/javascript" src="cache/hottags_forum_cache_jsonp.txt"></script>
+					<%set (int){hastag} = Topics.GetMagicValue(topic.Magic, MagicType.TopicTag)%>
+					<%if {hastag}==1%>
+						<script type="text/javascript">getTopicTags({topic.tid});</script>
+					<%else%>
+						<script type="text/javascript">parsetag();</script>
+					<%/if%>
+			<%/if%>
+			</div>
+			<div class="useraction cl">
+		<%if {userid}!=-1%>
+			<a href="favorites.aspx?topicid={topicid}&infloat=1" onclick="ajaxmenu(event, this.id, 3000, 0)" id="ajax_favorite">收藏</a>
+			<%if {ismoder}==1%>
+				<%if {debatepost.posterid}!=-1%>
+				<a href="###" onclick="action_onchange('rate',$('moderate'),'{debatepost.pid}');" id="ratelink" >评分</a>
+				<%/if%>
+			<%else%>
+				<%if {usergroupinfo.raterange}!="" && {debatepost.posterid}!=-1%>
+				<a href="###" onclick="action_onchange('rate',$('moderate'),'{debatepost.pid}');" id="ratelink" >评分</a>
+				<%/if%>
+			<%/if%>
+		<%/if%>				
+			<a onclick="showWindow('mods', this.href);return false;" href="misc.aspx?action=emailfriend&tid={topicid}" id="share">分享</a>
+			<%if {config.disableshare}==1%>
+			<script type="text/javascript">
+			function openforward()
+			{
+			  share.floatwin('{config.sharelist}');
+			}
+			</script>
+			<a href="javascript:void(0)" onclick="openforward()" id="forward">转发</a>
+			<%/if%>
+		</td>
+		</tr>
+		<tr>
+		<td class="postauthor">&nbsp;</td>
+		<td class="postactions">
+			<div class="p_control">
+				<cite class="y">
+				<%if {ismoder}==1%>		
+					<%if {debatepost.posterid}!=-1%>
+						<%if {debatepost.ratetimes}>0%>
+						<a href="###" onclick="action_onchange('cancelrate',$('moderate'),'{debatepost.pid}');">撤销</a><span class="pipe">|</span>
+						<%/if%>
+					<%/if%>
+					<%if {debatepost.layer}==0 && {topic.Special}==4 %>
+						<%if {isenddebate}==true  && {userid}=={debatepost.posterid}%>
+						<a href="###" onClick="showMenu(this.id)" id="commentdebates" name="commentdebates">点评</a><span class="pipe">|</span>
+						<%/if%>
+					<%/if%>
+				<%/if%>
+				<%if {userid}!=-1%>
+                    <%set (ShowtopicPagePostInfo){post} = {debatepost}%>
+					<%template _report%><span class="pipe">|</span>
+				<%/if%>	
+					<a href="#" onclick="window.scrollTo(0,0)">TOP</a>
+				</cite>
+		<%if {ismoder}==1%>
+				<a href="editpost.aspx?topicid={topicid}&postid={debatepost.pid}" class="editpost">编辑</a>
+				<a href="delpost.aspx?topicid={topicid}&postid={debatepost.pid}" onclick="return confirm('确定要删除吗?');" class="delpost" >删除</a>			
+		<%else%>
+			<%if {debatepost.posterid}!=-1 && {userid}=={debatepost.posterid}%>
+				<%if {topic.closed}==0%>
+				<a href="editpost.aspx?topicid={topicid}&postid={debatepost.pid}" class="editpost">编辑</a>
+				<%/if%>
+				<a href="delpost.aspx?topicid={topicid}&postid={debatepost.pid}" onclick="return confirm('确定要删除吗?');" class="delpost" >删除</a>
+			<%/if%>
+		<%/if%>
+			</div>
+		</td>
+		</tr>
+		<tbody>
+		<tr>
+			<td class="postauthor"></td>
+			<td class="adcontent">
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+	</div>
+	<div id="commentdebates_menu" style="display: none; width:270px;" class="popupmenu_popup">
+		<form id="commentform" >
+			<table border="0" cellpadding="0" cellspacing="0">
+			  <tr>
+			 <td><textarea name="commentdebatesmsg" cols="43" rows="6" id="commentdebatesmsg"></textarea></td>
+			  </tr>                                                      
+			  <tr>
+				<td><input type="button" value="提交"  onclick="commentdebates({topic.tid},'firstpost')"/></td>
+			  </tr>
+			</table>
+		</form>
+	</div>
+	<div class="main">
+	<div id="ajaxdebateposts">
+		<h1>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({topic.tid},0)%>
+			 辩论详情 <a href="{forumpath}{aspxrewriteurl}<%if {config.Aspxrewrite}!=1%>&forumpage={pageid}<%/if%>" style="font-size:12px;text-decoration:underline;">普通模式</a>
+		</h1>
+		<div class="debatebox cl">
+			<div class="specialtitle">
+				<div class="squaretitle">
+					<p>正方观点</p>
+					{debateexpand.positiveopinion}
+				</div>
+				<div class="sidetitle right">
+					<p>反方观点</p>
+					{debateexpand.negativeopinion}
+				</div>
+			</div>
+			<div class="balance">
+				<span class="scalevalue1"><b id="positivediggs">{debateexpand.positivediggs}</b></span>
+				<span class="scalevalue"><b id="negativediggs">{debateexpand.negativediggs}</b></span>
+				<div id="positivepercent" class="squareboll" style="width:{positivepercent}%;"></div>
+			</div>
+			<div class="talkinner f_clear">
+				<div class="squarebox">
+				<%if {!isenddebate}%>
+					<div class="buttoncontrol"><button onclick="$('positivepostform').style.display='';this.style.display='none';">加入正方</button></div>
+					<div id="positivepostform" style="display: none;">
+						<form method="post" name="postform_{topicid}" id="postform_{topicid}" action="postreply.aspx?topicid={topicid}"	enctype="multipart/form-data" onsubmit="return fastvalidate(this);" >
+							<input type="hidden" id="title" name="title" size="84" tabindex="1" value="" />
+							<input type="hidden" id="postid" name="postid" value="-1" />
+							<input type="hidden" name="debateopinion" value="1" />
+							<input type="hidden" name="parseurloff" value="{parseurloff}" />
+							<input type="hidden" name="smileyoff" value="{smileyoff}" />
+							<input type="hidden" name="bbcodeoff" value="{bbcodeoff}" />
+							<input type="hidden" name="usesig" value="0" />
+							<table cellspacing="0" cellpadding="0" summary="正方观点">
+								<tr><td>我的意见：</td></tr>
+								<tr>
+									<td>
+										<textarea name="{config.antispampostmessage}" cols="50" rows="4" class="autosave txtarea" id="message" tabindex="2" onkeydown="debatequickreply(event, this.form);" onfocus="textareachange(this.form.id)";></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<%if {isseccode}%><div id="debate_vcode" name="debate_vcode"><span style="position: relative;">验证码:<%template _vcode%></span></div><%/if%>
+									<button type="submit" name="replysubmit">我要发表</button>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<%else%>
+					<div class="buttoncontrol"></div>
+					<%/if%>
+					<%if {positivepostlist.count}>0%>
+						<div id="positive_pagenumbers_top" class="debatepages">{positivepagenumbers}</div>
+						<div id="positivepage_owner">
+							<%loop (ShowtopicPagePostInfo) positivepost positivepostlist%>
+								<div class="square">
+									<table cellspacing="0" cellpadding="0" summary="正方观点">
+									<tbody>
+									<tr>
+									<td rowspan="2" class="supportbox">
+										<p>支持度
+										<span class="talknum" id="diggs{positivepost.pid}">{positivepost.diggs}</span>
+										<%if {!isenddebate}  && {positivepost.posterid}!={userid}%>
+										<%if {!positivepost.Digged}%>
+										<span class="cliktalk" id="cliktalk{positivepost.pid}"><a href="###" onclick="digg({positivepost.pid},{topic.tid},1)">支持</a></span>
+										<%/if%>
+										<%/if%>
+										</p>
+									</td>
+									<td class="comment">
+										<h3>
+										<span class="y" style="font-size:12px;">
+										<%if {ismoder}==1%>
+											<a href="editpost.aspx?topicid={topicid}&postid={positivepost.pid}&debate=1">编辑</a><cite class="pipe">|</cite>
+											<a href="delpost.aspx?topicid={topicid}&postid={positivepost.pid}&opinion=1" onclick="return confirm('确定要删除吗?');">删除</a>
+										<%else%>
+											<%if {positivepost.posterid}!=-1 && {userid}=={positivepost.posterid}%>
+											<a href="editpost.aspx?topicid={topicid}&postid={positivepost.pid}&debate=1">编辑</a><cite class="pipe">|</cite>
+											<a href="delpost.aspx?topicid={topicid}&postid={positivepost.pid}&opinion=1" onclick="return confirm('确定要删除吗?');">删除</a>
+											<%/if%>
+										<%/if%>
+										</span>
+										发表者:<a id="poster{positivepost.pid}" href="{UserInfoAspxRewrite(positivepost.posterid)}">{positivepost.poster}</a>
+										</h3>
+										<div class="debatemessage"  id="message{positivepost.pid}">
+										{positivepost.message}
+										</div>
+										<%if {!isenddebate}  && {positivepost.posterid}!={userid}%>
+										<input name="hiddendpid{positivepost.pid}" type="hidden" id="hiddendpid{positivepost.pid}" value="{positivepost.ubbmessage}" />
+										<p class="othertalk"><a id="reply_btn_{positivepost.pid}" href="###" onclick="showDebatReplyBox({topic.tid}, {positivepost.pid}, 2, {parseurloff}, {smileyoff}, {bbcodeoff}, {Processtime}, {olid}, '{config.antispampostmessage}');this.style.display='none';">我不同意</a><div id="reply_box_owner_{positivepost.pid}"></div>
+										</p>
+										<%/if%>
+									</td>
+									</tr>
+									<tr>
+									  	<td class="comment">时间:<%datetostr({positivepost.postdatetime},"yyyy-MM-dd HH:mm")%></td>
+									</tr>
+									</tbody>
+									</table>
+								</div>
+							<%/loop%>
+						</div>
+						<div id="positive_pagenumbers_buttom" class="debatepages">{positivepagenumbers}</div>
+						<%if {!isenddebate}%>
+						<div class="buttoncontrol"><button onclick="$('positivepostform2').style.display='';this.style.display='none';">加入正方</button></div>
+						<div id="positivepostform2" style="display:none;">
+						       <form method="post" name="postform_{topicid}" id="Form1" action="postreply.aspx?topicid={topicid}"	enctype="multipart/form-data" onsubmit="return fastvalidate(this);" >
+							    <input type="hidden" id="Hidden1" name="title" size="84" tabindex="1" value="" />
+							    <input type="hidden" id="Hidden2" name="postid" value="-1" />
+							    <input type="hidden" name="debateopinion" value="1" />
+							    <input type="hidden" name="parseurloff" value="{parseurloff}" />
+							    <input type="hidden" name="smileyoff" value="{smileyoff}" />
+							    <input type="hidden" name="bbcodeoff" value="{bbcodeoff}" />
+							    <input type="hidden" name="usesig" value="0" />
+							    <table cellspacing="0" cellpadding="0" summary="正方观点">
+								    <tr><td>我的意见：</td></tr>
+								    <tr>
+									    <td>
+										    <textarea name="{config.antispampostmessage}" cols="50" rows="4" class="autosave txtarea" id="Textarea1" tabindex="2" onkeydown="debatequickreply(event, this.form);" onfocus="textareachange(this.form.id)";></textarea>
+									    </td>
+								    </tr>
+								    <tr>
+									    <td>
+									    <%if {isseccode}%><div id="Div1" name="debate_vcode"><span style="position: relative;">验证码:<%template _vcode%></span></div><%/if%>
+									    <button type="submit" name="replysubmit">我要发表</button>
+									    </td>
+								    </tr>
+							    </table>
+						    </form>
+						</div>
+						<%/if%>
+					<%/if%>
+				</div>
+				<div class="oppositionbox right">
+				<%if {!isenddebate}%>
+					<div class="buttoncontrol"><button onclick="$('negativepostform').style.display='';this.style.display='none';">加入反方</button></div>
+					<div id="negativepostform" style="display: none;" >
+						<form method="post" name="postform_{topicid}" id="postform_{topicid}" action="postreply.aspx?topicid={topicid}"	enctype="multipart/form-data" onsubmit="return fastvalidate(this);" >
+							<input type="hidden" id="title" name="title" size="84" tabindex="1" value=""/>
+							<input type="hidden" id="postid" name="postid" value="-1" />
+							<input type="hidden" name="debateopinion" value="2" />
+							<input type="hidden" name="parseurloff" value="{parseurloff}" />
+							<input type="hidden" name="smileyoff" value="{smileyoff}" />
+							<input type="hidden" name="bbcodeoff" value="{bbcodeoff}" />
+							<input type="hidden" name="usesig" value="0" />
+							<table cellspacing="0" cellpadding="0" summary="反方观点">
+								<tr>
+									<td>我的意见：</td>
+								</tr>
+								<tr>
+									<td>
+										<textarea name="{config.antispampostmessage}" cols="50" rows="4" class="autosave txtarea" id="message" tabindex="2" onkeydown="debatequickreply(event, this.form);" onfocus="textareachange(this.form.id);"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<%if {isseccode}%><div id="debate_vcode" name="debate_vcode"><span style="position: relative;">验证码:<%template _vcode%></span></div><%/if%><button type="submit" name="replysubmit"/>我要发表</button>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<%else%>
+					<div class="buttoncontrol"></div>
+					<%/if%>
+					<%if {negativepostlist.count}>0%>
+						<div id="negative_pagenumbers_top" class="debatepages">{negativepagenumbers}</div>
+						<div id="negativepage_owner">
+							<%loop (ShowtopicPagePostInfo) negativepost negativepostlist%>
+								<div class="square cl">
+									<table cellspacing="0" cellpadding="0" summary="反方观点">
+									<tbody>
+									<tr>
+									<td rowspan="2" class="supportbox">
+											<p>支持度
+											<span class="talknum" id="diggs{negativepost.pid}">{negativepost.diggs}</span>
+											<%if {!isenddebate} && {negativepost.posterid}!={userid}%>
+											<%if {!negativepost.digged}%>
+											<span class="cliktalk" id="cliktalk{negativepost.pid}"><a href="###" onclick="digg({negativepost.pid},{topic.tid},2)">支持</a></span>
+										<%/if%>
+										<%/if%>
+										</p>
+									</td>
+									<td class="comment">
+										<h3>
+										<span class="y" style="font-size:12px;">
+											<%if {ismoder}==1%>
+												<a href="editpost.aspx?topicid={topicid}&postid={negativepost.pid}&debate=1">编辑</a><cite class="pipe">|</cite>
+												<a href="delpost.aspx?topicid={topicid}&postid={negativepost.pid}&opinion=2" onclick="return confirm('确定要删除吗?');">删除</a>
+											<%else%>
+												<%if {negativepost.posterid}!=-1 && {userid}=={negativepost.posterid}%>
+												<a href="editpost.aspx?topicid={topicid}&postid={negativepost.pid}&debate=1">编辑</a><cite class="pipe">|</cite>
+												<a href="delpost.aspx?topicid={topicid}&postid={negativepost.pid}&opinion=2" onclick="return confirm('确定要删除吗?');">删除</a>
+												<%/if%>
+											<%/if%>
+										</span>发表者:<a id="poster{negativepost.pid}" href="{UserInfoAspxRewrite(negativepost.posterid)}">{negativepost.poster}</a>
+										</h3>
+										<div class="debatemessage" id="message{negativepost.pid}">
+										{negativepost.message}										</div>
+										<%if {!isenddebate}  && {negativepost.posterid}!={userid}%>
+											<input name="hiddendpid{negativepost.pid}" type="hidden" id="hiddendpid{negativepost.pid}" value="{negativepost.ubbmessage}" />
+										<p class="othertalk"><a href="###" id="reply_btn_{negativepost.pid}" onclick="showDebatReplyBox({topic.tid}, {negativepost.pid}, 1, {parseurloff}, {smileyoff}, {bbcodeoff}, {Processtime}, {olid}, '{config.antispampostmessage}');this.style.display='none';">我不同意</a><div id="reply_box_owner_{negativepost.pid}"></div>
+										</p>
+										<%/if%>									</td>
+									</tr>
+									<tr>
+									  	<td class="comment">时间:<%datetostr({negativepost.postdatetime},"yyyy-MM-dd HH:mm")%></td>
+									</tr>
+									</tbody>
+									</table>
+								</div>
+							<%/loop%>
+						</div>
+						<div id="negative_pagenumbers_buttom" class="debatepages">{negativepagenumbers}</div>
+						<%if {!isenddebate}%>
+						<div class="buttoncontrol">
+						<button onclick="$('negativepostform2').style.display='';this.style.display='none';">加入反方</button></div>
+						<div id="negativepostform2" style="display:none;">
+						    <form method="post" name="postform_{topicid}" id="Form2" action="postreply.aspx?topicid={topicid}"	enctype="multipart/form-data" onsubmit="return fastvalidate(this);" >
+							<input type="hidden" id="Hidden3" name="title" size="84" tabindex="1" value=""/>
+							<input type="hidden" id="Hidden4" name="postid" value="-1" />
+							<input type="hidden" name="debateopinion" value="2" />
+							<input type="hidden" name="parseurloff" value="{parseurloff}" />
+							<input type="hidden" name="smileyoff" value="{smileyoff}" />
+							<input type="hidden" name="bbcodeoff" value="{bbcodeoff}" />
+							<input type="hidden" name="usesig" value="0" />
+							<table cellspacing="0" cellpadding="0" summary="反方观点">
+								<tr>
+									<td>我的意见：</td>
+								</tr>
+								<tr>
+									<td>
+										<textarea name="{config.antispampostmessage}" cols="50" rows="4" class="autosave txtarea" id="Textarea2" tabindex="2" onkeydown="debatequickreply(event, this.form);" onfocus="textareachange(this.form.id);"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<%if {isseccode}%><div id="Div2" name="debate_vcode"><span style="position: relative;">验证码:<%template _vcode%></span></div><%/if%><button type="submit" name="replysubmit"/>我要发表</button>
+									</td>
+								</tr>
+							</table>
+						</form>
+						</div>
+						<%/if%>
+					<%/if%>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+<%if {config.forumjump}==1%>
+	{navhomemenu}
+<%/if%>
+<%template _adlist%>
+<%template _copyright%>
+<%template _footer%>

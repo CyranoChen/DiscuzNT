@@ -1,0 +1,88 @@
+﻿<%inherits "Discuz.Space.Pages.usercpspacemanageattachment"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>管理附件</strong>
+	</div>
+</div>
+<script type="text/javascript">
+	function checkCheckBox(form,objtag)
+	{
+		for(var i = 0; i < form.elements.length; i++) 
+		{
+			var e = form.elements[i];
+			if(e.name == "aid") 
+			{
+				e.checked = objtag.checked;
+			}
+		}
+		objtag.checked = !objtag.checked;
+	}
+</script>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent datalist">
+		<h1>管理附件</h1>
+		<%template _spacemenu%>
+	<%if page_err==0%>
+		<%if ispost%>
+		<%template _usercpmsgbox%>
+		<%else%>
+		<form id="attachlist" name="attachlist" method="post" action="">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datatable">
+		<tbody>
+		  <%if attachmentcount>0%>
+			<tr class="colplural">
+				<th width="50%">附件名</th>
+				<th width="14%">大小(单位:KB)</th>
+				<th width="10%">下载次数</th>
+				<th width="20%">上传时间</th>
+				<th>&nbsp;</th>
+			</tr>
+			<%loop currentattachment attachmentlist%>
+			<tr>
+				<td class="datatitle">
+				<input name="aid" type="checkbox" id="aid{currentattachment[aid]}" value="{currentattachment[aid]}"/>
+				<span id="layer{currentattachment[aid]}" onmouseover="showMenu(this.id, 0, 0, 1, 0);"><a href="{currentattachment[filename]}">{currentattachment[attachment]}</a></span>
+				<%if {currentattachment[isimg]}=="True"%>
+				<div id="layer{currentattachment[aid]}_menu" style="position: absolute;display:none"><img src="{currentattachment[filename]}" onerror="this.onerror=null;this.src='';" width="100"/></div>
+				<%/if%>
+				</td>
+				<td>
+				<script language="javascript" type="text/javascript">
+				ShowFormatBytesStr({currentattachment[filesize]});
+				</script>
+				</td>
+				<td>{currentattachment[downloads]}</td>
+				<td>{currentattachment[postdatetime]}</td>
+				<td><a href="###" onclick="$('aid{currentattachment[aid]}').checked=true;$('attachlist').submit();">删除</a></td>
+			</tr>
+			<%/loop%>
+		   <%else%>
+			<div class="zerothreads">暂无附件</div>
+		   <%/if%>
+		</tbody>
+		</table>
+		</form>
+		<div class="cpbox s_clear">
+			<div class="pages_btns">
+			  <%if attachmentcount>0%>
+				<div class="pages">
+					{pagenumbers} <em>{pageid}/{pagecount}页</em> 
+				</div>
+				<a href="javascript:;"  onclick="checkCheckBox($('attachlist'),this)">全选</a>
+				<span class="pipe">|</span>
+				<a href="###" onclick="$('attachlist').submit()">删除</a>
+			  <%/if%>
+			</div>
+		</div>
+		<%/if%>
+	<%else%>
+		<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

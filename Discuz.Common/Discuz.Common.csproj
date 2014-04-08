@@ -1,0 +1,93 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Discuz.Common</RootNamespace>
+    <AssemblyName>Discuz.Common</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NVelocity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDLL\NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arithmetic.cs" />
+    <Compile Include="DiscuzParam.cs" />
+    <Compile Include="FTP.cs" />
+    <Compile Include="Generic\DiscuzDictionary.cs" />
+    <Compile Include="Generic\DiscuzLinkedList.cs" />
+    <Compile Include="Generic\DiscuzList.cs" />
+    <Compile Include="Generic\DiscuzQueue.cs" />
+    <Compile Include="Generic\DiscuzSortedList.cs" />
+    <Compile Include="Generic\DiscuzVisitor.cs" />
+    <Compile Include="Generic\IDiscuzGeneric.cs" />
+    <Compile Include="Generic\Singleton.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DNTException.cs" />
+    <Compile Include="DNTRequest.cs" />
+    <Compile Include="Encrypt.cs" />
+    <Compile Include="ManagedThreadPool.cs" />
+    <Compile Include="PageTemplate.cs" />
+    <Compile Include="SerializationHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SmiliesInfo.cs" />
+    <Compile Include="SysInfo.cs" />
+    <Compile Include="Thumbnail.cs" />
+    <Compile Include="TypeFinder\DefaultTypeFinder.cs" />
+    <Compile Include="TypeFinder\ITypeFinder.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\TypeConverter.cs" />
+    <Compile Include="Utils\PerfCounter.cs" />
+    <Compile Include="Utils\UnixDateTimeHelper.cs" />
+    <Compile Include="Utils\Validator.cs" />
+    <Compile Include="XmlWriter.cs" />
+    <Compile Include="Xml\InvalidXmlException.cs" />
+    <Compile Include="Xml\XmlDocumentExtender.cs" />
+    <Compile Include="Xml\XmlVisitor.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

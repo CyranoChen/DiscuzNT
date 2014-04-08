@@ -1,0 +1,128 @@
+﻿<%inherits "Discuz.Space.Pages.usercpspacepostblog"%>
+<%template _header%>
+<script type="text/javascript">
+var forumpath = "{forumpath}";
+</script>
+<script type="text/javascript" src="{jsdir}/simplyeditor.js" reload="1"></script>
+<div class="wrap cl pageinfo">
+	<div id="nav">
+		<%if {usergroupinfo.allowsearch}>0%>
+			<%template _quicksearch%>
+		<%/if%>
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>发表日志</strong>
+	</div>
+</div>
+<div class="wrap uc cl">
+	<%template _menu%>
+	<div class="uc_main">
+	<div class="uc_content">
+	<h1>发表日志</h1>
+	<%template _spacemenu%>
+<%if page_err==0%>
+	<%if ispost%>
+	<%template _usercpmsgbox%>
+	<%else%>
+	<form id="postform" name="postpm" method="post" action="">
+		<table cellspacing="0" cellpadding="0" class="tfm" summary="个人资料">
+		<tbody>
+			<tr>
+				<th>日志标题</th>
+				<td><input name="title" type="text" id="title" size="40" maxlength="60" class="txt"/></td>
+			</tr>
+			<tr>
+				<th>日志类别</th>
+				<td>
+					<%if categoryslist.Rows.Count!=0%>
+					<%loop rows categoryslist%>
+					<input type="checkbox" name="category" value="{rows[categoryid]}" >{rows[title]}&nbsp;
+					<%/loop%>
+					<a href="usercpspacecategoryadd.aspx">新建日志类别</a>
+					<%else%>
+					 暂无日志类别,
+					<a href="usercpspacecategoryadd.aspx">新建日志类别</a>
+					<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th>内容</th>
+				<td><!--<textarea name="DataTextarea" id="DataTextarea" cols="80" rows="20"></textarea>-->
+                <div id="blogtexteditor"></div>
+                </td>
+			</tr>
+			<tr>
+				<th>上传文件</th>
+				<td>
+					<iframe width="80%" height="30px" id="checkveriframe" framespacing="0px" frameborder="0px" allowTransparency="true" style="border-width: 0px; margin: 0px;" noResize src="space/manage/uploadfile.aspx" scrolling="no"></iframe>
+					<div id="postattachfile" style="border:0px;display:block;"></div>
+				</td>
+			</tr>
+			<%if {enabletag}%>
+			<tr>
+				<th>标签(Tags)</th>
+				<td>
+					<script type="text/javascript" src="javascript/ajax.js"></script>
+					<script type="text/javascript" src="javascript/post_editor.js"></script>
+					<input type="text" name="tags" id="tags" value="" size="55" class="txt" /><input type="button" onclick="relatekw($('title').value, dntEditor.GetText());" value="可用标签" />(用空格隔开多个标签，最多可填写 5 个)
+				</td>
+			</tr>
+			<%/if%>
+			<tr>
+				<th>发布类型</th>
+				<td><input type="radio" name="poststatus" value="1" checked="checked" />直接发布
+					<input type="radio" name="poststatus" value="0"/>放入草稿箱
+					<input type="radio" name="poststatus" value="2"/>私有
+				</td>
+			</tr>
+			<tr>
+				<th>评论类型</th>
+				<td>
+					<input type="radio" name="commentstatus" value="1"  <%if {spaceconfig.commentpref}==1%>checked="checked"<%/if%> ID="Radio4"/>不允许评论
+					<input type="radio" name="commentstatus" value="0"  <%if {spaceconfig.commentpref}==0%>checked="checked"<%/if%>ID="Radio5"/>允许匿名评论
+					<input name="commentstatus" type="radio" value="2"  <%if {spaceconfig.commentpref}==2%>checked="checked"<%/if%>ID="Radio6"/>仅允许注册用户评论
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><button type="submit" name="Submit" onclick="return checkBlog()" id="postsubmit" class="pn"><span>确定</span></button>[完成后可按Ctrl+Enter提交]</td>
+			</tr>
+		</tbody>
+		</table>
+	</form>
+	<script type="text/javascript" src="javascript/dnteditor.js"></script>
+	<script type="text/javascript" src="javascript/post.js"></script>
+	<script type="text/javascript">
+	    var titleEditor;
+	    if (titleEditor == null) {
+	        titleEditor = new SimplyEditor("blogtext", "blogtexteditor", "{cssdir}", "","600","10");
+	    }
+
+//	var dntEditor;
+//	function CreateEditor()
+//	{
+//		dntEditor = new DNTeditor('DataTextarea', '90%', '250', '');
+//		dntEditor.Style = "{forumpath}templates/{templatepath}/editor.css";
+//		dntEditor.BasePath = '{forumpath}';
+//		dntEditor.ReplaceTextarea();
+//	}
+//	function PrepareSave()
+//	{
+//		$('DataTextarea').value = dntEditor.GetHtml();
+//	}
+
+//	function validate(theform)
+//	{
+//	   PrepareSave();
+//	   return true;
+//	}
+//	CreateEditor();
+	</script>
+	<script type="text/javascript" src="javascript/template_spaceblog.js"></script>
+	<%/if%>
+	<%else%>
+	<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginmenu>
+	<menuitem title="个人空间管理">
+		<item>
+			<title>申请设置</title>
+			<link>space/space_spaceapplysetting.aspx</link>
+		</item>
+		<item>
+			<title>主题管理</title>
+			<link>space/space_spacethememanage.aspx</link>
+		</item>
+		<item>
+			<title>审核空间</title>
+			<link>space/space_spaceapplymanage.aspx</link>
+		</item>
+		<item>
+			<title>模块管理</title>
+			<link>space/space_moduledefmanage.aspx</link>
+		</item>
+		<item>
+			<title>模块分类管理</title>
+			<link>space/space_moduledefcategorymanage.aspx</link>
+		</item>
+		<item>
+			<title>其它信息设置</title>
+			<link>space/space_spacefooterinfo.aspx</link>
+		</item>
+		<item>
+			<title>管理空间</title>
+			<link>space/space_spacemanage.aspx</link>
+		</item>
+		<item>
+			<title>远程附件设置</title>
+			<link>global/global_ftpsetting.aspx?ftptype=SpaceAttach</link>
+		</item>
+	</menuitem>
+	<menuitem title="个人空间聚合">
+		<item>
+			<title>聚合首页推荐</title>
+			<link>space/aggregation_spaceaggset.aspx?pagename=website</link>
+		</item>
+		<item>
+			<title>空间首页推荐</title>
+			<link>space/aggregation_spaceaggset.aspx?pagename=spaceindex</link>
+		</item>
+		<item>
+			<title>聚合首页日志推荐</title>
+			<link>space/aggregation_postaggset.aspx?pagename=website</link>
+		</item>
+		<item>
+			<title>空间首页日志推荐</title>
+			<link>space/aggregation_postaggset.aspx?pagename=spaceindex</link>
+		</item>
+		<item>
+			<title>自动提取数据</title>
+			<link>space/aggregation_spaceindexaggset.aspx</link>
+		</item>
+		<item>
+			<title>轮显图片</title>
+			<link>aggregation/aggregation_rotatepic.aspx?pagename=spaceindex</link>
+		</item>
+	</menuitem>
+</pluginmenu>

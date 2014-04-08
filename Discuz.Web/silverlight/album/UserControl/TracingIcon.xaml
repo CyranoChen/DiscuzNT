@@ -1,0 +1,24 @@
+﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="LayoutRoot"
+        Loaded="Control_Loaded"
+        Width="20"
+        Height="20"
+        >
+	<Canvas.Resources>
+		<Storyboard x:Name="FadeIn">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.Opacity)">
+					<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+					<SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="1"/>
+					<SplineDoubleKeyFrame KeyTime="00:00:02.3000000" Value="0"/>
+				</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="FadeOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Canvas.Resources>
+	<Image Width="40" Height="40" Canvas.Left="0" Canvas.Top="0" x:Name="PlusImage" Source="Assets/Image/plus_icon.png" Stretch="Fill"/>
+	<Image Width="40" Height="40" Canvas.Left="0" Canvas.Top="0" x:Name="MinusImage" Source="Assets/Image/minus_icon.png" Stretch="Fill"/>
+</Canvas>

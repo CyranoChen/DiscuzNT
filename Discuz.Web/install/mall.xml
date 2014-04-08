@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginmenu>
+	<menuitem title="电子商务">
+		<item>
+			<title>诚信规则</title>
+			<link>mall/mall_creditrule.aspx</link>
+		</item>
+		<item>
+			<title>区域管理</title>
+			<link>mall/mall_locationsmanage.aspx</link>
+		</item>
+		<item>
+			<title>商品分类</title>
+			<link>mall/mall_goodscategoriesmanage.aspx</link>
+		</item>
+		<item>
+			<title>远程附件设置</title>
+			<link>global/global_ftpsetting.aspx?ftptype=MallAttach</link>
+		</item>
+		<item>
+			<title>商品交易订单</title>
+			<link>mall/mall_tradelog.aspx</link>
+		</item>
+		<item>
+			<title>商城设置</title>
+			<link>mall/mall_mallsetting.aspx</link>
+		</item>
+		<item>
+			<title>商品审核</title>
+			<link>mall/mall_goodsmanage.aspx?mod=audit</link>
+		</item>
+		<item>
+			<title>商品回收站</title>
+			<link>mall/mall_goodsmanage.aspx?mod=recycle</link>
+		</item>
+	</menuitem>
+</pluginmenu>

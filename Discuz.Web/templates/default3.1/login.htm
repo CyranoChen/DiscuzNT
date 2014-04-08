@@ -1,0 +1,147 @@
+﻿<%template _header%>
+<%if {infloat}!=1%>
+<div id="nav">
+	<div class="wrap s_clear"><a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; 用户登录</div>
+</div>
+<%/if%>
+<%if {ispost} && !{loginsubmit} %>
+     <%if {infloat}==1%>
+		<%if page_err==0%>
+			<script type="text/javascript">
+			$('form1').style.display='none';
+			$('returnmessage').className='';
+			</script>
+			<div class="msgbox">
+			<h1>{config.forumtitle}　提示信息</h1>
+			<p>{msgbox_text}</p>
+			<%if {msgbox_url}!=""%>
+			<h1><a href="javascript:;" onclick="location.reload()">如果长时间没有响应请点击此处</a></h1>
+			<script type="text/javascript">setTimeout('location.reload()', 3000);</script>
+			<%/if%>
+			</div>
+		<%else%>
+			<p>{msgbox_text}</p>
+		<%/if%>
+	  <%else%>
+			<%if page_err==0%>
+			<%template _msgbox%>
+			<%else%>
+			<%template _errmsgbox%>
+			<%/if%>	  
+	  <%/if%>
+<%else%>
+<%if {infloat}!=1%>
+<div class="wrap s_clear" id="wrap">
+<div class="main login">
+<div class="nojs">
+<div class="float" id="floatlayout_login" style="width: 600px; height: 360px;"><div>
+<h1>用户登录</h1>
+<form id="form1" name="form1" method="post" <%if {loginauth}!=""%>action="{rooturl}login.aspx?loginauth={loginauth}&referer={referer}"<%else%>action=""<%/if%>>
+	<%if {config.emaillogin}==1%><p><img src="images/common/dot.gif"/>&nbsp;&nbsp;您可以使用Email或用户名登录</p><%/if%>
+	<div class="loginform nolabelform">
+<%else%>
+<div class="float" id="floatlayout_login" style="width: 600px; height: 400px;">
+	<div style="width: 1800px">
+	<div class="floatbox floatbox1">
+	<h3 class="float_ctrl">
+		<span>
+			<a href="javascript:;" class="float_close" onclick="floatwin('close_login')" title="关闭">关闭</a>
+		</span>
+	</h3>
+	<div class="gateform">
+	<h3 id="returnmessage">用户登录</h3>
+	<form id="form1" name="form1" method="post" onsubmit="javascript:$('form1').action='{rooturl}login.aspx?infloat=1&';ajaxpost('form1', 'returnmessage', 'returnmessage', 'onerror');return false;" action="{rooturl}login.aspx?infloat=1&">
+	<%if {config.emaillogin}==1%><p><img src="images/common/dot.gif"/>&nbsp;&nbsp;您可以使用Email或用户名登录</p><%/if%>
+	<div class="loginform nolabelform">
+<%/if%>
+
+		<p class="selectinput loginpsw">
+			<label for="username" onclick="document.form1.username.focus();">用户名　：</label>
+			<input type="text" class="txt" tabindex="1" value="{postusername}" maxlength="20" size="25" autocomplete="off" name="username" id="username"/>
+		</p>
+	<%if {loginauth}==""%>
+		<p class="selectinput loginpsw">
+		<label for="password3">密　码　：</label>
+		<input type="password" tabindex="1" class="txt" size="36" name="password" id="password3"/>
+		</p>
+	<%/if%>	
+	<%if {isseccode}%>
+		<div style="position: relative;">
+			<%template _vcode%>
+		</div>
+	<%/if%>	
+	<%if {config.secques}==1%>		
+		<div class="selecttype">
+		  <script type="text/javascript">
+		  function changequestion()
+		  {
+			  if($('question').value > 0)
+			  {
+				$('answer').style.display='';
+			  } 
+			  else 
+			  {
+				$('answer').style.display='none';
+			  }
+		  }
+		  </script>
+			<select style="width: 175px; display: none;" selecti="5" id="question" name="question" change="changequestion();">
+				<option value="0"></option>
+			</select>
+			
+			<a tabindex="1" onclick="loadselect_viewmenu(this, 'question', 0, 'floatlayout_login');doane(event)" onkeyup="loadselect_key(this, event, 'question', 'floatlayout_login')" onmouseout="this.blur()"  onblur="loadselect_keyinit(event, 2)" onfocus="loadselect_keyinit(event, 1)" id="question_selectinput" class="loadselect" hidefocus="true" href="javascript:;">安全提问</a>
+			
+			
+			<ul style="display: none;" id="question_selectmenu" class="newselect" onblur="loadselect_keyinit(event, 2)" onfocus="loadselect_keyinit(event, 1)">
+			<li onclick="loadselect_liset('question', 0, 'question','0',this.innerHTML, 0)" k_value="0" k_id="question" class="">安全提问</li>
+			<li onclick="loadselect_liset('question', 0, 'question','1',this.innerHTML, 1)" k_value="1" k_id="question">母亲的名字</li>
+			<li onclick="loadselect_liset('question', 0, 'question','2',this.innerHTML, 2)" k_value="2" k_id="question">爷爷的名字</li>
+			<li onclick="loadselect_liset('question', 0, 'question','3',this.innerHTML, 3)" k_value="3" k_id="question">父亲出生的城市</li>
+			<li onclick="loadselect_liset('question', 0, 'question','4',this.innerHTML, 4)" k_value="4" k_id="question">您其中一位老师的名字</li>
+			<li onclick="loadselect_liset('question', 0, 'question','5',this.innerHTML, 5)" k_value="5" k_id="question" class="">您个人计算机的型号</li>
+			<li onclick="loadselect_liset('question', 0, 'question','6',this.innerHTML, 6)" k_value="6" k_id="question" class="current">您最喜欢的餐馆名称</li>
+			<li onclick="loadselect_liset('question', 0, 'question','7',this.innerHTML, 7)" k_value="7" k_id="question">驾驶执照的最后四位数字</li>
+			</ul>
+		</div>
+		
+		<p>
+			<input type="text" tabindex="1" class="txt" size="36" autocomplete="off" style="display: none;" id="answer" name="answer"/>
+		</p>
+	<%/if%>
+		<p class="logininput loginpsw"  style="display:none">
+			<label for="templateid">界面风格</label>
+			<select name="templateid" tabindex="13">
+			<option value="0">- 使用默认 -</option>
+				{templatelistboxoptions}
+			</select>
+		</p>
+	</div>
+	<div class="logininfo multinfo">
+		<h4>没有帐号？
+			<%if {infloat}==1%>
+			<a href="{rooturl}register.aspx"  onclick="floatwin('close_login');floatwin('open_register', this.href, 600, 400, '600,0');return false;">立即注册</a>
+			<%else%>
+			<a href="{rooturl}register.aspx" tabindex="-1" accesskey="r" title="立即注册 (ALT + R)">立即注册</a>
+			<%/if%>
+		</h4>
+		<p>忘记密码, <a href="{rooturl}getpassword.aspx"   onClick="floatwin('close_login');floatwin('open_getpassword', '{rooturl}getpassword.aspx', 600, 410);return false;" tabindex="-1" accesskey="g" title="忘记密码 (ALT + G)">找回密码</a></p>
+	</div>
+	<p class="fsubmit" style="margin-bottom:18px;">
+		<button name="login" type="submit" id="login" tabindex="1" <%if {infloat}!=1%>onclick="javascript:window.location.replace('?agree=yes')"<%/if%>>登录</button>
+		<input type="checkbox" value="43200" tabindex="1" id="expires" name="expires" checked/>
+		<label for="cookietime">记住我的登录状态</label>
+	</p>
+	<script type="text/javascript">
+		document.getElementById("username").focus();
+	</script>
+	</form>
+	</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

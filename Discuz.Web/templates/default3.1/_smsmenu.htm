@@ -1,0 +1,31 @@
+﻿<%if {userid}>0%>
+<div class="cm_header itemtitle s_clear">
+    <%if {pagename}!="usercppostpm.aspx"%>
+	    <a class="postpm" onclick="floatwin('open_postpm', this.href, 600, 410, '600,0');doane(event);" href="usercppostpm.aspx">+ 写新消息</a>
+	<%/if%>
+	<ul>
+		<li <%if pagename=="usercpinbox.aspx"%>class="current"<%/if%>><a href="usercpinbox.aspx"><span>收件箱</span></a></li>
+		<li <%if {pagename}=="usercpsentbox.aspx"%>class="current"<%/if%>><a href="usercpsentbox.aspx"><span>发件箱</span></a></li>
+		<li <%if {pagename}=="usercpdraftbox.aspx"%>class="current"<%/if%>><a href="usercpdraftbox.aspx"><span>草稿箱</span></a></li>
+		<li <%if {pagename}=="usercpannouncepm.aspx"%>class="current"<%/if%>><a href="usercpannouncepm.aspx"><span>公共消息<%if {announcepmcount}>0%>({announcepmcount})<%/if%></span></a></li>
+		<li <%if pagename=="usercpignorelist.aspx"%>class="current"<%/if%>><a href="usercpignorelist.aspx"><span>黑名单</span></a></li>
+		<li <%if pagename=="usercpnotice.aspx"%>class="current"<%/if%>><a id="notice" onMouseOver="showMenu(this.id);" onMouseOut="showMenu(this.id);" onclick="javascript:window.location.href=this.href;" href="usercpnotice.aspx"><span><cite class="drop">通知<%if {newnoticecount}>0%>({newnoticecount})<%/if%></cite></span></a></li>
+	</ul>
+</div>
+<%/if%>
+<ul class="popupmenu_popup headermenu_popup" id="notice_menu" style="display: none">
+<%if {config.enablespace}==1%>
+	<li><a href="usercpnotice.aspx?filter=spacecomment">{config.spacename}日志评论</a></li>               
+<%/if%>
+<%if {config.enablealbum}==1%>
+	<li><a href="usercpnotice.aspx?filter=albumcomment">{config.albumname}图片评论</a></li>		           
+<%/if%>
+<%if {config.enablemall}==1%>
+	<li><a href="usercpnotice.aspx?filter=goodstrade">商品交易</a></li>
+	<li><a href="usercpnotice.aspx?filter=goodsleaveword">商品留言</a></li>	  
+<%/if%>
+	<li><a href="usercpnotice.aspx?filter=postreply">主题回复</a></li>
+	<li><a href="usercpnotice.aspx?filter=all">全部通知</a></li>
+	<li><a href="usercpnotice.aspx?filter=application">应用通知</a></li>
+	<li><a href="usercpnotice.aspx?filter=topicadmin">管理通知</a></li>
+</ul>

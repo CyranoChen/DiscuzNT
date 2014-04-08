@@ -1,0 +1,181 @@
+﻿<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>积分兑换</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>积分兑换</h1>
+		<%template _scoremenu%>	
+<%if page_err==0%>
+		{jscreditsratearray}
+	<%if ispost%>
+		<%template _usercpmsgbox%>
+	<%else%>
+	  <%if {EPayments.IsOpenEPayments()}%>
+	    <script type="text/javascript" reload="1">
+	        function RedirectPayPage() {
+	            var paytype = $('paytype').value;
+	            var amount = $('paycredits').value;
+	            if (amount == '') {
+	                alert('您还没有填写需要充值的积分数量');
+	                return false;
+	            }
+	            if(isNaN(amount)){
+	                alert('请输入正确的数值');
+	                return false;
+	            }
+	            if (paytype == '') {
+	                alert('您还没有选择充值平台');
+	                return false;
+	            }
+	            if(amount<{config.Mincreditstobuy}){
+	                alert('您购买的积分数超过了系统要求的最低数量，无法购买');
+	                return false;
+	            }
+	            if({config.Maxcreditstobuy}>0&&amount>{config.Maxcreditstobuy}){
+	                alert('您购买的积分数超过了系统要求的最高数量，无法购买');
+	                return false;
+	            }
+	            if(amount%1!=0){
+	                alert('购买的积分数必须是整数');
+	                return false;
+	            }
+	            if(!is_ie){
+	                alert('由于您使用的浏览器为非IE浏览器，所以可能造成支付失败，请最好使用IE浏览器');
+	            }
+//	            amount=amount-(amount%1);
+	            window.location.href = "usercpcreditspay.aspx?redirect=" + paytype + "&amount=" + amount;
+	        }
+
+	        function ShowPayRMB() {
+	            var amount = $('paycredits').value;
+	            if(isNaN(amount)){
+	                $('rmbmsg').style.color = '#FF0000';
+	                $('rmbmsg').innerHTML = '请输入正确的数值';
+	                return false;
+	            }	                
+	            if(amount!=''){
+	                var result = amount/{config.Cashtocreditrate};
+	                if(amount%1!=0){
+	                    $('rmbmsg').style.color = '#FF0000';
+	                    $('rmbmsg').innerHTML = '购买的积分数必须是整数';
+	                }
+	                else if(amount<{config.Mincreditstobuy}){
+	                    $('rmbmsg').style.color = '#FF0000';
+	                    $('rmbmsg').innerHTML = '系统规定您至少应购买{config.Mincreditstobuy}个积分';
+	                }
+	                else if({config.Maxcreditstobuy}>0&&amount>{config.Maxcreditstobuy}){
+	                     $('rmbmsg').style.color = '#FF0000';
+	                     $('rmbmsg').innerHTML = '系统规定您至多可以购买{config.Maxcreditstobuy}个积分';
+	                }
+	                else{
+	                    $('rmbmsg').style.color = '#000000';
+	                    $('rmbmsg').innerHTML = '需要支付 ￥'+ Math.round((Math.floor(result*1000)/10))/100 + '元';
+	                }
+	            }
+	            else{
+	                $('rmbmsg').innerHTML = '';
+	            }
+	        }
+	    </script>
+	  <%/if%>
+		<form action="" method="post" id="postform">
+		<table cellspacing="0" cellpadding="0" class="formtable" summary="个人资料">
+			<tbody>
+			<tr>
+				<td colspan="2">
+					<div class="hintinfo">
+					    <p>积分交易税 {creditstax},兑换最低余额 {Scoresets.GetExchangeMinCredits()},转账最低余额 {Scoresets.GetTransferMinCredits()}</p>
+					</div>		
+				</td>
+			</tr>
+			<tr>
+				<th><label for="paychange">当前帐户</label></th>
+				<td>
+					<%if {score[1]}!=""%>
+					{score[1]}: <em>{user.extcredits1}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[2]}!=""%>
+					{score[2]}: <em>{user.extcredits2}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[3]}!=""%>
+					{score[3]}: <em>{user.extcredits3}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[4]}!=""%>
+					{score[4]}: <em>{user.extcredits4}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[5]}!=""%>
+					{score[5]}: <em>{user.extcredits5}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[6]}!=""%>
+					{score[6]}: <em>{user.extcredits6}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[7]}!=""%>
+					{score[7]}: <em>{user.extcredits7}</em>&nbsp;&nbsp;
+					<%/if%>
+					<%if {score[8]}!=""%>
+					{score[8]}: <em>{user.extcredits8}</em>&nbsp;&nbsp;
+					<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th>进行兑换操作</th>
+				<td>将数量<input name="paynum" type="text" id="paynum" value="100" size="10" class="txt"/>&nbsp;的&nbsp;
+					<select name="extcredits1" id="extcredits1" style="width:120px;">
+					<option value="0">请选择</option>
+					<%loop extcredits Scoresets.GetScorePaySet(0)%>
+					<option value="{extcredits[id]}">{extcredits[name]}</option>
+					<%/loop%>
+					</select>&nbsp;转换为&nbsp;<select name="extcredits2" id="extcredits2"  style="width:120px;">
+					<option value="">请选择</option>
+					<%loop extcredits2 Scoresets.GetScorePaySet(0)%>
+					<option value="{extcredits2[id]}">{extcredits2[name]}</option>
+					<%/loop%>
+					</select>
+					<a href="###" onclick="if($('postform').extcredits1.options[$('postform').extcredits1.selectedIndex].value != 0 && $('postform').extcredits2.options[$('postform').extcredits2.selectedIndex].value != 0){alert('接收者的所得为 '+$('postform').extcredits2.options[$('postform').extcredits2.selectedIndex].text + ':'+Math.round($('postform').paynum.value*(creditsrate[$('postform').extcredits1.options[$('postform').extcredits1.selectedIndex].value]/creditsrate[$('postform').extcredits2.options[$('postform').extcredits2.selectedIndex].value] *(1-{creditstax}))*100)/100)}else{alert('请完整填写和选择进行兑换的积分!')}" >计算</a>
+				</td>
+			</tr>
+			<tr>
+				<th>验证用户密码</th>
+				<td><input name="password" type="password" id="password" size="20" class="txt"/></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button type="submit" name="Submit" ID="Submit1" style=" width:80px;"/>确定</button>
+				</td>
+			</tr>
+			<%if {EPayments.IsOpenEPayments()}%>
+			<tr><td colspan="2"><hr class="solidline" /></td></tr>
+            <tr>
+				<th>积分充值</th>
+				<td>{creditstransname}&nbsp;<input name="paycredits" type="text" id="paycredits" size="3" class="txt" onkeyup="ShowPayRMB();"/> &nbsp;{creditstransunit}&nbsp;<span id="rmbmsg" style="color:#FF0000"></span></td>
+			</tr>
+			<tr>
+			    <th>选择支付平台</th>
+			    <td>
+			        <input id="paytype" type="hidden" value="alipay" />
+			        <input id="paytype1" name="paytype" value="alipay" type="radio" checked="checked" onclick="$('paytype').value=this.value;" style=" margin-top:-3px;"/><img src="{rooturl}images/epayment/alipay_logo.gif" style=" vertical-align:middle;" />
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="2">
+			        <button type="button" style="width:80px" onclick="RedirectPayPage();">点击充值</button>
+			    </td>
+			</tr>
+			<%/if%>
+			</tbody>
+			</table>
+			</form>
+	<%/if%>
+<%else%>
+	<%template _usercperrmsgbox%>
+<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,39 @@
+﻿<Canvas
+	xmlns="http://schemas.microsoft.com/client/2007"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Loaded="Control_Loaded"
+	x:Name="LayoutRoot" 
+	Width="99" Height="57">
+	<Canvas.Resources>
+		<Storyboard x:Name="FrameHide">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DimFrame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1.3"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DimFrame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1.8"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="FrameShow">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DimFrame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DimFrame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Canvas.Resources>
+	<Canvas Width="93" Height="51" x:Name="ThumCanvas" Canvas.Left="3" Canvas.Top="3" Clip="M0.5,0.5 L92.5,0.5 L92.5,50.5 L0.5,50.5 z">
+		<Image Width="93" Height="51" Source="" Stretch="UniformToFill" x:Name="ThumImg"/>
+    <Rectangle x:Name="DimRec" Fill="#FFFFFFFF" Width="93" Height="51" Opacity="0.3"/>
+		<Path Width="93" Height="51" Fill="#5CFFFFFF" Stretch="Fill" Data="F1 M1.6391277E-07,-4.61936E-07 L1.6391277E-07,31 73,31 73,-4.61936E-07 1.6391277E-07,-4.61936E-07 z M-10,-10.000001 L83,-10.000001 83,41 -10,41 -10,-10.000001 z" x:Name="DimFrame" RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleX="1.3" ScaleY="1.8"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+	</Canvas>
+</Canvas>

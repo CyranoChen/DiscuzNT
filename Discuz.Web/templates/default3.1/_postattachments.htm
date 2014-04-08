@@ -1,0 +1,261 @@
+﻿<%if {attachsize}>0%>
+	<%if {attachextensions}!=""%>
+<script type="text/javascript" src="{jsdir}/template_attach.js" reload="1"></script>
+		<div class="popupmenu_popup" id="imgpreview_menu" style="position:absolute;width:180px;height:150px;padding:0px;display: none;"></div>
+		<div class="post_tablelist postbox" id="attachlist" style="display: none">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tr>
+						<td class="attachnum"></td>
+						<td class="attachctrl"></td>
+						<td class="attachname">文件名</td>
+						<%if {userid}!=-1 && {usergroupinfo.Allowsetattachperm}==1%><td class="attachview">阅读权限</td><%/if%>
+						<%if {topicattachscorefield}>0 && usergroupinfo.Maxprice>0 %><td class="attachpr">{Scoresets.GetTopicAttachCreditsTransName()}</td><%/if%>
+						<%if {config.enablealbum}==1 && {caninsertalbum}%>
+						<td>选择相册</td>
+						<%/if%>
+						<td class="attachdel"></td>
+					</tr>
+				</table>
+				<%if {infloat}==0%>
+				<div id="uploadlist" class="upfilelist" style="height:auto">
+				<%else%>
+				<div id="uploadlist" class="upfilelist">
+				<%/if%>
+				<%if {action}=="edit"%>
+					<%template _post_attachlist%>
+				<%/if%>
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+					<tbody id="attachuploadedhidden" style="display:none"><tr>
+						<td class="attachnum"><span id="sl_localno[]"><img src="{rooturl}images/attachicons/common_new.gif" /></span></td>
+						<td class="attachctrl"><span id="sl_cpadd[]"></span></td>
+						<td class="attachname">
+							<span id="sl_deschidden[]" style="display:none">
+								<a href="javascript:;" onclick='parentNode.innerHTML="<input type=\"text\" name=\"attachdesc\" size=\"25\" class=\"txt\" />"'>描述</a>
+								<span id="attachfile[]"></span>
+								<input type="text" name="sl_attachdesc" style="display:none" />
+							</span>
+							<input type="hidden" name="attachid" />
+						</td>
+						<%if {userid}!=-1 && {usergroupinfo.Allowsetattachperm}==1%><td class="attachview"><input type="text" name="sl_readperm" value="0"size="1" class="txt" /></td><%/if%>
+						<%if {topicattachscorefield}>0 && usergroupinfo.Maxprice>0%><td class="attachpr"><input type="text" name="sl_attachprice" value="0" size="1" class="txt" /></td><%/if%>
+						<%if {config.enablealbum}==1 && {caninsertalbum}%>
+							<td  style="vertical-align:top;">
+								<select name="sl_albums" style="display:none">
+								<option value="0"></option>
+								<%loop album albumlist%>
+								<option value="{album[albumid]}">{album[title]}</option>
+								<%/loop%>
+								</select>
+							</td>
+						<%/if%>
+						<td class="attachdel"><span id="sl_cpdel[]"></span></td>
+					</tr></tbody>
+
+					<%/if%>
+					<tbody id="attachbodyhidden" style="display:none"><tr>
+						<td class="attachnum"><span id="localno[]"><img src="{rooturl}images/attachicons/common_new.gif" /></span></td>
+						<td class="attachctrl"><span id="cpadd[]"></span></td>
+						<td class="attachname">
+							<span id="deschidden[]" style="display:none">
+								<a href="javascript:;" onclick='parentNode.innerHTML="<input type=\"text\" name=\"attachdesc\" size=\"25\" class=\"txt\" />"'>描述</a>
+								<span id="localfile[]"></span>
+								<input type="text" name="attachdesc" style="display:none" />
+							</span>
+							<input type="hidden" name="localid" />
+						</td>
+						<%if {userid}!=-1 && {usergroupinfo.Allowsetattachperm}==1%><td class="attachview"><input type="text" name="readperm" value="0"size="1" class="txt" /></td><%/if%>
+								<%if {topicattachscorefield}>0 && usergroupinfo.Maxprice>0%><td class="attachpr"><input type="text" name="attachprice" value="0" size="1" class="txt" /></td><%/if%>
+
+						<%if {config.enablealbum}==1 && {caninsertalbum}%>
+							<td  style="vertical-align:top;">
+							<%if {albumlist.Rows.Count}!=0%>
+								<select name="albums"  style="display:none">
+								<option value="0"></option>
+								<%loop album albumlist%>
+								<option value="{album[albumid]}">{album[title]}</option>
+								<%/loop%>
+								</select>
+							<%/if%>
+							</td>
+						<%/if%>
+						<td class="attachdel"><span id="cpdel[]"></span></td>
+					</tr></tbody>
+				</table>
+				<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+				<div id="swfattachlist">
+					<table cellspacing="0" cellpadding="0" id="attachuploadednote" style="display:none;">
+						<tbody>
+							<tr>
+								<td class="attachnum"></td>
+								<td>您有 <span id="attachuploadednotenum"></span> 个已经上传的附件<span id="maxattachnote" style="display: none;">, 只能使用前<span id="num2upload2"><strong>{config.maxattachments}</strong></span>个</span>  
+								<a onclick="addAttachUploaded(attaches);" href="javascript:;">使用</a>   <a onclick="attachlist()" href="javascript:;">忽略</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<%/if%>
+				<table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="attachuploaded"></tbody><tbody id="attachbody"></tbody></table>
+			</div>
+		</div>
+<div id="img_hidden" alt="1" style="position:absolute;top:-100000px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image');width:{thumbwidth}px;height:{thumbheight}px"></div>
+</div>
+<script type="text/javascript" reload="1">
+var attaches = {Discuz.Forum.Attachments.GetNoUsedAttachmentJson(userid)};
+var aid = 1;
+var auid = 1;
+var thumbwidth = parseInt('{thumbwidth}');
+var thumbheight = parseInt('{thumbheight}');
+var attachexts = new Array();
+var attachwh = new Array();
+<%if {caninsertalbum}%>
+var caninsertalbum = true;
+<%else%>
+var caninsertalbum = false;
+<%/if%>
+var maxattachments = parseInt('{config.maxattachments}');
+var num2upload = maxattachments;
+var exts = '{attachextensionsnosize}';
+</script>
+<div id="attachinfo" class="sitenote upfile" style="display:none;">
+	<div class="cornerlayger">单个附件大小:<strong>{FormatBytes(usergroupinfo.Maxattachsize)}</strong>,&nbsp
+今天可上传大小: <strong>{FormatBytes(attachsize)}</strong>&nbsp;
+最大附件数: <strong>{config.maxattachments}</strong>,&nbsp;&nbsp;还可上传&nbsp;<span id="num2upload"><strong>{config.maxattachments}</strong></span>&nbsp;个附件&nbsp;
+附件类型: <strong>{attachextensionsnosize}</strong>&nbsp;
+售价: <strong>最高 {usergroupinfo.Maxprice} {Scoresets.GetTopicAttachCreditsTransName()}</strong>
+	</div>
+	<div class="minicorner"></div>
+</div>
+<div id="swfuploadbox" class="floatbox floatbox1 floatboxswf" style="display: none">
+	<h3 class="float_ctrl">
+		<em<%if {infloat}==0%> style="display:none"<%/if%>><button type="button" onclick="<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>$('MultiUploadFile').content.MultiFileUpload.GetAttachmentList();<%/if%>pagescrolls('swfreturn');return false">返回</button></em>
+		<%if {infloat}==0%><em>批量上传</em><%/if%>
+		<span id="swfclosebtn" style="display:none">
+			<a href="javascript:;" class="float_close" onclick="swfuploadwin();" title="关闭">关闭</a>
+		</span>
+	</h3>
+	
+	<%csharp%>
+        string authToken=Discuz.Common.DES.Encode(oluserinfo.Olid.ToString() + "," + oluserinfo.Username.ToString(), oluserinfo.Password.Substring(0, 10)).Replace("+", "[");
+    <%/csharp%> 
+    <%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+        <script type="text/javascript" src="{rooturl}silverlight/uploadfile/silverlight.js" reload="1"></script> 
+        <div id="swfbox" style="display: none"> 
+        <object  id="MultiUploadFile" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
+		  <param name="source" value="{rooturl}silverlight/UploadFile/ClientBin/MultiFileUpload.xap"/>
+		  <param name="onError" value="onSilverlightError" />
+		  <param name="onLoad" value="onLoad" />
+		  <param name="background" value="aliceblue" />
+		  <param name="minRuntimeVersion" value="4.0.50401.0" />
+		  <param name="autoUpgrade" value="true" />
+		  <param name="initParams" value="forumid={forumid},authToken={authToken},max={config.maxattachments}" />		  
+		  <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none" target="_blank">
+ 			  <img src="{rooturl}silverlight/uploadfile/uploadfile.jpg" alt="安装微软Silverlight控件,即刻使用批量上传附件" style="border-style:none"/>
+		  </a>
+	    </object></div>
+    <%/if%>
+	
+</div>
+<script type="text/javascript" src="{jsdir}/post_editor.js" reload="1" ></script>
+<script type="text/javascript" reload="1">
+function addAttach() {
+    if ($('attachbody').childNodes.length + ($('attachuploaded') ? $('attachuploaded').childNodes.length : 0) > maxattachments - 1){
+		countNum2Upload();
+		//num2upload++;
+		return;
+	}
+	var id = aid;
+	var tags, newnode, i;
+
+	newnode = $('attachbtnhidden').firstChild.cloneNode(true);
+	tags = newnode.getElementsByTagName('input');
+	for(i in tags) {
+		if(tags[i].name == 'postfile') {
+			tags[i].id = 'attachnew_' + id;
+			tags[i].onchange = function() 
+			{
+			insertAttach(id)
+			};
+			tags[i].unselectable = 'on';
+		}
+	}
+	$('attachbtn').appendChild(newnode);
+
+    newnode = $('attachbodyhidden').firstChild.cloneNode(true);
+	tags = newnode.getElementsByTagName('input');
+	for(i in tags) {
+		if(tags[i].name == 'localid') {
+			tags[i].value = id;
+		}
+	}
+	tags = newnode.getElementsByTagName('span');
+	for(i in tags) {
+		if(tags[i].id == 'localfile[]') {
+			tags[i].id = 'localfile_' + id;
+		} else if(tags[i].id == 'cpadd[]') {
+			tags[i].id = 'cpadd_' + id;
+		} else if(tags[i].id == 'cpdel[]') {
+			tags[i].id = 'cpdel_' + id;
+		} else if(tags[i].id == 'localno[]') {
+			tags[i].id = 'localno_' + id;
+		} else if(tags[i].id == 'deschidden[]') {
+			tags[i].id = 'deschidden_' + id;
+		}
+	}
+	aid++;
+	newnode.style.display = 'none';
+	$('attachbody').appendChild(newnode);
+	$('uploadlist').scrollTop = 10000;
+
+		if (caninsertalbum) {
+		tags = findtags(newnode, 'select');
+		for(i in tags) {
+			if(tags[i].name == 'albums') {
+				tags[i].id = 'albums' + id;
+				$('albums' + id).style.display='';
+			}
+		}
+	}
+
+	countNum2Upload();
+}
+function initAttach() {
+//_attachEvent(window, "load", function(){ 
+    try
+	{
+	//aid = 1;
+	addAttach();
+	}
+	catch(e)
+	{}
+	
+	<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+	if (attaches != null && attaches.length > 0) {
+		$("attachuploadednotenum").innerHTML = attaches.length;
+		$("attachuploadednote").style.display = "";
+		attachlist();
+	}	
+	<%/if%>
+    if (attaches.length > maxattachments) { 
+		$("maxattachnote").style.display="";
+	}	
+	//});
+}
+//addAttachUploaded(attaches);
+
+</script>
+	<%else%>
+		<div class="hintinfo">							
+				你没有上传附件的权限.
+		</div>
+	<%/if%>
+<%else%>
+	<div class="hintinfo">
+		<%if {usergroupinfo.Maxsizeperday}>0 && {usergroupinfo.Maxattachsize}>0%>
+			你目前可上传的附件大小为 0 字节.
+		<%else%>
+			你没有上传附件的权限.
+		<%/if%>
+	</div>
+<%/if%>

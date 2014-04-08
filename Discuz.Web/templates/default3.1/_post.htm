@@ -1,0 +1,277 @@
+﻿<%set (string){special} = DNTRequest.GetString("type").ToLower();%>
+<%if {special}=="" && {topic.special}>0%>
+    <%if {topic.special}==1 %><%set {special} = "poll"%><%/if%>
+    <%if {topic.special}==2 || {topic.special}==3%><%set {special} = "bonus"%><%/if%>
+    <%if {topic.special}==4%><%set {special} = "debate"%><%/if%>
+<%/if%>
+
+<%set (bool){adveditor} = ({special}!="" || {topic.special}>0)&&{isfirstpost}%>
+<%set (string){action} = pagename.Replace("post","").Replace(".aspx","").Replace("topic","newthread")%>
+<%set (string){actiontitle} = ""%>
+	<%if {pagename}=="posttopic.aspx"%>
+		<%if {special}=="bonus"%>
+			<%set {actiontitle} = "发布悬赏"%>
+		<%else if {special}=="poll"%>
+			<%set {actiontitle} = "发布投票"%>
+		<%else if {special}=="debate"%>
+			<%set {actiontitle} = "发布辩论"%>
+		<%else%>
+			<%set {actiontitle} = "发新主题"%>
+		<%/if%>
+	<%else if {pagename}=="postreply.aspx"%>
+			<%set {actiontitle} = "回复主题"%>
+	<%else if {pagename}=="editpost.aspx"%>
+			<%set {actiontitle} = "编辑帖子"%>
+	<%/if%>
+<%set (char){comma} = ','%>
+<%set (string){editorid} = "e"%>
+<%set (int){thumbwidth} = 400%>
+<%set (int){thumbheight} = 300%>
+<script type="text/javascript" reload="1">
+	function removeElement()
+	{
+	}
+</script>
+<%if {infloat}==1%>
+<div style="clear:both; width:2500px;overflow-x:hidden;">
+<%else%>
+<div style="clear:both;">
+<%/if%>
+<%if {infloat}==1%>
+<div class="floatbox floatbox1" id="extcreditbox1"></div>
+<%/if%>
+<%if {adveditor}==false%>
+<div class="floatbox floatbox1" id="editorbox">
+<%else%>
+<div class="floatbox floatbox1">
+<%/if%>
+	<h3 class="float_ctrl">
+		<em id="returnmessage">{actiontitle}</em><%if {needaudit}%><em class="needverify">需审核</em><%/if%>
+		<span>
+			<a href="javascript:;" id="creditlink"></a>
+			<%if {infloat}==1%>
+				<a href="javascript:;" class="float_newwindow" onclick="editorwindowopen(posturl)" title="新窗口">新窗口</a>
+				<%if  {special}==""%>
+					<a href="javascript:;" class="float_max" onclick="resizeEditorwin()" title="最大化" id="resizeEditorwin">最大化</a>
+				<%/if%>
+				<a href="javascript:;" class="float_close" onclick="closeEditorwin();removeElement()" title="关闭">关闭</a>
+			<%/if%>
+		</span>
+	</h3>
+	<div class="postbox" id="postbox">
+		<%if {action}=="reply"%>
+		<div class="float_postinfo s_clear" style="overflow:hidden">
+		<%else%>
+		<div class="float_postinfo s_clear">
+		<%/if%>
+			<input type="hidden" name="iconid" id="iconid" value="{topic.iconid}" />
+			<%if {special}=="" && {isfirstpost}%>
+				<em id="icon" class="dropmenu" onmouseover="InFloat='floatlayout_{action}';showMenu(this.id)"><img id="icon_img" src="{posticondir}/{topic.iconid}.gif" /></em>
+				<ul id="icon_menu" class="popupmenu_popup" style="display:none">
+				<%set (string){icons} = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"%>
+				<%loop (string) id icons.Split(comma)%>
+					<li><a href="javascript:;"><img onclick="switchicon({id}, this)" src="{posticondir}/{id}.gif" alt="" /></a></li>
+				<%/loop%>
+				</ul>
+			<%/if%>
+			<%if !{isfirstpost} && ({topic.special==4}||{special}=="debate")%>
+			<div class="float_typeid left">
+				<select id="debateopinion" name="debateopinion">
+					<option value="0">观点</option>
+					<option value="1">正方</option>
+					<option value="2">反方</option>
+				</select>
+			</div>
+			<script type="text/javascript">loadselect("debateopinion");</script>
+			<script type="text/javascript" reload="1">$('debateopinion').selectedIndex = parseInt(getQueryString("debate"));</script>
+			<%/if%>
+			<span><input name="{config.antispamposttitle}" type="text" id="title" value="{postinfo.title}" class="txt" title="标题最多为60个字符" /></span>
+			<%if {forum.applytopictype}==1 && {topictypeselectoptions}!=""&&{isfirstpost}%>
+			<div class="float_typeid left">
+				<select name="typeid" id="typeid">{topictypeselectoptions}</select>
+				<script type="text/javascript" reload="1">$('typeid').value = '{topic.typeid}';</script>
+			</div>
+			<%/if%>
+			<%if {action}=="reply" || {postinfo.layer}>0%>
+			<cite class="tips">(可选)</cite>
+			<%/if%>
+			<%if {canhtmltitle} && {infloat}==0%>
+			<a href="###" id="titleEditorButton" onclick="">高级编辑</a>
+			<script type="text/javascript" src="{jsdir}/dnteditor.js" reload="1"></script>
+			<div id="titleEditorDiv" style="display: none;">
+				<textarea name="htmltitle" id="htmltitle" cols="80" rows="10"></textarea>
+				<script type="text/javascript" reload="1" >
+				var forumpath = '{forumpath}';
+				var templatepath = '{templatepath}';
+				var temptitle = $('faketitle');
+				var titleEditor = null;
+				function AdvancedTitleEditor() {
+				$('title').style.display = 'none';
+				$('titleEditorDiv').style.display = '';
+				$('titleEditorButton').style.display = 'none';
+				titleEditor = new DNTeditor('htmltitle', '500', '50', '{htmltitle}' == '' ? $('title').value : '{htmltitle}');
+
+				titleEditor.OnChange = function() {
+				}
+				titleEditor.Basic = true;
+				titleEditor.IsAutoSave = false;
+				titleEditor.Style = forumpath + 'templates/' + templatepath + '/editor.css';
+				titleEditor.BasePath = forumpath;
+				titleEditor.ReplaceTextarea();
+				}
+				$('titleEditorButton').onclick = function() {
+				AdvancedTitleEditor();
+				};
+				</script>
+			</div>
+				<%if {htmltitle}!=""%>
+				<script type="text/javascript" reload="1">
+				AdvancedTitleEditor();
+				</script>
+				<%/if%>
+			<%/if%>
+		</div>
+
+		<%if {adveditor}%>
+		<!--  ###############  特殊主题  ############### -->
+		<div id="specialpost" class="s_clear"></div>
+		<script type="text/javascript" reload="1">
+			_attachEvent(window, "load", function(){ 
+			if($('specialposttable')) {
+				$('specialpost').innerHTML = $('specialposttable').innerHTML;
+				$('specialposttable').innerHTML = '';
+			}
+			});
+		</script>
+		</div>
+		</div>
+		<%if {infloat}==1%>
+		<div style="clear:both; width:2500px;overflow-x:hidden;">
+		<%else%>
+		<div style="clear:both;">
+		<%/if%>
+			<%if {infloat}==1%><div class="floatbox floatbox1" id="extcreditbox3"></div><%/if%>
+			<div class="floatbox floatbox1" id="editorbox">
+			<%if {infloat}==1%>
+				<h3 class="float_ctrl">
+					<em><button id="creditlink" type="button" onclick="pagescrolls('return');return false">返回</button></em>
+					<span>
+						<a href="javascript:;" onclick="pagescrolls('credit3')" title="积分说明">积分说明</a>
+						<a href="javascript:;" class="float_newwindow" onclick="editorwindowopen('$posturl')" title="新窗口">新窗口</a>
+						<a href="javascript:;" class="float_max" onclick="resizeEditorwin()" title="最大化" id="resizeEditorwin">最大化</a>
+						<a href="javascript:;" class="float_close" onclick="closeEditorwin();removeElement()" title="关闭">关闭</a>
+					</span>
+				</h3>
+
+			<%/if%>
+			<div class="postbox">
+		<%/if%>
+		<%template _editor%>
+		</div>
+		<%if {canpostattach}%>
+			<%template _postattachments%>
+		<%/if%>
+</div>
+<%if {infloat}==1%>
+<div style="clear:both; width:2500px;overflow-x:hidden;">
+<%else%>
+<div style="clear:both;">
+<%/if%>
+	<%if {infloat}==1%><div class="floatbox floatbox1" id="extcreditbox2"></div><%/if%>
+	<div class="floatbox floatbox1">
+		<%if {infloat}==0%>
+		<h3 class="float_ctrl" style="display:none">
+		<%else%>
+		<h3 class="float_ctrl">
+		<%/if%>
+			<em><button type="button" onclick="pagescrolls('editorreturn');return false">返回</button></em>
+			<span>
+				<%if {infloat}==1%>
+					<a href="javascript:;" class="float_close" onclick="closeEditorwin();removeElement()" title="关闭">关闭</a>
+				<%/if%>
+			</span>
+		</h3>
+		<div class="postbox">
+			<%if {pagename}=="posttopic.aspx" || ({pagename}=="editpost.aspx"&&{isfirstpost})%>
+				<%if {enabletag}%>
+					<div class="posttags">
+						<p><strong>标签(Tags):</strong>(用空格隔开多个标签，最多可填写 5 个)</p>
+						<p><input type="text" name="tags" id="tags" class="txt" value="{topictags}" tabindex="1" /><button name="addtags" type="button" onclick="relatekw();return false">+可用标签</button> <span id="tagselect"></span></p>
+					</div>
+				<%/if%>
+				<div class="columntype">
+					<%if {userid}!=-1 && {usergroupinfo.Allowsetreadperm}==1%>
+						<p><strong>阅读权限:</strong></p>
+						<p><input type="text" name="topicreadperm" value="{topic.readperm}" class="txt" tabindex="1" /> 0或空为不限制,最大值为 255</p>
+					<%/if%>
+					<%if {special}==""&&{Scoresets.GetCreditsTrans()}!=0 && {usergroupinfo.maxprice}>0%>
+						<p><strong>售价</strong>({userextcreditsinfo.name}):</p>
+						<p><input type="text" name="topicprice" value="{topic.price}" class="txt" tabindex="1" /> {userextcreditsinfo.unit} 最高 {usergroupinfo.maxprice} {userextcreditsinfo.unit}&nbsp;售价只允许非负整数, 单个主题最大收入 {Scoresets.GetMaxIncPerTopic()}
+                    {userextcreditsinfo.unit}</p>
+					<%/if%>
+				</div>
+			<%/if%>
+			<div class="columntype">
+				<h4>发帖选项:</h4>
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td class="firstlist">
+								<p><input type="checkbox" value="1" name="htmlon" id="htmlon"  onclick="alloweditorhtml()" <%if {usergroupinfo.allowhtml}!=1%>disabled<%/if%> <%if {htmlon}==1%>checked<%/if%> /><label for="htmlon">html 代码</label></p>
+							<p><input type="checkbox" id="allowimgcode" disabled<%if {allowimg}==1%> checked="checked"<%/if%> /><label for="allowimgcode">[img] 代码</label></p>
+						</td>
+						<td>
+							<p><input type="checkbox" value="1" name="parseurloff" id="parseurloff" <%if {parseurloff}==1%>checked<%/if%> /><label for="parseurloff">禁用 网址自动链接</label></p>
+							<p><input type="checkbox" value="1" name="smileyoff" id="smileyoff" <%if {smileyoff}==1%>checked<%/if%><%if {forum.allowsmilies}!=1%>disabled<%/if%> /><label for="smileyoff">禁用 表情</label></p>
+							<p><input type="checkbox" value="1" name="bbcodeoff" id="bbcodeoff" <%if {bbcodeoff}==1%> checked<%/if%>	<%if {usergroupinfo.allowcusbbcode}!=1%> disabled<%else if {forum.allowbbcode}!=1%> disabled<%/if%> /><label for="bbcodeoff">禁用 论坛代码</label></p>
+						</td>
+						<td>
+							<p><input type="checkbox" value="1" name="usesig" id="usesig" <%if {usesig}==1%>checked<%/if%> /><label for="usesig">使用个人签名</label></p>
+							<%if {pagename}=="postreply.aspx"%>
+							<p><input type="checkbox" name="emailnotify" id="emailnotify" <%if {config.replyemailstatus}==1%> checked<%/if%> /><label for="emailnotify">发送邮件告知楼主</label></p>
+							<p><input type="checkbox" name="postreplynotice" id="postreplynotice" <%if {config.replynotificationstatus}==1%> checked <%/if%>/><label for="emailnotify">发送论坛通知给楼主</label></p>
+							<%/if%>
+						</td>
+						<td></td>
+					</tr>
+				</table><br />
+			</div>
+			<div id="moreinfo"></div>
+			<div class="moreconf" id="moreconf">
+				<div class="custominfoarea" id="custominfoarea" style="display: none;"></div>
+				<%if {postinfo.layer}==0 && {forum.applytopictype}==1%>
+				<input type="hidden" id="postbytopictype" name="postbytopictype" value="{forum.postbytopictype}"
+					tabindex="3">
+				<%/if%>
+				<script type="text/javascript">
+				    function RunMutiUpload() {
+				        if ($('MultiUploadFile').content != null)
+				            $('MultiUploadFile').content.MultiFileUpload.GetAttachmentList();
+				    }
+				</script>
+				<button type="submit" id="postsubmit" <%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>onclick="RunMutiUpload()" <%/if%> value="true"<%if {pagename}=="posttopic.aspx"%> name="topicsubmit"<%else if {pagename}=="postreply.aspx"%> name="replysubmit"<%else if {pagename}=="editpost.aspx"%> name="editsubmit"<%/if%> tabindex="1">{actiontitle}</button>
+
+				<span id="more_1" style="display: none">
+				<%if {infloat}==1 && {special}!=""%>
+					<a href="javascript:;" onclick="pagescrolls('editor')">添加描述{actiontitle}</a>
+				<%/if%>
+				</span>
+				<span id="more_2">
+				<%if {canpostattach}%>
+					<span class="sim_upfile" onmouseover="$('attachinfo').style.display='';" onmouseout="$('attachinfo').style.display='none';">
+						<span id="attachbtnhidden" style="display:none"><span><input type="file" name="postfile" size="1" /></span></span>
+						<span id="attachbtn"></span>
+						<a href="javascript:;" onclick="return false;">添加附件</a>
+						<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+							<a href="javascript:;" onclick="swfuploadwin();">批量上传</a>
+						<%/if%>
+					</span>
+					<a href="javascript:;" onclick="attachlist()">附件列表</a>
+				<%/if%>
+				<%if {infloat}==1%><a href="javascript:;" id="morelink" onclick="pagescrolls('more')">更多设定</a><%/if%>
+				<%if {userinfo.Spaceid}>0 && {special}==""&&{action}=="newthread"&&{config.enablespace}==1%><input type="checkbox" name="addtoblog" /> 添加到个人空间<%/if%>
+				</span>
+				<%if {isseccode}%><span style="position:relative"><%template _vcode%></span><%/if%>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,173 @@
+﻿<%inherits "Discuz.Mall.Pages.usercpshopgoodsmanage"%>
+<%template _header%>
+<script type="text/javascript" src="javascript/template_usercpshopgoodsmanage.js"></script>
+<!--header end-->
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <strong>推荐商品列表</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+<!--主体-->
+<div class="controlpannel">
+<%template _menu%>
+	<div class="pannelcontent">
+		<div class="pcontent">
+		<!--panneldetail start-->
+			<div class="panneldetail">
+				<%template _shopmenu%>
+				<!--pannelbody start-->
+                <div class="pannelbody">
+					<div class="pannellist">
+					
+					<%if page_err==0%>
+						<%if ispost%>
+							<%template _msgbox%>
+						<%else%>
+						
+					<form id="goodslist" name="goodslist" method="post" action="usercpshopgoodsmanage.aspx?item={item}">
+						<input type="hidden" id="operation" name="operation" value="movecategory"/>
+					    <input type="hidden" id="removeshopgoodscategoryid" name="removeshopgoodscategoryid" value="0"/>
+					    <input type="hidden" id="removegoodsid" name="removegoodsid" value="0"/>
+					    <input type="hidden" id="shopgoodscategoryid" name="shopgoodscategoryid" value="{shopgoodscategoryid}"/>
+					    <input type="submit" id="shopcategorysubmit" name="shopcategorysubmit" style="display: none" />
+					    
+						   <%if {item}=="recommend"%>
+						     <div class="shopsearch"><strong>推荐商品列表</strong></div>
+						     <%if {recommendgoodslist.count}>0%>
+						        <input type="submit" id="shoprecommendsubmit" name="shoprecommendsubmit" style="display: none" />
+						        <input type="hidden" id="cancelrecommendgoodsid" name="cancelrecommendgoodsid" value="updatedisplayorder"/>
+						     <ul id="photo">
+						         <%loop (Goodsinfo) recommendgoodsinfo recommendgoodslist%>
+						         <li style="text-align:center; min-height:200px;">
+							        <div class="pictureimg">
+							             <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({recommendgoodsinfo.goodsid})%>
+								         <a href="{aspxrewriteurl}" target="_blank">
+											   <%if {recommendgoodsinfo.goodspic}==""%>
+												   <img width="80" height="80" src="templates/{templatepath}/images/NoPhoto.jpg" onerror="this.onerror=null;this.src='{recommendgoodsinfo.goodspic}';"  title="{recommendgoodsinfo.title}">
+											   <%else%>
+												   <img width="80" height="80" src="upload/{recommendgoodsinfo.goodspic}" onerror="this.onerror=null;this.src='{recommendgoodsinfo.goodspic}';"  title="{recommendgoodsinfo.title}">
+											   <%/if%>		
+                                         </a>
+							        </div>
+							        <h4><a href="{aspxrewriteurl}" target="_blank">{recommendgoodsinfo.title}</a> <a href="editgoods.aspx?goodsid={recommendgoodsinfo.goodsid}" target="_blank">[编辑]</a></h4>
+							        <p class="fontfamily">显示顺序:<input value="{recommendgoodsinfo.displayorder}" name="displayorder_{recommendgoodsinfo.goodsid}" size="1"/></p>
+							        <p><a href="#"  class="submitbutton" onclick="javascript:$('operation').value='cancelrecommend';$('cancelrecommendgoodsid').value={recommendgoodsinfo.goodsid};$('shoprecommendsubmit').click();">取消推荐</a>
+							        </p>
+						        </li>
+						        <%/loop%>
+						    </ul>
+						    <a href="#"  class="submitbutton" onclick="javascript:$('operation').value='updatedisplayorder';$('shoprecommendsubmit').click();">更新商品摆放顺序</a> <br />
+						     </div>
+                           <%else%>
+                               <div style="text-align:center; border: 1px solid rgb(221, 221, 221); padding: 10px; background: rgb(245, 245, 245) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-size: 14px; margin-top: 10px;">
+                                   暂无推荐商品!
+                               </div><BR />
+                           <%/if%>
+                         <%/if%>
+				   
+                       
+                        <div class="shopsearch"><strong>商品分类:
+                            <select id="jumpcategoryid" name="jumpcategoryid" onchange="javascript:window.location.href='usercpshopgoodsmanage.aspx?item=shopcategory&shopgoodscategoryid=' + this.value;">
+				              <option value="-1">全部商品</option>
+                                <%if {shopcategorydt_count}>0%>
+				                     {categoryoptions}
+				               <%/if%>
+				            </select></strong>
+                        </div>
+                        <script type="text/javascript">
+                            var cats = {shopcategorydata};
+                            selectcategory($('jumpcategoryid'), $('shopgoodscategoryid').value);
+                        </script>         
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th colspan="2" style="text-align: center;">商品名称</th>
+                                    <th>查看交易</th>
+                                    <%if {item}=="recommend"%><th>推荐</th><%/if%>
+                                    <%if {item}=="shopcategory"%><th>所属分类</th><%/if%>
+                                    <th>上架</th> 
+                                    <th>关闭</th> 
+                                    <th>最后交易</th>
+                                </tr>
+                            </thead>
+                            <!--NtGoodsList start-->
+                            <%loop (Goodsinfo) goodsinfo goodslist%>
+		                    <tbody>
+                                <tr class="messagetable" onmouseover="this.className='messagetableon'" onmouseout="this.className='messagetable'">
+                                    <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodsinfo.goodsid})%>
+                                    <td style="width: 30px;"><input name="goodsid" type="checkbox" id="goodsid_{goodsinfo.goodsid}" value="{goodsinfo.goodsid}" style="margin-top:8px;" <%if {item}=="recommend" && {goodsinfo.recommend}>0%>disabled="true"<%/if%>/></td>
+                                    <td style="width: 120px; padding:2px 0;"><a href="{aspxrewriteurl}" target="_blank">
+                                        <a href="{aspxrewriteurl}" target="_blank">
+                                        <%if {goodsinfo.goodspic}==""%>
+				                            <img width="50" height="50" src="templates/{templatepath}/images/NoPhoto.jpg" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+				                        <%else%>
+				                            <img width="50" height="50" src="upload/{goodsinfo.goodspic}" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+                                        <%/if%>		
+                                        </a>
+                                    </td>
+                                    <td style="text-align: left;"><a href="{aspxrewriteurl}" target="_blank">{goodsinfo.title}</a> <a href="editgoods.aspx?goodsid={goodsinfo.goodsid}" target="_blank">[编辑]</a></td>
+                                    <td><a href="usercpmygoods.aspx?item=selltrade&goodsid={goodsinfo.goodsid}" target="_blank">进入</td>
+                                    <%if {item}=="recommend"%>
+                                    <td><%if {goodsinfo.recommend}>0%><font color="red">已推荐</font><%else%>未推荐<%/if%></td>
+                                    <%/if%>
+                                    <%if {item}=="shopcategory"%>
+                                    <td ><script type="text/javascript">bindshopgoodscategory('{goodsinfo.shopcategorylist}',{goodsinfo.goodsid});</script></td>
+                                    <%/if%>
+                                    <td><%if {goodsinfo.displayorder}>=0%>已上架<%else%>未上架<%/if%></td>
+                                    <td><%if {goodsinfo.closed}==1%>未关闭<%else%>已关闭<%/if%></td>
+                                    <td><%if {goodsinfo.lastbuyer}!=""%><a href="redirect.php?tid=45&goto=lastpost#lastpost">{goodsinfo.lasttrade}</a><br/> by {goodsinfo.lastbuyer}<%else%>暂无交易<%/if%></td>
+                                </tr>
+                            </tbody>
+                            <!--NtGoodsList end-->                         
+                            <%/loop%>
+                        </table>   
+					
+					
+					    <div class="pannelmessage">
+							    <div class="pannelleft" style="width: 100%;">
+								    <a href="javascript:;"  onclick="checkgoodsbox($('goodslist'),this)" checked="true" class="selectall">全选</a>&nbsp;&nbsp;&nbsp;
+				                <%if {item}=="shopcategory"%>移动商品到分类: 
+				                      <%if {shopcategorydt_count}>0%>
+				                          <select id="selectcategoryid" name="selectcategoryid">
+				                              {categoryoptions}
+				                          </select>
+                                      <%/if%>                  	                  
+              	                   <a href="#"  class="selectall" onclick="javascript:$('operation').value='movecategory';$('shopcategorysubmit').click();">移动</a>
+              	                <%/if%>
+              	                <%if {item}=="recommend" && {recommendgoodslist.count}<5%>
+              	                   <a href="#"  class="selectall" onclick="javascript:$('operation').value='recommend';$('shopcategorysubmit').click();">推荐</a> 您最多可推荐的商品数: 5
+              	                <%/if%>
+							    </div>
+					    </div>
+					
+					</form>
+    					
+					<div class="pages_btns">
+						<div class="pages">
+							<em>{pageid}/{pagecount}页</em>{pagenumbers}
+							<kbd>跳转<input name="gopage" type="text" id="gopage" onKeyDown="if(event.keyCode==13) { window.location.href='usercpshopgoodsmanage.aspx?item={item}&shopcategoryid={shopgoodscategoryid}&page=' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1);}" size="4" maxlength="9"/>页</kbd>
+						</div>
+					</div>
+                           
+						<%/if%>
+					<%else%>
+					<%template _usercperrmsgbox%>
+					<%/if%>
+					 
+			        </div>
+			    </div>   
+			    <!--pannelbody end-->
+    	   </div>
+    	   <!--panneldetail end-->
+	   </div>
+   </div>
+</div>
+<!--主体-->
+<%template _copyright%>
+<%template _footer%>

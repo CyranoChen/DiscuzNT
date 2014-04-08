@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<about>
+<template name="默认模板"
+  author="Discuz!NT"
+  createdate = "2009-5-5"
+  ver="3.0"
+  fordntver="3.0"
+  copyright="Copyright 2009 Comsenz Inc." 
+  width="900" />
+</about>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Discuz!NT相册</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="text/javascript" src="Silverlight.js"></script>
+    <script type="text/javascript" src="index.html.js"></script>
+    <script type="text/javascript" src="../js/InstallCreateSilverlight.js"></script>
+    <script type="text/javascript" src="../js/InstallExperience.js"></script>
+
+    <style type="text/css">
+        .silverlightHost { width: 100%; height: 100%; }
+        #pageRoot
+        {
+        	width: 100%;
+        	height: 100%;
+        	margin: 0px 0px 0px 0px;
+        }
+    </style>
+    
+    <!-- Resize code -->
+    <script type="text/javascript">
+    window.onresize = function(){
+        var requestWidth = document.documentElement.clientWidth;
+        var requestHeight = document.documentElement.clientHeight;
+        if (requestWidth < 522)
+            requestWidth = 522;
+        if (requestHeight < 553)
+            requestHeight = 5553;
+        resizeAlbum(requestWidth, requestHeight);
+    }
+    
+    function resizeAlbum(pWidth, pHeight){
+        var myHost = document.getElementById("SilverlightControlHost");
+        myHost.style.width = pWidth + "px";
+        myHost.style.height = pHeight + "px";
+    }
+    </script>
+</head>
+
+<body id="pageRoot">
+    <div id="SilverlightControlHost" class="silverlightHost" >
+        <script type="text/javascript">
+            Silverlight.InstallAndCreateSilverlight('1.1', 
+			document.getElementById('SilverlightControlHost'), 
+			installExperienceHTML,
+			'InstallPromptDiv',
+			function(){createSilverlight();resizeAlbum(document.documentElement.clientWidth, document.documentElement.clientHeight);});
+        </script>
+    </div>
+	<script type="text/javascript" src="../js/InstallGuidance.js"></script>
+
+</body>
+</html>

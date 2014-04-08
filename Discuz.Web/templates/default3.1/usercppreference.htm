@@ -1,0 +1,80 @@
+﻿<%template _header%>
+<div class="wrap s_clear pageinfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>个性设置</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>个性设置</h1>
+		<%template _permenu%>
+		<%if {page_err}==0%>
+		<%if {ispost}%>
+			<%template _usercpmsgbox%>
+		<%else%>
+			<form action="" method="post" ID="Form1" enctype="multipart/form-data">
+			<input name="avatarchanged" type="hidden" value="0" id="avatarchanged" />
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个性设置">
+			<tbody>
+			<tr>
+				<th><label for="templateid">风格</label></th>
+				<td>
+					<select name="templateid" id="templateid" >
+						<option value="0" <%if {user.templateid}==0%>selected<%/if%>>默认</option>
+					<%loop template Templates.GetValidTemplateList()%>
+						<option value="{template[templateid]}" <%if {user.templateid}=={strtoint({template[templateid]})}%>selected<%/if%>>{template[name]}</option>
+					<%/loop%>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="tpp">每页主题数</label></td>
+				<td>
+					<input type="radio" value="0" name="tpp" <%if {user.tpp}==0%>checked="checked"<%/if%>/>默认
+					<input type="radio" value="15" name="tpp" <%if {user.tpp}==15%>checked="checked"<%/if%>/>15
+					<input type="radio" value="20" name="tpp" <%if {user.tpp}==20%>checked="checked"<%/if%>/>20
+					<input type="radio" value="25" name="tpp" <%if {user.tpp}==25%>checked="checked"<%/if%>/>25
+				</td>
+			</tr>
+			<tr>
+				<th><label for="ppp">每页帖子数</label></th>
+				<td>
+					<input type="radio" value="0" name="ppp" <%if {user.ppp}==0%>checked="checked"<%/if%>/>默认
+					<input type="radio" value="10" name="ppp" <%if {user.ppp}==10%>checked="checked"<%/if%>/>10
+					<input type="radio" value="15" name="ppp" <%if {user.ppp}==15%>checked="checked"<%/if%>/>15
+					<input type="radio" value="20" name="ppp" <%if {user.ppp}==20%>checked="checked"<%/if%>/>20
+				</td>
+			</tr>
+			<tr>
+				<th><label for="ppp">是否隐身</label></th>
+				<td>
+					<input type="radio" name="invisible" value="1" <%if {user.invisible}==1%>checked="checked"<%/if%>ID="Radio3"/>是
+					<input type="radio" name="invisible" value="0" <%if {user.invisible}==0%>checked="checked"<%/if%>ID="Radio4"/>否
+				</td>
+			</tr>
+			<tr>
+				<th><label for="receivesetting">短消息接收</label></th>
+				<td>
+				<input id="receiveuser" type="checkbox" name="receivesetting" value="2" <%if {receivepmsetting}==2 || {receivepmsetting}==3%>checked="checked"<%/if%><%if {receivepmsetting}==6 || {receivepmsetting}==7%>checked="checked"<%/if%>/>接收用户短消息
+				</td>
+			</tr>
+			<tr>
+				<th> </th>
+				<td>
+					<button id="sendmsg" type="submit" name="sendmsg">确定</button>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+			</form>
+		<%/if%>
+		<%else%>
+			<%template _usercperrmsgbox%>
+		<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

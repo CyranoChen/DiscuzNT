@@ -1,0 +1,83 @@
+<%inherits "Discuz.Album.Pages.showalbum"%>
+<%template _albumheader%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<%template _albumnavigation%>		
+		<a href="{config.albumurl}" class="title">{config.albumname}首页</a>  &raquo;
+		<%if {albumcategory}!=null%>
+		  <a href="{albumurl}showalbumlist.aspx?cate={albumcategory.albumcateid}">{albumcategory.title}</a>  &raquo;  <strong>{album.title}</strong>
+		<%/if%>
+	</div>
+</div>
+<%if page_err==0%>
+<div class="wrap">
+	<%if {!needpassword}%>
+	<div class="modulebox">
+		<cite>
+<!--		<%if {config.silverlight}==1%>
+			<a id="silverlightalbum" target="_blank" title="Silverlight相册展示" href="silverlight/album/index.html?albumid={album.albumid}"><img src="templates/{templatepath}/album/images/button_seeit.gif" alt="Silverlight相册展示" /></a>
+		<%/if%>-->
+		</cite>
+		<h2 style="line-height:36px;height:36px;">{album.title}<strong><script type="text/javascript">document.write(window.location);</script></strong>(<a href="###" onclick="setcopy(window.location.href.replace('###','') + '&page={currentpage}', '已经复制到剪贴板');" class="copylink">复制到剪帖板</a>)
+		</h2>
+		<div class="controlPhoto">
+			<p>
+				<%if {config.enablespace}==1%><a href="{spaceurl}space/?uid={album.userid}" target="_blank"><img src="templates/{templatepath}/album/images/dotspace.gif" />{album.username}的空间</a><%/if%>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({album.userid})%>
+				<a href="{forumurl}{aspxrewriteurl}"><img src="templates/{templatepath}/album/images/user_info.gif"  alt="用户信息:"/>{album.username}的用户资料</a>
+				<a href="{albumurl}showalbumlist.aspx?uid={album.userid}"><img src="templates/{templatepath}/album/images/user_album.gif" alt="用户相册"/>{album.username}的全部相册</a>
+			</p>
+			<p><%if {album.userid}=={userid}%>
+				<a href="{forumurl}usercpspacemanagephoto.aspx?albumid={album.albumid}" target="_blank"><img src="templates/{templatepath}/album/images/album_edit.gif" />管理</a>
+			<%/if%>					
+				<a href="{forumurl}favorites.aspx?albumid={album.albumid}"><img src="templates/{templatepath}/album/images/album_fav.gif" alt="收藏" title="收藏" />收藏</a>
+			</p>
+		</div>
+		<%if {photolist.Count}>0%>
+		<div class="photo">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<%set (int) {photoindex} = 1%>
+			<%loop (PhotoInfo) photo photolist%>
+				<%if {photoindex}==1%>
+				<tr>
+				<%/if%>
+					<td>
+					<p><a href="{albumurl}showphoto.aspx?photoid={photo.photoid}"><img src="{photo.filename}" alt="{photo.title}" title="{photo.title}" /></a></p>
+					<p>
+						<script language="javascript" type="text/javascript">
+							ShowFormatBytesStr({photo.filesize});
+						</script>
+					</p>
+					<h5><a href="{albumurl}showphoto.aspx?photoid={photo.photoid}">{photo.title}</a></h5>
+					</td>													
+				 <%if {photoindex}==4%>
+				</tr>
+					<%set {photoindex}=1%>
+				 <%else%>
+					<%set {photoindex}={photoindex}+1%>
+				 <%/if%>
+			<%/loop%>
+			</table>
+		</div>
+		    <%if {pageCount}>1%>
+	     	<div class="ntforumpage">{pagenumbers}</div>
+		    <%/if%>
+		<%else%>
+		<%template _photomsgbox%>
+		<%/if%>
+	</div>
+	<%else%>
+	<div class="modulebox">
+		<h2>此相册已被设置密码</h2>
+		<form id="enteralbum" name="enteralbum" method="post" action="">
+			<label for="password">请输入密码:</label><input name="albumpassword" type="password" id="albumpassword" size="20"/>
+			<p><input type="submit"  value="确定" class="lightbutton"/></p>
+		</form>
+	</div>
+	<%/if%>
+</div>
+<%else%>
+	<%template _photoerrmsgbox%>
+<%/if%>	
+<%template _copyright%>
+<%template _footer%>

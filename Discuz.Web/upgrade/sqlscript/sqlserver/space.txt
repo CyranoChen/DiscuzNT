@@ -1,0 +1,39 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_spaceposttags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_spaceposttags]
+;
+
+
+CREATE TABLE [dnt_spaceposttags] (
+	[tagid] [int] NOT NULL ,
+	[spacepostid] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_spaceposttags] WITH NOCHECK ADD 
+	CONSTRAINT [DF_dnt_spaceposttags_tagid] DEFAULT (0) FOR [tagid],
+	CONSTRAINT [DF_dnt_spaceposttags_spacepostid] DEFAULT (0) FOR [spacepostid]
+;
+
+
+IF NOT EXISTS(
+SELECT  *
+FROM    syscolumns
+WHERE   id = ( SELECT   id
+               FROM     sysobjects
+               WHERE    name = 'dnt_spacethemes'
+             )
+        AND name = 'themeid')
+        
+ALTER TABLE [dnt_spacethemes] ADD [themeid] [int] IDENTITY (1, 1) NOT NULL ;
+
+
+IF NOT EXISTS(
+SELECT  *
+FROM    syscolumns
+WHERE   id = ( SELECT   id
+               FROM     sysobjects
+               WHERE    name = 'dnt_spacemoduledefs'
+             )
+        AND name = 'moduledefid')
+        
+ALTER TABLE [dnt_spacemoduledefs] ADD [moduledefid] [int] IDENTITY (1, 1) NOT NULL ;

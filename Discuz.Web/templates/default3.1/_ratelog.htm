@@ -1,0 +1,17 @@
+<dl class="newrate s_clear">
+	<dt>
+		<strong><a title="本帖最近评分记录" href="#">{post.ratetimes}</a></strong>
+		<p>评分次数</p>
+	</dt>
+	<%if {Discuz.Config.GeneralConfigs.GetConfig().DisplayRateCount}>0%>
+	<dd id="ratedd_{post.pid}">
+		<ul class="s_clear" id="rate_{post.pid}"></ul>
+		<div class="floatwrap" id="ratetable_{post.pid}">
+        </div>
+        <%if {config.Ratelisttype}!=0%>
+        <p class="btn_rate"><a href="topicadmin.aspx?action=rate&forumid={forumid}&topicid={topic.tid}&postid={post.pid}&operat=rate" onclick="floatwin('open_mods', this.href, 360, 270);return false;">我要评分</a><a target="_blank" href="showratelist.aspx?pid={post.pid}" class="lightlink">查看所有评分</a></p>
+        <%/if%>
+		<script type="text/javascript">_attachEvent(window, "load", function(){ showrate({post.pid},{config.aspxrewrite},{post.ratetimes},{topic.tid},'{templatepath}',{config.Ratelisttype}); })</script>
+	</dd>
+	<%/if%>
+</dl>

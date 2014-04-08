@@ -1,0 +1,318 @@
+﻿<%inherits "Discuz.Mall.Pages.showgoods"%>
+<%template _header%>
+<script type="text/javascript">
+var templatepath = "{templatepath}";
+var postminchars = 1;
+var postmaxchars = 200;
+var disablepostctrl = parseInt({disablepostctrl});
+var forumpath = "{forumpath}";
+var useradminid = {useradminid};
+</script>
+<script type="text/javascript" src="javascript/ajax.js"></script>
+<script type="text/javascript" src="javascript/template_showgoods.js"></script>
+<%if page_err==0%>
+<%if {ispost} || {isdeleteop}%>
+    <%template _msgbox%>
+<%else%>
+
+<div id="foruminfo">
+	<div id="nav">
+		<a id="A1" href="forumindex.aspx" onmouseover="showMenu(this.id);" onmouseout="showMenu(this.id);">{config.forumtitle}</a>  &raquo; {goodscategoryinfo.pathlist}  &raquo; <strong>{goodsinfo.htmltitle}</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%if {usergroupinfo.allowsearch}>0%>
+				<%template _quicksearch%>
+			<%/if%>
+		</div>
+	</div>
+</div>	
+
+<%if {config.forumjump}==1%>
+	{navhomemenu}
+<%/if%>	
+<%template _newpmmsgbox%>
+
+<div class="mainbox viewthread">
+	<span class="headactions">
+		<%if {goodsinfo.selleruid}=={userid}%>
+			<a href="editgoods.aspx?goodsid={goodsinfo.goodsid}">编辑商品</a>
+	    <%/if%>	
+	    <%if {goodsinfo.selleruid}=={userid} || {ismoder}==1%>
+			<a onclick="return confirm('确定要删除吗?');" href="showgoods.aspx?deletegoods=1&goodsid={goodsinfo.goodsid}">删除商品</a>			
+		<%/if%>	
+		<a href="usercppostpm.aspx?msgtoid={goodsinfo.selleruid}" target="_blank">给我留言</a> <a href="favorites.aspx?goodsid={goodsinfo.goodsid}">收藏</a>
+	</span>
+	<h1>
+		{goodsinfo.htmltitle}
+	</h1>
+	<table cellspacing="0" cellpadding="0" summary="{goodsinfo.htmltitle}">
+		<tr>
+		<td class="postcontent">
+		<div class="imageviewer">
+			<ul>
+				<li>
+				 <%if {goodsinfo.goodspic}==""%>
+					<img id="goodspic" style="width:250px" src="templates/{templatepath}/images/mall/nogoods_big.gif" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+				 <%else%>
+					<span style="position: absolute; display: none;" onmouseover="showMenu(this.id, 0, 1)" id="attach_{goodsinfo.aid}"><img border="0" src="images/attachicons/attachimg.gif" /></span><img id="goodspic" style="width:250px" src="upload/{goodsinfo.goodspic}" onload="attachimg(this, 'load');" onmouseover="attachimginfo(this, 'attach_{goodsinfo.aid}', 1);attachimg(this, 'mouseover')" onclick="zoom(this);" onmouseout="attachimginfo(this, 'attach_{goodsinfo.aid}', 0, event)"  onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}"/>
+				 <%/if%>		
+				<li><a href="javascript:;" onclick="zoom($('goodspic'));"><img border="0" src="templates/{templatepath}/images/zoomin.gif" style="margin-bottom:-6px;margin-right: 4px" />点击放大图片</a></li>
+				<li><!--<img src="images/recommend_to_friend.gif" alt="推荐给好友">--><a href="favorites.aspx?goodsid={goodsinfo.goodsid}"><img src="templates/{templatepath}/images/add_to_watched_item.gif" alt="收藏这件宝贝"></li></a>
+			</ul>
+		</div>
+		<div class="itemsummary">
+			<ul id="priceinfo">
+			    <li ><span>原　　价:</span><del>{goodsinfo.costprice}</del>元</li>
+				<li class="currentprice" style="padding-bottom: 5px;"><span style="margin-top: 5px;">现　　价:</span><em>{goodsinfo.price}</em>元</li>
+				<li class="shippingcost"><span>运　　费:</span>
+					<%if {goodsinfo.transport}==0%>
+					    虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodsinfo.transport}==1%>
+					    卖家承担运费
+					<%/if%>
+					<%if {goodsinfo.transport}>1%>					    
+					    <%if {goodsinfo.ordinaryfee}>0%>
+	    				   平邮: {goodsinfo.ordinaryfee}元
+    				    <%/if%>
+    				    <%if {goodsinfo.emsfee}>0%>
+	    				   EMS:{goodsinfo.emsfee}元
+    				    <%/if%>
+    				    <%if {goodsinfo.expressfee}>0%>
+	    				   快递:{goodsinfo.expressfee}元
+    				    <%/if%>
+    				    
+    				    <%if {goodsinfo.ordinaryfee}<=0 && {goodsinfo.emsfee}<=0%>
+    				       <%if {goodsinfo.expressfee}<=0%>
+    				         无运费
+    				       <%/if%>
+    				    <%/if%>
+					<%/if%>		
+				
+				</li>
+				<%if {goodsinfo.transport}==3%>		    
+					<li class="shippingcost"><span>　　</span>买家收到货物后直接支付给物流公司 </li>
+				<%/if%>
+					
+			</ul>
+			<%if {goodsinfo.selleruid}!=-1 && {userid}!={goodsinfo.selleruid}%>
+				<%if {goodsinfo.closed}==0 && {goodsinfo.amount}>0%>  
+						<div class="buttonbuynow"><a href="buygoods.aspx?goodsid={goodsinfo.goodsid}" class="eventcode" title="点击此按钮，到下一步确认购买信息。">立刻购买</a></div>
+				<%/if%>
+			<%/if%>
+			<div id="otherinfobox">
+				<ul id="otherinfo">
+					<li class="timeleft"><span>剩余时间:</span> <label class="lefttime1" id="remaintime"></label></li>
+					<li class="totalsalenum"><span>累计售出:</span>{goodsinfo.totalitems}件 <!--(已有<a href="#" target="_blank" style=""> 4 </a>条评价)</li>-->
+					<li class="neworold"><span>宝贝类型:</span> <%if {goodsinfo.quality}==1%>全新<%else%>二手<%/if%> </li>
+					<%if {goodsinfo.locus}!=""%>
+					<li class="location"><span>所 在 地:</span> {goodsinfo.locus}</li>
+					<%/if%>
+					<li class="amount"><span>宝贝数量:</span> <%if {goodsinfo.amount}>0%>{goodsinfo.amount}<%else%>0<%/if%> 件</li>
+					<li class="viewtimes"><span>浏 览 量:</span><label>{goodsinfo.viewcount}</label> 次</li>
+				</ul>
+				<div class="havkbox"></div>
+			 </div>
+		</div>
+		</td>
+		<td class="postauthor">
+			<div class="authormessage">掌柜档案</div>
+			<div class="authorname">
+			    <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodsinfo.selleruid})%>
+				<a href="{aspxrewriteurl}" target="_blank">{goodsinfo.seller}</a>
+		    </div>
+		    
+			<dl>
+				<dt>卖家信用</dt><dd><span id="sellercreditnum"></span></dd>
+				<dt>买家信用</dt><dd><span id="buyercreditnum"></span></dd>
+				<dt>卖家好评率</dt><dd><span id="sellergoodrate"></span></dd>
+				<dt>买家好评率</dt><dd><span id="buyergoodrate"></span></dd>
+				<dt>注册时间</dt><dd>{joindate}</dd>
+			</dl>
+			<script type="text/javascript">
+			    getTime('{goodsinfo.expiration}','remaintime');
+                var creditrulesjsondata = {creditrulesjsondata};
+                var templatepath = '{templatepath}';
+                var usercredit_data = {sb_usercredit};
+                gettradecredit(usercredit_data[0].sixmonth + usercredit_data[0].sixmonthago, true, 'sellercreditnum',{goodsinfo.selleruid}); //卖家信用
+                gettradecredit(usercredit_data[3].sixmonth + usercredit_data[3].sixmonthago, false, 'buyercreditnum',{goodsinfo.selleruid}); //买家信用
+                loadratedata(0,3,'sellercredit','sellergoodrate');   
+                loadratedata(3,6,'buyercredit','buyergoodrate');   
+            </script> 
+            <%if {config.enablemall}==2%>
+			    <div class="moregoods"><a href="shop.aspx?userid={goodsinfo.shopid}"><img src="templates/{templatepath}/images/moregoods.gif" alt="查看更多商品"/></a></div>
+			<%/if%>
+		</td>
+		</tr>
+	</table>
+</div>
+<div class="mainbox othergoodsinfo">
+	<ul class="tabs">
+		 <li id="li_showdetail" class="current"><a onclick="showgoodsinfo('showdetail')" href="javascript:;">宝贝详情</a></li>
+		 <li id="li_othermessage"><a onclick="showgoodsinfo('othermessage')" href="javascript:;">其他信息</a></li>
+		 <li id="li_pricelist"><a onclick="showgoodsinfo('pricelist')" href="javascript:;">出价记录</a></li>
+		 <li id="li_messagebox"><a onclick="showgoodsinfo('messagebox')" href="javascript:;">留言簿</a></li>
+		 <li style="display: none;" id="ad_relatedtrade"/>
+	</ul>
+	<div id="showdetail">
+		<div class="postmessage">{message}</div>
+		<%if {config.enablemall}==2%>
+		<div class="othergoods">
+			<h4><img width="12" height="12" align="middle" alt="" src="templates/{templatepath}/images/rec_item_title_icon.gif"/>掌柜推荐的宝贝</h4>
+			<ul> 
+		    <%loop (Goodsinfo) recgoodsinfo recommendgoodslist%>
+			   <li>
+			   <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({recgoodsinfo.goodsid})%>
+			   <%if {recgoodsinfo.goodspic}==""%>
+				        <a target="_blank" href="{aspxrewriteurl}"><img style="width:80px" src="templates/{templatepath}/images/nogoods_small.jpg" onerror="this.onerror=null;this.src='{recgoodsinfo.goodspic}';"  title="{recgoodsinfo.title}"></a>
+			   <%else%>
+				        <a target="_blank" href="{aspxrewriteurl}"><img style="width:80px" src="upload/{recgoodsinfo.goodspic}" onerror="this.onerror=null;this.src='{recgoodsinfo.goodspic}';"  title="{recgoodsinfo.title}"></a>
+               <%/if%>
+			   <em>{recgoodsinfo.price} 元</em>
+			   <span><a target="_blank" href="{aspxrewriteurl}">{recgoodsinfo.htmltitle}</a></span>
+			   </li>
+		    <%/loop%>
+		   </ul>
+		   <div class="openshop">挑选更多宝贝>> <a target="_blank" href="shop.aspx?userid={goodsinfo.shopid}"><img align="absmiddle" alt="进入掌柜店铺" src="http://pics.taobao.com/bao/album/sys/auction/stroll_shop_icon2.gif"/></a></div>
+		</div>
+		<%/if%>
+	</div>
+	<div id="othermessage">
+		<h3 id="othermessage_h3">其他信息</h3>
+		<ul>
+			<li><span>开始:</span>{goodsinfo.dateline}</li>
+			<li><span>发票:</span><%if {goodsinfo.invoice}==1%>有<%else%>无<%/if%></li>
+			<li><span>结束:</span>{goodsinfo.expiration}</li>
+			<li><span>保修:</span><%if {goodsinfo.repair}==0%>无<%else%>{goodsinfo.repair} 天<%/if%></li>
+			<li><span>最后编辑时间:</span>{goodsinfo.lastupdate}</li>
+			<li><span>编号:</span>{goodsinfo.goodsid}</li>
+			<li><span>运费:</span>			
+			        <%if {goodsinfo.transport}==0%>
+					    虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodsinfo.transport}==1%>
+					    卖家承担运费
+					<%/if%>
+					<%if {goodsinfo.transport}>1%>		
+					       
+					    <%if {goodsinfo.ordinaryfee}>0%>
+	    				   平邮: {goodsinfo.ordinaryfee}元
+    				    <%/if%>
+    				    <%if {goodsinfo.emsfee}>0%>
+	    				   EMS:{goodsinfo.emsfee}元
+    				    <%/if%>
+    				    <%if {goodsinfo.expressfee}>0%>
+	    				   快递:{goodsinfo.expressfee}元
+    				    <%/if%>
+    				    
+    				    <%if {goodsinfo.ordinaryfee}<=0 && {goodsinfo.emsfee}<=0%>
+    				       <%if {goodsinfo.expressfee}<=0%>
+    				         无运费
+    				       <%/if%>
+    				    <%/if%>
+    				    
+    				    <%if {goodsinfo.transport}==3%>
+    				    (买家收到货物后直接支付给物流公司)
+				        <%/if%>			
+					<%/if%>		
+			</li>
+			<!--<li><span>付款方式:</span></li>-->
+		</ul>
+	</div>
+	<div id="pricelist">
+		<h3 id="pricelist_h3">出价记录</h3>
+		<div id="summaryinfo">
+            <ul>
+                <li class="price">价格: <em>{goodsinfo.price}</em>元</li>
+				<li class="timeleft">剩余时间: <label id="remaintime2">{goodsinfo.expiration}</label></li>
+                <%if {goodsinfo.selleruid}!=-1 && {userid}!={goodsinfo.selleruid}%>
+					<%if {goodsinfo.closed}==0 && {goodsinfo.amount}>0%>   
+                           <li class="btnbuynowsmall"><a href="buygoods.aspx?goodsid={goodsinfo.goodsid}"><img width="127" height="33" title="点击此按钮, 到下一步确认购买信息。" title="立刻购买" src="templates/{templatepath}/images/button_buynow.gif"/></a></li>
+                    <%/if%>
+                <%/if%>
+            </ul>
+		</div>
+		<div id="tradelog_html" class="salerlist"></div>
+		<div id="listpage" class="listpage"></div>
+		<script>
+		   getTime('{goodsinfo.expiration}','remaintime2');
+		   var page_recordcount = {tradecount};
+		   var page_pagesize = {pptradelog};
+		   var page_goodsid = {goodsid};
+		   var page_currentpage = 1;
+		   var path = 'templates/{templatepath}/';
+		   ajaxgettradelog(page_goodsid, page_pagesize, page_currentpage);
+		</script>
+	</div>
+	
+	<div id="messagebox">
+	    <h3 id="messagebox_h3">留言簿</h3>
+	    <div id="leavewordlist"></div>
+        <div id="leaveword_listpage" class="listpage"></div>
+		<script>
+		   var leaveword_page_recordcount = {leavewordcount};
+		   var leaveword_page_pagesize = 10;
+		   var leaveword_page_currentpage = {leaveword_page_currentpage};
+		   var userid = {userid};
+		   var isseller = '{isseller}'=='True'?true:false;
+		   ajaxgetleaveword(page_goodsid, leaveword_page_pagesize, leaveword_page_currentpage);
+		</script>
+	    <%template _postleaveword%>   
+	</div>	
+	<script language="javascript">showgoodsinfo('showdetail');</script>
+</div>
+
+<%if {config.Enablemall}==1%>
+<div id="footfilter" class="box">
+	<%if {config.forumjump}==1%>
+		<select onchange="if(this.options[this.selectedIndex].value != '') { jumpurl(this.options[this.selectedIndex].value,{config.aspxrewrite},'{config.extname}');}">
+				<option>论坛跳转...</option>
+				{forumlistboxoptions}
+		</select>
+	<%/if%>
+	<%if {config.visitedforums}>0%>
+		<select name="select2" onchange="if(this.options[this.selectedIndex].value != '') {jumpurl(this.options[this.selectedIndex].value,{config.aspxrewrite},'{config.extname}');}">
+			  <option>最近访问...</option>{visitedforumsoptions}
+		</select>
+	<%/if%>
+	<script type="text/javascript">
+	var categorydata = {goodscategoryfid};
+	
+	function jumpurl(fid, aspxrewrite, extname) {
+		for(var i in categorydata) {
+		   if(categorydata[i].fid == fid) {
+			   if(aspxrewrite) {
+				   window.location='showgoodslist-' +categorydata[i].categoryid + extname;
+			   }
+			   else {
+				   window.location='showgoodslist.aspx?categoryid=' +categorydata[i].categoryid;
+			   }
+			   return;
+		   } 
+		}
+		
+		if(aspxrewrite) {
+			window.location='showforum-' + fid + extname;
+		}
+		else {
+			window.location='showforum.aspx?forumid=' + fid ;
+		}
+	}
+	</script>
+</div>
+<%/if%>
+
+<%/if%>
+<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+	</div>
+<%/if%>
+</div>
+<%template _copyright%>
+<%template _adlist%>
+<%template _footer%>

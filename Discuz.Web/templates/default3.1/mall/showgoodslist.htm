@@ -1,0 +1,342 @@
+<%inherits "Discuz.Mall.Pages.showgoodslist"%>
+<%template _header%>
+<script type="text/javascript" src="javascript/ajax.js"></script>
+<%if {page_err}==0%>
+	<script type="text/javascript">
+	var templatepath = "{templatepath}";
+	var fid = parseInt({forum.fid});
+	var postminchars = parseInt({config.minpostsize});
+	var postmaxchars = parseInt({config.maxpostsize});
+	var disablepostctrl = parseInt({disablepostctrl});
+	</script>
+<%/if%>
+<script type="text/javascript" src="javascript/locations.js"></script>
+<script type="text/javascript" src="javascript/template_showgoodslist.js"></script>
+
+<div id="foruminfo">
+	<div id="headsearch">
+		<div id="search">
+			<%if {usergroupinfo.allowsearch}>0%>
+				<%template _quicksearch%>
+			<%/if%>
+		</div>
+		<%if {page_err}==0%>
+		<p>
+			<a href="showtopiclist.aspx?type=digest&amp;forums={forum.fid}">精华帖区</a>
+			<%if {forumallowrss}!=0%>		
+			<%set {aspxrewriteurl} = this.RssAspxRewrite({forum.fid})%>		
+				<a href="tools/{aspxrewriteurl}" target="_blank"><img src="templates/{templatepath}/images/rss.gif" alt="Rss"/></a>
+			<%/if%>
+		</p>
+		<%/if%>
+	</div>
+	<div id="nav">
+		<div class="userinfolist">
+		<%if {page_err}==0%>
+		<p><a id="forumlist" href="{config.forumurl}" 
+		<%if {config.forumjump}==1%>
+		onmouseover="showMenu(this.id);" onmouseout="showMenu(this.id);"
+		<%/if%>
+		>{config.forumtitle}</a>  &raquo; {goodscategoryinfo.pathlist}
+		</p>
+			
+			<p> 版主: 
+			<em>
+			<%if {forum.moderators}!=""%>
+				{forum.moderators}
+			<%else%>
+				*空缺中*
+			<%/if%>
+			</em>
+			</p>
+			<%/if%>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+<%if {config.forumjump}==1%>
+	{navhomemenu}
+<%/if%>
+<%if {page_err}==0%>
+<table cellspacing="1" cellpadding="0" class="portalbox" summary="HeadBox">
+<tbody>
+	<tr>
+	<td>
+		<h3>商品分类</h3>
+		<ul id="categories">
+		<script language="javascript">
+		{subcategoriesjson}
+		loadcategory({config.Aspxrewrite});
+		</script>
+		</ul>
+	</td>
+	</tr>
+</tbody> 
+</table>
+<%if {showforumlogin}==1%>
+<div class="mainbox formbox">
+	<h3>本版块已经被管理员设置了密码</h3>
+	<form id="forumlogin" name="forumlogin" method="post" action="">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tbody>
+			<tr>
+				<th>请输入密码:</th>
+				<td><input name="forumpassword" type="password" id="forumpassword" size="20"/></td>
+			</tr>
+			</tbody>
+		<%if {isseccode}%>	
+			<tbody>
+			<tr>
+				<th>输入验证码:</th>
+				<td>
+					<div style="position: relative;">
+					<%template _vcode%>
+					</div>
+		        </td>
+			</tr>
+			</tbody>
+		<%/if%>
+			<tbody>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+					<input type="submit"  value="确定" class="sbutton"/>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+	</div>
+</div>
+<%else%>
+	<%template _pagewordadlist%>
+	<%if {forum.rules}!=""%>
+		<table class="portalbox" cellspacing="1" cellpadding="0" summary="rules and recommend">
+		<tbody>
+			<tr>
+			<td id="rules">
+				<span class="headactions recommendrules"><img id="rules_img" title="收起/展开" onclick="$('rules_link').style.display = '';toggle_collapse('rules', 1);" alt="收起/展开" src="templates/{templatepath}/images/collapsed_no.gif" /></span> <h3>本版规则</h3>{forum.rules}
+			</td>
+			</tr>
+		</tbody>
+		</table>
+    <%/if%>
+	 <%template _newpmmsgbox%>
+	<%if {forum.layer}!=0%>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+			<kbd>跳转<input name="gopage" type="text" id="Text1" onKeyDown="if(event.keyCode==13) { if(parseInt('{config.aspxrewrite}')==1) {window.location='showgoodslist-{categoryid}-' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1) + '{config.extname}';}else{window.location='showgoodslist.aspx?categoryid={categoryid}&page=' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1)}}" size="4" maxlength="9"/>页</kbd>
+		</div>
+		<%if {canposttopic}%>
+			<span class="postbtn"><a href="postgoods.aspx?categoryid={categoryid}"><img src="templates/{templatepath}/images/postshop.gif" alt="发布商品" /></a></span>
+		<%/if%>
+	</div>
+	<form id="moderate" name="moderate" method="post" action="goodsadmin.aspx?action=moderate&categoryid={categoryid}">
+	<div class="mainbox threadlist shoplist">
+		<h3>
+			 <%set {aspxrewriteurl} = this.ShowGoodsListAspxRewrite({categoryid}, 1)%>
+			<a href="{aspxrewriteurl}">{goodscategoryinfo.categoryname}</a>
+			<em>(商品:{goodscount})</em>
+		</h3>
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed;">
+			<thead class="category">
+			<tr>
+				<td class="folder">&nbsp;</td>
+				<td style="width:100px;">&nbsp;</td>
+				<th>商品名称/卖家</th>
+				<td class="nums">数量</td>
+				<td class="nums">价格</td>
+				<td class="nums">运费</td>
+				<td class="nums">所在地</td>
+				<td class="author" style="text-align:center;">截至日期</td>
+			</tr>
+			</thead>
+			<!--announcement start-->
+			<%loop announcement announcementlist%>
+			<tbody>
+				<tr>
+					<td><img src="templates/{templatepath}/images/announcement.gif" alt="announcement" /></td>
+					<td>&nbsp;</td>
+					<th>
+						<a href="announcement.aspx#{announcement[id]}">{announcement[title]}</a>
+					</th>
+					<td colspan=3>
+							<%if {strtoint({announcement[posterid]})}==-1%>
+								游客
+							<%else%>
+							   <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({announcement[posterid]})%>
+								<a href="{aspxrewriteurl}">{announcement[poster]}</a>
+							<%/if%>
+					</td>
+					<td>-</td>
+				</tr>
+			</tbody>
+			<%/loop%>
+			<!--announcement end-->
+			<!--goodslist start-->
+			<%loop (Goodsinfo) goodsinfo goodslist%>
+			<tbody>
+				<tr>
+					<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodsinfo.goodsid})%>
+					<td><input type="checkbox" name="goodsid" value="{goodsinfo.goodsid}" /></td>
+					<td class="shoppicture">
+						<a href="{aspxrewriteurl}" target="_blank">
+						<%if {goodsinfo.goodspic}==""%>
+							<img width="80" height="80" src="templates/{templatepath}/images/mall/nogoods_small.gif" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+						 <%else%>
+							<img width="80" height="80" src="upload/{goodsinfo.goodspic}" onerror="this.onerror=null;this.src='{goodsinfo.goodspic}';"  title="{goodsinfo.title}">
+						 <%/if%>		
+						</a>
+					</td>		        
+					<th>
+						<p><a href="{aspxrewriteurl}" target="_blank">{goodsinfo.htmltitle}</a></p>
+						<p>卖家:
+						<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodsinfo.selleruid})%>
+							<a href="{aspxrewriteurl}" target="_blank">{goodsinfo.seller}</a></p>
+						<p><a class="buybutton" href="usercppostpm.aspx?msgtoid={goodsinfo.selleruid}" target="_blank">给我留言</a> <a class="buybutton" href="favorites.aspx?goodsid={goodsinfo.goodsid}">收藏</a></p>
+					</th>
+					<td class="nums">{goodsinfo.amount}</td>
+					<td class="nums"><p class="price">{goodsinfo.price}</p></td>
+					<td class="nums">{goodsinfo.ordinaryfee}</td>
+					<td class="nums">{goodsinfo.locus}&nbsp;</td>
+					<td>{goodsinfo.expiration}</td>
+				</tr>
+			</tbody>
+			<%/loop%>
+			<!--goodslist end-->
+		</table>
+		<%if {useradminid}>0 && {ismoder}%>
+		<div class="footoperation"><strong>批量管理选项</strong> &nbsp;
+			<input class="radio" name="operat" type="hidden" />
+			<input class="checkbox" name="chkall" onclick="checkall(this.form, 'goodsid')" type="checkbox" />全选
+			<button onclick="document.moderate.operat.value = 'delete';document.moderate.submit()"/>删除商品</button>
+			<button onclick="document.moderate.operat.value = 'highlight';document.moderate.submit()" />高亮显示</button>
+			<button onclick="document.moderate.operat.value = 'close';document.moderate.submit()" />关闭商品</button>
+			<button onclick="document.moderate.operat.value = 'movecategory';document.moderate.submit()" />移动商品</button>
+			
+		</div>
+		<%/if%>
+	</div>
+	</form>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+			<kbd>跳转<input name="gopage" type="text" id="Text1" onKeyDown="if(event.keyCode==13) { if(parseInt('{config.aspxrewrite}')==1) {window.location='showgoodslist-{categoryid}-' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1) + '{config.extname}';}else{window.location='showgoodslist.aspx?categoryid={categoryid}&page=' + (parseInt(this.value) > 0 ? parseInt(this.value) : 1)}}" size="4" maxlength="9"/>页</kbd>
+		</div>
+		<%if {canposttopic}%>
+			<span class="postbtn"><a href="postgoods.aspx?categoryid={categoryid}"><img src="templates/{templatepath}/images/postshop.gif" alt="发布商品" /></a></span>
+		<%/if%>
+	</div>
+	<div id="footfilter" class="box">
+		<form name="LookBySearch" method="post" action="showgoodslist.aspx?search=1&categoryid={categoryid}">
+		所在地点:<select class="input_gray" style="width: 130px;"  id="locus_1" name="locus_1"></select>
+			城市:<select class="input_gray" style="width: 90px;" id="locus_2" name="locus_2"></select>
+				 <script language="javascript">var locus = '{locus}'; initstate();</script>
+		排序方式:<select name="order" id="order">
+					<option value="1" <%if {order}==1%>selected <%/if%>>商品价格</option>
+					<option value="2" <%if {order}==2%>selected <%/if%>>截至日期</option>
+				</select>
+				<select name="direct" id="direct">
+				  <option value="0" <%if {direct}==0%>selected<%/if%>>按升序排列</option>
+				  <option value="1" <%if {direct}==1%>selected<%/if%>>按降序排列</option>
+				</select>
+				<button type="submit">提交</button>
+		</form>
+		<%if {config.forumjump}==1%>
+			<select onchange="if(this.options[this.selectedIndex].value != '') { jumpurl(this.options[this.selectedIndex].value,{config.aspxrewrite},'{config.extname}');}">
+					<option>论坛跳转...</option>
+					{forumlistboxoptions}
+			</select>
+		<%/if%>
+		<%if {config.visitedforums}>0%>
+			<select name="select2" onchange="if(this.options[this.selectedIndex].value != '') {jumpurl(this.options[this.selectedIndex].value,{config.aspxrewrite},'{config.extname}');}">
+				  <option>最近访问...</option>{visitedforumsoptions}
+			</select>
+		<%/if%>
+		<script type="text/javascript">
+		var categorydata = {goodscategoryfid};
+		
+		function jumpurl(fid, aspxrewrite, extname) {
+			for(var i in categorydata) {
+			   if(categorydata[i].fid == fid) {
+				   if(aspxrewrite) {
+					   window.location='showgoodslist-' +categorydata[i].categoryid + extname;
+				   }
+				   else {
+					   window.location='showgoodslist.aspx?categoryid=' +categorydata[i].categoryid;
+				   }
+				   return;
+			   } 
+			}
+			
+			if(aspxrewrite) {
+				window.location='showforum-' + fid + extname;
+			}
+			else {
+				window.location='showforum.aspx?forumid=' + fid ;
+			}
+		}
+		</script>
+	</div>
+<%/if%>
+<%if {config.whosonlinestatus}!=0 && {config.whosonlinestatus}!=1%>
+<div class="box" id="online">
+	<span class="headactions">
+		<%if {request[showonline]}=="no"%>
+			<a href="?showonline=yes#online"><img src="templates/{templatepath}/images/collapsed_yes.gif" alt="展开/收起" />
+		<%else%>
+			<a href="?showonline=no#online"><img src="templates/{templatepath}/images/collapsed_no.gif" alt="展开/收起" />
+		<%/if%>
+		</a>
+	</span>
+	<h4>
+		<strong>在线用户:{forumtotalonline}人</strong>
+	</h4>
+	<dl id="onlinelist">
+		<dt>{onlineiconlist}</dt>
+		<dd>
+		<ul id="online">
+			<%if {showforumonline}%>
+					<%loop (OnlineUserInfo) onlineuser onlineuserlist%>
+						<%if {onlineuser.invisible}==1%>
+							<li>(隐身会员)</li>
+						<%else%>
+							<li>{onlineuser.olimg}
+								<%if {onlineuser.userid}==-1%>
+									{onlineuser.username}
+								<%else%>
+								   <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({onlineuser.userid})%>
+									<a href="{aspxrewriteurl}" target="_blank">{onlineuser.username}</a>
+								<%/if%>
+							</li>
+						<%/if%>
+					<%/loop%>
+			<%else%>
+				<li style="width: auto"><a href="?showonline=yes#online">点击查看在线列表</a></li>
+			<%/if%>
+		</ul>
+		</dd>
+	</dl>
+</div>
+<%/if%>
+		</div>
+	<%/if%>
+<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+	</div>
+<%/if%>
+<%template _copyright%>
+<%template _adlist%>
+{mediaad}
+<%template _footer%>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="自定义面板"  directory_title="自定义面板" description="自定义面板" category="工具" author="Discuz!NT" author_email="jiayanzhao@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality" controller="Discuz.Space.Modules.CustomizePanel, Discuz.Space.Modules">
+        <Require feature="dynamic-height" />
+        <Require feature="setprefs" />
+    </ModulePrefs>
+    <Content type="html">	
+    </Content>
+</Module>

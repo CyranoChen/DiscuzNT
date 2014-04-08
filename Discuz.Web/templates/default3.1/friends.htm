@@ -1,0 +1,290 @@
+﻿<%template _header%>
+<%if {infloat}==1%>
+<!--弹窗start-->
+    <%if ispost%>
+	  <%if page_err==0%>
+		<script type="text/javascript">
+		    $('returnmessage').className = '';
+		    setTimeout('floatwin(\'close_friendrequest{touid}\')', 2000);
+		</script>		
+	  <%/if%>
+	  <p>{msgbox_text}</p>
+	<%else%>
+	<h3 class="float_ctrl">
+		<em id="returnmessage">发送好友请求</em>
+		<span><a href="javascript:;" class="float_close" onclick="floatwin('close_friendrequest{touid}')" title="关闭">关闭</a></span>
+	</h3>
+	<div id="floatwinfriendrequest" style=" text-align:left; margin:20px">
+	<form id="friendrequest" method="post" onsubmit="javascript:$('friendrequest').action='friends.aspx?action=createfriendrequest&touid={touid}&infloat=1';ajaxpost('friendrequest', 'returnmessage', 'returnmessage', 'onerror');return false;" action="">
+        <ul>
+           <li style="padding-bottom:8px">附言:<br /><textarea id="floatwinrequestnote" name="requestnote" type="text" style="width:250px;margin-right:10px;height:80px;" class="txt"></textarea><br/>(附言可以让对方知道你的请求用意)</li>
+           <li><button name="requestsend" type="submit" id="floatwinrequestsend">发送好友请求</button></li>
+        </ul>
+	</form>
+	</div>
+	<%/if%>
+	<!--弹窗over-->
+<%else%>
+    <script type="text/javascript" src="{config.jqueryurl}"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+    </script>
+    <div id="nav">
+	    <div class="wrap s_clear">
+		    <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>好友</strong>
+	    </div>
+    </div>
+    <div class="wrap with_side s_clear" id="wrap">
+	    <%template _menu%>
+	    <div class="cpmain">
+	    <div class="cpcontent">
+		    <h1>好友</h1>
+		    <%template _friendspermenu%>
+		    <%if page_err==0%>
+		    <%if ispost%>
+			    <%template _usercpmsgbox%>
+		    <%else%>
+		    <script type="text/javascript">
+		        var friendgroups = eval("({friendshipgroupsjson})");
+
+		        function UpdateGroupName(fuid, gid) {
+		            if (friendgroups != null) {
+		                for (var i = 0; i < friendgroups.length; i++) {
+		                    if (gid == friendgroups[i].gid) {
+		                        $('friendgroup' + fuid).innerHTML = friendgroups[i].gname;
+		                        break;
+		                    }
+		                }
+		            }
+		        }
+		    </script>
+		    <script src="{jsdir}/template_friends.js" type="text/javascript"></script>
+		        <%if {action}=="requestlist"%>
+		            <form id="requestlist" name="requestlist" method="post" action="?action=ignorerequest">
+		            <%if {friendshipcount}>={maxfriendshipcount}%>
+		            <div class="hintinfo">Tip:您的好友数量已达到上限，无法继续添加好友。您可以删除好友列表里面您不认识或者已经不联系的用户，再继续添加新的好友</div>
+		            <%/if%>
+		            <table cellspacing="0" cellpadding="0"  width="100%" class="pm_list fm_list" summary="好友请求列表">
+			            <tbody>
+			            <%loop (FriendshipRequestInfo) requestinfo friendshiprequestlist%>
+			            <tr id="requestinfo{requestinfo.FromUid}" onmouseover="SetFriendshipRequestTableStyle({requestinfo.FromUid},'on')" onmouseout="SetFriendshipRequestTableStyle({requestinfo.FromUid},'out')">
+			                <td class="msg_icon"><img src="{imagedir}/friend.gif" /></td>
+						    <td class="checkbox_toggle"><input name="rqitemid" id="rqid{requestinfo.FromUid}" type="checkbox" value="{requestinfo.FromUid}" style="margin-top:2px;"/></td>
+				            <td class="profile_pic">
+				            <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({requestinfo.FromUid})%>
+				            <a class="avatar" target="_blank" href="{forumpath}{aspxrewriteurl}">
+				            <%set (string){avatarurl}=Avatars.GetAvatarUrl(requestinfo.FromUid,AvatarSize.Small) %>
+				            <img width="48" onerror="this.onerror=null;this.src='{imagedir}/noavatar_small.gif'" src="{avatarurl}"/>
+				            </a>
+				            </td>
+				            <td class="pmsubject">
+							    <div class="subject_wrap">
+								    <p><a href="{aspxrewriteurl}" target="_blank" style="padding-right:10px">{requestinfo.FromUserName}</a>向您发送了好友请求<cite style=" margin-left:10px;">({ForumUtils.ConvertDateTime(requestinfo.DateTime)})</cite></p>
+								    <div class="snippet_wrap grayfont"  onmouseover="showMenu(this.id);" id="msg{requestinfo.FromUid}">
+									    <%getsubstring(Utils.RemoveHtml({requestinfo.Note}),40,"...")%>
+								    </div>
+								    <%if {requestinfo.Note.Length}>40%>
+								    <div class="popupmenu_popup" id="msg{requestinfo.FromUid}_menu" style="width:180px;display:none;">{requestinfo.Note}</div>
+								    <%/if%>
+							    </div>
+						    </td>
+						    <td id="groupselect" style="width:140px;">
+						        <div id="rgrouplist{requestinfo.FromUid}" style="display:none;">
+							        <div onclick="showMenu(this.id);" class="left orderselect" style="width:90px" id="rpass_select{requestinfo.FromUid}">请选择好友组别</div>
+							        <div class="popupmenu_popup" id="rpass_select{requestinfo.FromUid}_menu" style="width:90px;display:none;">
+							            <ul id="rpass_select{requestinfo.FromUid}_ul">
+								            <li><a href="javascript:void(0);" class="active" onclick="PassFriendshipRequest('{requestinfo.FromUid}',0);">默认分组</a></li>
+							            </ul>
+							        </div>
+							    </div>
+						    </td>
+						    <td id="requestcontrol{requestinfo.FromUid}" class="fm_control" style="width:40px;">
+						        <%if {friendshipcount}<{maxfriendshipcount}%>
+						        <p id="rpass{requestinfo.FromUid}">
+						        <a href="javascript:void(0);" onclick="ShowSelectGroupList({requestinfo.FromUid});">通过</a></p>
+						        <%/if%>
+						        <p id="rignore{requestinfo.FromUid}" style=" display:none;">
+						        <a href="javascript:void(0);" onclick="IgnoreFriendshipRequest('{requestinfo.FromUid}');">忽略</a></p>
+						    </td>
+			            </tr>
+			            <%/loop%>
+			            </tbody>
+		            </table>
+		            </form>
+		            <%if {friendshiprequestcount}>0%>
+		            <div class="cpbox s_clear">
+				        <div class="pages_btns">
+					        <div class="pages">
+						        <em>共有请求:<cite id="friendshiprequestcount2">{friendshiprequestcount}</cite>条</em><%if {pagecount}>1%> {pagenumbers} <em>{pageid}/{pagecount}页</em><%/if%> 
+					        </div>
+					        <a href="###"  onclick="checkCheckBox($('requestlist'),this,'rqitemid')">全选</a>
+					        <span class="pipe">|</span>
+					        <a href="###" onclick="if (confirm('您确定要通过指定的好友请求?')){$('requestlist').action='?action=passrequest' ;$('requestlist').submit();}">通过</a>
+					        <span class="pipe">|</span>
+					        <a href="###" onclick="if (confirm('您确定要忽略指定的好友请求?'))$('requestlist').submit();">忽略</a>
+				        </div>
+				    </div>
+				    <%else%>
+				    <div class="zerothreads">暂没有好友请求</div>
+				    <%/if%>
+		        <%else if {action}=="functionset"%>
+		        <%else%>
+		            <form id="friendshiplist" name="friendshiplist" method="post">
+		            <div id="searchgroupslist">正在读取分组列表......</div>
+		            <script type="text/javascript">
+		                CreateSearchGroupList(friendgroups);
+		            </script>
+    	            <table cellspacing="0" cellpadding="0" width="100%" class="pm_list fm_list" summary="好友列表">
+			            <tbody id="friendspanel">
+			            <%loop (FriendshipInfo) friendinfo friendshiplist%>
+			            <tr id="friendinfo{friendinfo.FriendUid}" onmouseover="SetFriendshipTableStyle({friendinfo.FriendUid},'on')" onmouseout="SetFriendshipTableStyle({friendinfo.FriendUid},'out')">
+						    <!--<td class="checkbox_toggle"><input name="fmitemid" id="id" type="checkbox" value="{friendinfo.FriendUid}" style="margin-top:2px;"/></td>-->
+				            <td class="profile_pic">
+				                <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({friendinfo.FriendUid})%>
+				                <a class="avatar" target="_blank" href="{forumpath}{aspxrewriteurl}">
+				                <%set (string){avatarurl}=Avatars.GetAvatarUrl(friendinfo.FriendUid,AvatarSize.Small) %>
+				                <img width="48" onerror="this.onerror=null;this.src='{imagedir}/noavatar_small.gif'" src="{avatarurl}"/>
+				                </a>
+				            </td>
+				            <td class="name_and_date">
+					            <span class="name"><a href="{aspxrewriteurl}" target="_blank">{friendinfo.FriendUserName}</a></span>
+				            </td>
+						    <td>
+							    <div onclick="AppendFriendGroupsList({friendinfo.FriendUid});showMenu(this.id);" class="left orderselect" id="friendgroup{friendinfo.FriendUid}">未分组</div>
+						        <div class="popupmenu_popup" id="friendgroup{friendinfo.FriendUid}_menu" style="width:100px;display:none; line-height:20px">
+						            <ul id="friendgroup{friendinfo.FriendUid}_ul">
+							            <li><a href="#" class="active">未分组</a></li>
+						            </ul>
+						            <%if {config.friendgroupmaxcount}==0||{friendshipgroupscount}<{config.friendgroupmaxcount}%>
+						            <div id="creategroupbtn{friendinfo.FriendUid}">
+						                <a href="javascript:void(0);" onclick="ShowCreateFriendGroupPanel({friendinfo.FriendUid});">创建新分组</a>
+						            </div>
+						            <div id="creategroupsubmit{friendinfo.FriendUid}" style="display:none;">
+						                <input id="newgroup{friendinfo.FriendUid}" style="width:80px" maxlength="8" type="text" onkeydown="KeydownAction({friendinfo.FriendUid},event);"/>
+						                <input id="newgroup{friendinfo.FriendUid}_submit" style="margin-right:10px;" type="button" value="保存" onclick="CreateNewFriendGroup({friendinfo.FriendUid});return false;"/>
+						                <input id="newgroup{friendinfo.FriendUid}_close" type="button" value="取消" onclick="CloseCreateFriendGroupPanel({friendinfo.FriendUid});return false;"/>
+						                <label id="newgroup{friendinfo.FriendUid}_msg"></label>
+						            </div>
+						            <%/if%>
+						        </div>
+							    <script type="text/javascript">UpdateGroupName({friendinfo.FriendUid},{friendinfo.GroupId});</script>
+						    </td>
+						    <td id="friendcontrol{friendinfo.FriendUid}" class="fm_control">
+						        <p id="sp{friendinfo.FriendUid}" style=" display:none;"><a href="search.aspx?posterid={friendinfo.FriendUid}">最近发帖</a></p>
+						        <p><a href="usercppostpm.aspx?msgtoid={friendinfo.FriendUid}" onclick="floatwin('open_postpm', this.href, 600, 410, '600,0');doane(event);">发短消息</a></p>
+						        <p id="df{friendinfo.FriendUid}" style=" display:none;"><a href="javascript:void(0);" onclick="DeleteFriendship('{friendinfo.FriendUid}','{friendinfo.FriendUserName}');">解除关系</a></p>
+						    </td>
+			            </tr>
+			            <%/loop%>
+			            </tbody>
+		            </table>
+		            <div id="panelcache" style="display:none;">
+		            </div>
+		            </form>
+		            <%if {friendshipcount}>0%>
+		            <div class="cpbox s_clear">
+				        <div class="pages_btns">
+					        <div class="pages">
+						        <em>共有好友:<cite id="friendshipcount">{friendshipcount}</cite>人</em><%if {pagecount}>1%> {pagenumbers} <em>{pageid}/{pagecount}页</em><%/if%> 
+					        </div>
+				        </div>
+				    </div>
+				    <%else%>
+				        <div class="zerothreads">{zeromessage}</div>
+				    <%/if%>
+		        <%/if%>
+		        <script type="text/javascript">
+		        function UpdateFriendGroup(fuid, gid) {
+		            ajaxRead("{rooturl}tools/sessionajax.aspx?t=updatefriendgroup&fuid=" + escape(fuid) + "&gid=" + escape(gid), "OnUpdateFriendGroup(obj,'" + fuid + "');");
+		        }
+		        
+		        function CreateNewFriendGroup(fuid) {
+		            var gname = $('newgroup' + fuid).value;
+		            
+		            if(gname == ''){
+		                $('newgroup' + fuid + '_msg').innerHTML = '<br/>名称不能为空';
+		                return false;
+		            }
+		            
+		            $('newgroup' + fuid + '_submit').style.display = 'none';
+		            $('newgroup' + fuid + '_close').style.display = 'none';
+		            $('newgroup' + fuid + '_msg').innerHTML = '创建中...';
+
+		            if ({config.friendgroupmaxcount} != 0 && friendgroups.length > {config.friendgroupmaxcount}) {//此处friendgroups长度比数据库中的结果多1个未分组，所以只有当数组个数大于配置值时，才执行如下分支
+		                $('newgroup' + fuid + '_msg').innerHTML = '无法创建更多分组';
+		                setTimeout('location.reload();',1000);
+		            }
+		            else{
+		            _sendRequest("{rooturl}tools/sessionajax.aspx?t=createfriendgrouop&gname=" + escape(gname), function(responseText) {
+		                if (responseText) {
+		                    var group = eval('(' + responseText + ')');
+		                    var text = "<li><a href=\"javascript:void(0);\" class=\"active\" onclick=\"UpdateFriendGroup(" + fuid + ", " + group.gid + ");\">" + group.gname + "</a></li>";
+		                    jQuery('#friendgroup' + fuid + '_ul').append(jQuery(text));
+		                    UpdateFriendGroups();
+		                    $('creategroupbtn' + fuid).style.display = '';
+		                    $('creategroupsubmit' + fuid).style.display = 'none';
+		                    $('newgroup' + fuid + '_submit').style.display = '';
+		                    $('newgroup' + fuid + '_close').style.display = '';
+		                    $('newgroup' + fuid + '_msg').innerHTML = '';
+		                    $('newgroup' + fuid).value = '';
+		                }
+		            });
+		            }
+		        }            
+		        
+		        function DeleteFriendship(fuid,fusername) {
+		            if (confirm('您确定要解除与' + fusername + '的好友关系')) {
+		                ajaxRead("{rooturl}tools/sessionajax.aspx?t=deletefriendship&fuidlist=" + escape(fuid), "OnDeleteFriendship(obj,'" + fuid + "');");
+		                setTimeout('GetLastFriendItem();', 1600);
+		            }
+		        }
+
+		        function PassFriendshipRequest(fromuid, groupid) {
+		            ajaxRead("{rooturl}tools/sessionajax.aspx?t=passfriendshiprequest&fromuid=" + escape(fromuid) + "&togroupid=" + escape(groupid), "OnPassFriendshipRequest(obj," + fromuid + ");");
+		            GetUserFriendshipRequestCount();
+		        }
+
+		        function IgnoreFriendshipRequest(fuid) {
+		            if (confirm('您确定要忽略该请求')) {
+		                ajaxRead("{rooturl}tools/sessionajax.aspx?t=ignorefriendshiprequest&fuidlist=" + escape(fuid), "OnIgnoreFriendshipRequest(obj,'" + fuid + "');");
+		                GetUserFriendshipRequestCount();
+		            }
+		        }
+
+		        function GetUserFriendshipCount() {
+		            ajaxRead("{rooturl}tools/sessionajax.aspx?t=getuserfriendshipcount&fusername={fusername}&lastdatetime={lastdatetime}&groupid={groupid}", "OnGetUserFriendshipCount(obj);");
+		        }
+
+		        function GetUserFriendshipRequestCount() {
+		            ajaxRead("{rooturl}tools/sessionajax.aspx?t=getuserfriendshiprequestcount", "OnGetUserFriendshipRequestCount(obj);");
+		        }
+
+		        function GetLastFriendItem() {
+		            _sendRequest("{rooturl}tools/sessionajax.aspx?t=getlastfrienditemonpage&pageid={pageid}&pagesize={pageSize}&fusername={fusername}&lastdatetime={lastdatetime}&groupid={groupid}", function(responseText) {
+		                if (responseText) {
+		                    var friend = eval('(' + responseText + ')');
+		                    if (friend != null) {
+		                        AppendItem(friend, '{forumpath}', '{imagedir}',{config.friendgroupmaxcount}==0||{friendshipgroupscount}<{config.friendgroupmaxcount});
+		                    }
+		                }
+		            });
+		        }
+
+		        function UpdateFriendGroups() {
+		            _sendRequest("{rooturl}tools/sessionajax.aspx?t=getfriendgroupjson", function(responseText) {
+		                if (responseText) {
+		                    friendgroups = eval('(' + responseText + ')');
+		                }
+		            });
+		        }
+		        </script>
+		    <%/if%>
+		    <%else%>
+			    <%template _usercperrmsgbox%>
+		    <%/if%>
+	    </div>
+	    </div>
+    </div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

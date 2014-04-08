@@ -1,0 +1,160 @@
+<%if {forumhotconfiginfo.enable}%>
+<link rel="stylesheet" href="{cssdir}/forumhot.css" type="text/css" media="all" />
+<script type="text/javascript"  src="{jsdir}/slide.js"></script>
+<script type="text/javascript">
+    function tabselect(id) {
+        $('hot_layer_' + id).style.display = ''
+        $('tab_li_' + id).className = 'current'
+        for (var i = 1; i <= 5; i++) {
+            if (i != id) {
+                if ($('tab_li_' + i)) {
+                    $('tab_li_' + i).className = 'switchNavItem'
+                    $('hot_layer_' + i).style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
+<div class="main cl forumhot">
+    <table width="100%" cellspacing="0" cellpadding="0">
+	    <tbody>
+	        <tr>
+		        <td width="375">
+		            <%loop (ForumHotItemInfo) forumhotiteminfo forumhotconfiginfo.ForumHotCollection%>
+			            <%if {forumhotiteminfo.datatype}=="pictures"%>
+			                <div class="title_bar xg2">
+				                <h2>{forumhotiteminfo.name}</h2>
+			                </div>
+                            <div id="focusViwer">
+                                <div id="imgADPlayer"></div> 
+                                <script  type="text/javascript">
+                                    var hotimagesarray = eval('{ForumHots.HotImagesArray(forumhotiteminfo)}');
+                                    for (i = 0; i < hotimagesarray.length; i++) {
+                                        var title={forumhotiteminfo.topictitlelength}>0?hotimagesarray[i].title.substr(0,{forumhotiteminfo.topictitlelength}):'';
+                                        PImgPlayer.addItem("" + title + "", "" + hotimagesarray[i].url + "", "" + hotimagesarray[i].img + "");
+                                    }
+                                    if(hotimagesarray.length>0)
+                                        PImgPlayer.init("imgADPlayer", 360, 240);   
+                                </script>
+                            </div>
+			            <%/if%>	
+		            <%/loop%>
+		        </td>
+		        <td>
+		            <div class="title_bar xg2">
+			            <ul id="tabswi1_A" class="tab_forumhot">
+			            <%loop (ForumHotItemInfo) forumhotiteminfo1 forumhotconfiginfo.ForumHotCollection%>
+  				            <%if {forumhotiteminfo1.id}!=6 && {forumhotiteminfo1.enabled}==1%>
+				                <li class="switchNavItem" index="2" id="tab_li_{forumhotiteminfo1.id}"><a href="javascript:;"  onmousemove="tabselect({forumhotiteminfo1.id})">{forumhotiteminfo1.name}</a></li>
+				            <%/if%>
+			            <%/loop%>
+			            </ul>
+		            </div>
+		            <div id="tabswi1_B" class="pd cl">
+		            <%loop (ForumHotItemInfo) forumhotiteminfo2 forumhotconfiginfo.ForumHotCollection%>		
+   		                <%if {forumhotiteminfo2.id}!=6 && {forumhotiteminfo2.enabled}==1%>
+			                <%if {forumhotiteminfo2.datatype}=="topics"%>
+			                    <div class="newHotB" name="hot_layer_{forumhotiteminfo2.id}" id="hot_layer_{forumhotiteminfo2.id}"  style="display:none">	
+				                    <%loop hottopic ForumHots.GetTopicList(forumhotiteminfo2)%>
+                                       <%set (string){topicsname2} = Utils.RemoveHtml(hottopic["title"].ToString().Trim())%>
+					                    <%set (string){topicsname} = forumhotiteminfo2.Topictitlelength>0?Utils.GetSubString(Utils.RemoveHtml(hottopic["title"].ToString().Trim()),forumhotiteminfo2.Topictitlelength*2,""):""%>
+					                    <%set (string){forumsname} = forumhotiteminfo2.Forumnamelength>0?Utils.GetSubString(Utils.RemoveHtml(hottopic["name"].ToString().Trim()),forumhotiteminfo2.Forumnamelength*2,""):""%>
+					                    <%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({hottopic[tid]},0)%>
+					                    <%set (string){aspxrewriteurl1} = this.ShowForumAspxRewrite({hottopic[fid]},0)%>
+					                    <%if {hottopic[_id]}==1%>
+					                        <%set (int){tid} = TypeConverter.ObjectToInt(hottopic["tid"])%>
+					                        <%loop firsttopic ForumHots.GetFirstPostInfo(tid,forumhotiteminfo2.Cachetimeout)%>
+						                        <%if {firsttopic[layer]}=="0"%>
+						                        <%set (string){message} = ForumHots.RemoveUbb(firsttopic["message"].ToString().Trim(),300)%>
+						                        <dl class="i_hot">
+							                        <dt class="xg2"><a href="{forumurl}{aspxrewriteurl}" target="_blank"  title="{topicsname2}">{topicsname}</a></dt>
+							                        <dd>{message}</dd>
+						                        </dl>
+						                        <%/if%>
+					                        <%/loop%>
+					                    <%else%>
+					                        <%if {hottopic[_id]}==8 || {hottopic[_id]}==2%>
+					                        <ul class="hotlist">
+					                        <%/if%>					
+					                        <li><a href="{forumurl}{aspxrewriteurl1}" target="_blank"><%if {forumhotiteminfo2.Forumnamelength}>0%>【{forumsname}】<%/if%></a><a href="{forumurl}{aspxrewriteurl}" target="_blank" class="xg2"  title="{topicsname2}">{topicsname}</a></li>
+					                        <%if {hottopic[_id]}==7 || {hottopic[_id]}==13%>
+					                        </ul>
+					                        <%/if%>
+					                    <%/if%>
+				                    <%/loop%>
+				                </div>
+			                <%/if%>
+			                <%if {forumhotiteminfo2.datatype}=="users" %>
+			                    <div class="newHotB" name="hot_layer_{forumhotiteminfo2.id}" id="hot_layer_{forumhotiteminfo2.id}" style="display:none">	
+				                    <%loop (ShortUserInfo) user ForumHots.GetUserList(forumhotiteminfo2.Dataitemcount,forumhotiteminfo2.Sorttype,forumhotiteminfo2.Cachetimeout,forumhotiteminfo2.Id)%>
+					                    <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({user.uid})%>
+					                    <%if {user[_id]}%10==1 || {user[_id]}==1%>
+						                     <%if {user[_id]}==1%>
+							                    <ul class="hotlist cl one">
+						                    <%else%>
+							                    <ul class="hotlist cl two">
+						                    <%/if%>
+					                    <%/if%>
+					                    <li>
+					                        <em>
+					                        [
+					                        <%if {forumhotiteminfo2.Sorttype}=="credits"%>{user.credits}<%/if%>
+					                        <%if {forumhotiteminfo2.Sorttype}=="posts"||{forumhotiteminfo2.Sorttype}=="today"||{forumhotiteminfo2.Sorttype}=="thisweek"||{forumhotiteminfo2.Sorttype}=="thismonth"%>{user.posts}<%/if%>
+                                            <%if {forumhotiteminfo2.Sorttype}=="digestposts"%>{user.digestposts}<%/if%>
+					                        <%if {forumhotiteminfo2.Sorttype}=="lastactivity"%>{user.lastactivity}<%/if%>
+					                        <%if {forumhotiteminfo2.Sorttype}=="joindate"%>{user.joindate}<%/if%>
+					                        ]
+					                        </em>
+					                        <img onerror="this.onerror=null;this.src='{forumpath}images/common/noavatar_small.gif';" src="{Avatars.GetAvatarUrl(user.Uid,AvatarSize.Small)}" width="16" height="16"><a href="{forumurl}{aspxrewriteurl}" target="_blank">{user.username}</a>
+					                    </li>
+					                    <%if {user[_id]}%10==0%>
+					                    </ul>
+					                    <%/if%>
+				                    <%/loop%>
+			                    </div>
+			                <%/if%>
+			                <%if {forumhotiteminfo2.datatype}=="forums"%>
+			                    <div class="newHotB" name="hot_layer_{forumhotiteminfo2.id}" id="hot_layer_{forumhotiteminfo2.id}" style="display:none">	
+				                    <%loop (ForumInfo) foruminfo ForumHots.GetHotForumList(forumhotiteminfo2.Dataitemcount,forumhotiteminfo2.Sorttype,forumhotiteminfo2.Cachetimeout,forumhotiteminfo2.Id)%>
+					                    <%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({foruminfo.fid})},0)%>
+					                    <%if {foruminfo[_id]}%10==1 || {foruminfo[_id]}==1%>
+                                            <%if {foruminfo[_id]}==1%>
+							                    <ul class="hotlist cl one">
+						                    <%else%>
+							                    <ul class="hotlist cl two">
+						                    <%/if%>
+					                    <%/if%>
+					                        <li><em>
+					                        [
+					                        <%if {forumhotiteminfo2.sorttype}=="posts"||{forumhotiteminfo2.sorttype}=="today"||{forumhotiteminfo2.sorttype}=="thismonth"%>{foruminfo.posts}<%/if%>
+					                        <%if {forumhotiteminfo2.sorttype}=="topics"%>{foruminfo.topics}<%/if%>
+                                            ]
+					                        </em><a href="{forumurl}{aspxrewriteurl}" target="_blank">{foruminfo.name}</a>
+					                        </li>
+					                    <%if {foruminfo[_id]}%10==0%>
+					                    </ul>
+					                    <%/if%>		
+				                    <%/loop%>
+			                    </div>
+			                <%/if%>
+		                <%/if%>
+		            <%/loop%>
+		            </div>
+		        </td>
+	        </tr>
+	    </tbody>
+    </table>
+</div>
+<%/if%>
+<script type="text/javascript">
+    for (var i = 1; i <= 5; i++) {
+        try {
+            $('hot_layer_' + i).style.display = ''
+            $('tab_li_' + i).className = 'current'
+            break;
+        }
+        catch (e) {
+            continue;
+        }
+    }
+</script>

@@ -1,0 +1,146 @@
+﻿<%inherits "Discuz.Space.Pages.spaceregister"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>申请个人空间</strong>
+	</div>
+</div>
+<%if page_err==0%>
+<script type="text/javascript">
+	function validatefrom()
+	{
+		if(document.getElementById("spacetitle").value == "")
+		{
+			alert("个人空间名称不能为空！");
+			document.getElementById("spacetitle").focus();
+			return false;
+		}
+		if(document.getElementById('spacedescription').value.length > 200)
+		{
+			alert('个人空间描述长度最大为200字');
+			return false;
+		}
+		if(!(/^\d+$/.test(document.getElementById("bpp").value)))
+		{
+			alert("显示日志篇数必须是数值！");
+			document.getElementById("bpp").focus();
+			return false;
+		}
+	}
+</script>
+<%if ispost%>
+	<%template _usercpmsgbox%>
+<%else%>
+	<div class="wrap s_clear">
+	<div class="main">
+	<form id="regspace" name="regspace" method="post" action="">
+	<table cellspacing="0" cellpadding="0" width="100%" align="center" class="formtable">
+		<tbody>
+		<tr>
+			<th>个人空间名称</th>
+			<td><input name="spacetitle" type="text" id="spacetitle"  size="40" maxlength="100" class="txt"/>
+			</td>
+		</tr>
+		<tr>
+			<th>个人空间描述</th>
+			<td><textarea name="description" cols="50" rows="6" id="spacedescription" class="txtarea"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>日志显示模式</th>
+			<td>
+				<input type="radio" name="blogdispmode" value="0"  class="radioinput" checked="checked"/>摘要
+				<input type="radio" name="blogdispmode" value="1"  class="radioinput"/>全文
+				<input type="radio" name="blogdispmode" value="2"  class="radioinput"/>只显示标题
+			</td>
+		</tr>
+		<tr>
+			<th>显示日志篇数</th>
+			<td><input name="bpp" type="text" size="30" maxlength="3" value="10" class="txt" /></td>
+		</tr>
+		<%if {spaceactiveconfig.enablespacerewrite}==1%>
+		<tbody>	
+		<tr>
+			<th>个性域名</th>
+			<td>
+				<input name="rewritename" type="text" id="rewritename" onblur="checkrewritename(this.value);" value="" size="30" class="txt" /><span id="checkresult" style="line-height: 25px;"></span>
+				<p>设置此项后您将可以用 http://论坛地址/space/个性域名 形式的地址访问您的个人空间, 设置之后将不可更改</p>
+			</td>
+			<script type="text/javascript">
+				function checkrewritename(rewritename)
+				{
+					if (rewritename.length > 0)
+					{
+						ajaxRead("tools/ajax.aspx?t=checkrewritename&rewritename=" + escape(rewritename), "showcheckresult(obj,'" + rewritename + "');");
+					}
+					else
+					{
+						$("checkresult").innerHTML = "";
+					}
+				}
+
+				function showcheckresult(obj, rewritename)
+				{
+					var res = obj.getElementsByTagName('result');
+					var resContainer = $("checkresult");
+					var result = "";
+					if (res[0] != null && res[0] != undefined)
+					{
+						if (res[0].childNodes.length > 1) {
+							result = res[0].childNodes[1].nodeValue;
+						} else {
+							result = res[0].firstChild.nodeValue;    		
+						}
+					}
+					if (result == "1")
+					{
+						resContainer.innerHTML = "<font color='#009900'>对不起，您输入的个性化名称 \"" + rewritename + "\" 中含有非法字符或被禁用，请选择其他名字后再试。</font>";
+					}
+					else if (result == "2")
+					{
+						resContainer.innerHTML = "<font color='#009900'>个性化名称只能为字母、数字、下划线、减号的组合";
+					}
+					else if (result == "3")
+					{
+						resContainer.innerHTML = "<font color='#009900'>对不起，您输入的个性化名称 \"" + rewritename + "\" 已经被其他会员使用，请选择其他名字后再试。";
+					}
+					else
+					{
+						resContainer.innerHTML = "可用";
+					}
+				}
+			</script>
+			<script type="text/javascript" src="javascript/ajax.js"></script>
+			</tr>
+		<%/if%>
+		<tr>
+			<th>默认评论权限</th>
+			<td>
+				<input type="radio" name="commentpref" value="0"  class="radioinput" checked="checked" />允许所有人
+				<input type="radio" name="commentpref" value="1"  class="radioinput"/>禁止所有人
+				<input type="radio" name="commentpref" value="2"  class="radioinput"/>只有登录用户						
+			</td>
+		</tr>
+		<tr>
+			<th>留言设置</th>
+			<td>
+				<input type="radio" name="messagepref" value="0"  class="radioinput" checked="checked"/>允许所有人
+				<input type="radio" name="messagepref" value="1"  class="radioinput"/>禁止所有人
+				<input type="radio" name="messagepref" value="2"  class="radioinput"/>只有登录用户													
+			</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="submit" name="Submit" value="确定" onclick="return validatefrom()" /></td>
+		</tr>
+		</tbody>
+		</table>
+	</form>
+	</div>
+	</div>
+  <%/if%>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

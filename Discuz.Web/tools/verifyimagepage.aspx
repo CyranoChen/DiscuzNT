@@ -1,0 +1,1 @@
+<%@ Page AutoEventWireup="true" EnableViewState="false" Inherits="Discuz.Web.UI.VerifyImagePage" %>

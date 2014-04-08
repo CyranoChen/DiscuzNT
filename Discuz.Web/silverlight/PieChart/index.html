@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Silverlight投票展示</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <script type="text/javascript" src="Silverlight.js"></script>
+    <script type="text/javascript" src="index.html.js"></script>
+    <style type="text/css">
+        .silverlightHost { width: 460px; height: 400px; }
+    </style>
+    <script type="text/javascript">
+        function onSilverlightError(sender, args) {
+            if (args.errorType == "InitializeError") {
+                var errorDiv = document.getElementById("errorLocation");
+                if (errorDiv != null)
+                    errorDiv.innerHTML = args.errorType + "- " + args.errorMessage;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div style="width: 700px;">
+	<div id='errorLocation' style="font-size: small;color: Gray;"></div>
+    <div id="SilverlightControlHost" class="silverlightHost" style="float:left;" >
+        <br/>
+		<object id="Xaml1" data="data:application/x-silverlight," type="application/x-silverlight-2" width="100%" height="100%">
+			<param name="source" value="ClientBin/piechart.xap"/>
+			<param name="onerror" value="onSilverlightError" />
+			<param name="background" value="transparent" />
+            <param name="windowless" value="true" />
+			<param name="minRuntimeVersion" value="2.0.31005.0" />
+			<param name="autoUpgrade" value="true" />
+			<a href="http://go.microsoft.com/fwlink/?LinkID=124807" style="text-decoration: none;"  target="_blank">
+     			<img src="http://go.microsoft.com/fwlink/?LinkId=108181" alt="获得 Microsoft Silverlight" style="border-style: none"/>
+			</a>
+		</object>
+		<iframe style='visibility:hidden;height:0;width:0;border:0px'></iframe>
+    </div> 
+    </div>
+</body>
+</html>

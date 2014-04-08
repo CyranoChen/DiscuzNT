@@ -1,0 +1,15 @@
+﻿.tabs { border-bottom: 1px solid #919b9c; padding-bottom: 25px;font-size:12px;padding-left:0px}
+	.tabs li {float: left; margin-right:1px;}
+	.TabSelect {background:url(../images/tab_left_icon.gif) no-repeat 0 0; margin-top:6px;}
+	.OnTabSelect {background:url(../images/selectTab_hover.gif) no-repeat 0 0; margin-top:6px;}
+		*html .TabSelect,*+html .TabSelect  {background:url(../images/tab_left_icon.gif) no-repeat 0 0;}
+		*html .OnTabSelect,*+html .OnTabSelect {background:url(../images/selectTab_hover.gif) no-repeat 0 0;}
+	.CurrentTabSelect {background:url(../images/selected_tab_left_icon.gif) no-repeat left top; height:26px; line-height:25px;}
+		*html .CurrentTabSelect,*+html .CurrentTabSelect {height:25px;} 
+	.tabs li a { margin-left:3px; padding: 2px 5px; text-decoration: none; height: 19px; line-height: 19px; background: url(../images/tab_right_icon.gif) no-repeat right top; color: #000;}
+	.tabs li a:hover { color: #000; background: url(../images/selectTab_hover2.gif) no-repeat right top; text-decoration: none;}
+	.tabs a.current,.tabs a:hover.current {cursor: default; border-bottom: 1px solid #FFF; background:url(../images/selected_tab_right_icon.gif) no-repeat right top;line-height: 25px; margin-top:0; padding:5px;}
+	*html .tabs a.current , *html .tabs a:hover.current {padding:0 5px;}
+	*+html .tabs a.current , *+html .tabs a:hover.current {padding:0 5px;}
+	.tabarea { clear:both; overflow:hidden; zoom:1; background: #FFF; border: 1px solid #919b9c; border-top: none; text-align: right; padding: 20px; margin-top:-3px;}
+	.tab-page {text-align:left;font-size:12px;}

@@ -1,0 +1,145 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.20706</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BCDC166B-4393-4B96-A0CC-2D2B57222E07}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DiscuzAlbum</RootNamespace>
+    <AssemblyName>DiscuzAlbum</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>ClientBin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>ClientBin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="agclr" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="system.Xml.core" />
+    <Reference Include="system.silverlight" />
+    <EmbeddedResource Include="UserControl\ThumSlice.xaml" />
+    <Compile Include="UserControl\ThumSlice.xaml.cs">
+      <DependentUpon>ThumSlice.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommonValues.cs" />
+    <Compile Include="Common\ControlBase.cs" />
+    <Compile Include="LayoutManager.cs" />
+    <Compile Include="Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PhotoDataSet.cs" />
+    <Compile Include="PhotoItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControl\GenuineSlice.xaml.cs">
+      <DependentUpon>GenuineSlice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\PhotoSlice.xaml.cs">
+      <DependentUpon>PhotoSlice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\SortBar.xaml.cs">
+      <DependentUpon>SortBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\SortNavigator.cs" />
+    <Compile Include="UserControl\TracingIcon.xaml.cs">
+      <DependentUpon>TracingIcon.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <SilverlightPage Include="Page.xaml">
+      <Generator>MSBuild:CompileXaml</Generator>
+    </SilverlightPage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Image\btnBottomBg.png" />
+    <Content Include="Assets\Image\btnBottomStroke.png" />
+    <Content Include="Assets\Image\btnBottomStroke_flip.png" />
+    <Content Include="Assets\Image\btnRandom.png" />
+    <Content Include="Assets\Image\btnSort.png" />
+    <Content Include="Assets\Image\discuz_logo.png" />
+    <Content Include="Assets\Image\grassSphere.png" />
+    <Content Include="Assets\Image\leftArrow.png" />
+    <Content Include="Assets\Image\loadingGrid_text.png" />
+    <Content Include="Assets\Image\minus_icon.png" />
+    <Content Include="Assets\Image\plus_icon.png" />
+    <Content Include="Assets\Image\screenArrow_hover.png" />
+    <Content Include="Assets\Image\screenArrow_none.png" />
+    <Content Include="Assets\Image\screenArrow_normal.png" />
+    <Content Include="Assets\Image\sliceBG.png" />
+    <Content Include="Assets\Image\sliceBG_shadow.png" />
+    <Content Include="Assets\Image\sliceCounter_bg.png" />
+    <Content Include="Assets\Image\sortArrow_hover.png" />
+    <Content Include="Assets\Image\sortArrow_normal.png" />
+    <Content Include="Assets\Image\sortDividor.png" />
+    <Content Include="Assets\Image\topButton_disable.png" />
+    <Content Include="Assets\Image\topButton_hover.png" />
+    <Content Include="Assets\Image\topButton_normal.png" />
+    <Content Include="Assets\Image\topNavi_left.png" />
+    <Content Include="Assets\Image\topNavi_middle.png" />
+    <Content Include="Assets\Image\topNavi_right.png" />
+    <Content Include="index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.html.js" />
+    <None Include="Silverlight.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControl\SortBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControl\PhotoSlice.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControl\GenuineSlice.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControl\TracingIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\Silverlight\Microsoft.Silverlight.Csharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <WebProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

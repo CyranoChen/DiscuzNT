@@ -1,0 +1,21 @@
+﻿<%if {userid}>0%>
+<script type="text/javascript">
+    function Search() {
+        var fusername = $('searchusername').value;
+        if (fusername == '') {
+            alert('搜索条件不能为空');
+            return false;
+        }
+        window.location.href = 'friends.aspx?fusername=' + escape(fusername);
+    }
+</script>
+<div class="cm_header itemtitle s_clear">
+	<ul>
+		<li <%if {action}==""%>class="current"<%/if%>><a href="friends.aspx"><span>好友列表</span></a></li>
+		<li <%if {action}=="requestlist"%>class="current"<%/if%>><a href="friends.aspx?action=requestlist"><span>好友请求列表<%if {friendshiprequestcount}>0%>(<cite id="friendshiprequestcount1">{friendshiprequestcount}</cite>)<%/if%></span></a></li>
+	</ul>
+	<%if {config.allowsearchfriendbyusername}==1%>
+	<%if {action}==""%><div class="friend_search">通过用户名搜索好友:<input id="searchusername" name="searchussername" type="text"/><input name="searchusernamesubmit" type="button" value="" onclick="Search();" class="btnsearch"/></div><%/if%>
+	<%/if%>
+</div>
+<%/if%>

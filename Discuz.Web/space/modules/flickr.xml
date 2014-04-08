@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Flickr"  directory_title="Flickr" description="Flickr" author="Discuz!NT" author_email="jiayanzhao@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality">
+        <Require feature="dynamic-height" />
+        <Require feature="settitle" />
+    </ModulePrefs>
+	<UserPref name="tags" display_name="Tag Name: " datatype="string" default_value="" />
+    <Content type="html-inline">	
+	<![CDATA[
+		<div>
+			<div style="display: block;">
+				<div style="text-align: center;">
+					<div>
+						<img src="modules/images/previous.gif" onclick="prevImg__MODULE_ID__();" style="cursor : pointer;" />
+						<img src="modules/images/next.gif" onclick="nextImg__MODULE_ID__();" style="cursor : pointer;" />
+					</div>
+					<div id="img__MODULE_ID__">
+						<a id="imglink__MODULE_ID__" target="_blank"><img id="thumbnail__MODULE_ID__" style="border: 0px;" /></a>
+						<div id="imgDesc__MODULE_ID__" style="width: 100%;height: 77px; overflow: auto;overflow-x:hidden;display: none;"></div>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		<script type="text/javascript">
+		var imgArrFileName__MODULE_ID__		= new Array();
+		var imgArrBigFileName__MODULE_ID__ = new Array();
+		var imgTitle__MODULE_ID__ = new Array();
+		var imgDescription__MODULE_ID__ = new Array();
+		var currentIndex__MODULE_ID__ = 0;
+		function initFlickr__MODULE_ID__()
+		{
+			var prefs = new _DS_Prefs(__MODULE_ID__);
+			if (prefs.getString("tags") != "")
+			{
+				url = "http://api.flickr.com/services/feeds/photos_public.gne?tags=" + prefs.getString("tags") + "&format=rss_200";
+			}
+			else
+			{
+				url = "http://api.flickr.com/services/feeds/photos_public.gne?format=rss_200";
+			}
+
+			_DS_FetchXmlContent(url, function (response){
+				var title =	response.getElementsByTagName("title")[0].firstChild.nodeValue;
+				_DS_SetTitle(title, __MODULE_ID__);
+				var bigitems = null;
+				if (DragUtil.isIE)
+				{
+					bigitems = response.getElementsByTagName("media:content");
+				}
+				else
+				{
+					bigitems = response.getElementsByTagName("content");
+				}
+				
+				var items = response.getElementsByTagName("description");
+				for (var i = 1; i < items.length; i++)
+				{
+					var item = items[i];
+					var bigitem = bigitems[i - 1];
+					var imgsrc = getSmallPicURL__MODULE_ID__(item.firstChild.nodeValue);
+					imgArrFileName__MODULE_ID__[i - 1] = imgsrc;
+					imgTitle__MODULE_ID__[i - 1] = getPicTitle__MODULE_ID__(item.firstChild.nodeValue);
+					imgArrBigFileName__MODULE_ID__[i - 1] = bigitem.getAttribute("url");
+					imgDescription__MODULE_ID__[i - 1] = getPicDescription__MODULE_ID__(item.firstChild.nodeValue);
+					//alert(imgDescription__MODULE_ID__[i - 1]);
+				}
+				showImg__MODULE_ID__(0);
+
+			});
+		}
+		function nextImg__MODULE_ID__()
+		{
+			if (currentIndex__MODULE_ID__ == imgArrFileName__MODULE_ID__.length - 1)
+			{
+				currentIndex__MODULE_ID__ = -1;
+			}
+			showImg__MODULE_ID__(currentIndex__MODULE_ID__ + 1);
+		}
+		function prevImg__MODULE_ID__()
+		{
+			if (currentIndex__MODULE_ID__ == 0)
+			{
+				currentIndex__MODULE_ID__ = imgArrFileName__MODULE_ID__.length;
+			}
+			showImg__MODULE_ID__(currentIndex__MODULE_ID__ - 1);
+		}
+		function showImg__MODULE_ID__(index)
+		{		
+			/*
+			var html = '<a id="imglink" target="_blank" href="' + imgArrBigFileName__MODULE_ID__[index] + '">';
+			html += '<img id="thumbnail" style="border: 0px;"alt="' + imgTitle__MODULE_ID__[index] + '" title="' + imgTitle__MODULE_ID__[index] + '" src="' + imgArrFileName__MODULE_ID__[index] + '" /></a><br /><br />'
+			if (imgDescription__MODULE_ID__[index] !='')
+			{
+				html += '<div style="width: 100%;height: 77px; overflow: auto;overflow-x:hidden;">' + imgDescription__MODULE_ID__[index] + '</div>';
+			}*/
+			_gel("imglink__MODULE_ID__").href = imgArrBigFileName__MODULE_ID__[index];
+			_gel("thumbnail__MODULE_ID__").alt = imgTitle__MODULE_ID__[index];
+			_gel("thumbnail__MODULE_ID__").title = imgTitle__MODULE_ID__[index];
+			_gel("thumbnail__MODULE_ID__").src = imgArrFileName__MODULE_ID__[index];
+			if (imgDescription__MODULE_ID__[index] == '')
+			{
+				_gel("imgDesc__MODULE_ID__").style.display = "none";
+			}
+			else
+			{
+				_gel("imgDesc__MODULE_ID__").style.display = "";
+				_gel("imgDesc__MODULE_ID__").innerHTML = imgDescription__MODULE_ID__[index];
+			}
+			
+			//_gel("img__MODULE_ID__").innerHTML = html;
+			currentIndex__MODULE_ID__ = index;
+		}
+		function getPicDescription__MODULE_ID__(content)
+		{
+			var tmp = document.createElement("DIV");
+			tmp.innerHTML = content;
+			var desc = tmp.getElementsByTagName("p");
+			if (desc.length > 2)
+			{
+				return desc[2].innerHTML;
+			}
+			else
+			{
+				return "";
+			}
+		}
+		function getPicTitle__MODULE_ID__(content)
+		{	
+			var tmp = document.createElement("DIV");
+			tmp.innerHTML = content;
+			return tmp.getElementsByTagName("img")[0].getAttribute("alt");
+		}
+		function getSmallPicURL__MODULE_ID__(content)
+		{	
+			var tmp = document.createElement("DIV");
+			tmp.innerHTML = content;
+			return tmp.getElementsByTagName("img")[0].getAttribute("src");
+		}
+		initFlickr__MODULE_ID__();
+		</script>
+	]]>
+    </Content>
+</Module>

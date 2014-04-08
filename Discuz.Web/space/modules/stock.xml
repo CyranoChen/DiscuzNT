@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="沪深股市行情"  directory_title="沪深股市行情" description="沪深股市行情" category="工具" author="Discuz!NT" author_email="jiayanzhao@comsenz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality" singleton="true">
+        <Require feature="dynamic-height" />
+		<Require feature="setprefs" />
+    </ModulePrefs>
+	<UserPref name="mystocks" display_name="股票代码" datatype="list" default_value="" />
+    <Content type="html">	
+	<![CDATA[
+		<table id="pricetable" style="font-size: 12px;" border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr bgcolor="#000" style="color:#0ff">				
+				<td align="center"><nobr>&nbsp;代码&nbsp;</nobr></td>
+				<td align="right"><nobr>&nbsp;&nbsp;&nbsp;价格</nobr></td>
+				<td align="right"><nobr>&nbsp;&nbsp;&nbsp;涨跌额</nobr></td>
+				<td align="right"><nobr>&nbsp;&nbsp;&nbsp;涨跌幅</nobr></td>
+				<td align="right"><nobr>&nbsp;&nbsp;&nbsp;成交量</nobr></td>
+			</tr>
+		</table>
+
+		<script type="text/javascript">
+			function createPriceTable()
+			{
+				var table = _gel("pricetable");
+				for (var i = table.rows.length-1; i > 0; i --)
+					table.deleteRow(i);				
+				_DS_AdjustIFrameHeight();				
+			}
+
+			function getPrice()
+			{
+				var now = new Date();
+
+				if (!dataInitialed || now.getUTCHours() >= 1 && now.getUTCHours() < 8
+				&& now.getUTCDay() >=1 && now.getUTCDay() <=5)
+				{
+					sourceURL = sourceURL.substring(0, sourceURL.indexOf("Time") + 5 ) + now.valueOf();
+					_DS_FetchContent(sourceURL, setTable, {"encoding":"gb2312"});
+				}
+			}
+			
+			function getSourceURL()
+			{ 
+				var sourceURL = "http://hq.sinajs.cn/list=";                    
+				var newStockList = "";
+				sinaStockList = new Array(stockList.length);
+
+				var j = 0;
+				for (var i = 0; i < stockList.length ; i++) 
+				{
+					var stockSymbol = stockList[i];
+					var sinaSymbol = checkStockSymbol(stockSymbol);
+
+					if (sinaSymbol == "")
+					{
+						alert("无效的股票代码: " + stockSymbol);
+					}
+					else
+					{            
+						sinaStockList[j] = sinaSymbol;
+						j ++;
+
+						newStockList += "," + stockSymbol;
+						sourceURL += sinaSymbol + ",";
+					}
+				}
+				newStockList = newStockList.substring(1, newStockList.length);
+				var now = new Date();
+				sourceURL += "Time=" + now.valueOf();
+
+				return sourceURL;
+			}
+
+			function updateTable()
+			{
+				for (var i = 0; i < stockList.length; i ++)
+				{
+					var row = table.insertRow(-1);
+					row.bgColor = "black";
+					var col = row.insertCell(-1);
+					col.align = "center";
+					col.innerHTML = "<nobr><a target='_blank' href='http://finance.sina.com.cn/realstock/company/" 
+					+ sinaStockList[i - 1] + "/nc.shtml'>" + stockList[i] + "</a></nobr>";
+					for ( var j = 0; j < cellDataMap.length; j ++ )
+					{
+						if ( cellDataMap[j] != -1 )
+						{
+							var col = row.insertCell(-1);
+							col.align = "right";
+							col.innerHTML = cellValue[j];
+						}
+					}
+				}
+				_DS_AdjustIFrameHeight();
+			}
+
+			function setTable(responseText)
+			{
+				var dataList = responseText.split( "\"" );
+
+				for ( var i = 1; i < table.rows.length; i ++ )
+				{
+					if ( i * 2 - 1 >= dataList.length )
+						break;
+
+					var data = dataList[i*2 - 1];
+					var start = 0;
+					var end = data.length-1;
+					var row = table.rows[i];
+					var stockName = data.substring(0, data.indexOf(','));
+					row.cells[0].innerHTML = "<nobr><a target='_blank' href='http://finance.sina.com.cn/realstock/company/" 
+						+ sinaStockList[i - 1] + "/nc.shtml'>" + stockList[i-1] + "</a>["+ stockName +"]</nobr>"; 
+					while (start < end
+							&& (data.charAt(start) < '0' || data.charAt(start) > '9' ))
+						start ++;
+					while (start < end 
+							&& (data.charAt(end) < '0' || data.charAt(end) > '9' ))
+						end --;
+
+					data = data.substring(start, end + 1);
+					if (data == "")
+					{
+						if (row.cells.length == 2)
+							row.cells[1].innerHTML = "没有数据";
+						else if (row.cells.length >= 3)
+						{              
+							row.cells[1].innerHTML = "没有";
+							row.cells[2].innerHTML = "数据";
+
+							for (var j = 3; j < row.cells.length; j ++)
+								row.cells[j].innerHTML = "";
+						}
+						row.style.color = "black";                
+						continue;
+					}
+
+					stockData = data.split(",");
+					var offset = 0;
+
+					if (stockData.length == 32)
+						offset = 1;
+
+					for (var j = 0; j < cellDataMap.length; j ++)
+					{
+						if (j >= stockData.length)
+							break;
+						if (cellDataMap[j] == -1 && j != 1)
+							continue;
+						if (j == 0)
+						{
+							val = stockData[2+offset];
+							val = val.substring(0, 7);
+						}
+						else if (j == 1 || j == 2)
+						{					
+							if (stockData[2+offset] == 0 || stockData[1+offset] == 0)
+								val = 0;
+							else
+							{
+								val = stockData[2+offset] - stockData[1+offset];
+								if (j == 1)
+								{
+									if (val > 0)
+										val += 0.000001;  
+									else if (val < 0)
+										val -= 0.000001;
+								}
+								else
+								{
+									val = val * 100.0 / stockData[1+offset];
+
+									if (val > 0)
+										val += 0.005;
+									else if (val < 0)
+										val -= 0.005;
+								}
+							}
+							var color;
+							if (val == 0)
+							{
+								color = "#00ffff";
+								val = "0.00";
+							}
+							else if (val < 0)
+							{
+								color = decreaseColor;
+								val = val.toString().substring(1, 6) + "↓";
+							}
+							else
+							{
+								color = increaseColor;
+								val = val.toString().substring(0, 5) + "↑";                  
+							}
+							index = val.indexOf(".");
+
+							if (j == 1)
+							{
+								if (index >= 0)
+								{
+									if (val.charAt( index + 3 ) == "0")
+										val = val.substring(0, index + 3)
+									else
+										val = val.substring(0, index + 4);
+								}
+								row.style.color = color;  
+							}
+							else if (j == 2)
+							{
+								if (index >= 0)
+									val = val.substring(0, index + 3);
+								val += "%";
+							}
+						}
+						else if (j == 3 || j == 4)
+						{
+							val = stockData[4+j+offset];
+
+							if (j==3 && val != 0 
+								&& sinaStockList[i-1] >= "sh000000" && sinaStockList[i-1] <= "sh000020")
+							{
+								val += "00";
+							}
+							if (val.indexOf(".") >= 0)
+								val = val.substring(0, val.indexOf("."));
+
+							if (val.length > 9)
+								val = divideNumber( val, 8, 5 ) + "亿";                  
+							else if ( val.length > 7 )
+								val = divideNumber( val, 4, 5 ) + "万"; 
+						}
+
+						if (cellDataMap[j] == -1)
+							continue;
+
+						var cell = row.cells[cellDataMap[j]];
+						val = "<nobr>" + val.toUpperCase() + "</nobr>";
+
+						if (val != cell.innerHTML.toUpperCase())
+							cell.innerHTML = "<b>" + val + "</b>";
+					}
+				}
+
+				dataInitialed = true;
+				setTimeout(clearBold, 300);
+
+				_DS_AdjustIFrameHeight();
+			}
+
+			function getStockList()
+			{				
+				return prefs.getArray("mystocks");	
+			}
+
+			function checkStockSymbol(stockSymbol)
+			{
+				var sinaSymbol = stockSymbol.toLowerCase();   
+				var shanghaiIndex = true;
+				
+				switch (sinaSymbol)
+				{
+					case "1a0001":
+						sinaSymbol = "sh000001";
+						break;
+					case "1a0002":
+						sinaSymbol = "sh000002";
+						break;
+					case "1a0003":
+						sinaSymbol = "sh000003";
+						break;
+					case "1b0001":
+						sinaSymbol = "sh000004";
+						break;
+					case "1b0002":
+						sinaSymbol = "sh000005";
+						break;
+					case "1b0004":
+						sinaSymbol = "sh000006";
+						break;
+					case "1b0005":
+						sinaSymbol = "sh000007";
+						break;
+					case "1b0006":
+						sinaSymbol = "sh000008";
+						break;
+					case "1b0007":
+						sinaSymbol = "sh000010";
+						break;
+					case "1b0008":
+						sinaSymbol = "sh000011";
+						break;
+					case "1b0009":
+						sinaSymbol = "sh000012";
+						break;
+					default:
+						shanghaiIndex = false;				
+				}
+
+				var market = sinaSymbol.substring(0, 2);          
+				if (market == "sz" || market == "sh")
+					sinaSymbol = sinaSymbol.substring(2, sinaSymbol.length);
+				else
+					market = "";
+
+				if (sinaSymbol.length != 6)
+					return "";
+
+				for (var j = 0; j < sinaSymbol.length; j ++)
+				{
+					var ch = sinaSymbol.charAt(j);
+					if (ch < '0' || ch > '9')
+						return "";
+				}
+
+				if (shanghaiIndex
+					|| sinaSymbol >= "500000" && sinaSymbol <= "999999" 
+					|| sinaSymbol >= "120000" && sinaSymbol < "130000" 
+					|| sinaSymbol >= "010000" && sinaSymbol < "020000")
+				{
+					if (market == "")
+						market = "sh";
+					if (market != "sh")
+						return "";
+				}
+				else if (sinaSymbol >= "000000" && sinaSymbol < "400000")
+				{
+					if ( market == "" )
+						market = "sz";
+					if ( market != "sz" )
+						return "";
+				}
+				else
+					return "";
+
+				return market+sinaSymbol;
+			}
+
+			function setRefreshInterval()
+			{
+			  var RefreshInterval = 15;
+			  if (RefreshInterval == null)
+				RefreshInterval = 30;
+			  
+			  if (RefreshInterval < 2)
+				RefreshInterval = 2;
+				
+			  setInterval(getPrice, RefreshInterval * 1000);
+			}
+
+			function clearBold()
+			{
+				var table = _gel("pricetable");
+
+				for ( var i = 1; i < table.rows.length; i ++ )
+				{
+					var row = table.rows[i];				
+					for ( var j = 1; j < row.cells.length; j ++ )
+					{
+						var cell = row.cells[j];
+						html = cell.innerHTML.toUpperCase();
+
+						if ( html.indexOf( "<B>" ) == 0 )
+							cell.innerHTML = html.substring( 3, html.length-4 );
+					}
+				}
+			}
+
+			function divideNumber(input, divide, precision)
+			{			 
+			  if (input.length >= divide + precision)
+			  {
+				
+				var char = input.charAt( input.length - divide );
+				input = input.substring( 0, input.length - divide );
+				if ( char >= 5 )
+				  input = parseInt(input) + 1;
+				  
+				return input;
+			  }
+			  else
+			  {
+				divide -= input.length - precision;
+				
+				var char = input.charAt( precision );          
+				input = input.substring( 0, precision );
+				if( char >= 5 )
+				  input = parseInt(input) + 1;            
+			  }
+			  
+			  var div = 1.0;
+			  var postfix = "";
+			  for ( var i = 0; i < divide; i ++ )
+			  {
+				div *= 10.0;
+				postfix += "0";
+			  }
+				
+			  input = (input / div ).toString();			  
+			  input += postfix.substring( 0, postfix.length - (input.length - input.indexOf(".") - 1 ) );
+			  if ( input.indexOf( "." ) == precision + 1)
+				input = input.substring( 0, precision );
+			  else
+				input = input.substring( 0, precision + 1 );
+				
+			  return input;
+			}
+
+			var prefs = new _DS_Prefs(__MODULE_ID__);
+			var stockList = getStockList();
+			var dataInitialed = false;
+			var sourceURL = getSourceURL();
+			var cellDataMap = new Array(1, 2, 3, 4);
+			var cellValue = new Array("0.00", "0.00", "0.00%", "0");
+			var increaseColor = "red";
+			var decreaseColor = "green";
+			var sinaStockList;
+			var table = _gel("pricetable");
+
+			createPriceTable();
+			getPrice();
+			updateTable();
+			setRefreshInterval();
+		</script>
+	]]>
+    </Content>
+</Module>

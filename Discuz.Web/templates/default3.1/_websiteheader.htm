@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{meta}
+<title>{pagetitle} {config.seotitle} - {config.webtitle} - Powered by Discuz!NT</title>
+<meta name="generator" content="Discuz!NT {forumversion}" />
+<meta name="author" content="Discuz!NT Team and Comsenz UI Team" />
+<meta name="copyright" content="2001-2010 Comsenz Inc." />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<link rel="icon" href="{forumurl}favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="{forumurl}favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="{cssdir}/float.css" type="text/css" media="all"  />
+<link rel="stylesheet" href="{cssdir}/website.css" type="text/css" media="all"  />
+{link}
+<script type="text/javascript"  src="{jsdir}/template_report.js"></script>
+<script type="text/javascript" src="{jsdir}/template_utils.js"></script>
+<script type="text/javascript" src="{jsdir}/common.js"></script>
+{script}
+<script type="text/javascript">
+	var aspxrewrite = {config.aspxrewrite};
+	var IMGDIR = '{imagedir}';
+    var disallowfloat = '{config.disallowfloatwin}';
+	var rooturl="{rooturl}";
+</script>
+</head>
+<body onkeydown="if(event.keyCode==27) return false;">
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<div id="submenu">
+	<div class="wrap s_clear">
+<%if {usergroupinfo.allowsearch}>0%>
+	<%template _quicksearch%>
+<%/if%>
+	<span class="avataonline right">
+		<%if {userid}==-1%>
+		<a href="{forumurl}login.aspx" onClick="floatwin('open_login', this.href, 600, 410);return false;">[登录]</a>
+		<a href="{forumurl}register.aspx" onClick="floatwin('open_register', this.href, 600, 410);return false;">[注册]</a
+		><%else%>
+		欢迎<a class="drop" id="viewpro" onMouseOver="showMenu(this.id)">{username}</a>
+		<span class="pipe">|</span>
+		<a href="{forumurl}logout.aspx?userkey={userkey}">退出</a>
+		<span class="pipe">|</span>
+		<%/if%>
+	</span>
+<%if {userid}!=-1%>
+	<a href="{forumurl}usercpinbox.aspx" class="inbox" title="{oluserinfo.newpms}条新短消息">收件箱</a>
+	<%if {oluserinfo.newpms}>0%><cite>{oluserinfo.newpms}</cite><%/if%>
+	<span class="pipe">|</span>
+	<%if {oluserinfo.newnotices}>0%>
+	<a href="{forumurl}usercpnotice.aspx?filter=all" class="notice">通知</a><cite>{oluserinfo.newnotices}</cite>
+	<span class="pipe">|</span>
+	<%/if%>
+	<a href="{forumurl}usercp.aspx" class="usercp">用户中心</a>
+	<span class="pipe">|</span>
+	<%if {useradminid}==1%>
+	<a href="{forumurl}admin/index.aspx" target="_blank" class="systemmanage">系统设置</a>
+	<span class="pipe">|</span>
+	<%/if%>
+	<a href="javascript:void(0);" class="drop" id="mymenu" onMouseOver="showMenu(this.id, false);" >我的</a>
+	<ul class="popupmenu_popup headermenu_popup" id="mymenu_menu" style="display: none">
+		<li><a href="{forumurl}mytopics.aspx">我的主题</a></li>
+		<li><a href="{forumurl}myposts.aspx">我的帖子</a></li>
+		<li><a href="{forumurl}search.aspx?posterid=current&type=digest">我的精华</a></li>
+		<li><a href="{forumurl}myattachment.aspx">我的附件</a></li>
+		<li><a href="{forumurl}usercpsubscribe.aspx">我的收藏</a></li>
+    <%if {config.Enablespace}==1%>
+		<li><a href="{forumurl}space/">我的空间</a></li>
+    <%/if%>
+    <%if {config.Enablealbum}==1%>
+		<li><a href="{forumurl}showalbumlist.aspx?uid={userid}">我的相册</a></li>
+    <%/if%>
+    <%if {config.Enablemall}==1%>
+		<li><a href="{forumurl}usercpmygoods.aspx">我的商品</a></li>
+    <%/if%>
+    </ul>
+
+<%/if%>
+	</div>
+</div>
+<div id="header">
+	<div class="wrap s_clear">
+		<h2><a href="{forumurl}index.aspx" title="Discuz!NT|BBS|论坛"><img src="{imagedir}/logo.gif" alt="Discuz!NT|BBS|论坛"/></a></h2>
+	<%if {headerad}!=""%>
+		<div id="ad_headerbanner">{headerad}</div>
+	<%/if%>
+		<ul id="menu">
+			{mainnavigation}
+		</ul>
+	</div>
+</div>
+<div id="nav">
+	<div class="wrap s_clear">
+		<%if {announcementcount}>0%>
+		<div onmouseout="annstop = 0" onmouseover="annstop = 1" id="announcement" class="right">
+			<div id="announcementbody">
+				<ul>		
+				<%loop announcement announcementlist%>
+					<li><a href="announcement.aspx#{announcement[id]}">{announcement[title]}<em>{announcement[starttime]}</em></a></li>
+				<%/loop%>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript" src="{jsdir}/template_announcement.js"></script>
+		<%/if%>
+		<a href="{forumurl}forumindex.aspx" class="title">{config.forumtitle}</a>
+    </div>
+</div>

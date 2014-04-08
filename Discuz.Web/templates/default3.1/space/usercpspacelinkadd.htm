@@ -1,0 +1,71 @@
+﻿<%inherits "Discuz.Space.Pages.usercpspacelinkadd"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>增加友情链接</strong>
+	</div>
+</div>
+<script type="text/javascript">
+	function validateSubmit()
+	{
+		$ = document.getElementById;
+		if($("linktitle").value == "")
+		{
+			alert("没有输入链接文字！");
+			$("linktitle").focus();
+			return false;
+		}
+		if($("linkurl").value == "")
+		{
+			alert("没有输入链接地址！");
+			$("linkurl").focus();
+			return false;
+		}
+		if($("linkdescription").value.length > 200)
+		{
+			alert('链接描述长度最大为200字'); 
+			return false;
+		}
+	}
+</script>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>增加友情链接</h1>
+		<%template _spacemenu%>	
+	<%if page_err==0%>
+		<%if ispost%>
+			<%template _usercpmsgbox%>
+		<%else%>
+		<form id="postpm" name="postpm" method="post" action="">
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个人资料">
+			<tbody>
+			<tr>
+				<th><label for="linktitle">链接文字</label></th>
+				<td><input name="linktitle" type="text" id="linktitle" value="" size="40" maxlength="50" class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="linkurl">链接地址</label></th>
+				<td><input name="linkurl" type="text" id="linkurl" value="" size="40" maxlength="255" class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="description">描述</label></th>
+				<td><textarea name="description" cols="50" rows="6" id="linkdescription" class="txtarea"></textarea></td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="Submit" value="确定" onclick="return validateSubmit();" ID="Submit1"/></td>
+			</tr>
+			</tbody>
+			</table>
+		</form>
+		<%/if%>
+	<%else%>
+		<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Skin>
+	<Category name="基本">
+		<Gadget name="友情链接" url="builtin_linkmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="数据统计" url="builtin_staticmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+	</Category>
+	<Category name="论坛">
+		<Gadget name="个人信息" url="builtin_userinfomodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="最新主题" url="builtin_showtopicmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+	</Category>
+	<Category name="日志">
+		<Gadget name="日历" url="builtin_calendarmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="用户菜单" url="builtin_leftmenumodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="最新评论" url="builtin_newcommentmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="最新日志列表" url="builtin_newpostmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+		<Gadget name="我的日志" url="builtin_postlistmodule.xml" snapshot="modules/builtin_content/weather-thm.png"/>
+	</Category>
+	<Category name="图片">
+		<Gadget name="测试" url="达到"></Gadget>
+		<Gadget name="" url=""></Gadget>
+	</Category>
+	<Category name="工具">
+		<Gadget name="" url=""></Gadget>
+		<Gadget name="" url=""></Gadget>
+	</Category>
+	<Category name="订阅">
+		<Gadget name="" url=""></Gadget>
+		<Gadget name="" url=""></Gadget>
+	</Category>
+	<Category name="其他">
+	</Category>
+</Skin>

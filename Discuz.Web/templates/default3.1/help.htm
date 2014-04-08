@@ -1,0 +1,85 @@
+﻿<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+	<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>帮助</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear help" id="wrap">
+<%if page_err==0%>
+    <%if {showversion}==1%>
+		<div class="side">
+		<h2>Discuz!NT 版本信息</h2>
+		<div class="sideinner">
+			<ul class="tabs">
+				<li>版本信息</li>
+			</ul>
+		</div>
+		</div>
+		<div class="cpmain">
+		<div class="cpcontent">
+			<h1>Discuz!NT 版本信息</h1>   
+			<ul style="margin: 8px 16px;">
+				<li>Discuz.Aggregation.dll : {dllver_discuzaggregation}</li>
+				<li>Discuz.Cache.dll : {dllver_discuzcache}</li>
+				<li>Discuz.Common.dll : {dllver_discuzcommon}</li>
+				<li>Discuz.Config.dll : {dllver_discuzconfig}</li>
+				<li>Discuz.Control.dll : {dllver_discuzcontrol}</li>
+				<li>Discuz.Data.dll : {dllver_discuzdata}</li>
+				<li>Discuz.Data.SqlServer.dll : {dllver_discuzdatasqlserver}</li>
+				<li>Discuz.Data.Access.dll : {dllver_discuzdataaccess}</li>
+				<li>Discuz.Data.MySql.dll : {dllver_discuzdatamysql}</li>
+				<li>Discuz.Entity.dll : {dllver_discuzentity}</li>
+				<li>Discuz.Event.dll : {dllver_discuzevent}</li>
+				<li>Discuz.Forum.dll : {dllver_discuzforum}</li>
+				<li>Discuz.Plugin.dll : {dllver_discuzplugin}</li>
+				<li>Discuz.Plugin.Mail.SysMail.dll : {dllver_discuzpluginmailsysmail}</li>
+				<li>Discuz.Plugin.PasswordMode.dll : {dllver_discuzpluginpasswordmode}</li>
+				<li>Discuz.Plugin.Preview.Jpg.dll : {dllver_discuzpluginpreviewjpg}</li>
+				<li>Discuz.Plugin.Spread.dll : {dllver_discuzpluginspread}</li>
+				<li>Discuz.Space.dll : {dllver_discuzspace}</li>
+				<li>Discuz.Web.Admin.dll : {dllver_discuzwebadmin}</li>
+				<li>Discuz.Web.dll : {dllver_discuzweb}</li>
+				<li>Discuz.Web.Services.dll : {dllver_discuzwebservice}</li>
+				<li>数据库类型 : {dbtype}</li>
+				<li>产品名称 : {assemblyproductname}</li>
+				<li>版权信息 : {Assemblycopyright}</li>
+			</ul>
+		</div>
+		</div>
+	<%else%>
+		<div class="side">
+		<h2>在线帮助</h2>
+		<div class="sideinner">
+			<ul class="tabs">
+		<%loop (HelpInfo) help helplist%>
+		<%if {help.pid}==0%>
+			<li><strong><a href="?hid={help.id}">{help.title}</a></strong></li>
+		<%else%>
+			<li><a href="#h_{help.pid}_{help.id}" style="padding-left: 8px;">{help.title}</a></li>
+		<%/if%>
+		<%/loop%>
+			</ul>
+		</div>
+		</div>
+		<div class="cpmain">
+		<div class="cpcontent">
+		<%loop (HelpInfo) helpcontent helplist%>
+		<%if {helpcontent.pid}==0%>
+			<h3 class="lightlink">{helpcontent.title}</h3>
+			<hr class="solidline"/>
+		<%else%>
+			<ul>
+				<li class="helpsubtitle"><a name="h_{helpcontent.pid}_{helpcontent.id}"></a>{helpcontent.title}</li>
+				<li>{helpcontent.message}</li>
+			</ul>
+		<%/if%>
+		<%/loop%>
+		</div>
+		</div>
+	<%/if%>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+</div>
+<%template _copyright%>
+<%template _footer%>

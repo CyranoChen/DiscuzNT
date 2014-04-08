@@ -1,0 +1,127 @@
+﻿<%if {topic.Special}==1%>
+<!--投票区开始-->
+<div class="pollpanel">
+		<h4>
+		投票：<strong>{topic.title}</strong>
+		<%if {pollinfo.multiple}==1%>
+		- 多选(最多可选{pollinfo.maxchoices}项)
+		<%/if%>
+		- 截止时间：{pollinfo.expiration}
+		</h4>
+		<table border="0" cellpadding="0" cellspacing="0" summary="pollpanel">
+		<%loop polloption Polls.GetPollOptionList(topicid)%>
+		<tbody>
+		<tr>
+			<td class="selector">
+			<%if {allowvote}%>
+				<%if {pollinfo.multiple}==1%>
+					<input type="checkbox" name="pollitemid" value="{polloption[polloptionid]}" onclick='checkbox(this)'/>
+				<%else%>
+					<input type="radio" name="pollitemid"  value="{polloption[polloptionid]}"  />
+				<%/if%>
+			<%/if%>
+			</td>
+			<td colspan="2">
+				{polloption[_id]}. {polloption[name]}
+				 <%if {showpollresult}%><%if {useradminid}==1 && {polloption[value]}!="0"%> 
+				( <a href="javascript:void(0);" onclick="javascript:displayvoter($('voterlist{polloption[polloptionid]}'));">该项投票人</a> )
+				<%/if%>
+				<%/if%>
+			</td>
+		</tr>
+		<%if {showpollresult}%>
+		<tr>
+			<td> </td>
+			<td class="optionvessel">
+				<div class="optionbar">
+				<%set (int){styleid}={polloption[_id]} % 10%>
+					<div class="polloptionbar <%if {polloption[value]}!="0"%>pollcolor{styleid}<%/if%>" style="width:{polloption[percentwidth]}px"></div>
+				</div>
+			</td>
+			<td>
+				<strong>{polloption[value]}</strong>票 / {polloption[percent]}
+			</td>
+		</tr>
+		<tr id="voterlist{polloption[polloptionid]}" style="display:none;">
+			<td colspan="3">
+			  <%if {useradminid}==1 && {polloption[value]}!="0"%>       
+				 {polloption[votername]}
+			  <%/if%>
+			</td>
+		</tr>
+		<%/if%>
+		</tbody>
+		<%/loop%>
+		<script language="javascript">
+		var max_obj = {pollinfo.maxchoices};
+	    var p = 0;
+	    
+	    function checkbox(obj) {
+	        if(obj.checked) {
+		        p++;
+		        for (var i = 0; i < $('postsform').elements.length; i++) {
+			        var e = $('postsform').elements[i];
+			        if(p == max_obj) {
+				        if(e.name.match('pollitemid') && !e.checked) {
+					        e.disabled = true;
+				        }
+			        }
+		        }
+	        } else {
+		        p--;
+		        for (var i = 0; i < $('postsform').elements.length; i++) {
+			        var e = $('postsform').elements[i];
+			        if(e.name.match('pollitemid') && e.disabled) {
+				        e.disabled = false;
+			        }
+		        }
+	        }
+        }	   
+         
+	    function displayvoter(objid) {
+	        if(objid.style.display == 'block') {
+	           objid.style.display = 'none';
+	        }
+	        else {
+	           objid.style.display = 'block';
+	        }
+	    }	    
+	    </script>
+		<tr>
+			<td colspan="2">
+				<%if {usergroupinfo.allowvote}==1%>
+					<%if {allowvote}%>
+						<button  name="Submit" onclick="this.form.action='poll.aspx?topicid={topicid}';this.form.submit();" >马上投票</button>
+					<%else%>							
+						提示: 您已经投过票或者投票已经过期
+					<%/if%>			
+				<%else%>
+					抱歉,您所在的用户组没有参与投票的权限,请注册或登录!
+				<%/if%>
+			 </td>
+		</tr>
+		<%if {showpollresult}&&{config.silverlight}==1%>
+		<tbody>
+			<tr>
+			<td colspan="2"><iframe src="silverlight/piechart/index.html?topicid={topicid}&bg=FFFFFF" allowtransparency="yes" width="95%" height="425" border="0" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" ></iframe>
+			</td>
+			</tr>
+		</tbody>
+		<%/if%>
+		<%if {useradminid}==1 && {voters}!=""%>   
+		<tbody>
+		<tr>
+			<td colspan="2">
+				<button type="button" onclick="expandoptions('ticketvoterlist');" />查看投票用户名单>></button>
+			</td>
+		</tr>
+		</tbody>
+		<tbody id="ticketvoterlist" style="display:none;">
+		<tr>
+			<td colspan="2">{voters}</td>
+		</tr>
+		</tbody>
+		<%/if%>
+		</table>
+</div>
+<%/if%>

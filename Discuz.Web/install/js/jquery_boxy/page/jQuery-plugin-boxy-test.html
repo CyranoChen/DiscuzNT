@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="description" content="jQuery boxy弹出层对话框插件中文测试页面" />
+<meta name="description" content="张鑫旭web前端学习之jquery" />
+<meta name="keywords" content="张鑫旭,鑫空间-鑫生活,博客,web前端,css,demo页面,学习,jQuery,插件" />
+<meta name="author" content="张鑫旭,zhangxixnu" />
+<title>jQuery boxy弹出层对话框插件中文测试页面</title>
+<link rel="shortcut icon" href="http://www.zhangxinxu.com/zxx_ico.png" />
+<link rel="stylesheet" href="../css/common.css?ver=20091102" type="text/css" />
+<link rel="stylesheet" href="../css/boxy.css?ver=20091102" type="text/css" />
+<script type="text/javascript" src="../js/jquery-1.2.6.pack.js?ver=20091102"></script>
+<script type="text/javascript" src="../js/jquery.boxy.js?ver=20091101"></script>
+<style type="text/css">
+.zxx_test_list p{padding:7px 0 3px; font-size:0.95em;}
+.zxx_test_list p strong,.f8{font-size:0.9em;}
+.zxx_ul_circle{padding-left:20px; padding-bottom:10px;}
+.zxx_ul_circle li{list-style-type:disc; list-style-position:outside; padding-top:5px; font-size:0.9em;}
+.font{font-style:italic;}
+</style>
+</head>
+
+<body>
+<div class="zxx_out_box">
+    <div class="zxx_in_box">
+        <div class="zxx_header">
+            <a href="http://www.zhangxinxu.com/">
+                <img class="l" src="http://www.zhangxinxu.com/wordpress/wp-content/themes/default/images/index_logo.gif" />
+            </a>
+            <span class="zxx_author_time">by zhangxinxu 2009-11-02 19:11</span>
+        </div>
+        <h3 class="zxx_title">jQuery boxy弹出层对话框插件中文测试页面</h3>
+        <div class="zxx_main_con">
+			<div class="zxx_test_list">
+            	<div class="fix"><strong class="l">诊断</strong><a href="jQuery-plugin-boxy.html" class="r f8">« 返回插件讲解主页</a></div>
+                <div class="f8 mt5">还是使用Boxy.get(this)...</div>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#zhangxinxu" id="diagnostics">显示诊断信息</a></li>
+                </ul>
+            </div>  
+            <div class="zxx_test_list">
+            	<strong>Ajax</strong>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#zhangxinxu" onclick="Boxy.load('test.html');">测试1</a></li>
+                    <li><a href="#zhangxinxu" onclick="Boxy.load('test2.html',{cache:true});">测试2 - 缓存可用</a></li>
+                    <li><a href="#zhangxinxu" onclick="Boxy.load('test3.html',{filter:'#inner'});">测试3 - 筛选过滤</a></li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>执行器</strong>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#zhangxinxu" id="actuator">创建boxy绑定到下面的链接</a></li>
+                    <li><a href="#zhangxinxu" id="actuator-toggle">触发绑定的boxy</a></li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>设置内容</strong>
+                <ul class="zxx_ul_circle">
+                	<li>
+                    	<a href="#zhangxinxu" id="set-content-open">打开一个boxy</a>
+                        |
+                        <a href="#zhangxinxu" id="set-content">设置内容</a><br />
+                        <span class="g6 dib mt5">(鼠标经过行为应该在内容设置后可以继续工作)</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>回调函数</strong>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#zhangxinxu" id="after-hide">隐藏后</a></li>
+                    <li><a href="#zhangxinxu" id="before-unload">卸载前</a> | <a href="#zhangxinxu" id="before-unload-no-auto-unload">卸载前</a>（没有autounload - 不会执行）</li>
+                    <li><a href="#zhangxinxu" id="after-drop">放下后</a></li>
+                    <li><a href="#zhangxinxu" id="after-show">显示后</a></li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>助手</strong>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#jquery" onclick='Boxy.ask("你现在的心情是？", ["开心", "郁闷", "无聊"], function(r) { alert(r); });'>问题，响应数组</a></li>
+                    <li><a href="#jquery" onclick='Boxy.ask("请1秒种回答，林志玲是不是你的女朋友？", {"你竟然选择了是！请问你是？":"是", "你选择了不是。":"不是"}, function(r) { alert(r); });'>问题，响应对象</a></li>
+                    <li><a href="#jquery" onclick='Boxy.alert("我弹，我弹，我弹弹弹！", function() { alert("弹完了！"); });'>弹出</a></li>
+                    <li><a href="#jquery" onclick='Boxy.confirm("确认还是不确认？", function() { alert("已经确认，哈哈！"); });'>确认</a></li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>z-index</strong>
+                <div class="mt5 f8">点击下面的链接打开的对话框上的任意位置，可以把他们送到最前端。</div>
+                <ul class="zxx_ul_circle">
+                	<li>
+                    	<a href="#jquery" id="z-index">单击使其前端显示</a>
+                        |
+                        <a href="#jquery" id="z-index-latest">让最新的前端显示</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">	
+            	<strong>模态</strong>
+                <div class="mt5 f8">改变窗口的大小，确保黑色的底层可以扩张。</div>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#plugin" id="modal">打开一个模态对话框</a></li>
+                    <li><a href="#plugin" onclick="alert(Boxy.isModalVisible()); return false;">检测是否有可见的模式对话框</a></li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong>显示</strong>
+                <ul class="zxx_ul_circle">
+                	<li><a href="#plugin" id="no-show">创建但不显示</a> | <a href="#plugin" id="no-show-now">立即显示</a></li>
+                </ul>
+            </div>
+            <div>
+            	<script type="text/javascript">
+					var diagnose = function(boxy) {
+						alert("位置: " + boxy.getPosition() +
+							  "\n大小: " + boxy.getSize() +
+							  "\n内容区域大小: " + boxy.getContentSize() +
+							  "\n中心点: " + boxy.getCenter());
+					};
+					$(function() {
+					  Boxy.DEFAULTS.title = "标题";
+					  // Diagnostics
+					  $("#diagnostics").click(function() {
+						  new Boxy("<div><a href='#nogo' onclick='diagnose(Boxy.get(this));'>显示诊断信息</a></div>");
+						  return false;
+					  });
+					  
+					  // Set content
+					  var setContent = null;
+					  $("#set-content-open").click(function() {
+						  setContent = new Boxy(
+							"<div style='background-color:red'>这里是显示的内容</div>", {
+							  behaviours: function(c) {
+								c.hover(function() {
+								  $(this).css('backgroundColor', 'green');
+								}, function() {
+								  $(this).css('backgroundColor', 'pink');
+								});
+							  }
+							}
+						  );
+						  return false;
+					  });
+					  $("#set-content").click(function() {
+						  setContent.setContent("<div style='background-color:blue'>这里是新添加的显示内容</div>");
+						  return false;
+					  });
+					  
+					  // Callbacks
+					  $("#after-hide").click(function() {
+						  new Boxy("<div>测试内容</div>", {
+							afterHide: function() {
+							  alert("隐藏后回调");
+							}
+						  });
+						  return false;
+					  });	  
+					  $("#before-unload").click(function() {
+						  new Boxy("<div>测试内容</div>", {
+							beforeUnload: function() {
+							  alert("卸载前调用");
+							},
+							unloadOnHide: true
+						  });
+						  return false;
+					  });  
+					  $("#before-unload-no-auto-unload").click(function() {
+						  new Boxy("<div>测试内容</div>", {
+							beforeUnload: function() {
+							  alert("这个不应该看见的");
+							},
+							unloadOnHide: false
+						  });
+						  return false;
+					  });		  
+					  $("#after-drop").click(function() {
+						  new Boxy("<div>测试内容</div>", {
+							afterDrop: function() {
+							  alert("放下后: " + this.getPosition());
+							},
+							draggable: true
+						  });
+						  return false;
+					  });	  
+					  $("#after-show").click(function() {
+						  new Boxy("<div>测试内容</div>", {
+							afterShow: function() {
+							  alert("显示后: " + this.getPosition());
+							}
+						  });
+						  return false;
+					  });
+					  
+					  // Z-index
+					  var zIndex = null;
+					  $("#z-index").click(function() {
+						  zIndex = new Boxy(
+							"<div>测试内容</div>", { clickToFront: true }
+						  );
+						  return false;
+					  });	  
+					  $("#z-index-latest").click(function() {
+						  zIndex.toTop();
+						  return false;
+					  });
+					  
+					  // Modals
+					  function newModal() {
+						  new Boxy("<div><a href='#'>打开一个堆叠的模态</a> | <a href='#' onclick='alert(Boxy.isModalVisible()); return false;'>测试模态对话框</a></div>", {
+							modal: true, behaviours: function(c) {
+							  c.find("a:first").click(function() {
+								newModal();
+							  });
+							}
+						  });
+					  };
+					  
+					  $("#modal").click(newModal);
+					  
+					  // No-show  
+					  var noShow;
+					  $("#no-show").click(function() {
+						  noShow = new Boxy("<div>显示的内容</div>", {show: false});
+						  return false;
+					  });					  
+					  $("#no-show-now").click(function() {
+						  noShow.show();
+						  return false;
+					  });
+					  
+					  // Actuator		  
+					  $("#actuator").click(function() {
+						  var ele = $("#actuator-toggle")[0];
+						  new Boxy("<div>测试内容</div>", {actuator: ele, show: false});
+						  return false;
+					  });
+					  $("#actuator-toggle").click(function() {
+						  Boxy.linkedTo(this).toggle();
+						  return false;
+					  });	  
+					});
+				 </script>
+            </div>
+            <div class="zxx_test_list">
+            	<div class="mb10"><strong>结语</strong></div>
+                <ul class="zxx_ul_circle">
+                	<li>全文由我（张鑫旭）翻译整理，时间仓促，难免在翻译或编辑时出现错误或不到位之处，欢迎指正。您可以通过邮箱iamzhangxinxu#qq.com联系我。</li>
+                    <li>此插件js部分以及css部分自己略微修改，一些英文中文化，添加一些class便于样式控制等。这里的源文件为我修改后的版本。</li>
+                </ul>
+                
+            </div>       
+        </div>
+        <div class="zxx_footer">
+            Copyright &copy; by <a href="http://www.zhangxinxu.com/">张鑫旭-鑫空间-鑫生活</a>
+            |
+            <a href="http://www.zhangxinxu.com/wordpress/?p=318">该篇相关文章</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

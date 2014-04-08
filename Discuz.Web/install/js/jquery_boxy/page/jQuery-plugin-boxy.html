@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="description" content="jQuery boxy弹出层对话框插件中文演示及讲解" />
+<meta name="description" content="张鑫旭web前端学习之jquery" />
+<meta name="keywords" content="张鑫旭,鑫空间-鑫生活,博客,web前端,css,demo页面,学习,jQuery,插件" />
+<meta name="author" content="张鑫旭,zhangxixnu" />
+<title>jQuery boxy弹出层对话框插件中文演示及讲解</title>
+<link rel="shortcut icon" href="http://www.zhangxinxu.com/zxx_ico.png" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" />
+<link rel="stylesheet" href="../css/boxy.css" type="text/css" />
+<script type="text/javascript" src="../js/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="../js/jquery.boxy.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".boxy").boxy();
+});
+</script>
+<style type="text/css">
+.zxx_test_list p{padding:7px 0 3px; font-size:0.95em;}
+.zxx_test_list p strong,.f8{font-size:0.9em;}
+.zxx_ul_circle{padding-left:20px; padding-bottom:10px;}
+.zxx_ul_circle li{list-style-type:disc; list-style-position:outside; padding-top:5px; font-size:0.9em;}
+#form{display:inline; margin:0 0 0 20px; padding:0;}
+.zxx_ul_table{display:inline-block; *display:inline; border:1px solid #828da1; margin-top:-1px; font-size:0.9em; overflow:hidden; zoom:1;}
+.zxx_ul_table li{padding:2px 5px 2px 10px; float:left;}
+.zxx_ul_table.title li{background:#CBE0FF;}
+.zxx_ul_table .w1{width:90px;}
+.zxx_ul_table .w2{width:250px; border-left:1px solid #828da1; border-right:1px solid #828da1;}
+.zxx_ul_table .w3{width:120px;}
+.font{font-style:italic;}
+.zxx_left_menu{position:fixed!important; position:absolute; left:3px; top:80px; width:13%; padding:10px 6px; background:white; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc;}
+.zxx_left_menu li{border-bottom:1px dashed #cccccc; font-size:12.9px;}
+.zxx_left_menu li a{display:block; padding:6px 0 4px 5px; text-decoration:none;}
+.zxx_left_menu li a:hover{background:#eeeeee; color:#34538b;}
+</style>
+</head>
+
+<body>
+<ul class="zxx_left_menu">
+    <li><strong class="ml5 dib mb5">页面导航</strong></li>
+    <li><a href="#to_link1">使用该jQuery插件</a></li>
+    <li><a href="#to_link2">手动创建实例</a></li>
+    <li><a href="#to_link3">API(应用编程接口) </a></li>
+    <li><a href="#to_link4">完整的构造函数选项列表 </a></li>
+    <li><a href="#to_link5">CSS选择器 </a></li>
+    <li class="mt20"><a href="jQuery-plugin-boxy-test.html">测试页面(另外页面)</a></li>
+</ul>
+
+<div class="zxx_out_box">
+    <div class="zxx_in_box">
+        <div class="zxx_header">
+            <a href="http://www.zhangxinxu.com/">
+                <img class="l" src="http://www.zhangxinxu.com/wordpress/wp-content/themes/default/images/index_logo.gif" />
+            </a>
+            <span class="zxx_author_time">by zhangxinxu 2009-11-01 20:27</span>
+        </div>
+        <h3 class="zxx_title">jQuery boxy弹出层插件中文演示及讲解</h3>
+        <div class="zxx_main_con">
+			<div class="zxx_test_list">
+            	<p class="tr mr20"><a href="jQuery-plugin-boxy-test.html">测试页面 »</a></p>
+            	<strong id="to_link1">使用该jQuery插件</strong>
+                <p>要想使用该jQuery插件，需要把$(selector).boxy();放在document.ready中。使用合适的选择器表达式替换这里的"selector"，例如："a[rel=boxy],form.with-confirmation"。这会给匹配的元素附加一些行为，如下：</p>
+                <ul class="zxx_ul_circle dot">
+                	<li>一个href属性中如果锚点包含#，则此锚点相对应的ID的DOM元素的内容就会被添加到boxy对话框中。</li>
+                    <li>如果href锚点内容为其他一些东西，则会试图使用Ajax载入其对应的内容。理想情况下，我们有相同的起源检查和委托对框架的跨域请求。这将会在下面展示。</li>
+                    <li>表单上会显示一个提交模式的确认消息。</li>
+                    <li>其他的元素将会被忽略</li>
+                </ul>
+                <p><strong>试试下面的演示：</strong></p>
+                <p>1.<a href="#foobar" title="展现href锚点对应ID内容" class="boxy">锚点#对应ID的内容(div#foobar)</a></p>
+                <div id="foobar" style="padding:15px; display:none; background-color:#cad5eb; font-size:2em; color:#000000; font-weight:bold;">这是一段ID为foobar的div标签内的文字</div>
+                <div class="mt10 f8">对应的ID为fobar的div内容为：</div>
+                <div class="zxx_code">
+                	<xmp><div id="foobar" style="padding:15px; display:none; background-color:#cad5eb; font-size:2em; color:#000000; font-weight:bold;">这是一段ID为foobar的div标签内的文字</div></xmp>
+                </div>
+                <p>2.<a href="test.html" title="加载页面" class="boxy">远程内容(加载同文件夹下的test.html)</a></p>
+                <div class="mt10 f8">test.html页面内全部内容为：</div>
+                <div class="zxx_code">
+                	<xmp><div style="padding:15px; font:2em bold Verdana, Geneva, sans-serif">这是名为test的html页面中div内的文字内容</div></xmp>
+                </div>
+                <p>3.以确认框方式提交<form method="post" action="" id="form" class="boxy"><input type="submit" name="测试" value="确认框提交" /></form></p>
+                <div class="mt20 f8">form表单全部内容：</div>
+                <div class="zxx_code">
+                	<xmp><form method="post" action="" id="form" class="boxy"><input type="submit" name="测试" value="确认框提交" /></form></xmp>
+                </div>
+                <div class="dot">&nbsp;</div>
+                <p><strong>基本的插件用法</strong></p>
+                <div class="zxx_code">
+                	<xmp><script type="text/javascript">
+	$(function(){
+		$(".boxy").boxy();
+	});
+</script></xmp>
+                </div>
+                <p>请注意，boxy对话框自动计算出您的内容区域内本身的大小和位置，没有必要明确规定了包装集的尺寸。</p>
+                <p>此插件方法理解单一选项，其他任何选项被传递给了boxy的构造函数（<a href="#options">参见下面的构造函数选项</a>），或是用于Ajax操作，Boxy.load 。</p>
+                <ul class="zxx_ul_table title">
+                	<li class="w1"><strong>选项</strong></li><li class="w2"><strong>描述</strong></li><li class="w3"><strong>默认</strong></li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">message</li><li class="w2">显示在对话框上的文字信息</li><li class="w3">请确认：</li>
+                </ul>
+                <p>此外，每个匹配锚title属性将被用来作为其相应的对话框的标题。</p>
+            </div>  
+            <div class="zxx_test_list">
+            	<strong id="to_link2">手动创建实例</strong>
+                <p>用手动模式使用boxy是很容易的——只需要创建一个boxy的新实例，传递一些内部的内容和任何附加的散列对象。在默认情况下，对话框会立即显示出来，在视角的中心，可拖拽。所有的这些设置都可以通过给构造函数传递附加的对象来进行覆盖——更多详情请参见下面的<a href="#options">构造函数选项</a></p>
+                <p>传递给构造函数的内容可以是任何有效的参数，jQuery的$()函数- DOM元素，是HTML片断或其他jQuery对象。无论提供的是什么，其display属性均被设置为block，并插入名为<span class="font">boxy-content</span>的class在对话框中。</p>
+                <p><strong>下面为一些代表性的示例：</strong></p>
+                <ul class="zxx_ul_circle">
+                	<li>创建一个新的对话框，<a href="#nogo" onclick="return create();">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {title: "对话框"});</a>。</li>
+                    <li>创建一个新对话框，无法拖拽。<a href="#nogo" onclick="return create({draggable:false});">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {title: "对话框", draggable: false});</a>。</li>
+                    <li>创建一个新的对话框，没有默认的关闭按钮。<a href="#nogo" onclick="return create({closeable:false});">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {title: "对话框", closeable:false});</a>。</li>
+                    <li>新建对话框，使用absolute绝对定位（跟随滚动条）<a href="#nogo" onclick="return create({fixed:false});">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {title: "对话框, fixed:false"});</a>。</li>
+                    <li>新建对话框，模态的<a href="#nogo" onclick="return create({modal:true});">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {title: "对话框, modal:true"});</a>。</li>
+                    <li>新建对话框，自定义行为<a href="#nogo" onclick="return create({behaviours: function(r) { $(r).hover(function() { $(this).css('background-color', 'pink'); }, function() { $(this).css('background-color', 'white'); }); }});">new Boxy("&lt;p&gt;内容……&lt;/p&gt;", {behaviours: function(r) { $(r).hover(function() { $(this).css("background-color", "red"); }, function() { $(this).css("background-color", "white"); }); }});</a>。</li>
+                </ul>
+                <p><strong>修改现有的对话</strong><span class="f9 g6">（先打开一个对话框，然后再单击下面的链接事件）</span></p>
+                <ul class="zxx_ul_circle">
+                	<li>让最新的对话框放大的动画 - <a href="#nogo" onclick="tweenUp(); return false;">someDialog.tween(400, 400);</a></li>
+                    <li>让最新的对话框减小的动画 - <a href="#nogo" onclick="tweenDown(); return false;">someDialog.tween(100, 100);</a></li>
+                    <li>获取最新的对话框的标题 - <a href="#nogo" onclick="getTitle(); return false;">someDialog.getTitle();</a>。</li>
+                    <li>更改最新的对话框的标题 - <a href="#nogo" onclick="setTitle(); return false;">someDialog.setTitle("新标题");</a></li>
+                </ul>
+                <script type="text/javascript">
+					var allDialogs = [];
+					var seq = 0;
+					function create(options) {
+						options = $.extend({title: "对话框"}, options || {});
+						var dialog = new Boxy("<div><p>这是第 " + (++seq) + "个对话框 <a href='#nogo' onclick='Boxy.get(this).hide(); return false'>单击我！</a></p></div>", options);
+						allDialogs.push(dialog);
+						return false;
+					}
+					function recent() { return allDialogs[allDialogs.length-1]; }
+					function tweenUp() { recent().tween(400,400); }
+					function tweenDown() { recent().tween(100,100); }
+					function getTitle() { alert(recent().getTitle()); }
+					function setTitle() { recent().setTitle(prompt("Enter new title:")); }
+				</script>
+                <p>请注意，标题栏（也就是关闭按钮和拖动器）只有在标题指定的情况下会出现，在未来，这种行为可能会发生变化，使标题栏始终存在，除非特别禁用。</p>
+                <p>一旦您创建了一个实例，您可以将通过提供的API分配给一个变量，随后移动，改变大小，显示和隐藏 - 记录如下。</p>
+                <p><strong>提问</strong></p>
+                <p>使用Boxy.ask()，Boxy.alert()和Boxy.confirm()这些帮手可能提示用户从一些选项中进行选择以及完成可选的回调函数。点击下面含有演示的链接，参考API文档获取更多信息。</p>
+                <ul class="zxx_ul_circle">
+                	<li>提问 - <a href="#nogo" id="ask">Boxy.ask()</a> - 用户定义的选项，选择项传递给回调函数</li>
+                    <li>弹出 - <a href="#nogo" id="alert">Boxy.alert()</a> - 回调函数总是不被调用</li>
+                    <li>确认 - <a href="#nogo" id="confirm">Boxy.confirm()</a> - 仅当用户选择了“确认”时回调函数会被调用</li>
+                </ul>
+                <div class="zxx_code">
+                	<xmp><script type='text/javascript'>
+$(function() {
+  $("#ask").click(function() {
+    Boxy.ask("你感觉怎么样?", ["好极了", "还好", "不太好"], function(val) {
+      alert("你选择的是: " + val);       
+    }, {title: "这是一个问题……"});
+    return false;
+  });
+  $("#alert").click(function() {
+    Boxy.alert("文件未找到", null, {title: "提示信息"});
+    return false;
+  });
+  $("#confirm").click(function() {
+    Boxy.confirm("请确认:", function() { alert("已经确认!"); }, {title: "提示信息"});
+    return false;
+  });
+});
+</script></xmp>
+                </div>
+                <script type='text/javascript'>
+					$(function() {
+						$("#ask").click(function() {
+						Boxy.ask("你感觉怎么样?", ["好极了", "还好", "不太好"], function(val) {
+						alert("你选择的是: " + val);       
+						}, {title: "这是一个问题……"});
+						return false;
+					});
+					$("#alert").click(function() {
+						Boxy.alert("文件未找到", null, {title: "提示信息"});
+						return false;
+					});
+					$("#confirm").click(function() {
+						Boxy.confirm("请确认:", function() { alert("已经确认!"); }, {title: "提示信息"});
+						return false;
+						});
+					});
+				</script>
+            </div>
+            <div class="zxx_test_list">
+            	<strong id="to_link3">API</strong>(应用编程接口)
+                <p class="mt10"><strong>Boxy.load(url, options)</strong></p>
+                <div>以一个URL加载内容并以Boxy对话框的形式展现。支持以下的一些选项参数： </div>
+                <ul class="zxx_ul_circle">
+                	<li>类型 - HTTP方法，默认为GET</li>
+                    <li>缓存 - 如果是true，缓存内容连续通话。相当于缓存选项传递到jQuery的Ajax方法。默认：false。</li>
+                    <li>过滤 - jQuery的表达式，用于过滤远程内容。</li>
+                </ul>
+                <div class="g6">（任何其他指定的选项将被传递到boxy的构造函数中）</div>
+                <p><strong>Boxy.get(element)</strong></p>
+                <div>返回包含元素的实例，例如：<code class="font f8">&lt;a href="#" onclick="Boxy.get(this).hide();"&gt;关闭对话框&lt;/a&gt;</code></div>
+                <p><strong>Boxy.ask(question, answers, callback, options)</strong></p>
+                <div>显示模式，即非可关闭对话框，允许用户选择选项。问题是要显示给用户的信息。答案是一个数组或一切可能的回答的数列。回调函数将收到选定的回答，这是否是需要的值或相应的密钥要根据一个数组或答案数列是否已经提供了。options是一种额外的可选设置选项传递给对话框的构造函数。</div>
+                <p><strong>Boxy.alert(message, callback, options)</strong></p>
+                <div>显示模式，非可关闭对话框显示消息给用户。<br /><b>注意：</b>此方法并<b>不是</b>为了取代浏览器本地window.alert()函数提供，因为它没有能力阻止程序执行，在对话框是可见的时候。 </div>
+                <p><strong>Boxy.confirm(message, callback, options)</strong></p>
+                <div>显示模式，非可关闭对话框显示的含有确定和取消按钮的消息。回调只会在用户选择了“确定”时被调用。<br /><b>注意：</b>此方法并<b>不是</b>为了取代浏览器提供的本地window.confirm()函数，因为它没有能力在对话框可见时阻止程序执行的。 </div>
+                <p><strong>Boxy.linkedTo(ele)</strong></p>
+                <div>返回已通过执行器构造函数选项连接DOM元素的boxy实例。 </div>
+                <p><strong>Boxy.isModalVisible()</strong></p>
+                <div>返回true如果任何模式对话框是当前可见的，否则返回false。</div>
+                <p><strong>new Boxy(element, options)</strong></p>
+                <div>构造函数；创建一个新的boxy对话框。element是对话框的内容；任何有效的参数，jQuery的$()函数在这里也是有效的。options是一个配置选项的散列，见下面详细的资料。</div>
+                <p><strong>estimateSize()</strong></p>
+                <div>当对话框不可见的时候估计其大小。如果当前对话框可见，不要使用此方法，使用getSize()代替。</div>
+                <p><strong>getSize()</strong></p>
+                <div>以数组的形式[width, height]返回对话框的大小。</div>
+                <p><strong>getContentSize()</strong></p>
+                <div>返回对话框内容区域的大小。默认情况下，指在对话框框架里的一切，不包括标题栏。</div>
+                <p><strong>getPosition()</strong></p>
+                <div>以[x,y]数组形式返回最顶层对话框的左上角坐标。</div>
+                <p><strong>getCenter()</strong></p>
+                <div>以[x,y]数组形式返回最顶层对话框的中心点的坐标。</div>
+                <p><strong>getInner()</strong></p>
+                <div>返回一个jQuery对象包装对话框的内部区域-框架内包括标题栏一切。</div>
+                <p><strong>getContent()</strong></p>
+                <div>返回一个jQuery对象包装对话框的内容区域-框架内的一切，不包括标题栏。</div>
+                <p><strong>setContent(newContent)</strong></p>
+                <div>设置对话框中的内容，任何对$()有效的参数也对设置的新内容有效。可链接。</div>
+                <p><strong>moveTo(x,y)</strong></p>
+                <div>移动对话框到左上角为(x,y)的位置，可链接。</div>
+                <p><strong>centerAt(x,y)</strong></p>
+                <div>把对话框移动到中心坐标为(x,y)的位置上。</div>
+                <p><strong>center(axis)</strong></p>
+                <div>移动对话框，使其在视野的中央。可选参数axis可以是"x","y"中的任意一个中心轴。可链接。</div>
+                <p><strong>resize(w,h,after)</strong></p>
+                <div>重新调整对话框的高宽到[w,h]，完成后执行回调函数，回调函数将接受Boxy实例作为参数。可链接。</div>
+                <p><strong>tween(w,h,after)</strong></p>
+                <div>动画补间对话框高宽到[w,h]，完成后执行回调函数，回调函数将接受Boxy实例作为参数。可链接。</div>
+                <p><strong>isVisible()</strong></p>
+                <div>如果当前对话框可见，则返回true，否则返回false。</div>
+                <p><strong>show()</strong></p>
+                <div>显示对话框，可链接。</div>
+                <p><strong>hide(after)</strong></p>
+                <div>隐藏对话框，after为可选回调函数，完成后执行。可链接。</div>
+                <p><strong>toggle()</strong></p>
+                <div>触发对话框的显隐属性。可链接。</div>
+                <p><strong>hideAndUnload(after)</strong></p>
+                <div>在隐藏后立即执行卸载。在卸载之前执行after回调函数。可链接。</div>
+                <p><strong>unload()</strong></p>
+                <div>从DOM中删除对话框，切断其与执行机构的联系，如果有的话。一旦出现一个对话框已被卸载它的任何进一步行动都是未定义的。</div>
+                <p><strong>toTop()</strong></p>
+                <div>将当前对话框移动到其他所有对话框的上部。可链接。</div>
+                <p><strong>getTitle()</strong></p>
+                <div>以HTML的形式返回对话框的标题。</div>
+                <p><strong>setTitle(t)</strong></p>
+                <div>设置对话框的标题为t，可链接。</div>
+            </div>
+            <div class="zxx_test_list">
+            	<div class="mb10" id="options"><strong id="to_link4">完整的构造函数选项列表</strong></div>
+                <ul class="zxx_ul_table title">
+                	<li class="w1"><strong>选项</strong></li><li class="w2"><strong>描述</strong></li><li class="w3"><strong>默认</strong></li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">title</li><li class="w2">显示在自动生成标题栏上的标题</li><li class="w3">null</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">closeable</li><li class="w2">是否一个关闭对话框的驱动器要添加到自动生成标题栏上。如果标题没有指定是没有影响的。 </li><li class="w3">true</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">closeText</li><li class="w2">在可用情况下标题栏关闭链接的文字</li><li class="w3">"[关闭]"</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">draggable</li><li class="w2">是否对话框可以通过标题栏进行拖拽。标题未指定没有影响。</li><li class="w3">true</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">clone</li><li class="w2">内部区域的元素以及事件处理程序应不应该在被替换之前进行复制。</li><li class="w3">false</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">actuator</li><li class="w2">DOM元素（不包括jQuery对象），引发此对话框。两者之间的联系将被建立，此联系允许对话框的参照稍后在通过执行Boxy.linkedTo(element)获取的元素中进行检索。当对话框被卸载，此联系也会被自动切断。</li><li class="w3">null</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">center</li><li class="w2">对话框是否屏幕中心显示</li><li class="w3">true</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">fixed</li><li class="w2">是否使用固定定位(fixed)而不是绝对定位(absolute)，固定定位的对话框不受浏览器滚动条影响。IE6不支持固定定位，其永远表现为绝对定位。</li><li class="w3">true</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">show</li><li class="w2">对话框是否需要立即显示，如果是false，则需要你手动调用dialog.show()以显示对话框。</li><li class="w3">true</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">modal</li><li class="w2">对话框是否设置为模态。模态时，浏览器背景“黑黑的”，阻止页面的其他元素接受事件。</li><li class="w3">false</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">x</li><li class="w2">对话框的x(left)坐标</li><li class="w3">50</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">y</li><li class="w2">对话框的y(top)坐标</li><li class="w3">50</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">unloadOnHide</li><li class="w2">如果是true，则在此对话框隐藏后会被卸载（如从DOM中删除）</li><li class="w3">false</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">clickToFront</li><li class="w2">如果是true，则单击对话框的任意位置（只是相对于标题栏），会导致其跑到顶部。</li><li class="w3">false</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">behaviours</li><li class="w2">函数用来申请对话框内容的自定义行为。每次调用setContent()，且在Boxy对象中的上下文中执行，将接受一个包含内容区域的jQuery对象作为参数。</li><li class="w3">function(r){}</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">afterDrop</li><li class="w2">当对话框放下的时候在Boxy对象的上下文执行回调函数。</li><li class="w3">function(){}</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">afterShow</li><li class="w2">当对话框显示的时候在Boxy对象的上下文执行回调函数。能够用来使表单的文本框获取焦点。</li><li class="w3">function(){}</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">afterHide</li><li class="w2">当对话框隐藏的时候在Boxy对象的上下文执行回调函数。</li><li class="w3">fuuction(){}</li>
+                </ul>
+                <ul class="zxx_ul_table">
+                	<li class="w1">beforeUnload</li><li class="w2">在对话框卸载前在Boxy对象的上下文执行回调函数。</li><li class="w3">function(){}</li>
+                </ul>
+            </div>
+            <div class="zxx_test_list">
+            	<strong id="to_link5">CSS选择器</strong>
+                <p>可以通过css完全定制对话框的外观，这里的是您可能感兴趣的选择器列表。</p>
+                <p><strong>.boxy-wrapper .title-bar</strong></p>
+                <div>div包装的自动生成的标题栏</div>
+                <p><strong>.boxy-wrapper .title-bar h2</strong></p>
+                <div>标题栏的内容</div>
+                <p><strong>.boxy-wrapper .title-bar.dragging</strong></p>
+                <div>拖拽时候的标题栏</div>
+                <p><strong>.boxy-wrapper .title-bar .close</strong></p>
+                <div>默认的关闭对话框的执行器</div>
+                <p><strong>.boxy-inner</strong></p>
+                <div>内部区域，包括标题栏</div>
+                <p><strong>.boxy-content</strong></p>
+                <div>内部区域，不包括标题栏。这个class类将被自动添加到传递给Boxy的构造函数的任何元素。</div>
+                <p><strong>.boxy-wrapper .question</strong></p>
+                <div>通过Boxy.ask()创建的，包含问题文字</div>
+                <p><strong>.boxy-wrapper .answers</strong></p>
+                <div>通过Boxy.ask()创建的，包含应答的按钮</div>
+                <p><strong>.close</strong></p>
+                <div>这一class类的任何内容的单击事件将关联到关闭对话框上。</div>
+            </div>  
+            <div class="zxx_test_list">
+            	<div class="mb10"><strong>结语</strong></div>
+                <ul class="zxx_ul_circle">
+                	<li>全文由我（张鑫旭）翻译整理自<a href="http://onehackoranother.com/projects/jquery/boxy/" target="_blank">http://onehackoranother.com/projects/jquery/boxy/</a>，时间仓促，难免在翻译或编辑时出现错误或不到位之处，欢迎指正。您可以通过邮箱iamzhangxinxu#qq.com联系我。</li>
+                    <li>此插件js部分以及css部分自己略微修改，一些英文中文化，添加一些class便于样式控制等。这里的源文件为我修改后的版本。</li>
+                </ul>
+                
+            </div>       
+        </div>
+        <div class="zxx_footer">
+            Copyright &copy; by <a href="http://www.zhangxinxu.com/">张鑫旭-鑫空间-鑫生活</a>
+            |
+            <a href="http://www.zhangxinxu.com/wordpress/?p=318">该篇相关文章</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

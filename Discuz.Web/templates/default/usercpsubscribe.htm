@@ -1,0 +1,109 @@
+﻿<%template _header%>
+<div class="wrap cl pageinfo">
+	<div id="nav">
+		<%if {usergroupinfo.allowsearch}>0%>
+			<%template _quicksearch%>
+		<%/if%>
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>收藏夹</strong>
+	</div>
+</div>
+<!--body-->
+<script type="text/javascript">
+	function checkCheckBox(form,objtag)
+	{
+		for(var i = 0; i < form.elements.length; i++) 
+		{
+			var e = form.elements[i];
+			if(e.name == "titemid") 
+			{
+				e.checked = objtag.checked;
+			}
+		}
+		objtag.checked = !objtag.checked;
+	}
+</script>
+<div class="wrap uc s_clear">
+   <%template _menu%>
+	<div class="uc_main">
+	<div class="uc_content">
+		<h1>收藏夹</h1>
+		<%template _subscribemenu%>
+<%if page_err==0%>
+	<%if ispost%>
+		<%template _usercpmsgbox%>
+	<%else%>
+	    <%if {favoriteCount}>0%>
+		<form id="favlist" name="favlist" method="post" action="">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datatable">
+			<tr class="colplural">
+				<td width="4%">&nbsp;</td>
+				<td width="44%" style="text-align: left;">标题</td>
+				<td width="18%">作者</td>
+                <%if {typeid}==0%>
+                    <td width="18%">版块</td>
+                <%/if%>
+				<td>收藏时间</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tbody>
+			<%loop favorites Favorites.GetFavoritesList(userid,16,pageid,type)%>
+			<tr>
+			<td style="text-align:center;"><input name="titemid" id="id{favorites[tid]}" type="checkbox" value="{favorites[tid]}"/></td>
+			<td>
+			<%if {typeid}==1%>
+				<a href="showalbum.aspx?albumid={favorites[tid]}" target="_blank"><%getsubstring({favorites[title]},30,"...")%></a>
+			<%else if {typeid}==2%>
+				<a href="space/viewspacepost.aspx?postid={favorites[tid]}" target="_blank"><%getsubstring({favorites[title]},30,"...")%></a>
+			<%else if {typeid}==3%>
+				<a href="showgoods.aspx?goodsid={favorites[goodsid]}">{favorites[title]}</a>
+			<%else%>
+                <%if {favorites[new]}=="1"%>
+                    <a href="{forumpath}showtopic.aspx?topicid={favorites[tid]}&fromfav=1" target="_blank" title="{favorites[title]}"><%getsubstring({favorites[title]},30,"...")%></a>
+                    &nbsp;<a href="{forumpath}showtopic.aspx?topicid={favorites[tid]}&fromfav=1&page=end#lastpost" target="_blank" class="xg2" title="{favorites[title]}">[有新回复]</a>
+                <%else%>
+                    <%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({favorites[tid]},0)%>
+				    <a href="{aspxrewriteurl}" target="_blank" title="{favorites[title]}"><%getsubstring({favorites[title]},30,"...")%></a>
+                <%/if%>
+			<%/if%>
+			</td>
+			<td>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({favorites[posterid]})%>
+				<a href="{aspxrewriteurl}">{favorites[poster]}</a>
+			</td>
+            <%if {typeid}==0%>
+            <td>
+                <%set (string){forumname} = GetForumName({favorites[fid]})%>
+                <%set {aspxrewriteurl} = this.ShowForumAspxRewrite({favorites[fid]},0)%>
+                <a href="{aspxrewriteurl}"><%getsubstring({forumname},10,"...")%></a>
+            </td>
+            <%/if%>
+			<td>
+                <%set (string){ftime} = ForumUtils.ConvertDateTime({favorites[favtime]})%>
+                {ftime}
+            </td>
+			<td class="delete_msg"><a href="#" onclick="$('id{favorites[tid]}').checked=true;$('favlist').submit();"></a></td>
+			</tr>
+			<%/loop%>
+			</tbody>
+			</table>
+		</form>
+		<div class="pages_btns">
+			<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+			</div>
+			<a href="javascript:;" onclick="checkCheckBox($('favlist'),this)" class="selectall">全选</a>
+			<span class="pipe">|</span>
+			<a href="#" onclick="$('favlist').submit()" class="selectall">删除</a>
+		</div>
+		<%else%>
+		<div class="zerothreads">暂无收藏的主题</div>
+		<%/if%>
+	<%/if%>
+<%else%>
+	<%template _usercperrmsgbox%>
+<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

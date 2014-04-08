@@ -1,0 +1,99 @@
+﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Loaded="Control_Loaded"
+        Width="420"
+        Height="412"
+        x:Name="LayoutRoot"
+        RenderTransformOrigin="0.5,0.5"
+        Opacity="1"
+        >
+	<Canvas.Resources>
+    <Storyboard x:Name="ShowOff">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleX)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1.05"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleY)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1.05"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="CalmDown">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleX)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.100000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleY)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.100000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="FadeIn">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Canvas.Opacity)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleX)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleY)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="FadeOut">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Canvas.Opacity)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.5"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleX)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.8"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(ScaleTransform.ScaleY)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.8"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="OutAndIn">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Canvas.Opacity)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(TranslateTransform.Y)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-50"/>
+        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="Loading">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoadRec0" Storyboard.TargetProperty="(Rectangle.Opacity)">
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.0000000" Value="1"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.9000000" Value="0.3"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoadRec1" Storyboard.TargetProperty="(Rectangle.Opacity)">
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.9000000" Value="0.3"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoadRec2" Storyboard.TargetProperty="(Rectangle.Opacity)">
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.3"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
+        <DiscreteDoubleKeyFrame KeyTime="00:00:00.9000000" Value="1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+	</Canvas.Resources>
+	<Canvas.RenderTransform>
+		<TransformGroup>
+			<RotateTransform x:Name="Rotation" Angle="0"/>
+      <TranslateTransform X="0" Y="0"/>
+      <ScaleTransform ScaleX="1" ScaleY="1"/>
+		</TransformGroup>
+	</Canvas.RenderTransform>
+	<Image Width="432" Height="424" Source="Assets/Image/sliceBG_shadow.png" Stretch="Fill" x:Name="BgShadow" Canvas.Top="-2" Canvas.Left="-3"/>
+	<Image Width="420" Height="412" Stretch="Fill" Canvas.Left="0" Canvas.Top="0" x:Name="BgPattern" Source="Assets/Image/sliceBG.png"/>
+  <Image Width="379" Height="248" Stretch="UniformToFill" x:Name="MainThum" Canvas.Left="21" Canvas.Top="21.24"/>
+  <Canvas Width="379" Height="248" x:Name="LoadingCanvas" Canvas.Left="21" Canvas.Top="21.24">
+    <Rectangle x:Name="LoadRec0" Width="37" Height="4" Fill="#FF7E7E7E" Canvas.Left="126" Canvas.Top="143"/>
+    <Rectangle x:Name="LoadRec1" Width="37" Height="4" Fill="#FF7E7E7E" Canvas.Left="171" Canvas.Top="143"/>
+    <Rectangle x:Name="LoadRec2" Width="37" Height="4" Fill="#FF7E7E7E" Canvas.Left="216" Canvas.Top="143"/>
+    <Image Source="Assets/Image/loadingGrid_text.png" Stretch="Fill" Canvas.Left="165.5" Canvas.Top="164" Opacity="1" x:Name="LoadingText"/>
+  </Canvas>
+	<Image Width="379" Height="248" Stretch="Uniform" x:Name="MainImage" Canvas.Left="21" Canvas.Top="21.24"/>
+	<Image Source="" Stretch="Fill" Canvas.Top="288" Canvas.Left="21" x:Name="TitleImage"/>
+	<Image Source="" Stretch="Fill" Canvas.Left="323" Canvas.Top="379" x:Name="AuthorImage"/>
+</Canvas>

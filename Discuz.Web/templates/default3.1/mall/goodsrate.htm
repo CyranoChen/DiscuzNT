@@ -1,0 +1,120 @@
+﻿<%inherits "Discuz.Mall.Pages.goodsrate"%>
+<%template _header%>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <strong>{goodstradelog.subject}</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			 <%if {usergroupinfo.allowsearch}>0%>
+            <%template _quicksearch%>
+            <%/if%>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="javascript/template_trade.js"></script>
+<script type="text/javascript">
+zoomstatus = parseInt(1);
+</script>
+<div class="mainbox">
+<form method="post" id="tradepost" name="tradepost" action="goodsrate.aspx?goodstradelogid={goodstradelog.id}">
+   <h3>发表评价</h3>
+	<table summary="发表评价" cellspacing="0" cellpadding="0">
+		<tr>
+			<th>被评价人</th>
+			<td>
+				<%if {goodstradelog.sellerid}!=userid%>
+					<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.sellerid})%>
+					<a href="{aspxrewriteurl}" target="_blank">{goodstradelog.seller}</a>
+				<%else%>
+					<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.buyerid})%>
+					<a href="{aspxrewriteurl}" target="_blank">{goodstradelog.buyer}</a>
+				<%/if%>
+			</td>
+		</tr>
+       <tr>
+            <th>相关商品</th>
+            <td>
+                <%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodstradelog.goodsid})%>
+                <a href="{aspxrewriteurl}" target="_blank">{goodstradelog.subject}</a>
+			</td>
+        </tr>
+       <tr>
+            <th>评分</th>
+            <td>
+                <input name="ratetype" value="1" type="radio" class="radio" checked />
+                <font color="#ff0000"><img src="templates/{templatepath}/images/good.gif" border="0" width="14" height="16"><strong>好评</strong></font>&nbsp;&nbsp;
+               
+                <input name="ratetype" value="2" type="radio" class="radio">
+                <font color="green"><img src="templates/{templatepath}/images/soso.gif" border="0" width="14" height="16"><strong>中评</strong></font>&nbsp;&nbsp;
+                
+                <input name="ratetype" value="3" type="radio" class="radio">
+                <img src="templates/{templatepath}/images/bad.gif" border="0" width="14" height="16"><strong>差评</strong>&nbsp;&nbsp;(线下交易的评分不计入信用评价)
+			</td>
+        </tr>
+       <tr>
+            <th>评价</th>
+            <td>
+                <textarea id="message" name="message" cols="10" rows="7" class="autosave" id="message" tabindex="2"  onkeydown="quickpost(event, this.form);" maxlength="200"></textarea>
+            </td>
+        </tr>
+       <tr>
+            <th>&nbsp;</th>
+            <td>
+                <button type="submit" id="postsubmit" name="ratesubmit" value="true"> 提交</button>[完成后可按 Ctrl+Enter 发布]
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+<script type="text/javascript">
+var postSubmited = false;
+function quickpost(event, theform) {
+	if(postSubmited == false && (event.ctrlKey && event.keyCode == 13) || (event.altKey && event.keyCode == 83)) {
+		if (!$("postsubmit").disabled) {
+		    if(validateform(theform, false,false)){
+			    theform.submit();
+			    $("postsubmit").disabled = true
+			}
+		}
+		else {
+			alert('正在提交, 请稍候...');
+		}
+	}
+}
+
+function validateform(theform, previewpost, switcheditormode) {
+    
+	var message = theform.message.value;
+
+	if (message == "") {
+		alert("请完成内容栏。");
+		$("postsubmit").disabled = false;
+		return false;
+	} 
+	
+	if(mb_strlen(message) < 1 || mb_strlen(message) > 200) {
+		alert("您的帖子长度不符合要求。\n\n当前长度: " + mb_strlen(message) + " 字节\n系统限制: 1 到 200 字节");
+		return false;
+	}
+
+	if (!switcheditormode && !previewpost) {
+		$("postsubmit").disabled = true;
+	}
+
+	theform.message.value = message;
+	return true;
+}
+</script>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>	

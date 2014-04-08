@@ -1,0 +1,85 @@
+<%inherits "Discuz.Space.Pages.bloglist"%>
+<%template _spaceheader%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>个人空间</strong>
+	</div>
+</div>
+<%if {page_err}==0%>
+<div class="wrap">
+<div class="left space_main s_clear">
+	<div class="modulebox">
+		<%loop __postinfo postslist%> 					
+		<div class="ntblog">
+			<h3><a href="{spaceurl}space/viewspacepost.aspx?postid={__postinfo[postid]}">{__postinfo[title]}</a></h3>
+			<h4>
+				<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({__postinfo[uid]},0)%>
+				<a href="{aspxrewriteurl}">{__postinfo[author]}</a>   {__postinfo[postdatetime]} 【评论:{__postinfo[commentcount]}】【阅读:{__postinfo[views]}】 </h4>
+			<P><%getsubstring({__postinfo[content]},350,"...")%></p>
+			<h4><a href="{spaceurl}space/viewspacepost.aspx?postid={__postinfo[postid]}">阅读全文</a> >></h4>
+		</div>
+		<%/loop%>
+		<div class="ntforumpage">{pagenumbers}</div>
+	</div>
+</div>
+<div class="right space_side s_clear">
+	<%template _rotatepic%>			
+	<div class="sidebox">
+		<h2>推荐日志</h2>
+		<ul class="newslist">
+		<%loop (SpaceShortPostInfo) __spacepostrecommend spacepostlist%> 
+			<li><a href="{spaceurl}space/viewspacepost.aspx?postid={__spacepostrecommend.postid}"><%getsubstring({__spacepostrecommend.title},30,"...")%></a> </li>	
+		<%/loop%>
+		</ul>
+	</div>
+	<div class="sidebox">
+		<h4>最新空间评论</h4>
+		<ul class="newslist">
+		<%loop comment topspacecomments%>
+			<li><a href="{spaceurl}space/viewspacepost.aspx?postid={comment[postid]}">{comment[content]}</a> [{comment[author]}]</li>	
+		<%/loop%>
+		</ul>
+	</div>            
+	<%if {config.enablealbum}==1%>
+	<div class="sidebox">
+		<h4>推荐相册</h4>
+		<ul class="newslist">
+			<%loop (AlbumInfo) album recommendalbumlist%>
+				<li><a href="showalbum.aspx?albumid={album.albumid}">{album.title}</a> ({album.imgcount}) [<a href="showalbumlist.aspx?uid={album.userid}">{album.username}</a>]</li>	
+			<%/loop%>
+		</ul>
+	</div>
+	<%/if%>
+	<div class="sidebox">
+		<h4>最近更新的空间</h4>
+		<ul class="newslist">
+		<%loop __space recentupdatespacelist%> 						
+			<li><a href="{spaceurl}space/?uid={__space[userid]}"><%getsubstring({__space[spacetitle]},28,"...")%></a></li>
+		<%/loop%>
+		</ul>
+	</div>
+	<div class="sidebox">
+		<h2>新帖</h2>
+		<ul class="newslist">
+		<%loop __newtopicinfo newtopiclist%> 
+			<li>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({__newtopicinfo[tid]},0)%>
+			<a href="{aspxrewriteurl}"><%getsubstring({__newtopicinfo[title]},30,"...")%></a></li>
+		<%/loop%>
+		</ul>
+		<h2>热帖</h2>
+		<ul class="newslist">
+		<%loop __hottopicinfo hottopiclist%> 
+		<li>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({__hottopicinfo[tid]},0)%>
+			<a href="{aspxrewriteurl}"><%getsubstring({__hottopicinfo[title]},30,"...")%></a></li>
+		<%/loop%>
+		</ul>
+	</div>
+</div>
+</div>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

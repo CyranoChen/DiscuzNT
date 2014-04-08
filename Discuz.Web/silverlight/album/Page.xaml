@@ -1,0 +1,627 @@
+﻿<Canvas
+        xmlns="http://schemas.microsoft.com/client/2007" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:DiscuzAlbum="clr-namespace:DiscuzAlbum;assembly=ClientBin/DiscuzAlbum.dll" 
+        x:Name="parentCanvas" 
+        Loaded="Page_Loaded" 
+        x:Class="DiscuzAlbum.Page;assembly=ClientBin/DiscuzAlbum.dll"
+        Width="900"
+        Height="600"
+        >
+
+	<Canvas.Resources>
+		<Storyboard x:Name="ZoomIn">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="ZoomOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
+				<SplineDoubleKeyFrame x:Name="ZoomOutScaleX" KeyTime="00:00:00.5000000" Value="0.2"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
+				<SplineDoubleKeyFrame x:Name="ZoomOutScaleY" KeyTime="00:00:00.5000000" Value="0.2"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="RotateToAngle">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
+					<SplineDoubleKeyFrame x:Name="RotateKeyFrame" KeyTime="00:00:00.5000000" Value="0"/>
+				</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="AnimateToPosition">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(Canvas.Left)">
+				<SplineDoubleKeyFrame x:Name="AnimatePositionX" KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame x:Name="AnimatePositionY" KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+    <Storyboard x:Name="MoveScreen">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolderShadow" Storyboard.TargetProperty="(Canvas.Left)">
+        <SplineDoubleKeyFrame x:Name="MoveScreenX" KeyTime="00:00:00.7000000" Value="0" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+		<Storyboard x:Name="LayoutStandBy">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(Canvas.Left)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PhotoHolder" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="ScrollTimer">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TimerRec" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.0250000" Value="-35"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortNaviIn">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SortNaviCanvas" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortNaviOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SortNaviCanvas" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-110"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="BtnSortHover">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-2"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="BtnSortOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="BtnRandomHover">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-2"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-18.1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-9.5"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-18"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1.8"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="2"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="2"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="BtnRandomOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-8.101"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-22.525"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-29.001"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="9.777"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DotSetCanvas_Copy6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="MoveHighlightFrameTo">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.1000000" Storyboard.TargetName="HighlightFrame" Storyboard.TargetProperty="(Canvas.Left)">
+				<SplineDoubleKeyFrame x:Name="HighlightDesX" KeyTime="00:00:00" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="HighlightFrame" Storyboard.TargetProperty="(Canvas.Top)">
+				<SplineDoubleKeyFrame x:Name="HighlightDesY" KeyTime="00:00:00" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortLeftArrowHover">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LeftSortArrow" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-5" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortLeftArrowOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LeftSortArrow" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortRightArrowHover">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="RightSortArrow" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="5" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="SortRightArrowOut">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="RightSortArrow" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" KeySpline="0,0,0.5,1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+    <Storyboard x:Name="ScreenArrowLeftHover">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowLeft" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="ScreenArrowLeftOut">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowLeft" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-5" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="ScreenArrowRightHover">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowRight" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="ScreenArrowRightOut">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowRight" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="5" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="ScreenArrowFadeIn">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowLeft" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-5" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowRight" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="5" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Name="ScreenArrowFadeOut">
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowLeft" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-60" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ScreenArrowRight" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="60" KeySpline="0,0,0.5,1"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+	</Canvas.Resources>
+
+	<Canvas Width="900" Height="600" x:Name="BgCanvas">
+		<Canvas.Background>
+			<RadialGradientBrush GradientOrigin="0.501,0.658">
+			<RadialGradientBrush.RelativeTransform>
+				<TransformGroup>
+					<ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="2.185" ScaleY="2.185"/>
+					<SkewTransform AngleX="0" AngleY="0" CenterX="0.5" CenterY="0.5"/>
+					<RotateTransform Angle="0" CenterX="0.5" CenterY="0.5"/>
+					<TranslateTransform X="-0.012" Y="0.271"/>
+				</TransformGroup>
+			</RadialGradientBrush.RelativeTransform>
+			<GradientStop Color="#FF50FDED" Offset="0"/>
+			<GradientStop Color="#FF549EBB" Offset="1"/>
+		</RadialGradientBrush>
+		</Canvas.Background>
+		<Image Width="1533.142" Height="247.969" Source="Assets/Image/grassSphere.png" Stretch="None" Canvas.Left="0" Canvas.Top="0" x:Name="GrassSphere"/>
+	</Canvas>
+
+	<Canvas Width="900" Height="600" x:Name="PhotoHolder" RenderTransformOrigin="0.5,0.5" Canvas.Left="0" Canvas.Top="0">
+		<Canvas.RenderTransform>
+			<TransformGroup>
+				<RotateTransform Angle="0"/>
+				<ScaleTransform ScaleX="1" ScaleY="1"/>
+				<TranslateTransform x:Name="PhotoHolderTranslation" X="0" Y="0"/>
+			</TransformGroup>
+		</Canvas.RenderTransform>
+    <Canvas Width="900" Height="600" x:Name="PhotoHolderShadow" RenderTransformOrigin="0.5,0.5" Canvas.Left="0" Canvas.Top="0">
+      <Canvas.RenderTransform>
+        <TransformGroup>
+          <TranslateTransform x:Name="PhotoHolderShadowTranslation" X="0" Y="0"/>
+        </TransformGroup>
+      </Canvas.RenderTransform>
+    </Canvas>
+	</Canvas>
+
+	<Canvas x:Name="SortNaviCanvas" Width="900" Height="110" Canvas.Left="0" Canvas.Top="-98">
+
+		<Canvas Width="185" Height="57" x:Name="CurrentDisplay" Canvas.Left="363" Canvas.Top="58">
+			<Image Width="185" Height="57" Source="Assets/Image/sliceCounter_bg.png" Stretch="Fill" x:Name="SliceCounterBg"/>
+
+			<TextBlock Width="80" Height="33" Text="999" TextWrapping="Wrap" x:Name="IndexText1" Foreground="#FF3399CC" FontSize="21.34" Canvas.Top="19" Canvas.Left="56"/>
+
+			<TextBlock Width="80" Height="26.11" Text="999" TextWrapping="Wrap" x:Name="IndexText2" Foreground="#FF717171" FontSize="16" Canvas.Left="101.885" Canvas.Top="23.89"/>
+
+			<TextBlock Width="80" Height="26.11" Text="/" TextWrapping="Wrap" x:Name="IndexDivider" Foreground="#FF717171" FontSize="13" Canvas.Left="91.885" Canvas.Top="24.89"/>
+		</Canvas>
+
+		<Image Width="19" Height="77" Source="Assets/Image/topNavi_right.png" Stretch="Fill" x:Name="TopNaviRight" Canvas.Top="8"/>
+
+		<Image Width="1" Height="77" Source="Assets/Image/topNavi_middle.png" Stretch="Fill" x:Name="TopNaviMiddle" Canvas.Left="155" Canvas.Top="8"/>
+
+		<Image Width="147" Height="77" Source="Assets/Image/topNavi_left.png" Stretch="Fill" x:Name="TopNaviLeft" Canvas.Left="8" Canvas.Top="8"/>
+
+		<Image Source="Assets/Image/discuz_logo.png" Stretch="Fill" Canvas.Left="28" Canvas.Top="26" x:Name="DiscuzLogo"/>
+
+		<Image Width="2" Height="69" Source="Assets/Image/sortDividor.png" Stretch="Fill" x:Name="DividorA" Canvas.Left="224.83" Canvas.Top="8"/>
+
+		<Image Width="2" Height="69" Source="Assets/Image/sortDividor.png" Stretch="Fill" x:Name="DividorB" Canvas.Left="223.372" Canvas.Top="8"/>
+
+		<Canvas Width="50" Height="50" x:Name="BtnLeft" Canvas.Left="165.262" Canvas.Top="18.065">
+			<Image Width="50" Height="50" Source="Assets/Image/topButton_normal.png" Stretch="Fill" x:Name="BtnLeftImage" RenderTransformOrigin="0.5,0.5">
+				<Image.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="-1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Image.RenderTransform>
+			</Image>
+		</Canvas>
+
+		<Canvas Width="50" Height="50" x:Name="BtnRight" Canvas.Left="213.85" Canvas.Top="18.065">
+			<Image Width="50" Height="50" Source="Assets/Image/topButton_normal.png" Stretch="Fill" x:Name="BtnRightImage"/>
+		</Canvas>
+
+		<Canvas Width="900" Height="90" Canvas.Left="230.774" x:Name="HolderClip">
+
+			<Canvas Width="900" Height="90" x:Name="ThumHolder">
+
+				<!--<Path Width="103" Height="61" Fill="#D86E6E6E" Stretch="Fill" Data="F1 M4.0233135E-07,-7.4505806E-07 L4.0233135E-07,57 99,57 99,-7.4505806E-07 4.0233135E-07,-7.4505806E-07 z M-2,-1.9999996 L101,-1.9999996 101,59 -2,59 -2,-1.9999996 z" x:Name="HighlightFrame" Canvas.Left="0" Canvas.Top="0"/>-->
+
+			</Canvas>
+
+		</Canvas>
+
+	</Canvas>
+
+	<Canvas Width="176" Height="63" x:Name="StatusSwitchCanvas" Canvas.Left="354" Canvas.Top="546">
+
+		<Image Width="176" Height="63" Source="Assets/Image/btnBottomBg.png" Stretch="Fill" x:Name="BtnBottomBg"/>
+
+		<Image Width="68" Height="50" Source="Assets/Image/btnBottomStroke.png" Stretch="Fill" x:Name="BtnBottomStrokeLeft" Canvas.Top="7.508" Canvas.Left="12.606"/>
+
+		<Image Width="68" Height="50" Source="Assets/Image/btnBottomStroke.png" Stretch="Fill" x:Name="BtnBottomStrokeRight" Canvas.Left="94.698" Canvas.Top="7.266"/>
+
+		<Canvas Width="68" Height="50" x:Name="BtnSortCanvas" Canvas.Left="12.606" Background="#00FEFEFE" Canvas.Top="7.266">
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas" Canvas.Left="16.659" Canvas.Top="8.872" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF7B8A37" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy" Canvas.Left="34.159" Canvas.Top="8.872" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF709760" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy1" Canvas.Left="16.659" Canvas.Top="19.372" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C9149" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy2" Canvas.Left="34.159" Canvas.Top="19.372" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF5C7B4F" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Image Width="47" Height="11" Canvas.Left="10.825" Canvas.Top="34.984" Source="Assets/Image/btnSort.png"/>
+		</Canvas>
+
+		<Canvas Width="68" Height="49.508" x:Name="BtnRandomCanvas" Canvas.Left="94.698" Background="#00FEFEFE" Canvas.Top="8">
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy3" Canvas.Left="16.659" Canvas.Top="7.545" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-8.101"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF068783" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy4" Canvas.Left="34.159" Canvas.Top="6.673" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-22.525"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF818200" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy5" Canvas.Left="16.659" Canvas.Top="18.372" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-29.001"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF00881B" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Canvas Width="14" Height="8" x:Name="DotSetCanvas_Copy6" Canvas.Left="34.159" Canvas.Top="19.462" RenderTransformOrigin="0.5,0.5">
+				<Canvas.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="9.777"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</Canvas.RenderTransform>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="0" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="3" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="6" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="9" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="12" Canvas.Top="0"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="0" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="3" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="6" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="9" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="12" Canvas.Top="3"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="0" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="3" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="6" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="9" Canvas.Top="6"/>
+				<Rectangle Width="2" Height="2" Fill="#FF860000" Canvas.Left="12" Canvas.Top="6"/>
+			</Canvas>
+			<Image Width="47" Height="11" Canvas.Left="10.825" Canvas.Top="33.984" Source="Assets/Image/btnRandom.png"/>
+		</Canvas>
+
+	</Canvas>
+
+	<Rectangle x:Name="TimerRec" Width="148" Height="11" Fill="#00FFFFFF" Canvas.Top="-35"/>
+
+	<Canvas Width="827" Height="50" x:Name="ArrowCanvas">
+		<Image Width="50" Height="50" Source="Assets/Image/sortArrow_normal.png" Stretch="Fill" x:Name="LeftSortArrow" RenderTransformOrigin="0.5,0.5">
+			<Image.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleX="1" ScaleY="1"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</Image.RenderTransform>
+		</Image>
+		<Image Width="50" Height="50" Source="Assets/Image/sortArrow_normal.png" Stretch="Fill" x:Name="RightSortArrow" Canvas.Left="800" RenderTransformOrigin="0.5,0.5">
+			<Image.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleX="-1" ScaleY="1"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</Image.RenderTransform>
+		</Image>
+		<Rectangle Width="50" Height="50" Fill="#00FFFFFF" Canvas.Left="0" x:Name="LeftSortArrowHot"/>
+		<Rectangle Width="50" Height="50" Fill="#00FFFFFF" Canvas.Left="800" x:Name="RightSortArrowHot"/>
+	</Canvas>
+
+  <Image Width="55" Height="50" x:Name="ScreenArrowLeft" Source="Assets/Image/screenArrow_normal.png" RenderTransformOrigin="0.5,0.5">
+    <Image.RenderTransform>
+      <TransformGroup>
+        <ScaleTransform ScaleX="1" ScaleY="1"/>
+        <SkewTransform AngleX="0" AngleY="0"/>
+        <RotateTransform Angle="0"/>
+        <TranslateTransform X="-60" Y="0"/>
+      </TransformGroup>
+    </Image.RenderTransform>
+  </Image>
+  <Image Width="55" Height="50" x:Name="ScreenArrowRight" Source="Assets/Image/screenArrow_normal.png" RenderTransformOrigin="0.5,0.5">
+    <Image.RenderTransform>
+      <TransformGroup>
+        <ScaleTransform ScaleX="-1" ScaleY="1"/>
+        <SkewTransform AngleX="0" AngleY="0"/>
+        <RotateTransform Angle="0"/>
+        <TranslateTransform X="60" Y="0"/>
+      </TransformGroup>
+    </Image.RenderTransform>
+  </Image>
+
+  <!--<Image Source="Assets/Photo/Added/Author_Title/Title_1.png" Canvas.Left="500" Canvas.Top="400" />-->
+
+</Canvas>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Art Pictures" title_url="http://offtype.net" width="270" height="300" author="Offtype.Net" author_email="contact@offtype.net" scaling="false" scrolling="false" description="Art Pictures for your webpage. It shows a random pictures from the Offtype.Net Editors's Pick Art Gallery." thumbnail="http://offtype.net/google_gadget/gallery_widget_thumbnail.gif" screenshot="http://offtype.net/google_gadget/gallery_widget_screenshot.png">
+</ModulePrefs>
+
+<Content type="url" href="http://offtype.net/google_gadget/gallery_widget.html"/>
+
+</Module>

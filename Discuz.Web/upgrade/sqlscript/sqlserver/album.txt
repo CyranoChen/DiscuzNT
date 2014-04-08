@@ -1,0 +1,41 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_phototags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_phototags]
+;
+
+CREATE TABLE [dnt_phototags] (
+	[tagid] [int] NOT NULL ,
+	[photoid] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_phototags] WITH NOCHECK ADD 
+	CONSTRAINT [DF_dnt_phototags_tagid] DEFAULT (0) FOR [tagid],
+	CONSTRAINT [DF_dnt_phototags_pid] DEFAULT (0) FOR [photoid]
+;
+
+
+IF NOT EXISTS(
+SELECT  *
+FROM    syscolumns
+WHERE   id = ( SELECT   id
+               FROM     sysobjects
+               WHERE    name = 'dnt_photos'
+             )
+        AND name = 'width')
+        
+ALTER TABLE [dnt_photos] ADD [width] [int] DEFAULT(0) NOT NULL  ;
+
+
+IF NOT EXISTS(
+SELECT  *
+FROM    syscolumns
+WHERE   id = ( SELECT   id
+               FROM     sysobjects
+               WHERE    name = 'dnt_photos'
+             )
+        AND name = 'height')
+        
+ALTER TABLE [dnt_photos] ADD [height] [int] DEFAULT(0) NOT NULL  ;
+
+

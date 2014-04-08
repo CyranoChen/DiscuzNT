@@ -1,0 +1,182 @@
+<%inherits "Discuz.Space.Pages.usercpspaceset"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>个人空间基本设置</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>个人空间基本设置</h1>
+		<%template _spacemenu%>
+<%if page_err==0%>
+		<%if ispost%>
+		<%template _usercpmsgbox%>
+		<%else%>
+		<form id="postspaceconfig" name="postspaceconfig" method="post" action="">
+		<table cellspacing="0" cellpadding="0" class="formtable" summary="添加日志分类">
+		<tbody>
+			<tr>
+				<th><label for="spacetitle">个人空间标题</label></th>
+				<td><input name="spacetitle" type="text" id="spacetitle" value="{spaceconfiginfo.Spacetitle}" size="40" maxlength="100" class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="_description">描述</label></th>
+				<td><textarea name="_description" cols="50" rows="6" id="_description" maxlength="200" class="txtarea">{spaceconfiginfo.Description}</textarea></td>
+			</tr>
+			<tr>
+				<th><label for="blogdispmode">日志显示模式</label></th>
+				<td><input type="radio" name="blogdispmode" value="0"
+							<%if {spaceconfiginfo.BlogDispMode}==0%>
+							 checked="checked"
+							<%/if%>
+							 ID="Radio1"/>
+							摘要
+							<input type="radio" name="blogdispmode" value="1"
+							<%if {spaceconfiginfo.BlogDispMode}==1%>
+							 checked="checked"
+							<%/if%>
+							 ID="Radio2"/>
+							全文
+							<input name="blogdispmode" type="radio" value="2"
+							<%if {spaceconfiginfo.BlogDispMode}==2%>
+							 checked="checked"
+							<%/if%>
+							 ID="Radio3"/>
+							只显示标题
+				</td>
+			</tr>
+			<tr>
+				<th><label for="bpp">显示日志篇数</label></th>
+				<td><input name="bpp" type="text" id="bpp"  value="{spaceconfiginfo.bpp}" size="4" maxlength="3" class="txt"/></td>
+			</tr>
+		<%if {spaceactiveconfig.enablespacerewrite}==1%>
+			<%if {spaceconfiginfo.rewritename}==""%>
+			<tr>
+				<th><label for="rewritename">个性域名</label></th>
+				<td><input name="rewritename" type="text" id="rewritename" onblur="checkrewritename(this.value);" value="" size="30" class="txt" /><span id="checkresult"></span>
+				<p>设置此项后您将可以用 http://论坛地址/space/个性域名形式的地址访问您的空间,设置之后将不可更改</p>
+				<script type="text/javascript">
+				function checkrewritename(rewritename)
+				{
+					if (rewritename.length > 0)
+					{
+						ajaxRead("tools/ajax.aspx?t=checkrewritename&rewritename=" + escape(rewritename), "showcheckresult(obj,'" + rewritename + "');");
+					}
+					else
+					{
+						$("checkresult").innerHTML = "";
+						$('submitspaceconfig').disabled = false;
+					}
+				}
+
+				function showcheckresult(obj, rewritename)
+				{
+					var res = obj.getElementsByTagName('result');
+					var resContainer = $("checkresult");
+					var result = "";
+					if (res[0] != null && res[0] != undefined)
+					{
+						if (res[0].childNodes.length > 1) {
+							result = res[0].childNodes[1].nodeValue;
+						} else {
+							result = res[0].firstChild.nodeValue;    		
+						}
+					}
+					if (result == "1")
+					{
+						$('submitspaceconfig').disabled = true;
+						resContainer.innerHTML = "<font color='#009900'>对不起，您输入的个性化名称 \"" + rewritename + "\" 中含有非法字符或被禁用，请选择其他名字后再试。</font>";
+					}
+					else if (result == "2")
+					{
+						$('submitspaceconfig').disabled = true;
+						resContainer.innerHTML = "<font color='#009900'>个性化名称只能为字母、数字、下划线、减号的组合";
+					}
+					else if (result == "3")
+					{
+						$('submitspaceconfig').disabled = true;
+						resContainer.innerHTML = "<font color='#009900'>对不起，您输入的个性化名称 \"" + rewritename + "\" 已经被其他会员使用，请选择其他名字后再试。";
+					}
+					else
+					{
+						$('submitspaceconfig').disabled = false;
+						resContainer.innerHTML = "可用";
+					}
+				}
+				</script>
+				<script type="text/javascript" src="javascript/ajax.js"></script>
+				</td>
+			</tr>
+			<%else%>
+			<tr>
+				<th><label for="bpp">个性域名</label></th>
+				<td><a href="{spaceurl}space/{spaceconfiginfo.rewritename}" target="_blank"><script type="text/javascript">document.write(window.location.toString().replace('usercpspaceset.aspx',''))</script>space/{spaceconfiginfo.rewritename}</a></td>
+			</tr>
+			<%/if%>
+		<%/if%>
+			<tr>
+				<th><label for="commentpref">默认评论权限</label></th>
+				<td>
+					<input type="radio" name="commentpref" value="0"
+					<%if {spaceconfiginfo.Commentpref}==0%>
+					 checked="checked"
+					<%/if%>
+					/>
+					允许匿名评论
+					<input type="radio" name="commentpref" value="1"
+					<%if {spaceconfiginfo.Commentpref}==1%>
+					 checked="checked"
+					<%/if%>
+					 ID="Radio4"/>
+					不允许评论
+					<input name="commentpref" type="radio" value="2"
+					<%if {spaceconfiginfo.Commentpref}==2%>
+					 checked="checked"
+					<%/if%>
+					 ID="Radio5"/>
+					仅允许注册用户评论
+				</td>
+			</tr>
+			<tr>
+				<th><label for="messagepref">留言设置</label></th>
+				<td><input type="radio" name="messagepref" value="0"
+					<%if {spaceconfiginfo.MessagePref}==0%>
+					 checked="checked"
+					<%/if%>
+					 />
+					全部允许
+					<input type="radio" name="messagepref" value="1"
+					<%if {spaceconfiginfo.MessagePref}==1%>
+					 checked="checked"
+					<%/if%>
+					 ID="Radio6"/>
+					全部禁止
+					<input name="messagepref" type="radio" value="2"
+					<%if {spaceconfiginfo.MessagePref}==2%>
+					 checked="checked"
+					<%/if%>
+					 ID="Radio7"/>
+					只允许已登录用户
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input id="submitspaceconfig" name="submitspaceconfig" onclick="if ($('_description').value.length > 200) {alert('个人空间描述长度最大为200字'); return false;}" type="submit" value="确定" />
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</form>
+		<%/if%>
+	<%else%>
+		<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

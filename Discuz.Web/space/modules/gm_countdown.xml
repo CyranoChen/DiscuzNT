@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="__UP_title__" author="__MSG_google__" author_email="sophia.feedback+countdown@gmail.com" screenshot="__MSG_countdown_screenshot__" thumbnail="/ig/modules/gadgetmaker_content/thumbs/countdown.jpg" description="__MSG_countdown_description__">
+  <Require feature="dynamic-height"/>
+  <Locale messages="gadgetmaker_content/en_ALL.xml"/>
+</ModulePrefs>
+<UserPref name="preview" default_value="false" datatype="bool"/>
+<UserPref name="image" display_name="__MSG_image__" default_value="p" datatype="enum">
+  <EnumValue value="b" display_value="__MSG_birthday__"/>
+  <EnumValue value="g" display_value="__MSG_gameday__"/>
+  <EnumValue value="p" display_value="__MSG_party__"/>
+  <EnumValue value="n" display_value="__MSG_nightonthetown__"/>
+  <EnumValue value="v" display_value="__MSG_vacation__"/>
+  <EnumValue value="a" display_value="__MSG_anniversary__"/>
+  <EnumValue value="w" display_value="__MSG_wedding__"/>
+  <EnumValue value="none" display_value="__MSG_none__"/>
+</UserPref>
+<UserPref name="custom_image" display_name="__MSG_custom_image__" default_value=""/>
+<UserPref name="title" display_name="__MSG_event__" default_value="__MSG_event_default__"/>
+<UserPref name="description" default_value="__MSG_countdown_description__" datatype="hidden"/>
+<UserPref name="email" default_value="" datatype="hidden"/>
+<UserPref name="location" default_value="" datatype="hidden"/>
+<UserPref name="author" default_value="" datatype="hidden"/>
+<UserPref name="message" display_name="__MSG_eventmessage__" default_value=""/>
+<UserPref name="month" display_name="__MSG_month__" default_value="" datatype="enum">
+  <EnumValue value="0" display_value="__MSG_jan__"/>
+  <EnumValue value="1" display_value="__MSG_feb__"/>
+  <EnumValue value="2" display_value="__MSG_mar__"/>
+  <EnumValue value="3" display_value="__MSG_apr__"/>
+  <EnumValue value="4" display_value="__MSG_may__"/>
+  <EnumValue value="5" display_value="__MSG_jun__"/>
+  <EnumValue value="6" display_value="__MSG_jul__"/>
+  <EnumValue value="7" display_value="__MSG_aug__"/>
+  <EnumValue value="8" display_value="__MSG_sep__"/>
+  <EnumValue value="9" display_value="__MSG_oct__"/>
+  <EnumValue value="10" display_value="__MSG_nov__"/>
+  <EnumValue value="11" display_value="__MSG_dec__"/>
+</UserPref>
+<UserPref name="day" display_name="__MSG_day__" default_value=""/>
+<UserPref name="year" display_name="Year" default_value=""/>
+<UserPref name="color" display_name="__MSG_background__" default_value="b" datatype="enum">
+  <EnumValue value="b" display_value="__MSG_blue__"/>
+  <EnumValue value="g" display_value="__MSG_green__"/>
+  <EnumValue value="o" display_value="__MSG_orange__"/>
+  <EnumValue value="p" display_value="__MSG_purple__"/>
+  <EnumValue value="pi" display_value="__MSG_pink__"/>
+  <EnumValue value="y" display_value="__MSG_yellow__"/>
+  <EnumValue value="w" display_value="__MSG_white__"/>
+</UserPref>
+<Content type="html">
+<![CDATA[
+
+<script>
+ _IG_RegisterOnloadHandler(
+   function() {
+     var prefs = new _IG_Prefs(__MODULE_ID__);
+     var border_color = colors["__UP_color__"][0];
+     var bg_color = colors["__UP_color__"][1];
+     var font_color = colors["__UP_color__"][2];
+     _gel("pic").style.border = "1px solid " + border_color;
+     _gel("box").style.backgroundColor = bg_color;
+     _gel("time_left").style.color = font_color;
+     if (prefs.getBool("preview")) {
+       _gel("box").style.border = "1px solid #c5d7ef";
+     }
+     _gel('time_remaining').innerHTML = getTimeRemainingString();
+     var picUrl = getPicUrl();
+     if (picUrl != 'none') {
+       _gel('pic').src = picUrl;
+     } else {
+       _gel('pic').style.display = 'none';
+     }
+     _IG_AdjustIFrameHeight();
+   }
+ );
+
+ var images = {'a' : 'anniversary2.jpg',
+               'b' : 'birthday2.jpg',
+               'p' : 'party.jpg',
+               'n' : 'night_on_the_town.jpg',
+               'v' : 'vacation.jpg',
+               'w' : 'wedding.jpg',
+               'g' : 'game_day2.jpg'};
+
+ var colors = {"y" : ["#FFDD77", "#FFFFEE", "#805817"],
+               "b" : ["#BBDDFF", "#F0F8FF", "#3366cc"],
+               "g" : ["#BBEE99", "#F0FFF0", "#228833"],
+               "o" : ["#FFCCBB", "#FFEEDD", "#AA5522"],
+               "p" : ["#CCBBFF", "#E3E4FA", "#443399"],
+               "pi" : ["#FFCCFF", "#FFEEFF", "#990066"],
+               "w" : ["#909090", "#FFFFFF", "#404040"]};
+
+
+function getTimeRemainingString() {
+  var currentDate = new Date();
+  var currentYearStr = currentDate.getFullYear().toString();
+  var targetYearStr = '__UP_year__';
+  // Since the year could be absent or entered with a weird number of digits,
+  // just prepend digits from the current year onto the front of the user's
+  // string until we have the correct number of digits.
+  var charDifference = currentYearStr.length - targetYearStr.length;
+  if (charDifference > 0) {
+    targetYearStr = currentYearStr.substr(0, charDifference) + targetYearStr;
+  }
+  var targetDate = new Date(parseInt(targetYearStr), parseInt('__UP_month__'),
+                            parseInt('__UP_day__'));
+  if (currentDate.getTime() >= targetDate.getTime()) {
+    // The target day has already passed. Time to party!
+    return '__UP_message__';
+  }
+  var numYearsRemaining = targetDate.getFullYear() - currentDate.getFullYear();
+  var numMonthsRemaining = targetDate.getMonth() - currentDate.getMonth();
+  var numDaysRemaining = targetDate.getDate() - currentDate.getDate();
+  if (numDaysRemaining < 0) {
+    // The calculate the number of days necessary, we need to see how many days
+    // are in the previous month.
+    for (var i = 1; i < 5; ++i) {
+      var tempDate = new Date(targetDate.getFullYear(),
+                              targetDate.getMonth() - 1, 28 + i);
+      if (tempDate.getMonth() == targetDate.getMonth()) {
+        // So now we know that the month before the target month has
+        // (28 + i - 1) days.
+        if (currentDate.getDate() > (28 + i - 1)) {
+          // Handle the case where the current day of the month is larger than
+          // the number of days in the month before the target month (example:
+          // current date is January 30, target date is March 2 should return
+          // "1 month, 2 days").
+          numDaysRemaining = targetDate.getDate();
+        } else {
+          numDaysRemaining = (28 - currentDate.getDate()) + (i - 1) +
+                              targetDate.getDate();
+        }
+        break;
+      }
+    }
+    --numMonthsRemaining; // Carry the one.
+  }
+  if (numMonthsRemaining < 0) {
+    numMonthsRemaining += 12;
+    --numYearsRemaining; // Carry the one.
+  }
+
+  var retStr = '';
+  var baseLength = retStr.length;
+  if (numYearsRemaining == 1) {
+    retStr += '__MSG_one_year__';
+  } else if (numYearsRemaining > 0) {
+    retStr += '__MSG_multiple_years__'.replace('%VAL1%',
+                                               numYearsRemaining.toString());
+  }
+  if (numMonthsRemaining > 0) {
+    if (retStr.length > baseLength) retStr += ', ';
+    if (numMonthsRemaining == 1) {
+      retStr += '__MSG_one_month__';
+    } else {
+      retStr += '__MSG_multiple_months__'.replace(
+          '%VAL1%', numMonthsRemaining.toString());
+    }
+  }
+  if (numDaysRemaining > 0) {
+    if (retStr.length > baseLength) retStr += ', ';
+    if (numDaysRemaining == 1) {
+      retStr += '__MSG_one_day__';
+    } else {
+      retStr += '__MSG_multiple_days__'.replace(
+          '%VAL1%', numDaysRemaining.toString());
+    }
+  }
+  return retStr;
+}
+
+function getPicUrl() {
+  var imageChoice = '__UP_image__';
+  var retStr = '__UP_custom_image__';
+  if (retStr.length == 0) {
+    retStr = 'modules/gadgetmaker_content/countdown_images/' +
+             images[imageChoice];
+  }
+  return retStr;
+}
+</script>
+
+<style>
+#box {
+  font-size:smaller;
+}
+#pic {
+  margin:6px;
+}
+#time_left {
+  font-style:italic;
+  padding-right:6px;
+}
+</style>
+
+<div id=box>
+  <table cellspacing=0 cellpadding=0>
+    <tr>
+      <td valign=top>
+        <img id="pic" width=50>
+      </td>
+      <td style="font-size:smaller">
+        <span id="time_left">__MSG_time_remaining__:</span>
+        <span id="time_remaining"></span>
+      </td>
+    </tr>
+  </table>
+</div>
+]]>
+</Content>
+</Module>

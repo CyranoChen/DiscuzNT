@@ -1,0 +1,90 @@
+﻿<%template _header%>	
+<%if !{ispost}%>
+    <%if page_err==0%>
+	    <div class="float" id="floatlayout_topicadmin" style="height: 380px;">
+            <div class="floatboxnarrow">
+                <h3 class="float_ctrl">
+                    <em id="return_emailfriend">分享</em>
+                    <span><a href="javascript:;" class="float_close" onclick="floatwin('close_emailfriend')" title="关闭">关闭</a></span>
+                </h3>
+                <div class="postbox">
+	                <%if {infloat}==1%>
+                    <table cellspacing="0" cellpadding="2">
+                        <tr>
+                            <td><h5>通过 QQ、MSN 分享给朋友</h5></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input onclick="submithandle_emailfriend();setcopy('{topictitle}\r\n' + window.location.toString().replace(/#(.*?)$/ig, ''), '帖子地址已经复制到剪贴板，您可以用快捷键 Ctrl + V 粘贴到 QQ、MSN 里。')" type="button" value="复制本帖标题和链接" />
+                            </td>
+                        </tr>
+                    </table>
+                    <hr class="shadowline" />
+                    <form id="emailfriendform" name="emailfriendform" method="post" action="misc.aspx?action=emailfriend&sendsubmit=yes&infloat=1" onsubmit="ajaxpost('emailfriendform', 'return_emailfriend', 'return_emailfriend', 'onerror');return false;">
+                        <input type="hidden" name="tid" value="{tid}" />
+                        <table cellspacing="0" cellpadding="2">
+                            <tr>
+                                <td><h5>通过 Email 分享给朋友</h5></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    接收者 Email<br />
+                                    <input type="text" name="sendtoemail" size="25" class="txt" /><br />
+                                    内容<br />
+                                    <textarea class="txtarea" name="message" style="margin-bottom: 5px; width: 202px; height: 70px;">{emailcontent}</textarea>
+                                    <br />
+                                    <input name="sendsubmit" type="submit" value="发送" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <hr class="shadowline" />
+                    <h5><a href="javascript:;" onclick="submithandle_emailfriend();floatwin('open_postpm', 'usercppostpm.aspx?tid={tid}&operation=pmfriend', 600, 410);">通过站内短消息分享给朋友</a></h5>
+                    <%/if%>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" reload="1">
+        function submithandle_emailfriend(locationhref)
+        {
+            floatwinreset = 1;
+            floatwin('close_emailfriend');
+        }
+        var lastsel = $('itemcp_im');
+        function switchitemcp(id)
+        {
+            if (lastsel)
+            {
+                lastsel.className = '';
+            }
+            $(id).className = 'currentopt';
+            lastsel = $(id);
+        }
+    </script>
+    <%else%>
+         <%if {infloat}==1%>
+            <div class="float" id="floatboxnarrow" style="width: 500px; height: 350px;">
+	        <h3 class="float_ctrl">
+	            <em id="Em1">分享</em>
+		        <span><a href="javascript:;" class="float_close" onclick="floatwin('close_emailfriend')" title="关闭">关闭</a></span>
+	        </h3>
+	        <div class="gateform" style="margin:0 auto;">
+		    <p>{msgbox_text}</p>
+		    </div>
+		    </div>
+	      <%else%>
+		    <%template _errmsgbox%>
+	      <%/if%>
+    <%/if%>
+<%else%>
+	<%if {infloat}==1%>
+        <script type="text/javascript"  reload="1">
+            floatwin('close_emailfriend');	
+        </script>
+	<%else%>
+	    <%template _msgbox%>
+	<%/if%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,23 @@
+﻿.article 
+{
+	BORDER-BOTTOM: black 1px solid; 
+	BORDER-LEFT: black 1px solid; 
+	BORDER-RIGHT: black 1px solid; 
+	BORDER-TOP: black 1px solid;  
+	POSITION: absolute; 
+	z-index: 10000;
+    background-color: aliceblue; 
+    width:250px;
+    float:left;
+    background: #FFFFFF;
+    margin-left: 1px;
+    border: 1px solid #7AC4EA;
+    padding: 4px;
+} 
+
+img  {
+	border:0px;
+	align:bottom;
+	position:relative;
+	top:5%;
+}

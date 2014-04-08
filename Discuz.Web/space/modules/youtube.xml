@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Youtube"  directory_title="Youtube" description="Youtube" category="工具" author="Discuz!NT" author_email="jiayanzhao@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality">
+        <Require feature="dynamic-height" />
+        <Require feature="settitle" />
+    </ModulePrefs>
+	<UserPref name="youtubeid" display_name="Youtube ID: " datatype="string" default_value="youtube" />
+    <Content type="html">	
+	<![CDATA[
+		<style>
+		body {
+				background: transparent;
+			}
+		</style>
+		<div>
+			<div style="display: block;">
+				<div style="text-align: center;">
+						
+					<div id="video">加载中...</div>
+					<div>
+						<img src="modules/images/previous.gif" onclick="prevVideo();" style="cursor : pointer;" />
+						<img src="modules/images/next.gif" onclick="nextVideo();" style="cursor : pointer;" />
+					</div>	
+				</div>
+			</div>
+		
+		</div>
+		<script type="text/javascript">
+		var videoTitle = new Array();
+		var videoUrl = new Array();		
+		var currentIndex = 0;
+		
+		function initYoutube()
+		{
+			var prefs = new _DS_Prefs(__MODULE_ID__);
+			if (prefs.getString("youtubeid") != "")
+			{
+				url = "http://www.youtube.com/rss/user/" + prefs.getString("youtubeid") + "/videos.rss";
+			}
+			else
+			{
+				url = "http://www.youtube.com/rss/user/youtube/videos.rss";
+			}
+
+			_DS_FetchXmlContent(url, function (response){
+				
+				var items = response.getElementsByTagName("item");
+				
+				for (var i = 0; i < items.length; i++)
+				{
+					var item = items[i];
+					videoTitle[i] = item.getElementsByTagName("title")[0].firstChild.nodeValue;
+					videoUrl[i] = item.getElementsByTagName("enclosure")[0].getAttribute("url");					
+				}
+				
+				showVideo(0);
+			});
+		}
+		function nextVideo()
+		{
+			if (currentIndex == videoUrl.length - 1)
+			{
+				currentIndex = -1;
+			}
+			showVideo(currentIndex + 1);
+		}
+		function prevVideo()
+		{
+			if (currentIndex == 0)
+			{
+				currentIndex = videoUrl.length;
+			}
+			showVideo(currentIndex - 1);
+		}
+		function showVideo(index)
+		{		
+			_DS_SetTitle(videoTitle[index]);
+			var html = '<div><object width="96%"><param name="movie" value="' + videoUrl[index] + '"></param><param name="wmode" value="transparent"></param>';
+			html += '<embed src="' + videoUrl[index] + '" type="application/x-shockwave-flash" wmode="transparent" width="96%"></embed></object></div>';
+			_gel("video").innerHTML = html.toString();	
+			_DS_AdjustIFrameHeight();
+			currentIndex = index;
+		}		
+		_DS_RegisterOnloadHandler(initYoutube);
+		</script>
+	]]>
+    </Content>
+</Module>

@@ -1,0 +1,515 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goods]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goods]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodsattachments]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodsattachments]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodscategories]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodscategories]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodscreditrules]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodscreditrules]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodsleavewords]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodsleavewords]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodsrates]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodsrates]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodstags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodstags]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodstradelogs]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodstradelogs]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_goodsusercredits]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_goodsusercredits]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_shopcategories]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_shopcategories]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_shoplinks]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_shoplinks]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_shops]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_shops]
+;
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_shopthemes]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_shopthemes]
+;
+
+
+
+
+CREATE TABLE [dnt_goods] (
+	[goodsid] [int] IDENTITY (1, 1) NOT NULL ,
+	[shopid] [int] NOT NULL ,
+	[categoryid] [int] NOT NULL ,
+	[parentcategorylist] [char] (300)  NOT NULL ,
+	[shopcategorylist] [char] (300) NOT NULL ,
+	[recommend] [tinyint] NOT NULL ,
+	[discount] [tinyint] NOT NULL ,
+	[selleruid] [int] NOT NULL ,
+	[seller] [nchar] (20) NOT NULL ,
+	[account] [nchar] (50) NOT NULL ,
+	[title] [nchar] (60) NOT NULL ,
+	[magic] [int] NOT NULL ,
+	[price] [decimal](18, 2) NOT NULL ,
+	[amount] [smallint] NOT NULL ,
+	[quality] [tinyint] NOT NULL ,
+	[lid] [int] NOT NULL ,
+	[locus] [nchar] (20) NOT NULL ,
+	[transport] [tinyint] NOT NULL ,
+	[ordinaryfee] [decimal](18, 2) NOT NULL ,
+	[expressfee] [decimal](18, 2) NOT NULL ,
+	[emsfee] [decimal](18, 2) NOT NULL ,
+	[itemtype] [tinyint] NOT NULL ,
+	[dateline] [datetime] NOT NULL ,
+	[expiration] [datetime] NOT NULL ,
+	[lastbuyer] [nchar] (10) NOT NULL ,
+	[lasttrade] [datetime] NOT NULL ,
+	[lastupdate] [datetime] NOT NULL ,
+	[totalitems] [smallint] NOT NULL ,
+	[tradesum] [decimal](18, 2) NOT NULL ,
+	[closed] [tinyint] NOT NULL ,
+	[aid] [int] NOT NULL ,
+	[goodspic] [nchar] (100) NOT NULL ,
+	[displayorder] [int] NOT NULL ,
+	[costprice] [decimal](18, 2) NOT NULL ,
+	[invoice] [tinyint] NOT NULL ,
+	[repair] [smallint] NOT NULL ,
+	[message] [ntext] NOT NULL ,
+	[otherlink] [nchar] (250) NOT NULL ,
+	[readperm] [int] NOT NULL ,
+	[tradetype] [tinyint] NOT NULL ,
+	[viewcount] [int] NOT NULL ,
+	[invisible] [int] NOT NULL ,
+	[smileyoff] [int] NOT NULL ,
+	[bbcodeoff] [int] NOT NULL ,
+	[parseurloff] [int] NOT NULL ,
+	[highlight] [varchar] (500) NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodsattachments] (
+	[aid] [int] IDENTITY (1, 1) NOT NULL ,
+	[uid] [int] NOT NULL ,
+	[goodsid] [int] NOT NULL ,
+	[categoryid] [int] NOT NULL ,
+	[postdatetime] [datetime] NOT NULL ,
+	[readperm] [int] NOT NULL ,
+	[filename] [nchar] (100) NOT NULL ,
+	[description] [nchar] (100) NOT NULL ,
+	[filetype] [nchar] (50) NOT NULL ,
+	[filesize] [int] NOT NULL ,
+	[attachment] [nchar] (100) NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodscategories] (
+	[categoryid] [int] IDENTITY (1, 1) NOT NULL ,
+	[parentid] [int] NOT NULL ,
+	[layer] [smallint] NOT NULL ,
+	[parentidlist] [char] (300) NOT NULL ,
+	[displayorder] [int] NOT NULL ,
+	[categoryname] [nchar] (50) NOT NULL ,
+	[haschild] [bit] NOT NULL ,
+	[fid] [int] NOT NULL ,
+	[pathlist] [nchar] (3000) NOT NULL ,
+	[goodscount] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodscreditrules] (
+	[id] [int] NOT NULL ,
+	[lowerlimit] [int] NOT NULL ,
+	[upperlimit] [int] NOT NULL ,
+	[sellericon] [varchar] (20) NULL ,
+	[buyericon] [varchar] (20) NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodsleavewords] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,
+	[goodsid] [int] NOT NULL ,
+	[tradelogid] [int] NOT NULL ,
+	[isbuyer] [tinyint] NOT NULL ,
+	[uid] [int] NOT NULL ,
+	[username] [nchar] (20) NOT NULL ,
+	[message] [nchar] (200) NOT NULL ,
+	[invisible] [int] NOT NULL ,
+	[ip] [nvarchar] (15) NOT NULL ,
+	[usesig] [int] NOT NULL ,
+	[htmlon] [int] NOT NULL ,
+	[smileyoff] [int] NOT NULL ,
+	[parseurloff] [int] NOT NULL ,
+	[bbcodeoff] [int] NOT NULL ,
+	[postdatetime] [datetime] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodsrates] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,
+	[goodstradelogid] [int] NOT NULL ,
+	[message] [nchar] (200) NOT NULL ,
+	[explain] [nchar] (200) NOT NULL ,
+	[ip] [nvarchar] (15) NOT NULL ,
+	[uid] [int] NOT NULL ,
+	[uidtype] [tinyint] NOT NULL ,
+	[username] [nchar] (20) NOT NULL ,
+	[ratetouid] [int] NOT NULL ,
+	[ratetousername] [nchar] (20) NOT NULL ,
+	[postdatetime] [datetime] NOT NULL ,
+	[goodsid] [int] NOT NULL ,
+	[goodstitle] [nchar] (60) NOT NULL ,
+	[price] [decimal](18, 2) NOT NULL ,
+	[ratetype] [tinyint] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodstags] (
+	[tagid] [int] NOT NULL ,
+	[goodsid] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_goodstradelogs] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,
+	[goodsid] [int] NOT NULL ,
+	[orderid] [varchar] (50) NOT NULL ,
+	[tradeno] [varchar] (50) NOT NULL ,
+	[subject] [nchar] (60) NOT NULL ,
+	[price] [decimal](18, 2) NOT NULL ,
+	[quality] [tinyint] NOT NULL ,
+	[categoryid] [int] NOT NULL ,
+	[number] [smallint] NOT NULL ,
+	[tax] [decimal](18, 2) NOT NULL ,
+	[locus] [varchar] (50) NOT NULL ,
+	[sellerid] [int] NOT NULL ,
+	[seller] [nchar] (20) NOT NULL ,
+	[selleraccount] [varchar] (50) NOT NULL ,
+	[buyerid] [int] NOT NULL ,
+	[buyer] [nchar] (20) NOT NULL ,
+	[buyercontact] [nchar] (100) NOT NULL ,
+	[buyercredit] [smallint] NOT NULL ,
+	[buyermsg] [nchar] (100) NOT NULL ,
+	[status] [tinyint] NOT NULL ,
+	[lastupdate] [datetime] NOT NULL ,
+	[offline] [tinyint] NOT NULL ,
+	[buyername] [nchar] (20) NOT NULL ,
+	[buyerzip] [varchar] (50) NOT NULL ,
+	[buyerphone] [varchar] (50) NOT NULL ,
+	[buyermobile] [varchar] (50) NOT NULL ,
+	[transport] [tinyint] NOT NULL ,
+	[transportfee] [decimal](18, 2) NOT NULL ,
+	[transportpay] [tinyint] NOT NULL ,
+	[tradesum] [decimal](18, 2) NOT NULL ,
+	[baseprice] [decimal](18, 2) NOT NULL ,
+	[discount] [tinyint] NOT NULL ,
+	[ratestatus] [tinyint] NOT NULL ,
+	[message] [ntext] NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+;
+
+
+CREATE TABLE [dnt_goodsusercredits] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,
+	[uid] [int] NOT NULL ,
+	[oneweek] [int] NOT NULL ,
+	[onemonth] [int] NOT NULL ,
+	[sixmonth] [int] NOT NULL ,
+	[sixmonthago] [int] NOT NULL ,
+	[ratefrom] [tinyint] NOT NULL ,
+	[ratetype] [tinyint] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_shopcategories] (
+	[categoryid] [int] IDENTITY (1, 1) NOT NULL ,
+	[parentid] [int] NOT NULL ,
+	[parentidlist] [char] (300) NOT NULL ,
+	[layer] [int] NOT NULL ,
+	[childcount] [int] NOT NULL ,
+	[syscategoryid] [int] NOT NULL ,
+	[name] [nchar] (50) NOT NULL ,
+	[categorypic] [nvarchar] (100) NOT NULL ,
+	[shopid] [int] NOT NULL ,
+	[displayorder] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+
+CREATE TABLE [dnt_shoplinks] (
+	[id] [int] IDENTITY (1, 1) NOT NULL ,
+	[shopid] [int] NOT NULL ,
+	[displayorder] [int] NOT NULL ,
+	[name] [nvarchar] (100) NOT NULL ,
+	[linkshopid] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+CREATE TABLE [dnt_shops] (
+	[shopid] [int] IDENTITY (1, 1) NOT NULL ,
+	[logo] [nvarchar] (100) NOT NULL ,
+	[shopname] [nvarchar] (50) NOT NULL ,
+	[categoryid] [int] NOT NULL ,
+	[themeid] [int] NOT NULL ,
+	[themepath] [nchar] (50) NOT NULL ,
+	[uid] [int] NOT NULL ,
+	[username] [nchar] (20) NOT NULL ,
+	[introduce] [nvarchar] (500) NOT NULL ,
+	[lid] [int] NOT NULL ,
+	[locus] [nchar] (20) NOT NULL ,
+	[bulletin] [nvarchar] (500) NOT NULL ,
+	[createdatetime] [datetime] NOT NULL ,
+	[invisible] [int] NOT NULL ,
+	[viewcount] [int] NOT NULL 
+) ON [PRIMARY]
+;
+
+
+CREATE TABLE [dnt_shopthemes] (
+	[themeid] [int] IDENTITY (1, 1) NOT NULL ,
+	[directory] [varchar] (100) NOT NULL ,
+	[name] [nvarchar] (50) NOT NULL ,
+	[author] [nvarchar] (100) NOT NULL ,
+	[createdate] [nvarchar] (50) NOT NULL ,
+	[copyright] [nvarchar] (100) NOT NULL 
+) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_goodscategories] WITH NOCHECK ADD 
+	CONSTRAINT [PK_dnt_goodscategories] PRIMARY KEY  CLUSTERED 
+	(
+		[categoryid]
+	)  ON [PRIMARY] 
+;
+
+ALTER TABLE [dnt_goods] ADD 
+	CONSTRAINT [DF_dnt_goods_shopid] DEFAULT (0) FOR [shopid],
+	CONSTRAINT [DF_dnt_goods_usergoodstypeid] DEFAULT (0) FOR [categoryid],
+	CONSTRAINT [DF_dnt_goods_parentidlist] DEFAULT ('') FOR [parentcategorylist],
+	CONSTRAINT [DF_dnt_goods_shopcategorylist] DEFAULT (',') FOR [shopcategorylist],
+	CONSTRAINT [DF_dnt_goods_recommend] DEFAULT (0) FOR [recommend],
+	CONSTRAINT [DF_dnt_goods_discount] DEFAULT (0) FOR [discount],
+	CONSTRAINT [DF_dnt_goods_selleruid] DEFAULT (0) FOR [selleruid],
+	CONSTRAINT [DF_dnt_goods_seller] DEFAULT ('') FOR [seller],
+	CONSTRAINT [DF_dnt_goods_magic] DEFAULT (0) FOR [magic],
+	CONSTRAINT [DF_dnt_goods_price] DEFAULT (0) FOR [price],
+	CONSTRAINT [DF_dnt_goods_amount] DEFAULT (0) FOR [amount],
+	CONSTRAINT [DF_dnt_goods_quality] DEFAULT (1) FOR [quality],
+	CONSTRAINT [DF_dnt_goods_transport] DEFAULT (0) FOR [transport],
+	CONSTRAINT [DF_dnt_goods_ordinaryfee] DEFAULT (0) FOR [ordinaryfee],
+	CONSTRAINT [DF_dnt_goods_expressfee] DEFAULT (0) FOR [expressfee],
+	CONSTRAINT [DF_dnt_goods_itemtype] DEFAULT (0) FOR [itemtype],
+	CONSTRAINT [DF_dnt_goods_dateline] DEFAULT (getdate()) FOR [dateline],
+	CONSTRAINT [DF_dnt_goods_lastbuyer] DEFAULT ('') FOR [lastbuyer],
+	CONSTRAINT [DF_dnt_goods_lastupdate] DEFAULT (getdate()) FOR [lastupdate],
+	CONSTRAINT [DF_dnt_goods_tradesum] DEFAULT (0) FOR [tradesum],
+	CONSTRAINT [DF_dnt_goods_closed] DEFAULT (0) FOR [closed],
+	CONSTRAINT [DF_dnt_goods_goodspic] DEFAULT ('') FOR [goodspic],
+	CONSTRAINT [DF_dnt_goods_displayorder] DEFAULT (0) FOR [displayorder],
+	CONSTRAINT [DF_dnt_goods_costprice] DEFAULT (0) FOR [costprice],
+	CONSTRAINT [DF_dnt_goods_invoice] DEFAULT (0) FOR [invoice],
+	CONSTRAINT [DF_dnt_goods_repair] DEFAULT (0) FOR [repair],
+	CONSTRAINT [DF_dnt_goods_viewcount] DEFAULT (0) FOR [viewcount],
+	CONSTRAINT [DF_dnt_goods_invisible] DEFAULT (0) FOR [invisible],
+	CONSTRAINT [DF_dnt_goods_bbcodeoff] DEFAULT (0) FOR [bbcodeoff],
+	CONSTRAINT [DF_dnt_goods_highlight] DEFAULT ('') FOR [highlight]
+;
+
+ CREATE  INDEX [parentcagegory] ON [dnt_goods]([parentcategorylist]) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_goodsattachments] ADD 
+	CONSTRAINT [DF_dnt_goodsattachments_uid] DEFAULT (0) FOR [uid],
+	CONSTRAINT [DF_dnt_goodsattachments_goodsid] DEFAULT (0) FOR [goodsid],
+	CONSTRAINT [DF_dnt_goodsattachments_categoryid] DEFAULT (0) FOR [categoryid],
+	CONSTRAINT [DF_dnt_goodsattachments_postdatetime] DEFAULT (getdate()) FOR [postdatetime],
+	CONSTRAINT [DF_dnt_goodsattachments_readperm] DEFAULT (0) FOR [readperm],
+	CONSTRAINT [DF_dnt_goodsattachments_filename] DEFAULT ('') FOR [filename],
+	CONSTRAINT [DF_dnt_goodsattachments_description] DEFAULT ('') FOR [description],
+	CONSTRAINT [DF_dnt_goodsattachments_filetype] DEFAULT ('') FOR [filetype],
+	CONSTRAINT [DF_dnt_goodsattachments_filesize] DEFAULT (0) FOR [filesize],
+	CONSTRAINT [DF_dnt_goodsattachments_attachment] DEFAULT ('') FOR [attachment]
+;
+
+ALTER TABLE [dnt_goodscategories] ADD 
+	CONSTRAINT [DF_dnt_goodscategories_parentid] DEFAULT (0) FOR [parentid],
+	CONSTRAINT [DF_dnt_goodscategories_layer] DEFAULT (0) FOR [layer],
+	CONSTRAINT [DF_dnt_goodscategories_parentidlist] DEFAULT ('') FOR [parentidlist],
+	CONSTRAINT [DF_dnt_goodscategories_displayorder] DEFAULT (0) FOR [displayorder],
+	CONSTRAINT [DF_dnt_goodscategories_categoryname] DEFAULT ('') FOR [categoryname],
+	CONSTRAINT [DF_dnt_goodscategories_haschild] DEFAULT (0) FOR [haschild],
+	CONSTRAINT [DF_dnt_goodscategories_fid] DEFAULT (0) FOR [fid],
+	CONSTRAINT [DF_dnt_goodscategories_pathlist] DEFAULT ('') FOR [pathlist],
+	CONSTRAINT [DF_dnt_goodscategories_goodscount] DEFAULT (0) FOR [goodscount]
+;
+
+ CREATE  UNIQUE  INDEX [categoryid] ON [dnt_goodscategories]([categoryid]) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_goodscreditrules] ADD 
+	CONSTRAINT [DF_dnt_goodscreditrules_buyercredit] DEFAULT (0) FOR [lowerlimit],
+	CONSTRAINT [DF_dnt_goodscreditrules_sellercredit] DEFAULT (0) FOR [upperlimit],
+	CONSTRAINT [DF_dnt_goodscreditrules_sellericon] DEFAULT ('') FOR [sellericon],
+	CONSTRAINT [DF_dnt_goodscreditrules_buyericon] DEFAULT ('') FOR [buyericon]
+;
+
+ALTER TABLE [dnt_goodsleavewords] ADD 
+	CONSTRAINT [DF_dnt_goodsleaveword_goodsid] DEFAULT (0) FOR [goodsid],
+	CONSTRAINT [DF_dnt_goodsleaveword_isbuyer] DEFAULT (0) FOR [isbuyer],
+	CONSTRAINT [DF_dnt_goodsleaveword_uid] DEFAULT (0) FOR [uid],
+	CONSTRAINT [DF_dnt_goodsleaveword_username] DEFAULT ('') FOR [username],
+	CONSTRAINT [DF_dnt_goodsleaveword_invisible] DEFAULT (0) FOR [invisible],
+	CONSTRAINT [DF_dnt_goodsleaveword_ip] DEFAULT ('') FOR [ip],
+	CONSTRAINT [DF_dnt_goodsleaveword_usesig] DEFAULT (0) FOR [usesig],
+	CONSTRAINT [DF_dnt_goodsleaveword_postdatetime] DEFAULT (getdate()) FOR [postdatetime]
+;
+
+ALTER TABLE [dnt_goodsrates] ADD 
+	CONSTRAINT [DF_dnt_goodsrates_goodstradelogid] DEFAULT (0) FOR [goodstradelogid],
+	CONSTRAINT [DF_dnt_goodsrates_message] DEFAULT ('') FOR [message],
+	CONSTRAINT [DF_dnt_goodsrates_explain] DEFAULT ('') FOR [explain],
+	CONSTRAINT [DF_dnt_goodsrates_ip] DEFAULT ('') FOR [ip],
+	CONSTRAINT [DF_dnt_goodsrates_uid] DEFAULT (0) FOR [uid],
+	CONSTRAINT [DF_dnt_goodsrates_username] DEFAULT ('') FOR [username],
+	CONSTRAINT [DF_dnt_goodsrates_ratetouid] DEFAULT (0) FOR [ratetouid],
+	CONSTRAINT [DF_dnt_goodsrates_ratetoname] DEFAULT ('') FOR [ratetousername],
+	CONSTRAINT [DF_dnt_goodsrates_postdatetime] DEFAULT (getdate()) FOR [postdatetime],
+	CONSTRAINT [DF_dnt_goodsrates_goodstitle] DEFAULT ('') FOR [goodstitle],
+	CONSTRAINT [DF_dnt_goodsrates_price] DEFAULT (0) FOR [price],
+	CONSTRAINT [DF_dnt_goodsrates_ratetype] DEFAULT (0) FOR [ratetype]
+;
+
+ALTER TABLE [dnt_goodstradelogs] ADD 
+	CONSTRAINT [DF_dnt_tradelog_goodsid] DEFAULT (0) FOR [goodsid],
+	CONSTRAINT [DF_dnt_tradelog_orderid] DEFAULT ('') FOR [orderid],
+	CONSTRAINT [DF_dnt_tradelog_tradeno] DEFAULT ('') FOR [tradeno],
+	CONSTRAINT [DF_dnt_tradelog_subject] DEFAULT ('') FOR [subject],
+	CONSTRAINT [DF_dnt_tradelog_price] DEFAULT (0) FOR [price],
+	CONSTRAINT [DF_dnt_tradelog_categoryid] DEFAULT (0) FOR [categoryid],
+	CONSTRAINT [DF_dnt_tradelog_number] DEFAULT (0) FOR [number],
+	CONSTRAINT [DF_dnt_tradelog_locus] DEFAULT ('') FOR [locus],
+	CONSTRAINT [DF_dnt_tradelog_sellerid] DEFAULT (0) FOR [sellerid],
+	CONSTRAINT [DF_dnt_tradelog_seller] DEFAULT ('') FOR [seller],
+	CONSTRAINT [DF_dnt_tradelog_buyerid] DEFAULT (0) FOR [buyerid],
+	CONSTRAINT [DF_dnt_tradelog_buyer] DEFAULT ('') FOR [buyer],
+	CONSTRAINT [DF_dnt_tradelog_buyercontact] DEFAULT ('') FOR [buyercontact],
+	CONSTRAINT [DF_dnt_tradelog_buyercredits] DEFAULT (0) FOR [buyercredit],
+	CONSTRAINT [DF_dnt_tradelog_buyermsg] DEFAULT ('') FOR [buyermsg],
+	CONSTRAINT [DF_dnt_tradelog_status] DEFAULT (0) FOR [status],
+	CONSTRAINT [DF_dnt_tradelog_lastupdate] DEFAULT (getdate()) FOR [lastupdate],
+	CONSTRAINT [DF_dnt_tradelog_offline] DEFAULT (0) FOR [offline],
+	CONSTRAINT [DF_dnt_tradelog_buyername] DEFAULT ('') FOR [buyername],
+	CONSTRAINT [DF_dnt_tradelog_buyerzip] DEFAULT ('') FOR [buyerzip],
+	CONSTRAINT [DF_dnt_tradelog_buyermobile] DEFAULT ('') FOR [buyermobile],
+	CONSTRAINT [DF_dnt_tradelog_transport] DEFAULT (0) FOR [transport],
+	CONSTRAINT [DF_dnt_tradelog_transportfee] DEFAULT (0) FOR [transportfee],
+	CONSTRAINT [DF_dnt_goodstradelogs_transportpay] DEFAULT (1) FOR [transportpay],
+	CONSTRAINT [DF_dnt_goodstradelogs_tradesum] DEFAULT (0) FOR [tradesum],
+	CONSTRAINT [DF_dnt_tradelog_baseprice] DEFAULT (0) FOR [baseprice],
+	CONSTRAINT [DF_dnt_tradelog_discount] DEFAULT (0) FOR [discount],
+	CONSTRAINT [DF_dnt_tradelog_ratestatus] DEFAULT (0) FOR [ratestatus],
+	CONSTRAINT [DF_dnt_tradelog_message] DEFAULT ('') FOR [message]
+;
+
+ALTER TABLE [dnt_goodsusercredits] ADD 
+	CONSTRAINT [DF_dnt_goodscredits_uid] DEFAULT (0) FOR [uid],
+	CONSTRAINT [DF_dnt_goodscredits_oneweek] DEFAULT (0) FOR [oneweek],
+	CONSTRAINT [DF_dnt_goodscredits_onemonth] DEFAULT (0) FOR [onemonth],
+	CONSTRAINT [DF_dnt_goodscredits_sixmonth] DEFAULT (0) FOR [sixmonth],
+	CONSTRAINT [DF_dnt_goodscredits_sixmonthago] DEFAULT (0) FOR [sixmonthago],
+	CONSTRAINT [DF_dnt_goodscredits_ratetype] DEFAULT (0) FOR [ratetype]
+;
+
+ALTER TABLE [dnt_shopcategories] ADD 
+	CONSTRAINT [DF_dnt_shopcategories_parentcid] DEFAULT (0) FOR [parentid],
+	CONSTRAINT [DF_dnt_shopcategories_parentidlist] DEFAULT (0) FOR [parentidlist],
+	CONSTRAINT [DF_dnt_shopcategories_layer] DEFAULT (0) FOR [layer],
+	CONSTRAINT [DF_dnt_shopcategories_childcount] DEFAULT (0) FOR [childcount],
+	CONSTRAINT [DF_dnt_shopcategories_name] DEFAULT ('') FOR [name],
+	CONSTRAINT [DF_dnt_shopcategories_categorypic] DEFAULT ('') FOR [categorypic],
+	CONSTRAINT [DF_dnt_shopcategories_shopid] DEFAULT (0) FOR [shopid],
+	CONSTRAINT [DF_dnt_shopcategories_displayorder] DEFAULT (0) FOR [displayorder]
+;
+
+ALTER TABLE [dnt_shoplinks] ADD 
+	CONSTRAINT [DF_dnt_shoplinks_shopid] DEFAULT (0) FOR [shopid],
+	CONSTRAINT [DF_dnt_shoplinks_linkshopid] DEFAULT (0) FOR [linkshopid]
+;
+
+ALTER TABLE [dnt_shops] ADD 
+	CONSTRAINT [DF_dnt_shops_shopname] DEFAULT ('') FOR [shopname],
+	CONSTRAINT [DF_dnt_shops_categoryid] DEFAULT (0) FOR [categoryid],
+	CONSTRAINT [DF_dnt_shops_themeid] DEFAULT (0) FOR [themeid],
+	CONSTRAINT [DF_dnt_shops_themepath] DEFAULT ('') FOR [themepath],
+	CONSTRAINT [DF_dnt_shops_uid] DEFAULT (0) FOR [uid],
+	CONSTRAINT [DF_dnt_shops_username] DEFAULT ('') FOR [username],
+	CONSTRAINT [DF_dnt_shops_introduce] DEFAULT ('') FOR [introduce],
+	CONSTRAINT [DF_dnt_shops_lid] DEFAULT (0) FOR [lid],
+	CONSTRAINT [DF_dnt_shops_announcement] DEFAULT ('') FOR [bulletin],
+	CONSTRAINT [DF_dnt_shops_createdatetime] DEFAULT (getdate()) FOR [createdatetime],
+	CONSTRAINT [DF_dnt_shops_viewcount] DEFAULT (0) FOR [viewcount]
+;
+
+ALTER TABLE [dnt_shopthemes] ADD 
+	CONSTRAINT [DF_dnt_shopthemes_directory] DEFAULT ('') FOR [directory],
+	CONSTRAINT [DF_dnt_shopthemes_name] DEFAULT ('') FOR [name],
+	CONSTRAINT [DF_dnt_shopthemes_author] DEFAULT ('') FOR [author],
+	CONSTRAINT [DF_dnt_shopthemes_createdate] DEFAULT ('') FOR [createdate],
+	CONSTRAINT [DF_dnt_shopthemes_copyright] DEFAULT ('') FOR [copyright]
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_locations]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dnt_locations]
+;
+
+CREATE TABLE [dnt_locations] (
+	[lid] [int] IDENTITY (1, 1) NOT NULL ,
+	[city] [nvarchar] (50) NOT NULL ,
+	[state] [nvarchar] (50) NOT NULL ,
+	[country] [nvarchar] (50) NOT NULL ,
+	[zipcode] [nvarchar] (20) NOT NULL 
+) ON [PRIMARY]
+;
+
+ALTER TABLE [dnt_locations] ADD 
+	CONSTRAINT [DF_dnt_locations_city] DEFAULT ('') FOR [city],
+	CONSTRAINT [DF_dnt_locations_state] DEFAULT ('') FOR [state],
+	CONSTRAINT [DF_dnt_locations_country] DEFAULT ('') FOR [country],
+	CONSTRAINT [DF_dnt_locations_zipcode] DEFAULT ('') FOR [zipcode]
+;
+
+
+DELETE FROM [dnt_goodscreditrules];
+
+INSERT INTO [dnt_goodscreditrules] VALUES(1,0,11,'sellercredit_1.gif','buyercredit_1.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(2,12,40,'sellercredit_2.gif','buyercredit_2.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(3,41,90,'sellercredit_3.gif','buyercredit_3.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(4,91,150,'sellercredit_4.gif','buyercredit_4.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(5,151,250,'sellercredit_5.gif','buyercredit_5.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(6,251,500,'sellercredit_6.gif','buyercredit_6.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(7,501,1000,'sellercredit_7.gif','buyercredit_7.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(8,1001,2000,'sellercredit_8.gif','buyercredit_8.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(9,2001,5000,'sellercredit_9.gif','buyercredit_9.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(10,5001,10000,'sellercredit_10.gif','buyercredit_10.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(11,10001,20000,'sellercredit_11.gif','buyercredit_11.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(12,20001,50000,'sellercredit_12.gif','buyercredit_12.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(13,50001,100000,'sellercredit_13.gif','buyercredit_13.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(14,100001,200000,'sellercredit_14.gif','buyercredit_14.gif'); 
+INSERT INTO [dnt_goodscreditrules] VALUES(15,200001,500000,'sellercredit_15.gif','buyercredit_15.gif'); 
+
+

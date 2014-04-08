@@ -1,0 +1,651 @@
+﻿<%template _header%>
+<script type="text/javascript">
+    var uname = "";
+    function manageUser(username,id) {
+        uname = username;
+        _sendRequest('tools/ajax.aspx?t=deletepostsbyuidanddays&uid=' + id, deletepostsbyuidanddays_callback, false);
+    }
+
+    function deletepostsbyuidanddays_callback(doc) {
+        var user = eval(doc);
+        if (user == "")
+            alert("操作失败!联系管理员");
+        else {
+            alert("操作成功!" + uname + "7天内的帖子已经被删除!");
+            location.reload();
+        }
+    }
+</script>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>搜索</strong>
+	</div>
+</div>
+<%if page_err==0%>
+<%if {searchpost}%>
+<%template _msgbox%>
+<%else%>
+<div class="wrap s_clear" id="wrap">
+	<div class="main">
+<%if {searchid}==-1%>
+	<div id="options_item">
+	<div id="postoptions">
+		<table cellpadding="0" cellspacing="0" border="0" class="formtable">
+		<tbody>
+		<tr>
+			<th><label for="posttableid">选择分表</label></th>
+			<td>
+				<select name="posttableid" id="posttableid">
+				<%loop table tablelist%>
+					<option value="{table[id]}">{table[description]}<%if {strtoint({table[_id]})}==1%>(当前使用)<%/if%></option>
+				<%/loop%>
+				</select>
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="searchtime">时间</label></th>
+			<td>
+				<select name="searchtime" id="searchtime">
+				  <option value="0" selected="selected">全部时间</option>
+				  <option value="-1">1天前</option>
+				  <option value="-2">2天前</option>
+				  <option value="-3">3天前</option>
+				  <option value="-7">1周前</option>
+				  <option value="-30">1个月前</option>
+				  <option value="-90">3个月前</option>
+				  <option value="-180">半年前</option>
+				  <option value="-365">1年前</option>
+				</select>
+				  <input type="radio" name="searchtimetype" value="1" />
+				之前
+				<input name="searchtimetype" type="radio" value="0" checked />
+				之后
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="resultorder">结果排序</label></th>
+			<td>
+				<select name="resultorder" id="resultorder">
+				  <option value="0" selected="selected">最后回复时间</option>
+				  <option value="1">发表时间</option>
+				  <option value="2">回复数量</option>
+				  <option value="3">查看次数</option>
+				</select>
+				<input type="radio" name="resultordertype" value="1" />
+				升序
+				<input name="resultordertype" type="radio" value="0" checked />
+				降序
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="searchforumid">搜索范围</label></th>
+			<td>
+				<select name="searchforumid" size="12" style="width:450px" multiple="multiple" id="searchforumid">
+				 <option selected value="">---------- 所有版块(默认) ----------</option>
+					<!--模版中所有版块的下拉框中一定要加入value=""否则会提示没有选择版块-->
+					{Caches.GetForumListBoxOptionsCache()}
+				 </select>
+				 <p>(按Ctrl或Shift键可以多选,不选择)</p>
+			</td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	<hr class="solidline"/>
+	<div id="spacepostoptions">
+		<table cellpadding="0" cellspacing="0" border="0"  class="formtable">
+		<tbody>
+		<tr>
+			<th><label for="searchtime">时间</label></th>
+			<td>
+				<select name="searchtime" id="searchtime">
+				  <option value="0" selected="selected">全部时间</option>
+				  <option value="-1">1天前</option>
+				  <option value="-2">2天前</option>
+				  <option value="-3">3天前</option>
+				  <option value="-7">1周前</option>
+				  <option value="-30">1个月前</option>
+				  <option value="-90">3个月前</option>
+				  <option value="-180">半年前</option>
+				  <option value="-365">1年前</option>
+				</select>
+				  <input type="radio" name="searchtimetype" value="1" />
+				之前
+				<input name="searchtimetype" type="radio" value="0" checked />
+				之后
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="resultorder">结果排序</label></th>
+			<td>
+				<select name="resultorder" id="resultorder">
+				  <option value="0" selected="selected">发表时间</option>
+				  <option value="1">回复数量</option>
+				  <option value="2">查看次数</option>
+				</select>
+				<input type="radio" name="resultordertype" value="1" />
+				升序
+				<input name="resultordertype" type="radio" value="0" checked />
+				降序
+			</td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	<div id="albumoptions">
+		<table cellpadding="0" cellspacing="0" border="0"  class="formtable">
+		<tbody>
+		<tr>
+			<th><label for="searchtime">时间</label></th>
+			<td>
+				<select name="searchtime" id="searchtime">
+				  <option value="0" selected="selected">全部时间</option>
+				  <option value="-1">1天前</option>
+				  <option value="-2">2天前</option>
+				  <option value="-3">3天前</option>
+				  <option value="-7">1周前</option>
+				  <option value="-30">1个月前</option>
+				  <option value="-90">3个月前</option>
+				  <option value="-180">半年前</option>
+				  <option value="-365">1年前</option>
+				</select>
+				  <input type="radio" name="searchtimetype" value="1" />
+				之前
+				<input name="searchtimetype" type="radio" value="0" checked />
+				之后
+			</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="resultorder">结果排序</label></th>
+			<td>
+				<select name="resultorder" id="resultorder">
+				  <option value="0" selected="selected">创建时间</option>
+				</select>
+				<input type="radio" name="resultordertype" value="1" />
+				升序
+				<input name="resultordertype" type="radio" value="0" checked />
+				降序
+			</td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+<form id="postpm" name="postpm" method="post" onsubmit="if(this.chkAuthor.checked)$('type').value='author';return true;" action="">
+	<h1>搜索</h1>
+	<table cellSpacing="0" cellPadding="0" summary="搜索"  class="formtable">
+		<tbody>
+		<tr id="divkeyword">
+			<th><label for="keyword">关键词</label></th>
+			<td><input name="keyword" type="text" id="keyword" size="45" class="txt" />&nbsp;&nbsp;多个关键词间用英文空格分开</td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<th><label for="poster">作者</label></th>
+			<td>
+			<input name="poster" type="text" id="poster" size="45" class="txt" />
+			<input type="checkbox" value="1" id="chkAuthor" name="chkAuthor" onclick="checkauthoroption(this);" />搜索该作者所有帖子及相关内容
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<hr class="solidline"/>
+	<table cellSpacing="0" cellPadding="0" summary="搜索选项"  class="formtable">
+		<thead>
+		<tr>
+			<th id="divsearchoption">搜索选项</th>
+			<td>&nbsp;</td>
+		</tr>
+		</thead>
+		<tbody id="divsearchtype">
+		<tr>
+			<th><label for="poster">搜索类型</label></th>
+			<td>
+			    <input type="hidden" name="type" value="post" id="type" />
+				<input name="keywordtype" type="radio" value="0" checked onclick="changeoption('post');" />
+				帖子标题搜索
+				<%if {usergroupinfo.allowsearch}==1%>
+					<input type="radio" name="keywordtype" value="1" onclick="changeoption('post');" />
+				内容搜索
+				<%/if%>
+				<%if {config.enablespace}==1%>
+				<input type="radio" name="keywordtype" value="2" onclick="changeoption('spacepost');" />
+				日志标题搜索
+				<%/if%>
+				<%if {config.enablealbum}==1%>
+				<input type="radio" name="keywordtype" value="3" onclick="changeoption('album');"/>
+				相册标题搜索
+				<%/if%>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<hr class="solidline"/>
+	<div id="options" style="margin-top:-1px;"></div>
+	<script type="text/javascript"  src="{jsdir}/template_search.js"></script>	
+	<table cellSpacing="0" cellPadding="0" summary="搜索类型" class="formtable">
+		<tbody>
+		<tr>
+			<th> </th>
+			<td>
+				 <button name="submit" type="submit" id="submit">执行搜索</button>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+</form>
+</div>
+<%else%>
+<%if {type}=="album"%>
+	<div class="s_clear" id="forumheader">
+		<h1>相册搜索结果</h1>
+		<p class="channelinfo f_clear">共搜索到{topiccount}个符合条件的相册</p>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+		</div>
+	</div>
+	<div class="threadlist searchlist">
+	<table cellSpacing="0" cellPadding="0" summary="搜索结果">
+	<thead class="category">
+	<tr>
+		<th style="padding:4px 0; text-align:center;">标题</th>
+		<td>所属分类</td>
+		<td class="author">作者</td>
+		<td class="nums">图片数</td>
+	</tr>
+	</thead>
+	<%loop album albumlist%>
+	<tbody>
+	<tr>
+		<th class="subject">
+			<a href="showalbum.aspx?albumid={album[albumid]}" target="_blank">{album[title]}</a>
+		</th>
+		<td>
+			<a href="showalbumlist.aspx?cate={album[albumcateid]}" target="_parent">{album[categorytitle]}</a>
+		</td>
+		<td class="author">
+			<cite>
+			<%if {strtoint({album[userid]})}==-1%>
+				游客
+			<%else%>
+				<a href="showalbumlist.aspx?uid={album[userid]}" target="_parent">{album[username]}</a>
+			<%/if%></cite>
+			<em><%datetostr({album[createdatetime]},"yyyy.MM.dd HH:mm")%></em>
+		</td>
+		<td class="nums">{album[imgcount]}</td>
+	</tr>
+	</tbody>
+	<%/loop%>
+	</table>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+		</div>
+	</div>
+<%/if%>
+<%if {type}=="spacepost"%>
+	<div class="s_clear" id="forumheader">
+		<h1>日志搜索结果</h1>
+		<p class="channelinfo f_clear">共搜索到{topiccount}篇符合条件的日志</p>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+		</div>
+	</div>
+	<div class="threadlist searchlist">
+	<table cellSpacing="0" cellPadding="0" summary="搜索结果">
+	<thead class="category">
+	<tr>
+		<th style="padding:4px 0; text-align:center;">标题</th>
+		<td>作者</td>
+		<td class="nums">回复 / 查看</td>
+	</tr>
+	</thead>
+	<%loop spacepost spacepostlist%>
+	<tbody>
+	<tr>
+		<th class="subject">
+			<a href="{spaceurl}space/viewspacepost.aspx?postid={spacepost[postid]}" target="_blank">{spacepost[title]}</a>
+		</th>
+		<td class="author">
+			<cite>
+			<%if {strtoint({spacepost[uid]})}==-1%>
+				游客
+			<%else%>
+				<a href="{spaceurl}space/?uid={spacepost[uid]}" target="_parent">{spacepost[author]}</a>
+			<%/if%></cite>
+			<em><%datetostr({spacepost[postdatetime]},"yyyy.MM.dd HH:mm")%></em>
+		</td>
+		<td class="nums">{spacepost[commentcount]} / {spacepost[views]}</td>
+	</tr>
+	</tbody>
+	<%/loop%>
+	</table>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/页</em>{pagenumbers}
+		</div>
+	</div>
+<%/if%>
+
+<%if {type}==""%>
+	<div class="s_clear" id="forumheader">
+		<h1>搜索结果</h1>
+		<p class="channelinfo f_clear">共搜索到<em>{topiccount}</em>个符合条件的帖子</p>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+		</div>
+	</div>
+	<div class="threadlist searchlist">
+	<table cellSpacing="0" cellPadding="0" summary="搜索结果">
+		<thead class="category">
+		<tr>
+			<th style="padding:4px 0; text-align:center;">标题</th>
+			<td>所在版块</td>
+			<td class="author">作者</td>
+			<td class="nums">回复/查看</td>
+			<td class="lastpost"><cite>最后发表</cite></td>
+		</tr>
+		</thead>
+		<%loop topic topiclist%>
+		<tbody>
+		<tr>
+			<th class="subject">
+				<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({topic[tid]},0)%>
+				<a href="{aspxrewriteurl}" target="_blank">{topic[title]}</a>
+			</th>
+			<td>
+				<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({topic[fid]},0)%>
+				<a href="{aspxrewriteurl}" target="_parent">{topic[forumname]}</a>
+			</td>
+			<td class="author">
+				<cite>
+				<%if {strtoint({topic[posterid]})}==-1%>
+					游客
+				<%else%>
+					<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+					<a id="topic{topic[tid]}" href="{aspxrewriteurl}" target="_parent" onmouseout="showMenu(this.id);" onmouseover="showMenu(this.id);">{topic[poster]}</a>
+				<%/if%></cite>
+				<em><%datetostr({topic[postdatetime]},"yyyy.MM.dd HH:mm")%></em>
+                <ul class="popupmenu_popup" id="topic{topic[tid]}_menu" style="overflow-y: auto; display:none">
+                        <li><a href="useradmin.aspx?action=banuser&uid={topic[posterid]}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" class="forbid_user">禁言用户</a></li>
+                        <li><a href="###" onclick="if(confirm('您确定要删除吗？')) manageUser('{topic[poster]}','{topic[posterid]}')">删除7天内的帖子</a></li>
+                        <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+						<li><a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a></li>
+                        <li><a href="search.aspx?posterid={topic[posterid]}" class="all_topic" target="_blank">查看所有帖子</a></li>
+                 </ul>
+			</td>
+			<td class="nums">{topic[replies]} / {topic[views]}</td>
+			<td class="lastpost">
+				<em><a href="showtopic.aspx?topicid={topic[tid]}&page=end" target="_blank"><%datetostr({topic[lastpost]},"yyyy.MM.dd HH:mm")%></a></em>
+				<cite>
+				<%if {strtoint({topic[posterid]})}==-1%>
+					游客
+				<%else%>
+					<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[lastposterid]})%>
+					<a id="post{topic[tid]}" href={aspxrewriteurl} target="_blank" onmouseout="showMenu(this.id);" onmouseover="showMenu(this.id);">{topic[lastposter]}</a>
+				<%/if%>
+				</cite>
+                <ul class="popupmenu_popup" id="post{topic[tid]}_menu" style="overflow-y: auto; display:none">
+                        <li><a href="useradmin.aspx?action=banuser&uid={topic[posterid]}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" class="forbid_user">禁言用户</a></li>
+                        <li><a href="###" onclick="if(confirm('您确定要删除吗？')) manageUser('{topic[poster]}','{topic[posterid]}')">删除7天内的帖子</a></li>
+                        <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+						<li><a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a></li>
+                        <li><a href="search.aspx?posterid={topic[posterid]}" class="all_topic" target="_blank">查看所有帖子</a></li>
+                 </ul>
+			</td>
+		</tr>
+		</tbody>
+		<%/loop%>
+	</table>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{pageid}/{pagecount}页</em>{pagenumbers}
+		</div>
+	</div>
+<%/if%>
+<%if {type}=="author"%>
+	<div class="cm_header itemtitle s_clear">
+		<ul>
+			<li id="result1" class="current" onmouseover="javascript:doClick_result(this)"><a href="###"><span>帖子搜索</span></a></li>
+			<%if {config.enablespace}==1%>
+			<li id="result2" class="" onmouseover="javascript:doClick_result(this)"><a href="###"><span>日志搜索</span></a></li>
+		<%/if%>
+		<%if {config.enablealbum}==1%>
+			<li id="result3" class="" onmouseover="javascript:doClick_result(this)"><a href="###"><span>相册搜索</span></a></li>
+		<%/if%>
+		</ul>
+	</div>
+	<div id="resultid1" style="display:block;">
+		<div class="s_clear" id="forumheader">
+		    <%if {config.enablespace}==1||{config.enablealbum}==1%>
+			<h1>帖子搜索</h1>
+		    <%/if%>
+			<p class="channelinfo f_clear">共搜索到<em>{topiccount}</em>个符合条件的帖子</p>
+		</div>
+		<div class="threadlist searchlist">
+		<table cellSpacing="0" cellPadding="0" summary="帖子搜索">
+		<thead class="category">
+		<tr>
+			<th style="padding:4px 0; text-align:center;">标题</th>
+			<td>所在版块</td>
+			<td>作者</td>
+			<td class="nums">回复 / 查看</td>
+			<td class="lastpost"><cite>最后发表</cite></td>
+		</tr>
+		</thead>
+		<%loop topic topiclist%>
+		<tbody>
+		<tr>
+			<th class="subject">
+				<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({topic[tid]},0)%>
+				<a href="{aspxrewriteurl}" target="_blank">{topic[title]}</a>
+			</th>
+			<td>
+				<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({topic[fid]},0)%>
+				<a href="{aspxrewriteurl}" target="_parent">{topic[forumname]}</a>
+			</td>
+			<td class="author">
+				<cite>
+				<%if {strtoint({topic[posterid]})}==-1%>
+					游客
+				<%else%>
+					<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+					<a id="topic{topic[tid]}" href="{aspxrewriteurl}" target="_parent" onmouseout="showMenu(this.id);" onmousemove="showMenu(this.id);">{topic[poster]}</a>
+				<%/if%></cite>
+				<em><%datetostr({topic[postdatetime]},"yyyy.MM.dd HH:mm")%></em>
+                <ul class="popupmenu_popup" id="topic{topic[tid]}_menu" style="overflow-y: auto; display:none">
+                        <li><a href="useradmin.aspx?action=banuser&uid={topic[posterid]}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" class="forbid_user">禁言用户</a></li>
+                        <li><a href="###" onclick="if(confirm('您确定要删除吗？')) manageUser('{topic[poster]}','{topic[posterid]}')">删除7天内的帖子</a></li>
+                        <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+						<li><a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a></li>
+                        <li><a href="search.aspx?posterid={topic[posterid]}" class="all_topic" target="_blank">查看所有帖子</a></li>
+                 </ul>
+			</td>
+			<td class="nums">{topic[replies]} / {topic[views]}</td>
+			<td class="lastpost">
+				<em><a href="showtopic.aspx?topicid={topic[tid]}&page=end" target="_blank"><%datetostr({topic[lastpost]},"yyyy.MM.dd HH:mm")%></a></em>
+				<cite>
+			<%if {strtoint({topic[posterid]})}==-1%>
+					游客
+				<%else%>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[lastposterid]})%>
+			<a id="post{topic[tid]}" href={aspxrewriteurl} target="_blank" onmouseout="showMenu(this.id);" onmousemove="showMenu(this.id);">{topic[lastposter]}</a>
+				<%/if%>
+				</cite>
+                <ul class="popupmenu_popup" id="post{topic[tid]}_menu" style="overflow-y: auto; display:none">
+                        <li><a href="useradmin.aspx?action=banuser&uid={topic[posterid]}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" class="forbid_user">禁言用户</a></li>
+                        <li><a href="###" onclick="if(confirm('您确定要删除吗？')) manageUser('topic[poster]','{topic[posterid]}')">删除7天内的帖子</a></li>
+                        <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({topic[posterid]})%>
+						<li><a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a></li>
+                        <li><a href="search.aspx?posterid={topic[posterid]}" class="all_topic" target="_blank">查看所有帖子</a></li>
+                 </ul>
+			</td>
+		</tr>
+		</tbody>
+		<%/loop%>
+		</table>
+		</div>
+		<div class="pages_btns">
+			<div class="pages">
+				<em>{topicpageid}/{topicpagecount}页</em>{topicpagenumbers}
+			</div>
+		</div>
+	</div>
+
+<%if {config.enablespace}==1%>
+<div id="resultid2" style="display:none;">
+	<div class="s_clear" id="forumheader">
+		<h1>日志搜索</h1>
+		<p class="channelinfo f_clear">共搜索到<em>{blogcount}</em>个符合条件的日志</p>
+	</div>
+	<div class="threadlist searchlist">
+	<table cellSpacing="0" cellPadding="0" summary="日志搜索结果">
+		<thead class="category">
+		<tr>
+			<th style="padding:4px 0; text-align:center;">标题</th>
+			<th>作者</th>
+			<td class="nums">回复 / 查看</td>
+		</tr>
+		</thead>
+		<%loop spacepost spacepostlist%>
+		<tbody>
+		<tr>
+			<th class="subject">
+				<a href="{spaceurl}space/viewspacepost.aspx?postid={spacepost[postid]}" target="_blank">{spacepost[title]}</a>
+			</th>
+			<td class="author">
+				<cite>
+				<%if {strtoint({spacepost[uid]})}==-1%>
+					游客
+				<%else%>
+					<a href="{spaceurl}space/?uid={spacepost[uid]}" target="_parent">{spacepost[author]}</a>
+				<%/if%></cite>
+				<em><%datetostr({spacepost[postdatetime]},"yyyy.MM.dd HH:mm")%></em>
+			</td>
+			<td><em>{spacepost[commentcount]}</em> / {spacepost[views]}</td>
+		</tr>
+		</tbody>
+		<%/loop%>
+	</table>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{blogpageid}/{blogpagecount}页</em>{blogpagenumbers}
+		</div>
+	</div>
+</div>
+<%/if%>
+<%if {config.enablealbum}==1%>
+<div id="resultid3" style="display:none;">
+	<div class="s_clear" id="forumheader">
+		<h1>相册搜索</h1>
+		<p class="channelinfo f_clear">共搜索到<em>{albumcount}</em>个符合条件的相册</p>
+	</div>
+	<div class="threadlist searchlist">
+	<table cellSpacing="0" cellPadding="0" summary="相册搜索结果">
+		<thead class="category">
+		<tr>
+			<th style="padding:4px 0; text-align:center;">标题</th>
+			<th>所属分类</th>
+			<th>作者</th>
+			<th class="nums">图片数</th>
+		</tr>
+		</thead>
+		<%loop album albumlist%>
+		<tbody>
+			<tr>
+				<th class="subject">
+					<a href="showalbum.aspx?albumid={album[albumid]}" target="_blank">{album[title]}</a>
+				</th>
+				<td>
+					<a href="showalbumlist.aspx?cate={album[albumcateid]}" target="_parent">{album[categorytitle]}&nbsp;</a>
+				</td>
+				<td class="author">
+					<cite>
+					<%if {strtoint({album[userid]})}==-1%>
+						游客
+					<%else%>
+						<a href="showalbumlist.aspx?uid={album[userid]}" target="_parent">{album[username]}</a>
+					<%/if%></cite>
+					<em><%datetostr({album[createdatetime]},"yyyy.MM.dd HH:mm")%></em>
+				</td>
+				<td class="nums">{album[imgcount]}</td>
+			</tr>
+		</tbody>
+		<%/loop%>
+	</table>
+	</div>
+	<div class="pages_btns">
+		<div class="pages">
+			<em>{albumpageid}/{albumpagecount}页</em>{albumpagenumbers}
+		</div>
+	</div>
+</div>
+<%/if%>
+<script type="text/javascript">
+switch (getQueryString('show'))
+{	
+	case 'album':
+		doClick_result($('result3'));
+		break;
+	case 'blog':
+		doClick_result($('result2'));
+		break;
+	case 'topic':
+	default:
+		doClick_result($('result1'));
+		break;
+}
+
+function doClick_result(o){
+	o.className="current";
+	var j;
+	var id;
+	var e;
+	for(var i=1;i<=3;i++){
+		id ="result"+i;
+		j = $(id);
+		e = $("resultid"+i);
+		if(id != o.id){
+			try{ j.className=""; } catch(e) { }
+			if($("resultid"+i)){
+			e.style.display = "none";}
+		}else{
+		    if($("resultid"+i)){
+			e.style.display = "block";}
+		}
+	}
+}
+</script>
+<%/if%>
+</div>
+<%/if%>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+<%/if%>
+</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

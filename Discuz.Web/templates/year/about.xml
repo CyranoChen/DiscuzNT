@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<about>
+<template name="year"
+  author="Discuz!NT"
+  createdate = "2011-1-28"
+  ver="3.5"
+  fordntver="3.5"
+  copyright="Copyright 2011 Comsenz Inc." 
+  width="750" />
+</about>

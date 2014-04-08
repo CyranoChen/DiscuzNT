@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="__UP_title__" directory_title="Feeds in Tabs" description="Read up to four Atom or RSS feeds from within a single gadget using tabs.  Feed titles and descriptions are optionally included and can be turned off.  Customize the font-size and text for tab titles.  Fetch 3-12 entries per feed including summaries if available." author="Daniel L." author_email="daniel.feedback+feedstabs@gmail.com" author_affiliation="Google Inc." author_location="Mountain View, CA" screenshot="/ig/modules/feeds_tabs.png" thumbnail="/ig/modules/feeds_tabs-thm.png" height="250" scrolling="false" singleton="false">
+  <Require feature="dynamic-height"/>
+  <Require feature="setprefs"/>
+  <Require feature="tabs"/>
+  <Require feature="analytics"/>
+</ModulePrefs>
+<UserPref name="title" display_name="Gadget Title" default_value="Feeds in Tabs"/>
+<UserPref name="tabFontSize" display_name="Tab Font Size" default_value="0.7em"/>
+<UserPref name="showFeedDesc" display_name="Feed Descriptions" datatype="bool" default_value="true"/>
+<UserPref name="feed1" display_name="Feed 1: URL" datatype="string" default_value="http://groups.google.com/group/Google-Gadgets-API/feed/atom_v1_0_topics.xml"/>
+<UserPref name="feedTitle1" display_name="Feed 1: Title" datatype="string" default_value="Gadgets API"/>
+<UserPref name="feed2" display_name="Feed 2: URL" datatype="string" default_value="http://code.google.com/feeds/updates.xml"/>
+<UserPref name="feedTitle2" display_name="Feed 2: Title" datatype="string" default_value="Google Code"/>
+<UserPref name="feed3" display_name="Feed 3: URL" datatype="string" default_value="http://www.google.com/calendar/feeds/developer-calendar@google.com/public/basic"/>
+<UserPref name="feedTitle3" display_name="Feed 3: Title" datatype="string" default_value="Dev Events"/>
+<UserPref name="feed4" display_name="Feed 4: URL" datatype="string" default_value="http://googleblog.blogspot.com/atom.xml"/>
+<UserPref name="feedTitle4" display_name="Feed 4: Title" datatype="string" default_value="Google Blog"/>
+<UserPref name="entries" display_name="# of Entries" datatype="enum" default_value="3">
+  <EnumValue value="3"/>
+  <EnumValue value="4"/>
+  <EnumValue value="5"/>
+  <EnumValue value="6"/>
+  <EnumValue value="7"/>
+  <EnumValue value="8"/>
+  <EnumValue value="9"/>
+  <EnumValue value="10"/>
+  <EnumValue value="11"/>
+  <EnumValue value="12"/>
+</UserPref>
+<UserPref name="summaries" display_name="Summaries" datatype="enum" default_value="200">
+  <EnumValue value="-1" display_value="none"/>
+  <EnumValue value="100" display_value="short"/>
+  <EnumValue value="200" display_value="medium"/>
+  <EnumValue value="300" display_value="long"/>
+  <EnumValue value="400" display_value="longer"/>
+  <EnumValue value="0" display_value="show all"/>
+</UserPref>
+<UserPref name="renderHtml" display_name="Render HTML" datatype="bool" default_value="true"/>
+<UserPref name="showTimestamp" display_name="Show Timestamp" datatype="bool" default_value="true"/>
+<UserPref name="selectedTab" datatype="hidden"/>
+<Content type="html"><![CDATA[
+  <style type="text/css">
+  .tablib_table {
+    font-size: __UP_tabFontSize__;
+  }
+  .tablib_selected, .tablib_unselected {
+    width: 23%;
+  }
+
+  .statusLabel {
+    font-size: 0.75em;
+    font-style: italic;
+    padding-top: 10px;
+    text-align: center;
+  }
+  .feedHeader {
+    padding-top: 5px;
+    font-size: 0.7em;
+  }
+  .feedHeader .feedTitle {
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+  .feedHeader .feedAuthor {
+    font-weight: normal;
+    font-size: 0.8em;
+    color: #676767;
+  }
+
+  .feedList {
+    font-size: 0.7em;
+    margin: 0px;
+    padding: 0px 0px 5px 0px;
+    border-bottom: 1px solid #aaaaaa;
+  }
+  .feedList li {
+    margin-top: 5px;
+    padding: 3px 3px 0px 3px;
+    border-top: 1px solid #aaaaaa;
+  }
+  .feedList li div.entryTitle a {
+    font-weight: bold;
+  }
+  .feedList li div.entryTimestamp {
+    font-size: 0.95em;
+    font-style: italic;
+    color: #676767;
+  }
+  </style>
+
+  <script>
+  // Global variables
+  var prefs = new _IG_Prefs(__MODULE_ID__);
+  var tabs = new _IG_Tabs(__MODULE_ID__);
+
+  /**
+   * Initialize tabs when page loads.
+   * Create tab for each userpref only if userpref is not empty.
+   */
+  function init() {
+    var f1 = _trim(prefs.getString("feed1"));
+    var f2 = _trim(prefs.getString("feed2"));
+    var f3 = _trim(prefs.getString("feed3"));
+    var f4 = _trim(prefs.getString("feed4"));
+    var ft1 = _trim(prefs.getString("feedTitle1"));
+    var ft2 = _trim(prefs.getString("feedTitle2"));
+    var ft3 = _trim(prefs.getString("feedTitle3"));
+    var ft4 = _trim(prefs.getString("feedTitle4"));
+
+    if (f1 != "") {
+      tabs.addDynamicTab(((ft1 == "") ? "Feed 1" : ft1), _IG_Callback(callbackTab, f1));
+    }
+    if (f2 != "") {
+      tabs.addDynamicTab(((ft2 == "") ? "Feed 2" : ft2), _IG_Callback(callbackTab, f2));
+    }
+    if (f3 != "") {
+      tabs.addDynamicTab(((ft3 == "") ? "Feed 3" : ft3), _IG_Callback(callbackTab, f3));
+    }
+    if (f4 != "") {
+      tabs.addDynamicTab(((ft4 == "") ? "Feed 4" : ft4), _IG_Callback(callbackTab, f4));
+    }
+  };
+
+  /**
+   * Fetches an Atom or RSS feed and generates content inside the
+   * selected tab's content container.  This function is called whenever
+   * a tab is selected.
+   */
+  function callbackTab(tabId, feedUrl) {
+    var showFeedDesc = prefs.getBool("showFeedDesc");
+    var summaries = prefs.getInt("summaries");
+    var entries = prefs.getInt("entries");
+    var renderHtml = prefs.getBool("renderHtml");
+    var showTimestamp = prefs.getBool("showTimestamp");
+    var container = _gel(tabId);
+
+    // Display loading message before fetching feed.
+    container.innerHTML = '<div class="statusLabel">Loading...</div>';
+
+    // Fetch feed and return it as a JSON object.
+    // Callback function is defined within local scope.
+    _IG_FetchFeedAsJSON(
+      feedUrl,
+      function(feed) {
+        if (typeof feed == "undefined" || typeof feed.Entry == "undefined") {
+          container.innerHTML = '<div class="statusLabel">Invalid feed URL:<br>' + feedUrl + '</div>';
+        } else {
+          // Fetch feed successful.  Generate HTML content from returned JSON object.
+          // Create feed header containing title and description.
+          var html = new Array();
+          html.push('<div class="feedHeader">');
+          html.push('<div class="feedTitle">');
+          html.push((feed.Link != "") ? '<a target="_top" href="' + _hesc(feed.Link) + '">' + _hesc(feed.Title) + '</a>' : _hesc(feed.Title));
+          html.push((feed.Author != "") ? '<span class="feedAuthor"> by ' + _hesc(feed.Author) + '</span>' : "");
+          html.push('</div>');
+          if (showFeedDesc) {
+            html.push('<div class="feedDesc">' + _hesc(feed.Description) + '</div>');
+          }
+          html.push('</div>');
+
+          // Iterate through each feed entry and generate list of content.
+          html.push('<ul class="feedList">');
+          for (var n = 0; n < feed.Entry.length; n++) {
+            var entry = feed.Entry[n];
+            html.push('<li>');
+            html.push('<a target="_top" href="' + entry.Link + '"><b>' + _hesc(entry.Title) + '</b></a>');
+            if (typeof entry.Summary != "undefined" && entry.Summary != "") {
+              var summary = document.createElement("div");
+              summary.innerHTML = (summaries == 0) ? entry.Summary : entry.Summary.substr(0, summaries);
+              html.push('<div class="entrySummary">');
+              html.push((renderHtml ? summary.innerHTML : _hesc(summary.innerHTML)));
+              html.push('</div>');
+            }
+            if (!isNaN(entry.Date) && showTimestamp) {
+              html.push('<div class="entryTimestamp">[' + new Date(entry.Date * 1000).toLocaleString() + ']</div>');
+            }
+            html.push('</li>');
+          }
+          html.push('</ul>');
+          container.innerHTML = html.join("");
+        }
+
+        // Resize iframe height to fit content.
+        _IG_AdjustIFrameHeight();
+      },
+      entries,
+      (summaries > -1)
+    );
+  }
+
+  // Set onload event handler to call init()
+  _IG_RegisterOnloadHandler(init);
+  _IG_Analytics("UA-676947-9", "/feeds_tabs");
+  </script>
+]]>
+</Content>
+</Module>

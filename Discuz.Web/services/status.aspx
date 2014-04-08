@@ -1,0 +1,1 @@
+<%@ Page Inherits="Discuz.Web.UI.StatusPage,Discuz.Web" %>

@@ -1,0 +1,157 @@
+﻿<%template _header%>
+<script type="text/javascript">
+    function my_sync_tip(content, time) {
+        alert(content);
+    }
+
+    function syncfriendship(userid, manyouversion) {
+        ajaxRead("{rooturl}tools/ajax.aspx?t=getsyncfriendshipurl&uid=" + userid + "&manyouversion=" + manyouversion+"&ts="+Math.random(), "Onsyncfriendship(obj);");
+    }
+
+    function Onsyncfriendship(obj) {
+        var res = obj.getElementsByTagName('url');
+        var result = "";
+        if (res[0] != null && res[0] != undefined) {
+            if (res[0].childNodes.length > 1) {
+                result = res[0].childNodes[1].nodeValue;
+            } else {
+                result = res[0].firstChild.nodeValue;
+            }
+        }
+        if (result != "") {
+            appendscript(result);
+        }
+    }
+</script>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; 应用
+	</div>
+</div>
+<%if page_err!=0%>
+	<%template _errmsgbox%>
+<%else%>
+	<%if ispost%>
+		<%template _msgbox%>
+	<%else%>
+        <%if {action}!="invitelist"%>
+        <script type="text/javascript" src="http://static{manyouversion}.manyou.com/scripts/my_iframe.js">
+        </script>
+        <script type="text/javascript">
+            var server = new MyXD.Server("ifm0");
+            server.registHandler("iframeHasLoaded");
+            server.start();
+            function iframeHasLoaded(ifm_id) {
+                MyXD.Util.showIframe(ifm_id);
+                document.getElementById("loading").style.display = "none";
+            }
+        </script>
+        <%/if%>
+        <div class="wrap with_side app_side s_clear" id="wrap">
+            <div class="cpmain">
+            <div class="cpcontent">
+            <%if {action}!="invitelist"%>
+                <div id="loading" style="display:block; padding:100px 0; text-align:center; color:#999999; font-size:12px;"><img src="{imagedir}/loading.gif" />页面加载中...</div>
+                <iframe id="ifm0" frameborder="0" width="810" height="810" scrolling="no" style="position:absolute; top:-5000px; left:-5000px;" src="{appUrl}"></iframe>
+            <%else%>
+                <h1>应用邀请</h1>
+                <%if {appinvitelist.Count}>0%>
+                    <form id="appinvitelist" name="appinvitelist" method="post" action="?action=ignoreappinvite">
+                        <table width="95%" cellspacing="0" cellpadding="0" border="0" class="pm_list">
+                            <tbody>
+                                <%loop (ApplicationInviteInfo) appinviteinfo appinvitelist%>
+                                    <tr id="appiv{appinviteinfo.Id}">
+                                        <td class="checkbox_toggle"><input name="appivid" id="appivid{appinviteinfo.Id}" type="checkbox" value="{appinviteinfo.Id}" style="margin-top:2px;"/></td>
+                                        <td class="notice_list">
+                                        <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({appinviteinfo.FromUid})%>
+                                            您的好友 <a href="{forumpath}{aspxrewriteurl}">{GetFriendUserNameByUid(appinviteinfo.FromUid)}</a> 邀请您添加 <a href="userapp.aspx?action=about&id={appinviteinfo.AppId}">{appinviteinfo.TypeName}</a> 应用
+                                        </td>
+                                        <td id="appivctrl{appinviteinfo.Id}" class="name_and_date">
+                                            <button onclick="RedirectToAppPage({appinviteinfo.AppId});return false;">添加</button><button onclick="IgnoreAppInvite({appinviteinfo.Id});return false;">忽略</button>
+                                        </td>
+                                    </tr>
+                                <%/loop%>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="cpbox s_clear">
+	                    <div class="pages_btns">
+		                    <div class="pages">
+			                    <em>共有请求:<cite id="appinvitecount">{appinvitecount}</cite>条</em><%if {pagecount}>1%> {pagenumbers} <em>{pageid}/{pagecount}页</em><%/if%> 
+		                    </div>
+		                    <a href="###"  onclick="checkCheckBox($('appinvitelist'),this,'appivid')">全选</a>
+		                    <span class="pipe">|</span>
+		                    <a href="###" onclick="if (confirm('您确定要忽略指定的应用请求?'))$('appinvitelist').submit();">忽略</a>
+	                    </div>
+			        </div>
+                <%else%>
+                    <div class="zerothreads">暂没有应用邀请</div>
+                <%/if%>
+                <script type="text/javascript">
+                    function RedirectToAppPage(appid) {
+                        window.location.href = 'userapp.aspx?action=privacy&id=' + appid;
+                    }
+
+                    function IgnoreAppInvite(id) {
+                        if (confirm('您确定要忽略该请求？')) {
+                            ajaxRead("{rooturl}tools/sessionajax.aspx?t=ignoreappinvite&appinviteid=" + id, "OnIgnoreAppInvite(obj," + id + ");");
+                        }
+                    }
+                    
+                    function OnIgnoreAppInvite(obj,id){
+		                    var res = obj.getElementsByTagName('result');
+		                    var result = "";
+		                    if (res[0] != null && res[0] != undefined) {
+		                        if (res[0].childNodes.length > 1) {
+		                            result = res[0].childNodes[1].nodeValue;
+		                        } else {
+		                            result = res[0].firstChild.nodeValue;
+		                        }
+		                    }
+		                    if (result == "1") {
+		                        $('appivctrl' + id).innerHTML = '已忽略......';
+		                        setTimeout('$(\'appiv' + id + '\').style.display = \'none\';', 1500);
+        		                
+		                    }
+		                    else {
+		                        alert('delete failed');
+		                    }
+		                }
+
+	                function checkCheckBox(form, objtag, checkname) {
+	                    if (typeof (objtag.checked) == "undefined") {
+	                        objtag.checked = true;
+	                    }
+	                    for (var i = 0; i < form.elements.length; i++) {
+	                        var e = form.elements[i];
+	                        if (e.name == checkname) {
+	                            e.checked = objtag.checked;
+	                        }
+	                    }
+	                    objtag.checked = !objtag.checked;
+	                }
+                </script>
+            <%/if%>
+            </div>
+            </div>
+            <div class="side appside">
+                <ul class="tabs" style=" margin-top:20px">
+                    <%loop (UserApplicationInfo) appinfo userapplist%>
+                        <li><img src="http://appicon.manyou.com/icons/{appinfo.AppId}"><a href="userapp.aspx?id={appinfo.AppId}" title="{appinfo.AppName}">{appinfo.AppName}</a></li>
+                    <%/loop%>
+                    <%if {userapplist.Count}<=0%>
+                        <li>您未安装应用</li>
+                    <%/if%>
+                </ul>
+                <hr class="shadowline"/>
+                <ul class="myo">
+                    <li><img src="{forumpath}images/common/app_add.gif" /><a href="userapp.aspx?action=list&my_suffix=%2Fapp%2Flist">添加应用</a></li>
+                    <li><img src="{forumpath}images/common/app_set.gif" /><a href="userapp.aspx?action=list">管理应用</a></li>
+                    <li><img src="{imagedir}/async.gif" /><a href="javascript:void(0);" onclick="syncfriendship({userid},'{manyouversion}');">同步好友</a></li>
+                </ul>
+            </div>
+        </div>
+    <%/if%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

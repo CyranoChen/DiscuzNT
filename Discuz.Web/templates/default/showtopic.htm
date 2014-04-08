@@ -1,0 +1,990 @@
+﻿<%template _header%>
+<%if {infloat}!=1%>
+<script type="text/javascript">
+var templatepath = "{templatepath}";
+var postminchars = parseInt({config.minpostsize});
+var postmaxchars = parseInt({config.maxpostsize});
+var disablepostctrl = parseInt({disablepostctrl});
+var attachtransname = "{Scoresets.GetTopicAttachCreditsTransName()}";
+var imagedir = "{imagedir}";
+var forumtitle = '{config.forumtitle}';
+function modaction(action, pid, extra) 
+{
+    if(!action) 
+    {
+        return;
+    }
+    var extra = !extra ? '' : '&' + extra;
+    if(!pid && in_array(action, ['delposts', 'banpost'])) 
+    {
+        var checked = 0;
+        var pid = '';
+        for(var i = 0; i < $('postsform').elements.length; i++) 
+        {
+            if($('postsform').elements[i].name.match('topiclist')) 
+            {
+                checked = 1;
+                break;
+            }
+        }
+    } 
+    else 
+    {
+        var checked = 1;
+    }
+    if(!checked) 
+    {
+        alert('请选择需要操作的帖子');
+    } 
+    else 
+    {
+        floatwinreset = 1;
+		hideWindow('mods');
+        $('postsform').action = 'topicadmin.aspx?action='+ action +'&forumid={forumid}&topicid={topicid}&infloat=1&nopost=1' + (!$('postsform').pid.value ? '' : '&postid=' + $('postsform').pid.value) + extra;
+		showWindow('mods', 'postsform', 'post', 0);
+		  if(BROWSER.ie) {
+			doane(event);
+		}	
+    }
+}
+
+
+function pidchecked(obj) 
+{
+    if(obj.checked) 
+    {
+        if(is_ie && BROWSER.ie != "9.0" && !is_opera) 
+        {
+            var inp = document.createElement('<input name="topiclist[]" />');
+        } 
+        else 
+        {
+            var inp = document.createElement('input');
+            inp.name = 'topiclist[]';
+        }
+        inp.id = 'topiclist_' + obj.value;
+        inp.value = obj.value;
+        inp.style.display = 'none';
+        $('postsform').appendChild(inp);
+    } 
+    else
+    {
+        $('postsform').removeChild($('topiclist_' + obj.value));
+    }
+}
+
+var modclickcount = 0;
+function modclick(obj, pid) 
+{
+    if(obj.checked) 
+    {
+        modclickcount++;
+        if($('postsform').pid.value)
+            $('postsform').pid.value += "," + pid;
+        else
+            $('postsform').pid.value = pid;
+    } 
+    else 
+    {
+        modclickcount--;
+        if(modclickcount > 0)
+        {
+            $('postsform').pid.value = $('postsform').pid.value.replace("," + pid + ",", ",");
+            $('postsform').pid.value = $('postsform').pid.value.replace("," + pid, "");
+            $('postsform').pid.value = $('postsform').pid.value.replace(pid + ",", "");
+        }
+        else
+            $('postsform').pid.value = '';
+    }
+    $('modcount').innerHTML = modclickcount;
+    if(modclickcount > 0) 
+    {
+        var offset = fetchOffset(obj);				
+        $('modtopiclayer').style.top = offset['top'] - 50 + 'px';
+        $('modtopiclayer').style.left = offset['left'] - 120 + 'px';
+        $('modtopiclayer').style.display = '';
+        $('modtopiclayer').className = 'topicwindow';
+    } 
+    else 
+    {
+        $('modtopiclayer').style.display = 'none';
+    }
+}
+</script>
+<%if {enabletag}%>
+<script type="text/javascript" src="cache/tag/closedtags.txt"></script>
+<script type="text/javascript" src="cache/tag/colorfultags.txt"></script>
+<%/if%>
+<script type="text/javascript"  src="{jsdir}/template_showtopic.js"></script>
+<script type="text/javascript" src="{jsdir}/template_share.js"></script>
+<%set (int){loopi}=1%>
+<%if page_err==0%>
+<div class="wrap cl pageinfo">
+	<div id="nav">
+		<%if {usergroupinfo.allowsearch}>0%>
+			<%template _quicksearch%>
+		<%/if%>
+		<a id="forumlist" href="{forumpath}" <%if {config.forumjump}==1%>onmouseover="showMenu(this.id);" onmouseout="showMenu(this.id);"<%/if%> class="title">{config.forumtitle}</a>  &raquo; {ShowForumAspxRewrite(forum.Pathlist.Trim(),forumid,forumpageid)}  &raquo;  
+        <span title="{topic.Title}" style="cursor:pointer;"><%getsubstring({topic.Title},60,"...")%></span>
+	</div>
+</div>
+<div class="wrap cl">
+<%if {config.forumjump}==1%>
+	{Caches.GetForumListMenuDivCache(usergroupid,userid,config.Extname)}
+<%/if%>
+    <div class="pages_btns cl">
+	    <div class="pages">
+		    <cite class="pageback">{listlink}</cite>
+		    <%if {pagecount}!=1%>
+		    {pagenumbers}
+		    <%if {pagecount}>8%>
+		    <kbd>
+		    	<input name="gopage" type="text" class="txt" id="pageidinput1" title="可以输入页码按回车键自动跳转" value="{pageid}" style="text-align:center;" onfocus="this.value=this.defaultValue;this.select();" onKeyDown="pageinputOnKeyDown(this,event);" size="2" maxlength="9" />/ {pagecount}</kbd>
+                <script type="text/javascript">
+                    function pageinputOnKeyDown(obj, event) {
+                        if (event.keyCode == 13) {
+                            var typeid = getQueryString("typeid");
+                            typeid = typeid == "" ? -1 : parseInt(typeid);
+                            if (parseInt('{config.aspxrewrite}') == 1 && typeid <0) {
+                                window.location = 'showtopic-{topicid}-' + (parseInt(obj.value) > 0 ? parseInt(obj.value) : 1) + '{config.extname}';
+                            }
+                            else {
+                                (typeid > 0) ? window.location = 'showtopic.aspx?topicid={topicid}&page=' + (parseInt(obj.value) > 0 ? parseInt(obj.value) : 1) + '&typeid=' + typeid : window.location = 'showtopic.aspx?topicid={topicid}&page=' + (parseInt(obj.value) > 0 ? parseInt(obj.value) : 1);
+                            }
+                        }
+                        return (event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 97 && event.keyCode <= 105) || event.keyCode == 8;
+                    }
+                </script>
+		    <%/if%>
+		    {nextpage}
+		    <%/if%>
+	    </div>
+    <%if {userid<0}||{canposttopic}%>
+        <%set (string){newtopicurl} = ""%>
+        <%if {forum.allowspecialonly}<=0%>
+	        <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&forumpage=" + {pageid} %>
+        <%else if 1==({forum.allowpostspecial}&1)&&{usergroupinfo.allowpostpoll}==1%>
+            <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=poll&forumpage=" + {pageid} %>
+        <%else if 4==({forum.allowpostspecial}&4)&&{usergroupinfo.allowbonus}==1%>
+            <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=bonus&forumpage=" + {pageid} %>
+        <%else if 16==({forum.allowpostspecial}&16)&&{usergroupinfo.allowdebate}==1%>
+            <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=debate&forumpage=" + {pageid} %>
+        <%/if%>
+        <%set (string){newtopiconclick} = ""%>
+        <%if {forum.allowspecialonly}<=0&&{canposttopic}&&!{isnewbie}%>
+            <%set {newtopiconclick} = "showWindow('newthread', '" + {forumpath} + "showforum.aspx?forumid=" + {forum.fid} + "')"%>
+        <%/if%>
+        <%set (bool){allowpost}={userid}<=0&&(forum.Postperm==""?usergroupinfo.Allowpost==0:!Utils.InArray({usergroupid}.ToString(),{forum.Postperm}))%>
+        <%if {allowpost}%>
+            <%set {newtopiconclick} = "showWindow('login', '" + {forumpath} + "login.aspx');hideWindow('register');"%>
+        <%else%>
+            <%set {newtopiconclick} = "showWindow('newthread', '" + {forumpath} + "showforum.aspx?forumid=" + {forum.fid} + "')"%>
+        <%/if%>
+	    <span <%if {userid}>0%> onmouseover="if($('newspecial_menu')!=null&&$('newspecial_menu').childNodes.length>0)  showMenu(this.id);"<%/if%> id="newspecial" class="postbtn">
+            <a title="发新话题" id="newtopic" href="{newtopicurl}" onclick="{newtopiconclick}">
+                <img alt="发新话题" src="{imagedir}/newtopic.png"/></a>
+        </span>
+    <%/if%>
+    <%if ({topic.Closed}!=1||ismoder==1) && ({userid<0}||{canreply})%>
+	    <span class="replybtn"><a href="{forumpath}postreply.aspx?topicid={topicid}&forumpage={forumpageid}"<%if {canreply}%><%if !{isnewbie}%> onclick="showWindow('reply', '{forumpath}showtopic.aspx?topicid={topicid}');"<%/if%><%else%> onclick="showWindow('login', '{forumpath}login.aspx');hideWindow('register');"<%/if%>><img src="{imagedir}/reply.png" alt="回复该主题" /></a></span>
+    <%/if%>
+    </div>
+<div class="main viewthread cl">
+	<form id="postsform" name="postsform" method="post" action="topicadmin.aspx?action=moderate&forumid={forumid}">
+	<input name="forumid" type="hidden" value="{forumid}" />
+	<input name="topicid" type="hidden" value="{topicid}" />
+	<input name="operat" type="hidden" value="delposts" />
+	<input name="pid" type="hidden" />
+	<%if {ismoder}==1%>
+	<div id="modtopiclayer" style="display:none;">
+		<span>选中</span><strong id="modcount">1</strong><span>篇: </span>
+		<a onclick="modaction('banpost')" href="javascript:;" class="xg2">屏蔽</a>
+		<a onclick="modaction('delposts')" href="javascript:;" class="xg2">删除</a>
+    </div>
+	<%/if%>
+	<div id="postsContainer">
+	<table cellspacing="0" cellpadding="0" class="plh">
+	<tbody>
+	<tr>
+		<td class="postauthor">
+            <%if {pageid}==1%>
+			    <div class="hm" style="padding-top:14px;"><span class="xg1">查看:</span> {topicviews}<span class="pipe">|</span><span class="xg1">回复:</span> {topic.Replies}</div>
+            <%else%>
+                <%set (string){avatarurl}=Avatars.GetAvatarUrl(topic.Posterid) %>
+                <div class="hm"><a href="{forumpath}userinfo.aspx?userid={topic.posterid}"><img height="24" width="24" src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}images/common/noavatar_small.gif';" />楼主:{topic.Poster}</a></div>
+            <%/if%>
+		</td>
+		<td class="posttopic">
+			<h1 class="ts z">
+				<%if {forum.applytopictype}==1 && {forum.topictypeprefix}==1%>
+					<cite>{topictypes}</cite>
+				<%/if%>
+					<span title="{topic.title}" style="cursor:pointer;"><%getsubstring({topic.Title},60,"...")%></span>
+				<%if {topic.Special}==4%>
+                    <span class="xg2 xs0">辩论主题 [<a href="{ShowDebateAspxRewrite(topicid)}">辩论模式</a>]</span>
+                <%/if%>
+                <a title="复制本帖链接" href="javascript:;" onclick="copytitle();" class="xg1 xs0">[复制链接]</a>
+                <%if {config.showimgattachmode}==1&&{Utils.InArray(usergroupid.ToString(),"1,2,3")}%>
+                <a title="加载所有图片附件" href="javascript:;" onclick="loadAllImg();" class="xg1 xs0">[加载所有图片]</a></span>
+                <%/if%>
+			</h1>
+			<%set (bool){canuseadminfunc} = {usergroupinfo.raterange}!="" || {usergroupinfo.maxprice}>0 || ({topic.special}==2&&{topic.posterid}=={userid})%>
+			<%if {useradminid}>0%>
+				<input name="forumid" type="hidden" value="{forumid}" />
+				<input name="topicid" type="hidden" value="{topicid}" />
+				<input name="postid" type="hidden" value="" />
+				<input name="operat" type="hidden" value="" />
+				<input type="hidden" name="winheight" />
+				<input type="hidden" name="optgroup" />
+				<%if {ismoder}==1%>
+				<span class="drop xg2 y" onclick="showMenu({'ctrlid':this.id, 'pos':'21'})" id="operatSelTop" style="margin-top:16px;margin-right:10px;">主题管理</span>
+				<ul style="width: 180px; display:none;" id="operatSelTop_menu" class="p_pop inlinelist">
+					<li><a onclick="modthreads(1, 'delete');return false;" href="###">删除</a></li>
+					<li><a onclick="modthreads(1, 'bump');return false;" href="###">提沉</a></li>
+					<li><a onclick="modthreads(1, 'close');return false;" href="###">关闭</a></li>
+					<li><a onclick="modthreads(1, 'move');return false;" href="###">移动</a></li>
+					<li><a onclick="modthreads(1, 'copy');return false;" href="###">复制</a></li>
+					<li><a onclick="modthreads(1, 'highlight');return false;" href="###">高亮</a></li>
+					<li><a onclick="modthreads(1, 'digest');return false;" href="###">精华</a></li>
+					<li><a onclick="modthreads(1, 'identify');return false;" href="###">鉴定</a></li>
+					<li><a onclick="modthreads(1, 'displayorder');return false;" href="###">置顶</a></li>
+					<li><a onclick="modthreads(1, 'split');return false;" href="###">分割</a></li>
+					<li><a onclick="modthreads(1, 'merge');return false;" href="###">合并</a></li>
+					<li><a onclick="modthreads(1, 'repair');return false;" href="###">修复</a></li>
+					<li><a onclick="modthreads(1, 'type');return false;" href="###">分类</a></li>
+				</ul>
+				<%/if%>
+			<%else if {canuseadminfunc}%>
+				<input name="forumid" type="hidden" value="{forumid}" />
+				<input name="topicid" type="hidden" value="{topicid}" />
+				<input name="postid" type="hidden" value="" />
+				<input name="operat" type="hidden" value="" />
+			<%/if%>
+		</td>
+	</tr>
+	<tr class="threadad">
+		<td class="postauthor"></td>
+		<td class="adcontent"></td>
+	</tr>
+	</tbody>
+	</table>
+	<%loop (ShowtopicPagePostInfo) post postlist%>
+	<table id="{post.pid}" summary="{post.pid}" cellspacing="0" cellpadding="0">
+		<tbody>
+		<tr>
+		<td class="postauthor" rowspan="3">
+			<%if {post.posterid}!=-1%>
+			<!-- member menu -->
+			<div class="popupmenu_popup userinfopanel" id="{post.posterid}{loopi}" style="display:none;  position:absolute;" initialized ctrlkey="userinfo2">
+				<div class="popavatar">
+					<div id="{post.posterid}{loopi}_ma"></div>
+					<ul class="profile_side">
+						<li class="post_pm"><a onclick="showWindow('postpm', this.href, 'get', 0);doane(event);" href="usercppostpm.aspx?msgtoid={post.posterid}" target="_blank">发送短消息</a></li>
+						<%if {useradminid}==1||{useradminid}==2%>
+						<li class="edit_user"><a href="modcp.aspx?operation=edituser&op=edit&uid={post.posterid}" target="_blank">编辑该用户</a></li>
+						<%/if%>
+					</ul>
+				</div>
+				<div class="popuserinfo">
+					<dl class="cl">
+						<%if {Utils.InArray("uid",userfaceshow)}%><dt>UID</dt><dd>{post.posterid}</dd><%/if%>
+						<%if {Utils.InArray("bday",userfaceshow)}%><dt>生日</dt><dd>{post.bday}</dd><%/if%>
+						<%if {Utils.InArray("posts",userfaceshow)}%><dt>帖子</dt><dd>{post.posts}</dd><%/if%>
+						<%if {Utils.InArray("digestposts",userfaceshow)}%><dt>精华</dt><dd>{post.digestposts}</dd><%/if%>
+						<%if {Utils.InArray("credits",userfaceshow)}%><dt>积分</dt><dd>{post.credits}</dd><%/if%>
+						<%if {score[1]}!="" && {Utils.InArray("extcredits1",userfaceshow)}%><dt>{score[1]}</dt><dd>{post.extcredits1} {scoreunit[1]}</dd><%/if%>
+						<%if {score[2]}!="" && {Utils.InArray("extcredits2",userfaceshow)}%><dt>{score[2]}</dt><dd>{post.extcredits2} {scoreunit[2]}</dd><%/if%>
+						<%if {score[3]}!="" && {Utils.InArray("extcredits3",userfaceshow)}%><dt>{score[3]}</dt><dd>{post.extcredits3} {scoreunit[3]}</dd><%/if%>
+						<%if {score[4]}!="" && {Utils.InArray("extcredits4",userfaceshow)}%><dt>{score[4]}</dt><dd>{post.extcredits4} {scoreunit[4]}</dd><%/if%>
+						<%if {score[5]}!="" && {Utils.InArray("extcredits5",userfaceshow)}%><dt>{score[5]}</dt><dd>{post.extcredits5} {scoreunit[5]}</dd><%/if%>
+						<%if {score[6]}!="" && {Utils.InArray("extcredits6",userfaceshow)}%><dt>{score[6]}</dt><dd>{post.extcredits6} {scoreunit[6]}</dd><%/if%>
+						<%if {score[7]}!="" && {Utils.InArray("extcredits7",userfaceshow)}%><dt>{score[7]}</dt><dd>{post.extcredits7} {scoreunit[7]}</dd><%/if%>
+						<%if {score[8]}!="" && {Utils.InArray("extcredits8",userfaceshow)}%><dt>{score[8]}</dt><dd>{post.extcredits8} {scoreunit[8]}</dd><%/if%>
+						<%if {Utils.InArray("gender",userfaceshow)}%><dt>性别</dt><dd><script type="text/javascript">document.write(displayGender({post.gender}));</script></dd><%/if%>
+						<%if {Utils.InArray("location",userfaceshow)}%><dt>来自</dt><dd>{post.location}</dd><%/if%>
+						<%if {Utils.InArray("oltime",userfaceshow)}%><dt>在线时间</dt><dd>{post.oltime}</dd><%/if%>
+						<%if {post.joindate!=""&&Utils.InArray("joindate",userfaceshow)}%><dt>注册时间</dt><dd><%datetostr({post.joindate},"yyyy-MM-dd")%></dd><%/if%>	
+						<%if {post.lastvisit!=""&&Utils.InArray("lastvisit",userfaceshow)}%><dt>最后登录</dt><dd><%datetostr({post.lastvisit},"yyyy-MM-dd")%></dd><%/if%>	
+					</dl>
+					<div class="imicons cl">
+						<%if {post.msn}!=""%>
+						<a href="mailto:{post.msn}" target="_blank" class="msn">{post.msn}</a>
+						<%/if%>
+						<%if {post.skype}!=""%>
+						<a href="skype:{post.skype}" target="_blank" class="skype">{post.skype}</a>
+						<%/if%>
+						<%if {post.icq}!=""%>
+						<a href="http://wwp.icq.com/scripts/search.dll?to={post.icq}" target="_blank" class="icq">{post.icq}</a>
+						<%/if%>
+						<%if {post.qq}!=""%>
+						<a href="http://wpa.qq.com/msgrd?V=1&Uin={post.qq}&Site={config.forumtitle}&Menu=yes" target="_blank" class="qq">{post.qq}</a>
+						<%/if%>
+						<%if {post.yahoo}!=""%>
+						<a href="http://edit.yahoo.com/config/send_webmesg?.target={post.yahoo}&.src=pg" target="_blank" class="yahoo">{post.yahoo}</a>
+						<%/if%>
+					</div>
+					<div class="imicons cl">
+						<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({post.posterid})%>
+						<a href="{aspxrewriteurl}" target="_blank" class="public_info">查看公共资料</a>
+                        <a href="search.aspx?posterid={post.posterid}&searchsubmit=1" target="_blank" class="all_topic">搜索主题</a>
+						<a href="search.aspx?posterid={post.posterid}&type=author&searchsubmit=1" target="_blank" class="all_topic">搜索帖子</a>
+					<%if {useradminid}>0%>
+					<%if {admininfo.allowviewip}==1%>
+						<a onclick="showWindow('getip', this.href, 'get', 0);doane(event);" href="getip.aspx?pid={post.pid}&topicid={topicid}" title="查看IP" class="ip">查看IP</a>
+					<%/if%>
+					<%if {admininfo.allowbanuser}==1%>
+						<a href="useradmin.aspx?action=banuser&uid={post.posterid}" onclick="showWindow('mods', this.href);doane(event);" title="禁止用户" class="forbid_user">禁止用户</a>
+					<%/if%>
+					<%/if%>
+					</div>
+				</div>
+			</div>
+			<!-- member menu -->
+			<%/if%>
+			<%if {post[_id]}=={postlist.count}%>
+			<a name="lastpost"></a>
+			<%/if%>
+		<%if {post.posterid}!=-1%>
+			<div class="poster">
+				<span <%if {post.onlinestate}==1%>class="onlineyes" title="在线"<%else%>class="onlineno" title="未在线"<%/if%>>{post.poster}</span>
+			</div>
+			<div id="{post.posterid}{loopi}_a">
+			<%if {config.showavatars}==1%>
+			<div class="avatar">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(post.Posterid) %>
+				<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}images/common/noavatar_medium.gif';"  alt="头像" id="memberinfo_{loopi}" onmouseover="showauthor(this,{post.posterid}{loopi})"/>			</div>
+			<%/if%>
+			<%if {post.nickname}!=""%>
+				<p>{post.nickname}</p>
+			<%/if%>
+			</div>
+			<p>
+			<script type="text/javascript">
+				ShowStars({post.stars}, {config.starthreshold});
+			</script>
+			</p>
+			<ul class="otherinfo">
+				<%if {config.userstatusby}==1%>
+				<li><label>组别</label>{post.status}</li>
+				<%/if%>
+				<%if {Utils.InArray("uid",postleftshow)}%><li><label>UID</label>{post.posterid}</li><%/if%>
+				<%if {Utils.InArray("bday",postleftshow)}%><li><label>生日</label>{post.bday}</li><%/if%>
+				<%if {Utils.InArray("posts",postleftshow)}%><li><label>帖子</label>{post.posts}</li><%/if%>
+				<%if {Utils.InArray("digestposts",postleftshow)}%><li><label>精华</label>{post.digestposts}</li><%/if%>
+				<%if {Utils.InArray("credits",postleftshow)}%><li><label>积分</label>{post.credits}</li><%/if%>
+				<%if {score[1]}!="" && {Utils.InArray("extcredits1",postleftshow)}%><li><label>{score[1]}</label>{post.extcredits1} {scoreunit[1]}</li><%/if%>
+				<%if {score[2]}!="" && {Utils.InArray("extcredits2",postleftshow)}%><li><label>{score[2]}</label>{post.extcredits2} {scoreunit[2]}</li><%/if%>
+				<%if {score[3]}!="" && {Utils.InArray("extcredits3",postleftshow)}%><li><label>{score[3]}</label>{post.extcredits3} {scoreunit[3]}</li><%/if%>
+				<%if {score[4]}!="" && {Utils.InArray("extcredits4",postleftshow)}%><li><label>{score[4]}</label>{post.extcredits4} {scoreunit[4]}</li><%/if%>
+				<%if {score[5]}!="" && {Utils.InArray("extcredits5",postleftshow)}%><li><label>{score[5]}</label>{post.extcredits5} {scoreunit[5]}</li><%/if%>
+				<%if {score[6]}!="" && {Utils.InArray("extcredits6",postleftshow)}%><li><label>{score[6]}</label>{post.extcredits6} {scoreunit[6]}</li><%/if%>
+				<%if {score[7]}!="" && {Utils.InArray("extcredits7",postleftshow)}%><li><label>{score[7]}</label>{post.extcredits7} {scoreunit[7]}</li><%/if%>
+				<%if {score[8]}!="" && {Utils.InArray("extcredits8",postleftshow)}%><li><label>{score[8]}</label>{post.extcredits8} {scoreunit[8]}</li><%/if%>
+				<%if {Utils.InArray("gender",postleftshow)}%><li><label>性别</label><script type="text/javascript">document.write(displayGender({post.gender}));</script></li><%/if%>
+				<%if {Utils.InArray("location",postleftshow)}%><li><label>来自</label>{post.location}</li><%/if%>
+				<%if {Utils.InArray("oltime",postleftshow)}%><li><label>在线时间</label>{post.oltime}</li><%/if%>
+				<%if {post.joindate!=""&&Utils.InArray("joindate",postleftshow)}%><li><label>注册时间</label><%datetostr({post.joindate},"yyyy-MM-dd")%></li><%/if%>	
+				<%if {post.lastvisit!=""&&Utils.InArray("lastvisit",postleftshow)}%><li><label>最后登录</label><%datetostr({post.lastvisit},"yyyy-MM-dd")%></li><%/if%>	
+			</ul>
+			<%if {config.enablespace}==1 || {config.enablealbum}==1%>
+			<ul class="nt_plug">
+				<%if {config.enablespace}==1%>
+				<li class="space">
+				<%if {post.spaceid}>0%><a href="{spaceurl}space/?uid={post.posterid}">个人空间</a><%else%><a href="###" onclick="nospace('{post.poster}');">个人空间</a><%/if%>
+				</li>
+				<%/if%>
+				<%if {config.enablealbum}==1%>
+				<li class="album"><a href="showalbumlist.aspx?uid={post.posterid}">相册</a></li>
+				<%/if%>
+			</ul>
+			<%/if%>
+			<%if {post.medals}!=""%>
+			<div class="medals">{post.medals}</div>
+			<%/if%>
+		<%else%>
+			<div style="padding-left:15px;padding-top:6px;">
+			    <em id="traveler_ip_{post.pid}" name="traveler_ip" style="display:none">{post.ip}</em>
+				<%if {useradminid}>0 && {admininfo.allowviewip}==1%>
+					<a href="getip.aspx?pid={post.pid}&topicid={topicid}" onclick="showWindow('getip', this.href, 'get', 0);doane(event);" title="查看IP"><img src="{imagedir}/ip.gif" alt="查看IP" class="vm"/></a>
+				<%/if%>
+			</div>
+			<p><em>未注册</em></p>
+		<%/if%>
+		</td>
+		<td class="postcontent">
+			<div class="pi">
+				<strong>
+					<a href="###" class="floor" title="复制帖子链接到剪贴板" onclick="copypostlayer({topicid},{post.pid},'{forumpath}')">
+					<%if {post.postnocustom}!=""%>
+					{post.postnocustom}
+					<%else%>
+					{post.id}<sup>#</sup>
+					<%/if%>
+					</a>
+				</strong>
+				<div class="postinfo"> 
+					<div class="msgfsize y">
+						<%if {topic.Special}==4%>
+						<span class="xg2 f_bold">
+						<%if {post.debateopinion}==1%>
+							正方
+						<%else if {post.debateopinion}==2%>
+							反方
+						<%/if%>
+						</span><span class="pipe">|</span>
+						<%/if%>
+						<label style="margin-left:4px;">字体大小: </label>
+						<small title="正常" onclick="fontZoom('message{post.pid}',false);"><b>t</b></small>
+						<big title="放大" onclick="fontZoom('message{post.pid}',true);"><b>T</b></big>
+					</div>
+					<%set (String){olimg} = OnlineUsers.GetGroupImg({post.groupid})%>
+					{olimg}
+					<em>
+					<%set (string){postdatec} = ForumUtils.ConvertDateTime({post.postdatetime})%>
+					发表于 <span title="<%datetostr({post.postdatetime},"yyyy-MM-dd HH:mm")%>">{postdatec}</span>
+					</em>
+				<%if {post.posterid}!=-1%>
+                <%set {aspxrewriteurl} = Urls.ShowTopicAspxRewrite({topicid},0,DNTRequest.GetInt("typeid", -1))%>
+				<%if {onlyauthor}=="1" || {onlyauthor}=="2"%>					
+					<span class="pipe">|</span><a href="showtopic.aspx?topicid={topic.tid}&forumpage={pageid}">显示全部</a>
+				<%else%>
+					<%if {topic.posterid}=={post.posterid}%>
+					<span class="pipe">|</span><a href="showtopic.aspx?topicid={topic.tid}&forumpage={forumpageid}&onlyauthor=1&posterid={topic.posterid}">只看楼主</a>  
+					<%else%>
+					<span class="pipe">|</span><a href="showtopic.aspx?topicid={topic.tid}&forumpage={forumpageid}&onlyauthor=2&posterid={post.posterid}">只看该用户</a>  
+					<%/if%>
+				<%/if%>		
+				<%/if%>
+				</div>
+			</div>
+            <!--silverlight slideshow start-->
+            <%if {post.id}==1%>
+                <%if {config.silverlight}==1 && {topic.Attachment}==2%>
+                 <span class="silverlight"><a onclick="BOX_showsl('slideShowSilverlight', 500);" href="javascript:void(0);"><img src="{imagedir}/btn_silverlight.gif" alt="银光图片" title="银光图片" style="cursor:pointer;" /></a></div>
+                 <script type="text/javascript" src="{rooturl}silverlight/PostAlbum/silverlight.js" reload="1"></script>             
+                 <div id="BOX_overlay_sl" style="background: black; position: absolute; z-index:100; filter:alpha(opacity=50);-moz-opacity: 0.6;opacity: 0.6;"></div>                     
+                     <div id="slideShowSilverlight" style="clear:both;display:none; width:800px;height:500px;background:black;">
+                     <h3 class="flb">	                             
+						<em>银光图片</em>
+						<span id="swfclosebtn" class="y">
+						   <a href="javascript:;" class="flbc" onclick="BOX_removesl('slideShowSilverlight');" title="关闭"> </a>						</span>	                 </h3>
+						<object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="800px" height="460px">
+							<param name="source" value="{rooturl}silverlight/PostAlbum/ClientBin/PostAlbum.xap"/>
+							<param name="minRuntimeVersion" value="4.0.50401.0" />
+							<param name="autoUpgrade" value="true" /> 		
+							<param name="background" value="black" />	
+							<param name="initParams" value="topicid={topicid},forumid={forumid},posterid={posterid},onlyauthor={onlyauthor}" />	  
+							<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none" target="_blank">
+								<img src="{rooturl}silverlight/PostAlbum/PostAlbum.jpg" alt="安装微软Silverlight控件,即刻使用帖图浏览功能" style="border-style:none"/>		                   
+							</a>
+						 </object>                 
+                    </div>  	    	
+			    </span>
+                <%/if%>      
+            <%/if%>  
+            <!--silverlight slideshow end-->
+			<div id="ad_thread2_{post[_id]}"></div>
+			<div id="ad_thread3_{post[_id]}"></div>
+			<div class="postmessage defaultpost">
+				<%if {topic.identify}>0 && {post.id}==1%>
+					<div class="threadstamp" onclick="this.style.display='none';"><img src="{topicidentifydir}/{topicidentify.filename}" alt="点击关闭鉴定图章" title="点击关闭鉴定图章" /></div>
+				<%/if%>
+				<%if {post.layer}!=0%><h2>{post.title}</h2><%/if%>
+				    <div id="topictag"></div>
+				    <div id="message{post.pid}" class="t_msgfont">
+					<%if {post.id}==1%>
+						<div id="firstpost"><%if {topic.special}!=2 && {topic.special}!=3%>{post.message} <%/if%></div>
+					<%else%>
+                        {post.message}
+                    <%/if%>
+					<%if {post.id}==1 && {enabletag}%>
+					    <script type="text/javascript">function forumhottag_callback(data){ tags = data; }</script>
+					    <script type="text/javascript" src="cache/tag/hottags_forum_cache_jsonp.txt"></script>
+						<%set (int){hastag} = Topics.GetMagicValue(topic.Magic, MagicType.TopicTag)%>
+						<%if {hastag}==1%>
+							<script type="text/javascript">getTopicTags({topic.tid});</script>
+						<%else%>
+							<script type="text/javascript">parsetag();</script>
+						<%/if%>
+					<%/if%>
+				    </div>
+				<%if {attachmentlist.count}>0%>
+					<%set (int){currentattachcount} = 0%>
+					<%loop (ShowtopicPageAttachmentInfo) attachtemp attachmentlist%>
+						<%if {attachtemp.pid}=={post.pid}%>
+							<%set {currentattachcount} = {currentattachcount} + 1%>
+						<%/if%>
+					<%/loop%>
+					<%if  {currentattachcount}>0%>
+						<%set (int){getattachperm} = attachmentlist[0].Getattachperm%>
+						<%if {getattachperm}==1%>
+					<div class="postattachlist">
+						<div id="BOX_overlay" style="background: #000; position: absolute; z-index:100; filter:alpha(opacity=50);-moz-opacity: 0.6;opacity: 0.6;"></div>
+                        <div id="attachpaymentlog" style="display: none; background :Aliceblue;  border:0px solid #999; width:503px; height:443px;"></div>
+                        <div id="buyattach" style="display: none; background :Aliceblue; border:0px solid #999; width:503px; height:323px;"></div>
+					<%loop (ShowtopicPageAttachmentInfo) attachment attachmentlist%>
+						<%if {attachment.pid}=={post.pid}%>
+							<%if {attachment.allowread}==1%>
+							<%template _attachmentinfo%>
+							<%else%>
+							<%if {userid>0}%>
+							<div class="hide"><em><span class="attachnotdown">你的下载权限 {usergroupinfo.readaccess} 低于此附件所需权限 {attachment.readperm}, 你无权查看此附件</span></em></div>
+							<%else%>
+							<div class="hide">附件: <em><span class="attachnotdown">你需要<a href="{forumpath}login.aspx" onclick="hideWindow('register');showWindow('login', this.href);">登录</a>才可以下载或查看附件。没有帐号? <a href="{forumpath}register.aspx" onclick="hideWindow('login');showWindow('register', this.href);" title="注册帐号">注册</a></span></em></div>
+							<%/if%>
+							<%/if%>
+						<%/if%>
+					<%/loop%>
+					</div>
+						<%else%>
+					    <div class="hide">附件:<em><span class="attachnotdown">您需要<a href="{forumpath}login.aspx" onclick="hideWindow('register');showWindow('login', this.href);">登录</a>才可以下载或查看附件。没有帐号? <a href="{forumpath}register.aspx" onClick="hideWindow('login');showWindow('register', this.href);" title="注册帐号">注册</a></span></em></div>
+						<%/if%>
+					<%/if%>
+				<%/if%>
+			<%if {post.ratetimes}>0%>
+				 <%template _ratelog%>
+			<%/if%>
+			<%if {post.id}==1%>
+                <!--悬赏部分-->
+				<%if {topic.special}==2 || {topic.special}==3%>				
+				<div class="special_reward cl">
+                    <%if {topic.special}==2%>
+					<div class="rusld z">
+                    <%else%>
+                    <div class="rsld z">
+                    <%/if%>
+						<cite>{topic.price}{userextcreditsinfo.unit}</cite>{userextcreditsinfo.name}
+					</div>
+					<div class="rwdn">
+						<table cellspacing="0" cellpadding="0">
+							<tbody>
+							<tr>
+								<td id="postmessage_30" class="t_f">{post.message}</td>
+							</tr>
+							</tbody>
+						</table>
+						<p class="pns ptm"><button<%if {canreply}%> onclick="showWindow('reply', '{forumpath}showtopic.aspx?topicid={topicid}');"<%else%> onclick="showWindow('login', '{forumpath}login.aspx');hideWindow('register');"<%/if%> class="pn" value="ture" name="answer"><span>我来回答</span></button></p>
+					</div>
+				</div>
+				<%/if%>
+				<%if {topic.special}==3%>
+                <div class="rwdbst">
+                    <%set (bool){isshowbest} = false%>
+                    <%set (bool){isshowvaluable} = false%>
+                    <%loop (BonusLogInfo) bonuslog bonuslogs%>
+                    <%if {bonuslog.isbest}==2%>
+                    <%if !{isshowbest}%>
+                    <h4 class="psth" style="background-color:#fff4dd">最佳答案</h4>
+                    <%set {isshowbest} = true%>
+                    <%/if%>
+                    <%else%>
+                    <%if !{isshowvaluable}%>
+                    <h4 class="psth" style="background-color:#cce2f8">有价值答案</h4>
+                    <%set {isshowvaluable} = true%>
+                    <%/if%>
+                    <%/if%>
+                    <div class="pstl">
+                        <div class="psta">
+                            <%set (string){answeravatarurl}=Avatars.GetAvatarUrl(bonuslog.Answerid) %>
+                            <img src="{answeravatarurl}" onerror="this.onerror=null;this.src='{forumpath}images/common/noavatar_small.gif';" />
+                        </div>
+                        <div class="psti">
+                            <p class="xg2">
+                                <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({bonuslog.answerid})%>
+							    <%set (string) {unit} = scoreunit[ bonuslog.Extid ]%>
+							    <%set (string) {name} = score[ bonuslog.Extid ]%>
+                                <a href="{aspxrewriteurl}">{bonuslog.answername}</a>({name}:{bonuslog.bonus}{unit}) 
+                                <a onclick="window.open('showtopic.aspx?topicid={bonuslog.tid}&postid={bonuslog.pid}#{bonuslog.pid}')" href="javascript:;">查看完整内容</a>
+                            </p>
+                            <div class="mtn"><%getsubstring({bonuslog.Message,100,"..."})%></div>
+                        </div>
+                    </div>
+                    <%/loop%>
+                </div>
+				<%else if {topic.special}==4%>
+				<div class="debate_show">
+					<div class="squaretitle">
+						<p>正方观点</p>
+						{debateexpand.positiveopinion}
+					</div>
+					<div class="sidetitle">
+						<p>反方观点</p>
+						{debateexpand.negativeopinion}
+					</div>
+				</div>
+				<%/if%>
+				<!--投票部分-->
+				<%template _poll%>
+				
+			<%/if%>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="plc">
+		<%if {post.lastedit}!=""%>
+		<div class="lastediter"><img src="{imagedir}/lastedit.gif" alt="最后编辑"/>{post.lastedit}</div>
+		<%/if%>
+		<%if {post.id}==1%>
+		<%if {topic.moderated}>0 && {config.moderactions}>0%>
+		<div class="manageinfo">{TopicAdmins.GetTopicListModeratorLog(topicid)}</div>
+		<%/if%>
+		<div class="useraction">
+		<%if {userid}!=-1%>
+			<a href="favorites.aspx?topicid={topicid}&infloat=1" onclick="ajaxmenu(event, this.id, 3000, 0)" id="ajax_favorite">收藏</a>
+			<%if {usergroupinfo.raterange}!="" && {post.posterid}!=-1%>
+			<a id="ratelink" href="javascript:;" onclick="showWindow('mods', 'topicadmin.aspx?action=rate&forumid={forumid}&topicid={topic.tid}&postid={post.pid}&operat=rate');return false;">评分</a>
+			<%/if%>
+		<%/if%>				
+			<a onclick="showWindow('mods', this.href);return false;" href="misc.aspx?action=emailfriend&tid={topicid}" id="share">分享</a>
+			<%if {config.disableshare}==1%>
+			<script type="text/javascript">
+			function openforward()
+			{
+			  share.floatwin('{config.sharelist}');
+			}
+			</script>
+			<a href="javascript:void(0)" onclick="openforward()" id="forward">转发</a>
+			<%/if%>
+		</div>
+		<%/if%>
+	 	<%if {post.invisible}!=-2 || {ismoder}==1%>
+		<%if {config.showsignatures}==1%>
+		<%if {post.usesig}==1%>
+			<%if {post.signature}!=""%>
+			<!--签名开始-->
+			<div class="postertext">
+				<%if {config.maxsigrows}>0%>
+					<%set (int){ieheight} = {config.maxsigrows}*19%>
+					<%set (float){heightem} = {config.maxsigrows}*1.5f %>
+					<div class="signatures" style="max-height:{heightem}em;maxHeightIE:{ieheight}px">{post.signature}</div>
+				<%else%>
+					{post.signature}
+				<%/if%>
+			</div>
+			<!--签名结束-->
+			<%/if%>
+		<%/if%>
+		<%/if%>
+		<%/if%>
+		</td>
+	</tr>
+	<tr>
+		<td class="plc"><div id="ad_thread1_{post[_id]}"></div></td>
+	</tr>
+	<tr>
+		<td class="postauthor"></td>
+		<td class="postactions">
+			<div class="p_control">
+			<cite class="y">
+			<%if {userid}!=-1%>
+				<%template _report%><span class="pipe">|</span>
+				<%if {usergroupinfo.raterange}!="" && {post.posterid}!=-1%>
+				<%if {post.layer}!=0%>
+				<a href="topicadmin.aspx?action=rate&forumid={forumid}&topicid={topic.tid}&postid={post.pid}&operat=rate" onclick="showWindow('mods', this.href);return false;">评分</a><span class="pipe">|</span>
+				<%/if%>
+				<%/if%>
+			<%/if%>
+			<%if {ismoder}==1%>
+				<%if {post.ratetimes}>0%>
+				<a href="topicadmin.aspx?action=cancelrate&forumid={forumid}&topicid={topic.tid}&postid={post.pid}" onclick="showWindow('mods', this.href,'get',-1);return false;">撤销评分</a><span class="pipe">|</span>
+				<%/if%>
+				<%if {post.id}==1 && {topic.special}==2%>
+					<%if {topic.replies}>0%>						
+				<a href="topicadmin.aspx?action=bonus&forumid={forumid}&topicid={topic.tid}&operat=bonus" onclick="showWindow('mods', this.href);return false;">结帖</a><span class="pipe">|</span>
+					<%/if%>
+				<%/if%>
+			<%else%>
+				<%if {post.posterid}!=-1 && {userid}=={post.posterid}%>
+					<%if {post.id}==1 && {topic.special}==2%>
+						<%if {topic.replies}>0%>
+				<a href="topicadmin.aspx?action=bonus&forumid={forumid}&topicid={topic.tid}&operat=bonus" onclick="showWindow('mods', this.href);return false;">结帖</a><span class="pipe">|</span>
+						<%/if%>
+					<%/if%>
+				<%/if%>
+			<%/if%>
+			<a href="#" onclick="window.scrollTo(0,0)">TOP</a>
+			<%if {ismoder}==1%>
+			<label for="manage{post.id}">
+				<input type="checkbox" value="{post.id}" onclick="pidchecked(this);modclick(this, {post.pid})" id="manage{post.id}" class="checkbox"/>管理            </label>
+            <%/if%>
+			</cite>
+		<%if {canreply}%>           
+			<%if {userid}!=-1%>
+			    <a href="{forumpath}postreply.aspx?topicid={topicid}&postlayer={post.id}&postid={post.pid}&poster={Utils.UrlEncode(post.Poster)}&forumpage={forumpageid}" <%if !{isnewbie}%> onclick="showWindow('reply', 'showtopic.aspx?poster={Utils.UrlEncode(post.Poster)}&postlayer={post.id}&postid={post.pid}&topicid={topic.tid}')"<%/if%> class="fastreply">回复</a>
+			<%/if%>
+			<a href="postreply.aspx?topicid={topicid}&postid={post.pid}&forumpage={forumpageid}&quote=yes" class="repquote">引用</a>
+		<%/if%>
+		<%if {ismoder}==1%>
+			<%if {topic.Special}==4%>
+			<a href="editpost.aspx?topicid={topicid}&postid={post.pid}&forumpage={forumpageid}&pageid={pageid}&debate={post.debateopinion}" class="editpost">编辑</a>
+			<%else%>
+			<a href="editpost.aspx?topicid={topicid}&postid={post.pid}&forumpage={forumpageid}&pageid={pageid}"  class="editpost">编辑</a>
+			 <%/if%>
+			<%if {post.posterid}!=-1 && {userid}=={post.posterid}%>
+			<a href="delpost.aspx?topicid={topicid}&postid={post.pid}" onclick="return confirm('确定要删除吗?');" class="delpost" title="删除我的帖子">删除</a>
+			<%/if%>
+		<%else%>
+			<%if {post.posterid}!=-1 && {userid}=={post.posterid}%>
+				<%if {topic.closed}==0%>
+					<%if {topic.Special}==4%>
+					<a href="editpost.aspx?topicid={topicid}&postid={post.pid}&pageid={pageid}&forumpage={forumpageid}&debate={post.debateopinion}"  class="editpost">编辑</a>
+					<%else%>
+					<a href="editpost.aspx?topicid={topicid}&postid={post.pid}&pageid={pageid}&forumpage={forumpageid}"   class="editpost">编辑</a>
+					 <%/if%>
+				<%/if%>
+				<a href="delpost.aspx?topicid={topicid}&postid={post.pid}" onclick="return confirm('确定要删除吗?');" class="delpost" title="删除我的帖子">删除</a>
+			<%/if%>
+		<%/if%>
+			</div>		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr class="threadad">
+		<td class="postauthor"></td>
+		<td class="adcontent">
+			<%if {post.id}==1 && {postleaderboardad}!=""%>
+			<div id="postleaderboardad">{postleaderboardad}</div>
+			<%/if%>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	<%set {loopi}={loopi}+1%>
+	<%/loop%>
+	</div>
+	</form>
+	<!--ntforumbox end-->
+	<div class="forumcontrol cl">
+	<table cellspacing="0" cellpadding="0" class="narrow">
+		<tbody>
+		<tr>
+		<td class="postauthor">
+			<a href="showtopic.aspx?forumid={forumid}&forumpage={forumpageid}&topicid={topicid}&go=prev">上一主题</a><span class="pipe">|</span>
+			<a href="showtopic.aspx?forumid={forumid}&forumpage={forumpageid}&topicid={topicid}&go=next">下一主题</a>
+		</td>
+		<td class="modaction">
+			<%if {useradminid}>0||{usergroupinfo.raterange}!=""||{config.forumjump}==1||({topic.special}==2&&{topic.posterid}=={userid})%>
+			<script type="text/javascript">
+				function action_onchange(value,objfrm,postid,banstatus){
+					if (value != ''){
+						objfrm.operat.value = value;
+						objfrm.postid.value = postid;
+						if (value != "delete")
+						{
+							objfrm.action = objfrm.action + '&referer=' + escape(window.location);
+						}
+						if (value == 'banpost' && typeof(banstatus) != "undefined")
+						{
+							objfrm.operat.value = value;
+							objfrm.action = objfrm.action + "&banstatus=" + banstatus;
+							objfrm.submit();
+							return;
+						}
+						if(value == 'delposts' || value == 'banpost'){
+							$('postsform').operat.value = value; 
+							$('postsform').action = $('postsform').action + '&referer=' + escape(window.location);
+							$('postsform').submit();
+						}
+						else{
+							objfrm.submit();
+						}
+					}
+				}
+			</script>
+			<%set {canuseadminfunc} = {usergroupinfo.raterange}!="" || {usergroupinfo.maxprice}>0 || ({topic.special}==2&&{topic.posterid}=={userid})%>
+			<%if {useradminid}>0%>
+				<form id="moderate" name="moderate" method="post" action="topicadmin.aspx?action=moderate&forumid={forumid}&infloat=1">
+					<input name="forumid" type="hidden" value="{forumid}" />
+					<input name="topicid" type="hidden" value="{topicid}" />
+					<input name="postid" type="hidden" value="" />
+					<input name="operat" type="hidden" value="" />
+					<input type="hidden" name="winheight" />
+					<input type="hidden" name="optgroup" />
+					<%if {ismoder}==1%>
+					<span class="drop xg2" onclick="showMenu({'ctrlid':this.id, 'pos':'21'})" id="operatSel">主题管理</span>
+					<ul style="width: 180px; display:none;" id="operatSel_menu" class="p_pop inlinelist">
+						<li><a onclick="modthreads(1, 'delete');return false;" href="###">删除</a></li>
+						<li><a onclick="modthreads(1, 'bump');return false;" href="###">提沉</a></li>
+						<li><a onclick="modthreads(1, 'close');return false;" href="###">关闭</a></li>
+						<li><a onclick="modthreads(1, 'move');return false;" href="###">移动</a></li>
+						<li><a onclick="modthreads(1, 'copy');return false;" href="###">复制</a></li>
+						<li><a onclick="modthreads(1, 'highlight');return false;" href="###">高亮</a></li>
+						<li><a onclick="modthreads(1, 'digest');return false;" href="###">精华</a></li>
+						<li><a onclick="modthreads(1, 'identify');return false;" href="###">鉴定</a></li>
+						<li><a onclick="modthreads(1, 'displayorder');return false;" href="###">置顶</a></li>
+						<li><a onclick="modthreads(1, 'split');return false;" href="###">分割</a></li>
+						<li><a onclick="modthreads(1, 'merge');return false;" href="###">合并</a></li>
+						<li><a onclick="modthreads(1, 'repair');return false;" href="###">修复</a></li>
+						<li><a onclick="modthreads(1, 'type');return false;" href="###">分类</a></li>
+					</ul>
+					<%/if%>
+				</form>
+			<%else if {canuseadminfunc}%>
+				<form id="moderate" name="moderate" method="post" action="topicadmin.aspx?action=moderate&forumid={forumid}"  class="y">
+					<input name="forumid" type="hidden" value="{forumid}" />
+					<input name="topicid" type="hidden" value="{topicid}" />
+					<input name="postid" type="hidden" value="" />
+					<input name="operat" type="hidden" value="" />
+				</form>
+			<%/if%>
+			<%/if%>
+		</td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+<div class="pages_btns cl">
+	<div class="pages">
+		<cite class="pageback">{listlink}</cite>
+		<%if {pagecount}!=1%>
+		{pagenumbers}
+		<%if {pagecount}>8%>
+		<kbd>
+		<input name="gopage" type="text" class="txt" id="pageidinput2" title="可以输入页码按回车键自动跳转" value="{pageid}" style="text-align:center;" onfocus="this.value=this.defaultValue;this.select();" onKeyDown="pageinputOnKeyDown(this,event);" size="2" maxlength="9" />/ {pagecount}</kbd>
+		<%/if%>
+		{nextpage}
+		<%/if%>
+	</div>
+<%if {userid<0}||{canposttopic}%>
+    <%set (string){newtopicurl} = ""%>
+    <%if {forum.allowspecialonly}<=0%>
+	    <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&forumpage=" + {pageid} %>
+    <%else if 1==({forum.allowpostspecial}&1)&&{usergroupinfo.allowpostpoll}==1%>
+        <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=poll&forumpage=" + {pageid} %>
+    <%else if 4==({forum.allowpostspecial}&4)&&{usergroupinfo.allowbonus}==1%>
+        <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=bonus&forumpage=" + {pageid} %>
+    <%else if 16==({forum.allowpostspecial}&16)&&{usergroupinfo.allowdebate}==1%>
+        <%set {newtopicurl} = {forumpath} + "posttopic.aspx?forumid=" + {forum.fid} + "&type=debate&forumpage=" + {pageid} %>
+    <%/if%>
+    <%set (string){newtopiconclick} = ""%>
+    <%if {forum.allowspecialonly}<=0&&{canposttopic}%>
+        <%set {newtopiconclick} = "showWindow('newthread', '" + {forumpath} + "showforum.aspx?forumid=" + {forum.fid} + "')"%>
+    <%/if%>
+    <%set (bool){allowpost}={userid}<=0&&(forum.Postperm==""?usergroupinfo.Allowpost==0:!Utils.InArray({usergroupid}.ToString(),{forum.Postperm}))%>
+    <%if {allowpost}%>
+        <%set {newtopiconclick} = "showWindow('login', '" + {forumpath} + "login.aspx');hideWindow('register');"%>
+    <%else%>
+        <%set {newtopiconclick} = "showWindow('newthread', '" + {forumpath} + "showforum.aspx?forumid=" + {forum.fid} + "')"%>
+    <%/if%>
+	<span <%if {userid}>0%> onmouseover="if($('newspecial_menu')!=null&&$('newspecial_menu').childNodes.length>0)  showMenu(this.id);"<%/if%> id="newspecial2" class="postbtn">
+        <a title="发新话题" id="newtopic2" href="{newtopicurl}" onclick="{newtopiconclick}">
+            <img alt="发新话题" src="{imagedir}/newtopic.png"/></a>
+    </span>
+<%/if%>
+<%if ({topic.Closed}!=1||ismoder==1) && ({userid<0}||{canreply})%>
+	<span class="replybtn"><a href="{forumpath}postreply.aspx?topicid={topicid}&forumpage={forumpageid}"<%if {canreply}%> onclick="showWindow('reply', '{forumpath}showtopic.aspx?topicid={topicid}');"<%else%> onclick="showWindow('login', '{forumpath}login.aspx');hideWindow('register');"<%/if%>><img src="{imagedir}/reply.png" alt="回复该主题" /></a></span>
+<%/if%>
+</div>
+
+<%if {config.Fastpost}==2||{config.Fastpost}==3%>
+<%if ({topic.Closed}!=1||ismoder==1) && ({userid<0}||{canreply})%>
+<%template _ajaxquickreply%>
+<%/if%>
+<%/if%>
+
+<%if {userid<0}||{canposttopic}%>
+	<ul id="newspecial_menu" class="popupmenu_popup newspecialmenu" style="display: none">
+	 <%if {forum.allowspecialonly}<=0%>
+		<li><a href="posttopic.aspx?forumid={forum.fid}&forumpage={forumpageid}">发新主题</a></li>
+		<%/if%>
+		<%set (int){specialpost} = {forum.allowpostspecial}&1 %>
+		<%if {specialpost}==1 && {usergroupinfo.allowpostpoll}==1%>
+		<li class="poll"><a href="posttopic.aspx?forumid={forum.fid}&forumpage={forumpageid}&type=poll">发布投票</a></li>
+		<%/if%>
+		<%set {specialpost} = {forum.allowpostspecial}&4 %>
+		<%if {specialpost}==4 && {usergroupinfo.allowbonus}==1%>
+		<li class="reward"><a href="posttopic.aspx?forumid={forum.fid}&forumpage={forumpageid}&type=bonus">发布悬赏</a></li>
+		<%/if%>
+		<%set {specialpost} = {forum.allowpostspecial}&16 %>
+		<%if {specialpost}==16 && {usergroupinfo.allowdebate}==1%>
+		<li class="debate"><a href="posttopic.aspx?forumid={forum.fid}&forumpage={forumpageid}&type=debate">发起辩论</a></li>
+		<%/if%>
+	</ul>
+	<ul class="popupmenu_popup newspecialmenu" id="newspecial2_menu" style="display: none">
+	</ul>
+    <ul class="popupmenu_popup newspecialmenu" id="seditor_newspecial_menu" style="display: none">
+	</ul>
+	<script type="text/javascript">
+	    $('newspecial2_menu').innerHTML = $('newspecial_menu').innerHTML;
+	    $('seditor_newspecial_menu').innerHTML = $('newspecial_menu').innerHTML;
+	</script>
+    <div id="imgcache" style="display:none;">
+    </div>
+<%/if%>
+</div>
+<script type="text/javascript">
+    var topictitle = '{GetJsFormat(topic.Title)}';
+    var maxpage = parseInt('{pagecount}');
+    var pageid = parseInt('{pageid}');
+    if (maxpage > 1) {
+        document.onkeyup = function (e) {
+            e = e ? e : window.event;
+            var tagname = is_ie ? e.srcElement.tagName : e.target.tagName;
+            if (tagname == 'INPUT' || tagname == 'TEXTAREA') return;
+            actualCode = e.keyCode ? e.keyCode : e.charCode;
+            if (pageid < maxpage && actualCode == 39) {
+                window.location = '{Urls.ShowTopicAspxRewrite(topicid,pageid+1)}';
+            }
+            if (pageid > 1 && actualCode == 37) {
+                window.location = '{Urls.ShowTopicAspxRewrite(topicid,pageid-1)}';
+            }
+        }
+    }
+</script>
+<%set (string){topicurl} = Utils.GetRootUrl({forumpath})+Urls.ShowTopicAspxRewrite({topicid},{pageid})%>
+<script type="text/javascript">
+    function copytitle() {
+        var text = '{GetJsFormat(topic.Title)}\r\n{topicurl}';
+        setcopy(text, '帖子地址已经复制到剪贴板');
+    }
+    function ShowDownloadTip(attachmentownerid) {
+        if(attachmentownerid=={userid}||{ismoder}==1)
+            return true;
+            
+        <%if {Scoresets.IsSetDownLoadAttachScore()}%>
+            return confirm('下载附件需要:{downloadattachmenttip}.确定下载?');
+        <%else%>
+            return true;
+        <%/if%>
+    }
+</script>
+<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+		<div class="wrap cl pageinfo">
+	<div id="nav"><a id="forumlist" href="{forumpath}" class="title">{config.forumtitle}</a>  &raquo; <strong>错误提示</strong></div>
+		</div>
+		<%template _errmsgbox%>
+	<%/if%>
+<%/if%>
+{inpostad}
+<%if {config.forumjump}==1%>
+	{navhomemenu}
+<%/if%>
+<%if {showvisitedforumsmenu}%>
+<div class="p_pop" id="visitedforums_menu" style="display: none">
+	<h3 class="xi1">浏览过的版块</h3>
+	<ul>
+	<%loop (SimpleForumInfo) simpforuminfo visitedforums%>
+		<%if {simpforuminfo.Fid}!=forumid%>
+		<li><a href="{simpforuminfo.Url}">{simpforuminfo.Name}</a></li>
+		<%/if%>
+	<%/loop%>
+	</ul>
+</div>
+<%/if%>
+<script type="text/javascript">
+    getuserips();
+<%if {ForumUtils.GetCookie("clearUserdata")}=="forum"%>
+    saveUserdata('forum', '');
+<%/if%>
+</script>
+<%else%>
+<%template _ajaxquickreply%>
+<%/if%>
+<%template _copyright%>
+<%template _adlist%>
+<%template _footer%>

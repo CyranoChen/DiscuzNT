@@ -1,0 +1,190 @@
+﻿<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a>  &raquo; <a href="usercpprofile.aspx">用户中心</a>  &raquo; <strong>用户信息</strong>
+	</div>
+</div>
+<%if page_err==0%>
+<div class="wrap with_side s_clear" id="wrap" style="background:#FFF;">
+	<div class="side">
+	    <%set (string){avatarurl}=Avatars.GetAvatarUrl(user.Uid) %>
+		<img src="{avatarurl}" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';" class="user_avatar"/>
+		<ul class="tabs">
+		<%if {config.enablespace}==1 && {user.spaceid}>0%>
+			<li class="space"><a href="{spaceurl}space/?uid={user.Uid}">{user.username}的空间</a></li>
+		<%/if%>
+		<%if {config.enablealbum}==1%>
+			<li class="album"><a href="showalbumlist.aspx?uid={user.uid}">{user.username}的相册</a></li>
+		<%/if%>
+		<%if {user.showemail}==1%>
+			<li class="email"><a href="mailto:{user.email}">给该用户发送Email</a></li>
+		<%/if%>
+			<li class="pm"><a href="usercppostpm.aspx?msgtoid={user.uid}" onclick="floatwin('open_postpm', this.href, 600, 410, '600,0');doane(event);">发送短消息</a></li>
+		<%if {useradminid}>0&&{admininfo.allowbanuser}==1%>
+			<li class="userban"><a href="useradmin.aspx?action=banuser&uid={user.uid}" onclick="floatwin('open_mods', this.href, 250, 270, '600,0');doane(event);" title="禁止用户">禁止用户</a></li>
+		<%/if%>
+			<li class="userlink"><a href="search.aspx?posterid={user.uid}">搜索帖子</a></li>
+		<%if {userid}!={user.uid}&&{isfriendshipexist}!=2%>
+			<li class="addfriendlink">
+			    <%if {isfriendshipexist}==0%>
+			    <a href="javascript:void(0);" onclick="floatwin('open_friendrequest{user.uid}', 'friends.aspx?action=createfriendrequest&touid={user.uid}', 300, 220, '600,0');return false;">加为好友</a>
+                <%/if%>
+                <%if {isfriendshipexist}==1%>
+                <a href="javascript:void(0);">请求已发送</a>
+                <%/if%>
+			</li>
+		<%/if%>
+		</ul>
+	</div>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<div class="itemtitle s_clear">
+			<h1 class="lightlink">{user.username}</h1>
+			<ul>
+				<li>(UID: {user.uid})</li>
+			</ul>
+		</div>
+		<div id="baseprofile">
+			<table cellpadding="0" style="table-layout: fixed;" class="formtable">
+			<tbody>		
+			<tr>
+				<th width="70">性别: </th>
+				<td><%if {user.gender}==0%>保密<%/if%>
+					<%if {user.gender}==1%>男<%/if%>
+					<%if {user.gender}==2%>女<%/if%>
+				</td>
+			</tr>
+			<%if {user.location}!=""%>
+			<tr>
+				<th>来自: </th>
+				<td>{user.location}</td>
+			</tr>
+			<%/if%>
+			<%if {user.bday}!=""%>
+			<tr>
+				<th>生日: </th>
+				<td>{user.bday}</td>
+			</tr>
+			<%/if%>
+			<%if {user.website}!=""%>
+			<tr>
+				<th>个人主页: </th>
+				<td>{user.website}</td>
+			</tr>
+			<%/if%>
+			<%if {user.bio}!=""%>
+			<tr>
+				<th>自我介绍: </th>
+				<td>{user.bio}</td>
+			</tr>
+			<%/if%>
+			<%if {admininfo}!=null&&{admininfo.Allowviewrealname}==1%>
+			<%if {user.realname}!=""%>
+			<tr>
+				<th>真实姓名: </th>
+				<td>{user.realname}</td>
+			</tr>
+			<%/if%>
+			<%if {user.idcard}!=""%>
+			<tr>
+				<th>身份证号码: </th>
+				<td>{user.idcard}</td>
+			</tr>
+			<%/if%>
+			<%if {user.mobile}!=""%>
+			<tr>
+				<th>移动电话号码: </th>
+				<td>{user.mobile}</td>
+			</tr>
+			<%/if%>
+			<%if {user.phone}!=""%>		
+			<tr>
+				<th>固定电话号码: </th>
+				<td>{user.phone}</td>
+			</tr>
+			<%/if%>
+			<%/if%>
+			<%if {user.showemail}==1%>
+			<tr>
+				<th>E-Mail: </th>
+				<td><a herf="#" onclick="javascript:location.href='mailto:{user.email}';">{user.email}</a></td>
+			</tr>
+			<%/if%>
+			<%if {user.qq}!=""%>
+			<tr>
+				<th>QQ: </th>
+				<td>{user.qq}</td>
+			</tr>
+			<%/if%>
+			<%if {user.msn}!=""%>		
+			<tr>
+				<th>MSN Messenger: </th>
+				<td>{user.msn}</td>
+			</tr>
+			<%/if%>
+			<%if {user.yahoo}!=""%>		
+			<tr>
+				<th>Yahoo Messenger: </th>
+				<td>{user.yahoo}</td>
+			</tr>
+			<%/if%>
+			<%if {user.skype}!=""%>		
+			<tr>
+				<th>Skype: </th>
+				<td>{user.skype}</td>
+			</tr>
+			<%/if%>
+			<%if {user.icq}!=""%>		
+			<tr>
+				<th>ICQ: </th>
+				<td>{user.icq}</td>
+			</tr>
+			<%/if%>
+			</tbody>
+			</table>
+		</div>
+		<hr class="dashline"/>
+		<h3 class="blocktitle lightlink">用户组: {group.grouptitle} </h3>
+		<div class="s_clear">
+			<ul style="width: 50%;" class="commonlist right">
+			<%if {user.joindate}!=""%>	
+				<li>注册日期: {user.joindate}</li>
+			<%/if%>
+			<%if {user.lastvisit}!=""%>	
+				<li>最后访问(登录): {user.lastvisit}</li>
+			<%/if%>
+			<%if {user.lastactivity}!=""%>	
+				<li>最后活动: {user.lastactivity}</li>
+			<%/if%>
+				<%if {admininfo}!=null&&{admininfo.Allowviewip}==1%>
+				<li>注册 IP:{user.regip}</li>
+				<%/if%>
+			</ul>
+			<ul class="commonlist">
+			<%if {user.nickname}!=""%>	
+				<li>昵称: {user.nickname}</li>
+			<%/if%>
+			<%if {user.Customstatus}!=""%>	
+				<li>自定义头衔: {user.Customstatus}</li>
+			<%/if%>
+				<li>阅读权限: {group.readaccess}</li>
+				<li>发帖量: {user.posts}</li>
+				<li>精华帖数: {user.digestposts}</li>
+				<li>在线时间: {user.oltime}分</li>
+			</ul>
+		</div>
+		<hr class="dashline"/>
+		<h3 class="blocktitle lightlink">积分: {user.credits}</h3>
+		<p><%if {score[1]}!=""%>{score[1]}: {score1}<%/if%> <%if {score[2]}!=""%>, {score[2]}: {score2}<%/if%> <%if {score[3]}!=""%>, {score[3]}: {score3}<%/if%> <%if {score[4]}!=""%>, {score[4]}: {score4}<%/if%> <%if {score[5]}!=""%>, {score[5]}: {score5}<%/if%> <%if {score[6]}!=""%>, {score[6]}: {score6}<%/if%> <%if {score[7]}!=""%>, {score[7]}: {score7}<%/if%> <%if {score[8]}!=""%>, {score[8]}: {score8}<%/if%> </p>
+	</div>
+	</div>
+</div>
+<%else%>
+	<%if {needlogin}%>
+		<%template _login%>
+	<%else%>
+	<%template _errmsgbox%>
+	<%/if%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

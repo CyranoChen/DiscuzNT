@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs title="我的日志"  directory_title="我的日志" description="我的日志" category="日志" author="Discuz!NT" author_email="daizhj@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality" controller="Discuz.Space.Modules.PostListModule, Discuz.Space.Modules">
+        <Require feature="dynamic-height" />
+        <Require feature="analytics" />
+        <Require feature="settitle" />
+    </ModulePrefs>
+    <Content type="html">
+       我的日志
+    </Content>
+</Module>

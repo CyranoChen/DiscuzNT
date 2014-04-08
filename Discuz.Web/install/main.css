@@ -1,0 +1,48 @@
+/*
+Offical Style for Discuz!NT(R)
+URL: http://NT.discuz.net
+(C) 2001-2011 Comsenz Inc.
+*/
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Common Style ~~~~ */
+*{margin:0;padding:0;word-wrap:break-word;}
+body{background:#FBFBFB url(images/bodybg.png) repeat-x 0 0;text-align:center;}
+body,input,button{font:12px/1.5 Tahoma,Helvetica,SimSun,sans-serif;color:#333;}
+ul li{list-style:none;}
+h1,h2,h3,h4,h5,h6{font-size:1em;}
+em,cite{font-style:normal;}
+a{color:#333;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a img{border:none;}
+.z{float:left;}
+.y{float:right;}
+.t1,.t1 a{color:#1476D3;}
+.cl:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.cl{zoom:1;}
+.wrap{text-align:left;margin:0 auto;width:752px;background:url(images/wrapbg.png) no-repeat 100% 0;}
+.wrap h2{position:relative;padding-top:10px;padding-bottom:17px;color:#0A57AC;font-weight:normal;}
+	.wrap h2 cite{position:absolute;top:56px;left:176px;font-size:14px;}
+		.wrap h2 b{font-size:16px;padding-right:6px;font-weight:700;}
+.nav{background:#F7FAFF;border:1px solid #D9DEE4;height:32px;line-height:32px;margin-bottom:10px;}
+	.nav li{float:left;display:block;background:url(images/navbg.png) no-repeat 100% 50%;text-decoration:none;font-size:14px;color:#999;}
+	.nav a:hover,.nav a:active{text-decoration:none;}
+		.nav li span{float:left;display:block;height:32px;padding:0 40px 0 30px;}
+	.nav li.cur{background:url(images/curbg.png) no-repeat 100% 0;color:#CEE0F1;text-shadow:1px 1px 0 #333;}
+		.nav li.cur span{background:url(images/curbg.png) no-repeat 0 -32px;position:relative;left:-11px;padding-right:29px;}
+		.nav li.cur span#index{background:url(images/curbg.png) no-repeat 0 -64px;left:0;}
+	.nav li.finish{color:#333;}
+.main{background:#F7FAFF;border:1px solid #D9DEE4;padding:20px;}
+	.main h1{font-size:16px;padding-bottom:16px;}
+	.inner{line-height:22px;}
+	.list li{height:24px;line-height:24px;}
+	.list img{margin-right:14px;vertical-align:middle;}
+	.inner td{padding:6px 0;}
+	td.title{width:120px;text-align:right;}
+	.inner td span{padding-left:8px;color:#F00;}
+	.inner td cite{padding-left:8px;}
+	.inner td span img,.inner td cite input{margin-right:8px;vertical-align:middle;}
+.txt{border:1px solid #A3A3A3;background:#EDF4FF;width:160px;font-size:14px;padding:5px;width:190px;vertical-align:middle;margin-left:6px;}
+.btn{border:1px solid #D4DCE9;border-top:none;background:#E7F3FF;padding:10px 26px;}
+	.btn a{float:left;display:block;width:80px;height:27px;text-align:center;line-height:27px;border-width:1px;border-style:solid;border-color:#BBB;margin-right:20px;text-decoration:none;}
+	.btn a.back{background:#D4D0C8;color:#000;border-right-color:#333;border-bottom-color:#333;}
+	.btn a.next{background:#1476D3;color:#FFF;border-right-color:#006;border-bottom-color:#006;}
+.copy{text-align:center;padding:10px 0;}

@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Discuz.Config</RootNamespace>
+    <AssemblyName>Discuz.Config</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>http://localhost/Discuz.Config/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FileAlignment>4096</FileAlignment>
+    <BaseAddress>4194304</BaseAddress>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AggregationConfig.cs" />
+    <Compile Include="AggregationConfigFileManager.cs" />
+    <Compile Include="AggregationConfigInfo.cs" />
+    <Compile Include="APIConfigFileManager.cs" />
+    <Compile Include="APIConfigInfo.cs" />
+    <Compile Include="APIConfigs.cs" />
+    <Compile Include="ApplicationInfo.cs" />
+    <Compile Include="ApplicationInfoCollection.cs" />
+    <Compile Include="BaseConfigFileManager.cs" />
+    <Compile Include="BaseConfigInfo.cs" />
+    <Compile Include="BaseConfigInfoCollection.cs" />
+    <Compile Include="BaseConfigs.cs" />
+    <Compile Include="DbSnapConfigFileManager.cs" />
+    <Compile Include="DbSnapConfigs.cs" />
+    <Compile Include="DbSnapInfo.cs" />
+    <Compile Include="EntLibConfigFileManager.cs" />
+    <Compile Include="EntLibConfigInfo.cs" />
+    <Compile Include="EntLibConfigs.cs" />
+    <Compile Include="ForumHotConfigFileManager.cs" />
+    <Compile Include="ForumHotConfigInfo.cs" />
+    <Compile Include="ForumHotConfigs.cs" />
+    <Compile Include="ForumHotItemInfo.cs" />
+    <Compile Include="ForumHotItemInfoConllection.cs" />
+    <Compile Include="FTPConfigInfo.cs" />
+    <Compile Include="FTPConfigInfoCollection.cs" />
+    <Compile Include="FTPConfigs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvitationConfigFileManager.cs" />
+    <Compile Include="InvitationConfigInfo.cs" />
+    <Compile Include="InvitationConfigs.cs" />
+    <Compile Include="LoadBalanceConfigFileManager.cs" />
+    <Compile Include="LoadBalanceConfigInfo.cs" />
+    <Compile Include="LoadBalanceConfigs.cs" />
+    <Compile Include="MemCachedConfigFileManager.cs" />
+    <Compile Include="MemCachedConfigInfo.cs" />
+    <Compile Include="MemCachedConfigs.cs" />
+    <Compile Include="MyAttachmentsTypeConfigFileManager.cs" />
+    <Compile Include="MyAttachmentsTypeConfigInfo.cs" />
+    <Compile Include="MyAttachmentsTypeConfigs.cs" />
+    <Compile Include="RabbitMQConfigFileManager.cs" />
+    <Compile Include="RabbitMQConfigInfo.cs" />
+    <Compile Include="RabbitMQConfigs.cs" />
+    <Compile Include="RedisConfigFileManager.cs" />
+    <Compile Include="RedisConfigInfo.cs" />
+    <Compile Include="RedisConfigs.cs" />
+    <Compile Include="ScheduleConfigFileManager.cs" />
+    <Compile Include="ScheduleConfigs.cs" />
+    <Compile Include="EmailConfigFileManager.cs" />
+    <Compile Include="EmailConfigInfo.cs" />
+    <Compile Include="EmailConfigs.cs" />
+    <Compile Include="GeneralConfigFileManager.cs" />
+    <Compile Include="GeneralConfigInfo.cs" />
+    <Compile Include="GeneralConfigs.cs" />
+    <Compile Include="DefaultConfigFileManager.cs" />
+    <Compile Include="IConfigFileManager.cs" />
+    <Compile Include="IConfigInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\BaseConfigProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScheduleConfigInfo.cs" />
+    <Compile Include="ScriptEventConfigFileManager.cs" />
+    <Compile Include="ScriptEventConfigInfo.cs" />
+    <Compile Include="ScriptEventConfigs.cs" />
+    <Compile Include="SpaceActiveConfigFileManager.cs" />
+    <Compile Include="SpaceActiveConfigInfo.cs" />
+    <Compile Include="SpaceActiveConfigs.cs" />
+    <Compile Include="TradeConfigFileManager.cs" />
+    <Compile Include="TradeConfigInfo.cs" />
+    <Compile Include="TradeConfigs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

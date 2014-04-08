@@ -1,0 +1,80 @@
+﻿<%inherits "Discuz.Mall.Pages.eccredit"%>
+<%template _header%>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+<script type="text/javascript" src="javascript/ajax.js"></script>
+<script type="text/javascript" src="javascript/template_eccredit.js"></script>
+<script type="text/javascript">
+zoomstatus = parseInt(1);
+</script>
+
+<div id="foruminfo">
+	<div id="nav">
+		<a id="A1"  href="forumindex.aspx" >{config.forumtitle}</a> &raquo; <strong>{userinfo.username} 的信用评价</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+		 <%if {usergroupinfo.allowsearch}>0%>
+			<%template _quicksearch%>
+		 <%/if%>
+		</div>
+	</div>
+</div>	
+
+<div class="mainbox viewthread">
+    <h1><strong>{userinfo.username} 的信用评价</strong></h1>
+    <table cellspacing="0" cellpadding="0" summary="">
+        <tr>
+           <td class="postcontent creditbox">
+                <h2>卖家信用</h2>
+                <div id="sellercredit" class="creditdetail"></div>
+                <h2>买家信用</h2>
+                <div id="buyercredit" class="creditdetail"></div>
+            </td>
+           <td class="postauthor">
+                <dl>
+                    <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({userinfo.uid})%>
+                    <dt>发起人</dt><dd><a href="{aspxrewriteurl}">{userinfo.username}</a></dd>
+                    <dt>卖家信用</dt><dd><span id="sellercreditnum"></span></dd>
+                    <dt>买家信用</dt><dd><span id="buyercreditnum"></span></dd>
+                    <dt>卖家好评率</dt><dd><span id="sellergoodrate"></span></dd>
+                    <dt>买家好评率</dt><dd><span id="buyergoodrate"></span></dd>
+                    <dt>注册时间</dt><dd>{joindate}</dd>
+                </dl>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="mainbox othergoodsinfo">
+    <ul class="tabs">
+        <li id="recentrate" style="display:none;"></li>
+        <li id="fromall" class="current"><a href="#" onclick="ajaxgetrate({userinfo.uid}, 0, 0, '', 'fromall');">收到的所有评价</a></li>
+        <li id="fromseller" ><a href="#" onclick="ajaxgetrate({userinfo.uid}, 1, 0, '', 'fromseller');">来自卖家的评价</a></li>
+        <li id="frombuyer"><a href="#" onclick="ajaxgetrate({userinfo.uid}, 2, 0, '', 'frombuyer');">来自买家的评价</a></li>
+        <li id="toothers"><a href="#" onclick="ajaxgetrate({userinfo.uid}, 3, 0, '', 'toothers');">给他人的评价</a></li>
+    </ul>
+    <div id="ratelist_html" class="creditmessage"></div>
+</div>
+
+<script type="text/javascript">
+var creditrulesjsondata = {creditrulesjsondata};
+var templatepath = '{templatepath}';
+var usercredit_data = {sb_usercredit};
+var uid = {userinfo.uid};
+gettradecredit(usercredit_data[0].sixmonth + usercredit_data[0].sixmonthago, true, 'sellercreditnum'); //卖家信用
+gettradecredit(usercredit_data[3].sixmonth + usercredit_data[3].sixmonthago, false, 'buyercreditnum'); //买家信用
+loadratedata(0,3,'sellercredit','sellergoodrate');   
+loadratedata(3,6,'buyercredit','buyergoodrate');   
+ajaxgetrate(uid, 0, 0, '', 'fromall');
+</script> 
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,67 @@
+<%if {userid}>0%>
+<div class="uc_app">
+	<h2>用户中心</h2>
+	<ul>
+	<%if {pagename}=="usercpprofile.aspx?action=avatar"%>
+	<li class="current"><a href="usercpprofile.aspx?action=avatar">设置头像</a></li>
+	<%else%>
+	<li><a href="usercpprofile.aspx?action=avatar">设置头像</a></li>
+	<%/if%>
+	<%if {pagename}=="usercptopic.aspx"||{pagename}=="usercppost.aspx"||{pagename}=="usercpdigest.aspx"||{pagename}=="usercpprofile.aspx"||{pagename}=="usercppreference.aspx"%>
+	<li class="current"><a href="usercpprofile.aspx">个人资料</a></li>
+	<%else%>
+	<li><a href="usercpprofile.aspx">个人资料</a></li>
+	<%/if%>
+	<%if {pagename}=="usercpinbox.aspx"||{pagename}=="usercpsentbox.aspx"||{pagename}=="usercpdraftbox.aspx"||{pagename}=="usercppostpm.aspx"||{pagename}=="usercpshowpm.aspx"||{pagename}=="usercpannouncepm.aspx"||{pagename}=="usercpignorelist.aspx"||{pagename}=="usercpnotice.aspx"||{pagename}=="usercppmset.aspx"%>
+	<li class="current"><a href="usercpinbox.aspx">短消息</a></li>
+	<%else%>
+	<li><a href="usercpinbox.aspx">短消息</a></li>
+	<%/if%>
+	<%if {pagename}=="mytopics.aspx"||{pagename}=="myposts.aspx"%>
+	<li class="current"><a href="mytopics.aspx">我的帖子</a></li>
+	<%else%>
+	<li><a href="mytopics.aspx">我的帖子</a></li>
+	<%/if%>
+	<%if {pagename}=="myattachment.aspx"%>
+	<li class="current"><a href="myattachment.aspx">附件</a></li>
+	<%else%>
+	<li><a href="myattachment.aspx">附件</a></li>
+	<%/if%>
+	<%if {pagename}=="usercpsubscribe.aspx"%>
+	<li class="current"><a href="usercpsubscribe.aspx">收藏夹</a></li>
+	<%else%>
+	<li><a href="usercpsubscribe.aspx">收藏夹</a></li>
+	<%/if%>
+	<%if {config.enablespace}==1 && {user.spaceid}>0%>
+	<%if {pagename}=="usercpspacepostblog.aspx"||{pagename}=="usercpspacemanageblog.aspx"||{pagename}=="usercpspaceeditblog.aspx"||{pagename}=="usercpspacelinklist.aspx"||{pagename}=="usercpspacelinkedit.aspx"||{pagename}=="usercpspacelinkadd.aspx"||{pagename}=="usercpspacecomment.aspx"||{pagename}=="usercpspacemanagecategory.aspx"||{pagename}=="usercpspacecategoryadd.aspx"||{pagename}=="usercpspacecategoryedit.aspx"||{pagename}=="usercpspacemanageattachment.aspx"||{pagename}=="usercpspaceset.aspx"%>
+	<li class="current"><a href="usercpspacemanageblog.aspx">{config.spacename}管理</a></li>
+	<%else%>
+	<li><a href="usercpspacemanageblog.aspx">{config.spacename}管理</a></li>
+	<%/if%>
+	<%/if%>
+	<%if {config.enablealbum}==1%>
+	<%if {pagename}=="usercpspacemanagealbum.aspx"||{pagename}=="usercpspacemanagephoto.aspx"||{pagename}=="usercpspacephotoadd.aspx"||{pagename}=="usercpeditphoto.aspx"%>
+	<li class="current"><a href="usercpspacemanagealbum.aspx">{config.albumname}管理</a></li>
+	<%else%>
+	<li><a href="usercpspacemanagealbum.aspx">{config.albumname}管理</a></li>
+	<%/if%>
+	<%/if%>
+	<%if {pagename}=="usercpcreditspay.aspx"||{pagename}=="usercpcreditstransfer.aspx"||{pagename}=="usercpcreditspayoutlog.aspx"||{pagename}=="usercpcreditspayinlog.aspx"
+   ||{pagename}=="usercpcreaditstransferlog.aspx"%>
+	<li class="current"><a href="usercpcreditspay.aspx">积分</a></li>
+	<%else%>
+	<li><a href="usercpcreditspay.aspx">积分</a></li>
+	<%/if%>
+	<%if {pagename}=="usercp.aspx"%>
+	<li class="current"><a href="usercp.aspx">用户组&权限</a></li>
+	<%else%>
+	<li><a href="usercp.aspx">用户组&权限</a></li>
+	<%/if%>
+	<%if {pagename}=="usercpnewpassword.aspx"%>
+	<li class="current"><a href="usercpnewpassword.aspx">更改密码</a></li>
+	<%else%>
+	<li><a href="usercpnewpassword.aspx">更改密码</a></li>
+	<%/if%>
+	</ul>
+</div>
+<%/if%>

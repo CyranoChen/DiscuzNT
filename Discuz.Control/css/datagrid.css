@@ -1,0 +1,144 @@
+﻿.tabledatagrid
+{
+	align:center;
+	padding:0px;
+	padding-left: 0px; 
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+	width:99%;
+	border:0px solid #EAE9E1; 
+}
+
+.tdcontent
+{
+	align:left;
+	vertical-align:top;
+	width:100%;
+}
+
+td
+{
+	font-size: 9pt;
+}
+
+.datagridStyles
+{
+	/*behavior: url(../styles/datagrid.htc);
+	sortNoneImageUrl: ../images/sortBlank.gif;
+	sortUpImageUrl: ../images/sortBlank.gif;
+	sortDownImageUrl: ../images/sortBlank.gif;
+	posUpImageUrl: ../images/upArrow.gif;
+	posDownImageUrl: ../images/downArrow.gif;*/
+	position: relative;
+    margin: 0px;
+    width: 100%;
+    
+ 	font: menu;
+	highlightBackgroundColor: aliceblue;
+	highlightBorderColor: white;
+	color: transparent;
+    cursor: default;
+	
+    border:solid 1px #EAE9E1;
+    width:100%; 
+    padding: 0px;
+}
+
+
+.datagridFooter
+{
+  padding: 0px; 
+  border:0px;
+  color:#FFFFCC;
+}
+
+.datagridFooter td
+{
+  border:0px;
+  
+  color:#FFFFCC;
+    
+    border-bottom-width:0px;
+
+}
+
+
+.GridFooterStyles
+{
+}
+
+
+.tdheader
+{
+	background-image: url(../images/grid_headerBg.gif);  
+	BACKGROUND-REPEAT: repeat-x;
+	height:28px;
+	font-weight:bold;
+	color:White;
+
+}
+
+.datagridItem tr 
+{
+	color:#330099;
+	background-color:White;
+	border-width:1px;
+	padding:0px;
+}
+	
+.datagridItemtd  td
+{
+	border-width:1px;
+	border-color:#EAE9E1;
+	font-size:11px;
+}
+
+.datagridSelectedItem
+{
+	color:#663399;
+    background-color:#FFCC66;
+}
+
+
+.datagridHeader
+{
+    background-color: #E9E9EB;
+    background-image: url(../images/header_bg.gif);
+    BACKGROUND-REPEAT: repeat-x;
+}
+
+span
+{
+	color:#FF9900;
+}
+
+
+
+
+
+.datagridPager  td
+{
+  border:0px;
+  color:#330099;
+  text-align: left;
+  
+   
+	
+}
+
+
+.mouseoverstyle
+{
+
+ cursor:hand;
+ background-color:AliceBlue;
+
+}
+
+.mouseoutstyle
+{ cursor:hand;
+  background-color:White;
+
+}
+
+

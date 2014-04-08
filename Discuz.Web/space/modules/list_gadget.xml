@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+  <Category name="基本">
+    <Gadget name="友情链接" url="builtin_linkmodule.xml">
+    </Gadget>
+    <Gadget name="数据统计" url="builtin_statisticmodule.xml">
+    </Gadget>
+  </Category>
+  <Category name="论坛">
+    <Gadget name="个人信息" url="builtin_userinfomodule.xml">
+    </Gadget>
+    <Gadget name="最新主题" url="builtin_showtopicmodule.xml">
+    </Gadget>
+    <Gadget name="我的文集" url="builtin_demo.xml" />
+  </Category>
+  <Category name="日志">
+    <Gadget name="日历" url="builtin_calendarmodule.xml">
+    </Gadget>
+    <Gadget name="用户菜单" url="builtin_leftmenumodule.xml">
+    </Gadget>
+    <Gadget name="最新评论" url="builtin_newcommentmodule.xml">
+    </Gadget>
+    <Gadget name="最新日志列表" url="builtin_newpostmodule.xml">
+    </Gadget>
+    <Gadget name="我的日志" url="builtin_postlistmodule.xml">
+    </Gadget>
+  </Category>
+  <Category name="相册">
+    <Gadget name="我的相册" url="builtin_showalbummodule.xml">
+    </Gadget>
+  </Category>
+  <Category name="工具">
+    <Gadget name="天气" url="weather.xml">
+    </Gadget>
+    <Gadget name="便条纸" url="builtin_notepadmodule.xml">
+    </Gadget>
+    <Gadget name="YouTube" url="youtube.xml">
+    </Gadget>
+    <Gadget name="自定义面板" url="builtin_customizepanel.xml">
+    </Gadget>
+    <Gadget name="音乐播放器" url="musicplayer.xml">
+    </Gadget>
+  </Category>
+  <Category name="其他">
+    <Gadget name="testmodule3.xml" url="testmodule3.xml" />
+  </Category>
+  <Category name="lifestyle">
+    <Gadget name="TV Watch" url="tv_watch.xml" />
+  </Category>
+  <Category name="funandgames">
+    <Gadget name="眼睛" url="testmodule2.xml" />
+  </Category>
+</Skin>

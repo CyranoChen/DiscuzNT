@@ -1,0 +1,173 @@
+<%inherits "Discuz.Space.Pages.spaceindex"%>
+<%template _spaceheader%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>个人空间</strong>
+	</div>
+</div>
+<%if {page_err}==0%>
+<div class="wrap">
+<div class="left space_main s_clear">
+	<div class="modulebox hot_blog">
+		<h2>推荐日志</h2>
+		<ul class="space_list s_clear">
+		<%loop (SpaceShortPostInfo) __spacepostrecommend spacepostlist%>
+		<%if {__spacepostrecommend.author}!="" %>
+		<li>
+			<cite><a href="{spaceurl}space/?uid={__spacepostrecommend.uid}">{__spacepostrecommend.author}</a></cite>
+			<cite><%datetostr({__spacepostrecommend.postdatetime},"yyyy-MM-dd")%></cite>
+			<a href="{spaceurl}space/viewspacepost.aspx?postid={__spacepostrecommend.postid}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__spacepostrecommend.title}),70,"...")%></a>
+		</li>
+		<%/if%> 
+		<%/loop%>
+		</ul>
+	</div>
+	<div class="f_clear"></div>
+	<div class="modulebox browser_blog">
+		<h2>最多浏览文章</h2>
+		<ul class="space_list s_clear">
+			<%loop __spacepostbyviews topspacepostviews%>
+			<%if {__spacepostbyviews[commentcount]}!=""%>
+			<li>
+			<cite>( {__spacepostbyviews[views]} )</cite>
+			· <a href="{spaceurl}space/viewspacepost.aspx?postid={__spacepostbyviews[postid]}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__spacepostbyviews[title]}),40,"...")%></a>
+			</li>
+			<%/if%>
+			<%/loop%>
+		</ul>
+	</div>
+	<div class="modulebox comment_blog">
+		<h2>最多评论文章</h2>
+		<ul class="space_list s_clear">
+			<%loop __spacepostbycomment topspacepostcommentcount%>
+			<%if {__spacepostbycomment[commentcount]}!=""%>
+			<li>
+			<cite>( {__spacepostbycomment[commentcount]} )</cite>
+			· <a href="{spaceurl}space/viewspacepost.aspx?postid={__spacepostbycomment[postid]}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__spacepostbycomment[title]}),40,"...")%></a>
+			</li>
+			<%/if%>
+			<%/loop%>
+		</ul>
+	</div>
+	<div class="f_clear"></div>
+	<div class="modulebox hot_space">
+		<h2>推荐空间</h2>
+		<ul>
+		<%loop (SpaceConfigInfoExt) __spaceconfig spaceconfigs%>
+			<li>
+				<a href="{spaceurl}space/?uid={__spaceconfig.userid}" target="_blank">
+				<%set (string){avatarurl}=Avatars.GetAvatarUrl(__spaceconfig.Userid,AvatarSize.Small) %>
+			    <img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"/>
+				</a>
+				<h3><a href="{spaceurl}space/?uid={__spaceconfig.userid}" target="_blank"><%getsubstring({__spaceconfig.spacetitle},35,"...")%></a></h3>
+				<p><a href="{spaceurl}space/viewspacepost.aspx?postid={__spaceconfig.postid}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__spaceconfig.posttitle}),35,"...")%></a></p>
+				<p>日志: <em>{__spaceconfig.postcount}</em>   <%if {config.enablealbum}==1%>相册: <em>{__spaceconfig.albumcount}</em><%/if%></p>
+			</li>
+			<%/loop%>							
+		</ul>
+	</div>
+	<div class="modulebox hot_space">
+		<h2>最多评论空间</h2>
+		<ul>
+		<%loop __topcommentcountspaceinfo topspacelistbycommentcount%>
+		<%if {__topcommentcountspaceinfo[userid]}!="" %>
+		<li>
+			<a href="{spaceurl}space/?uid={__topcommentcountspaceinfo[userid]}" target="_blank">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(TypeConverter.ObjectToInt(__topcommentcountspaceinfo["userid"]),AvatarSize.Small) %>
+			<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"/>
+			</a>
+			<h3><a href="{spaceurl}space/?uid={__topcommentcountspaceinfo[userid]}" target="_blank"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__topcommentcountspaceinfo[spacetitle]}),35,"...")%></a></h3>
+			<p><a href="{spaceurl}space/viewspacepost.aspx?postid={__topcommentcountspaceinfo[postid]}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__topcommentcountspaceinfo[posttitle]}),35,"...")%></a></p>
+			<p>日志:<em>{__topcommentcountspaceinfo[postcount]}</em>   最后更新:<em><%datetostr({__topcommentcountspaceinfo[updatedatetime]},"yyyy-MM-dd")%></em></p>
+		</li>
+		<%/if%>					
+		<%/loop%>							
+		</ul>
+	</div>
+	<div class="modulebox hot_space">
+		<h2>最多访问空间</h2>
+		<ul>
+		<%loop __topvisitedtimesspaceinfo topspacelistbyvisitedtimes%>
+		<%if {__topvisitedtimesspaceinfo[userid]}!="" %>
+		<li>
+			<a href="{spaceurl}space/?uid={__topvisitedtimesspaceinfo[userid]}" target="_blank">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(TypeConverter.ObjectToInt(__topvisitedtimesspaceinfo["userid"]),AvatarSize.Small) %>
+			<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"/>
+			</a>
+			<h3><a href="{spaceurl}space/?uid={__topvisitedtimesspaceinfo[userid]}"  target="_blank"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__topvisitedtimesspaceinfo[spacetitle]}),35,"...")%></a></h3>
+			<p><a href="{spaceurl}space/viewspacepost.aspx?postid={__topvisitedtimesspaceinfo[postid]}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__topvisitedtimesspaceinfo[posttitle]}),35,"...")%></a></p>
+			<p>日志:<em>{__topvisitedtimesspaceinfo[postcount]}</em>   最后更新:<em><%datetostr({__topvisitedtimesspaceinfo[updatedatetime]},"yyyy-MM-dd")%></em></p>
+		</li>
+		<%/if%>			
+		<%/loop%>							
+		</ul>
+	</div>
+</div>
+<div class="right space_side s_clear">
+	<%if {rotatepicdata}!=null && {rotatepicdata}!=""%>		
+	<%template _rotatepic%>
+	<%/if%> 
+	<div class="sidebox">           
+		<h4>最新空间评论</h4>
+		<ul class="newslist">
+			<%loop comment topspacecomments%>
+				<li><a href="{spaceurl}space/viewspacepost.aspx?postid={comment[postid]}">
+				<%getsubstring(Discuz.Common.Utils.HtmlEncode({comment[content]}),30,"...")%></a> [{comment[author]}]</li>	
+			<%/loop%>
+	   </ul>
+	</div>
+	<%if {config.enabletag}==1%>
+		<script type="text/javascript" src="cache/tag/closedtags.txt"></script>
+		<script type="text/javascript" src="cache/tag/colorfultags.txt"></script>
+		<script type="text/javascript" src="javascript/ajax.js"></script>
+		<script type="text/javascript" src="javascript/template_tags.js"></script>
+	<div class="sidebox">
+		<h4>热门标签</h4>
+		<ul id="spacehottags">
+			<script type="text/javascript" src="cache/hottags_space_cache_jsonp.txt" onerror="this.onerror=null;getajaxspacehottags();"></script>
+		</ul>
+	</div>
+	<%/if%>
+	<%if {config.enablealbum}==1%>
+	<div class="sidebox">
+		<h4>推荐相册</h4>
+		<ul class="newslist">
+			<%loop (AlbumInfo) album recommendalbumlist%>
+				<li><a href="{albumurl}showalbum.aspx?albumid={album.albumid}">{album.title}</a> ({album.imgcount}) [<a href="showalbumlist.aspx?uid={album.userid}">{album.username}</a>]</li>	
+			<%/loop%>
+		</ul>
+	</div>
+	<%/if%>			
+	<div class="sidebox">
+		<h4>最近更新的空间</h4>
+		<ul class="newslist">
+			<%loop __space recentupdatespaceList%> 						
+				<li><a href="{spaceurl}space/?uid={__space[userid]}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__space[spacetitle]}),30,"...")%></a></li>
+			<%/loop%>
+		</ul>
+	</div>
+	<div class="sidebox">
+		<h2>新帖</h2>
+		<ul class="newslist">
+		<%loop __newtopicinfo newtopiclist%> 
+			<li>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({__newtopicinfo[tid]},0)%>
+			<a href="{aspxrewriteurl}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__newtopicinfo[title]}),30,"...")%></a></li>
+		<%/loop%>
+		</ul>
+		<h2>热帖</h2>
+		<ul class="newslist">
+		<%loop __hottopicinfo hottopiclist%> 
+			<li>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({__hottopicinfo[tid]},0)%>
+			<a href="{aspxrewriteurl}"><%getsubstring(Discuz.Common.Utils.HtmlEncode({__hottopicinfo[title]}),30,"...")%></a></li>
+		<%/loop%>
+		</ul>
+	</div>
+</div>
+</div>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

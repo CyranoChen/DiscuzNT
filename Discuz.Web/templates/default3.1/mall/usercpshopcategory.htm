@@ -1,0 +1,140 @@
+﻿<%inherits "Discuz.Mall.Pages.usercpshopcategory"%>
+<%template _header%>
+<script type="text/javascript" src="javascript/template_usercpshopcategory.js"></script>
+<style type="text/css">
+ body {
+    overflow-x:auto;
+    font-size:12px;
+ }
+ .contral{
+    cursor:default;
+    margin:0 auto;
+ }
+ .contral input{
+    cursor:hand;
+    valign:middle;
+ }
+
+ .treenode_move {
+    position:absolute;
+    width:200px;
+    line-height:18px;
+    filter:alpha(opacity=50);
+    opacity:0.5;
+    z-index:110;
+    display:none;
+    padding-left:10px;
+ }
+
+ .treenode_0_noselected,.treenode_0_over{
+    height:4px;
+    line-height:4px;
+    overflow:hidden;
+    z-index:100;
+ }
+
+ .treenode_0_over{
+    background: #c0ddfc;
+    height:6px;
+    line-height:6px;
+ }
+ .treenode_noselected,.treenode_selected, .treenode_over{
+    line-height:15px;
+    z-index:100;
+    border-bottom: 1px solid #CCCCCC;
+	padding: 2px;
+ }
+
+ .treenode_selected,.treenode_over{
+    background: #c0ddfc;
+    color:#ffffff;	
+    }
+
+ .treenode_over{
+    cursor:poiter;	
+ }
+ 
+.TopicButton{border:1px solid #ccc;margin-right:4px;padding:1px 2px; line-height:14px;}
+	*html .TopicButton { margin-right:2px;  font-size:12px;}
+	*+html .TopicButton { margin-right:2px;  font-size:12px;}
+	.TopicButton img{ margin-bottom:-3px; height:15px; padding-right:2px;}
+	a.TopicButton:link,a.TopicButton:visited {color:#000; text-decoration:none;}
+	a.TopicButton:hover,a.TopicButton:active {color:#000; text-decoration:none;}
+ </style>
+<!--header end-->
+
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <strong>撰写短消息</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+
+<!--主体-->
+<div class="controlpannel">
+<%template _menu%>
+
+	<div class="pannelcontent">
+		<div class="pcontent">
+			<div class="panneldetail">
+				<%template _shopmenu%>
+                <div class="pannelbody">
+					<div class="pannellist">
+					<form id="postcategory" name="postcategory" method="post" action="usercpshopcategory.aspx?item={item}&shopid={shopid}">
+					<input type="hidden" id="operation" name="operation" value="edit"/>
+					<input type="hidden" id="categoryid" name="categoryid" value="0"/>
+					<input type="hidden" id="targetcategoryid" name="targetcategoryid" value="0"/>
+					<input type="hidden" id="isaschildnode" name="isaschildnode" value="0"/>
+					<input type="hidden" id="editcategoryname" name="editcategoryname" value=""/>
+					<input type="submit" id="shopcategorysubmit" name="shopcategorysubmit" style="display: none" />
+				
+					<%if page_err==0%>
+						<%if ispost%>
+							<%template _msgbox%>
+						<%else%>
+						  <%if {shopcategorydt_count}>0%>
+						  <div style="border: 1px dotted rgb(219, 221, 211); padding: 15px 10px 10px 56px; background: rgb(253, 255, 242) url(admin/images/hint.gif) no-repeat scroll 20px 15px; clear: both; margin-top: 10px; position: relative; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-bottom: 10px; text-align: left; font-size: 12px;">
+                            <li>支持鼠标拖拽</li>
+                          </div>
+						  <%/if%>
+						   
+						  <div id="treecategory"></div>
+                          <script type="text/javascript">
+                            var cats = {shopcategorydata};
+                            var newtree = new tree('newtree',cats,'reSetTree');
+                          </script>
+                          
+                          <div style="text-align:center;background:#F5F5F5 none repeat scroll 0%;border:1px solid #DDDDDD;font-size:14px;margin-top:10px;padding:10px;">
+					        新分类名称: <input type="text" value="" maxlength="50" size="20" id="addcategoryname" name="addcategoryname">
+					       <%if {shopcategorydt_count}>0%>
+					        位置:       <select id="selectcategoryid" name="selectcategoryid">
+					                        {categoryoptions}
+					                    </select>
+					        添加方式: <select id="addtype"  name="addtype" tabindex="52">
+					                     <option value="1" >作为同级分类</option>
+		                                 <option value="2" >做为子分类</option>
+                  	                  </select>
+                            <%/if%>                  	                  
+                  	      <button class="mallbutton" type="button" onclick="javascript:$('operation').value='add';$('shopcategorysubmit').click();">添加分类</button>
+                          </div>
+						<%/if%>
+					<%else%>
+					<%template _usercperrmsgbox%>
+					<%/if%>
+					
+			        	
+					</form>
+			        </div>
+			    </div>         
+    	   </div>
+	   </div>
+   </div>
+
+</div>
+<!--主体-->
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginmenu>
+	<menuitem title="相册管理">
+		<item>
+			<title>相册设置</title>
+			<link>album/album_config.aspx</link>
+		</item>
+		<item>
+			<title>相册分类管理</title>
+			<link>album/album_categorymanage.aspx</link>
+		</item>
+		<item>
+			<title>相册管理</title>
+			<link>album/album_manage.aspx</link>
+		</item>
+		<item>
+			<title>远程附件设置</title>
+			<link>global/global_ftpsetting.aspx?ftptype=AlbumAttach</link>
+		</item>
+	</menuitem>
+	<menuitem title="相册聚合">
+		<item>
+			<title>推荐照片</title>
+			<link>album/aggregation_photoaggset.aspx?pagename=albumindex</link>
+		</item>
+		<item>
+			<title>聚合首页推荐</title>
+			<link>album/aggregation_commendalbums.aspx?pagename=website</link>
+		</item>
+		<item>
+			<title>相册首页推荐相册</title>
+			<link>album/aggregation_commendalbums.aspx?pagename=albumindex</link>
+		</item>
+		<item>
+			<title>空间首页推荐相册</title>
+			<link>album/aggregation_commendalbums.aspx?pagename=spaceindex</link>
+		</item>
+		<item>
+			<title>自动提取数据</title>
+			<link>album/aggregation_autoalbums.aspx</link>
+		</item>
+		<item>
+			<title>轮显图片</title>
+			<link>aggregation/aggregation_rotatepic.aspx?pagename=albumindex</link>
+		</item>
+	</menuitem>
+</pluginmenu>

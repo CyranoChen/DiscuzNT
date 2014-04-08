@@ -1,0 +1,1 @@
+<%@ Page Inherits="Discuz.Web.UI.Pages.ImageConverterPage, Discuz.Web.UI" %>

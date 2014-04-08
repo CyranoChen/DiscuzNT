@@ -1,0 +1,316 @@
+﻿<%inherits "Discuz.Mall.Pages.postgoods"%>
+<%template _header%>
+<script type="text/javascript" src="javascript/template_calendar.js"></script>
+<script type="text/javascript" src="javascript/ajax.js"></script>
+<script type="text/javascript">
+var postminchars = parseInt('{config.minpostsize}');
+var postmaxchars = parseInt('{config.maxpostsize}');
+var disablepostctrl = parseInt('{disablepost}');
+var tradepost =1
+</script>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <strong>{goodscategoryinfo.pathlist}</strong> &raquo; <strong>发表新商品</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			 <%if {usergroupinfo.allowsearch}>0%>
+            <%template _quicksearch%>
+            <%/if%>
+		</div>
+	</div>
+</div>
+<div class="mainbox">
+<h3>发表新商品</h3>
+<form method="post" name="postform" id="postform" action="" enctype="multipart/form-data" onsubmit="">
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="navformcommend"  colspan="2">商品信息</td>
+	</tr>
+	<tbody>
+	<tr>
+		<th><label for="goodscategoryid">商品类目</label></th>
+		<td>
+			 <input type="hidden" id="goodscategoryid" name="goodscategoryid" value="{goodscategoryinfo.categoryid}"/>
+			 <span id="goodstypeinfo">
+			 <%if {goodscategoryinfo.categoryname}==""%>
+				暂无分类
+			 <%else%>
+				{goodscategoryinfo.categoryname}
+			 <%/if%></span>
+			 <%template _goodscategory%>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="quality">商品类型</label></th>
+		<td>
+			<select id="quality" name="quality" tabindex="51">
+				<option value="1" >全新</option>
+				<option value="2" >二手</option>
+			</select>
+			<select id="itemtype"  name="itemtype" tabindex="52">
+				<option value="1" >商品</option>
+				<option value="2" >服务</option>
+				<option value="3" >拍卖</option>
+				<option value="4" >捐赠</option>
+				<option value="5" >邮费</option>
+				<option value="6" >奖金</option>
+			</select>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="title">商品标题</label></th>
+		<td>
+			<span id="ticketTitle" style="display: none;"></span>
+			<input id="title" name="title" maxlength="60" size="40" value="" >
+			<%if {canhtmltitle}%>
+				<a id="titleEditorButton" href="###" onclick="">高级编辑</a>
+				<script type="text/javascript" src="javascript/dnteditor.js"></script>
+				<div id="titleEditorDiv" style="display: none;">
+				<textarea name="htmltitle" id="htmltitle" cols="80" rows="10"></textarea>
+				<script type="text/javascript">
+					var forumpath = '{forumpath}';
+					var templatepath = '{templatepath}';
+					var temptitle = $('faketitle');
+					var titleEditor = null;
+					function AdvancedTitleEditor() {
+						$('title').style.display = 'none';
+						$('titleEditorDiv').style.display = '';
+						$('titleEditorButton').style.display = 'none';
+
+						titleEditor = new DNTeditor('htmltitle', '500', '50', $('title').value);
+						titleEditor.OnChange = function(){
+							//temptitle.innerHTML = html2bbcode(titleEditor.GetHtml().replace(/<[^>]*>/ig, ''));
+						}
+						titleEditor.Basic = true;
+						titleEditor.IsAutoSave = false;
+						titleEditor.Style = forumpath + 'templates/' + templatepath + '/editor.css';
+						titleEditor.BasePath = forumpath;
+						titleEditor.ReplaceTextarea();
+
+					}
+
+					$('titleEditorButton').onclick = function(){
+						AdvancedTitleEditor();
+					};
+
+				</script>
+				</div>
+			<%/if%>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="postfile">上传图片</label></th>
+		<td>
+			<div style="float:left; padding-top:25px;">
+			<input type="file" onchange="PhotoView(this.value,document.getElementById('previewImage'))" id="upfilegoodspic" name="postfile" size="40" /> 
+			<br/><span class="posttip">图片限定jpg或gif格式, 请确保图片在浏览器中可以正常打开.</span> &nbsp; &nbsp;&nbsp;
+			</div>
+			<div style="float:left; border: 1px solid #DDD; width: 75px; height: 75px; text-align:center;line-height:75px;" id="previewImage">暂无图片</div>
+		</td>
+	</tr>
+	</tbody>
+	<!--编辑器代码段开始-->
+	<%template _editor%>
+	<!--编辑器代码段结束-->
+	<tbody>
+	<tr>
+		<th><label for="amount">总数</label></th>
+		<td>
+			 <input maxlength="6" size="5" value="1" name="amount" id="amount">&nbsp;件
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2">交易信息</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="costprice">商品原价</label></th>
+		<td>
+			<input id="costprice" maxlength="12" size="12" name="costprice" value="1" type="text">元 
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="price">商品现价</label></th>
+		<td>
+			<input id="price" maxlength="12" size="12" name="price" value="1" type="text" >元 
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="locus_1">所在地点</label></th>
+		<td>								
+			<select class="input_gray" style="width: 130px;"  id="locus_1" name="locus_1"></select>
+			城市:<select class="input_gray" style="width: 90px;" id="locus_2" name="locus_2"></select>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="transport">物流方式</label></th>
+		<td>
+			<input class="radio" type="radio" name="transport" value="0" tabindex="160"  onclick="$('logisticssetting').style.display='none'" /> 虚拟物品或无需邮递
+			<input class="radio" type="radio" name="transport" value="1" tabindex="161"  onclick="$('logisticssetting').style.display=''" /> 卖家承担运费
+			<input class="radio" type="radio" name="transport" value="2" tabindex="162"  checked="checked" onclick="$('logisticssetting').style.display=''" /> 买家承担运费
+			<input class="radio" type="radio" name="transport" value="3" tabindex="163"  onclick="$('logisticssetting').style.display=''" /> 支付给物流公司
+		</td>
+	</tr>
+	</tbody>
+	<tbody id="logisticssetting" style="display:;">
+	<tr>
+		<th><label for="postage_mail">运费</label></th>
+		<td>
+			平邮 <input type="text" id="postage_mail" name="postage_mail" size="3" value="" tabindex="164" /> 元 <em class="tips">(不填表示不提供平邮)</em><br />
+			快递 <input type="text" id="postage_express" name="postage_express" size="3" value="" tabindex="165"  /> 元 <em class="tips">(不填表示不提供快递)</em><br />
+			EMS  <input type="text" id="postage_ems" name="postage_ems" size="3" value="" tabindex="166" /> 元 <em class="tips">(不填表示不提供 EMS)</em><br />
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="invoice">发票</label></th>
+		<td>
+			<input checked="checked" value="0" name="invoice" id="invoiceN" type="radio"><label for="invoiceN">无</label>
+			<input value="1" name="invoice" id="invoiceY" type="radio"><label for="invoiceY">有</label>    	    
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="repair">保修期</label></th>
+		<td>
+			<input type="text"  value="" name="repair" id="repair" > 单位:天, 不填表示不提供保修
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2">支付宝</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="tradetype">交易方式</label></th>
+		<td> 					
+			<input id="tradetype_1" name="tradetype" onclick="$('tradeaccount').style.display = ''" value="1" type="radio" > 支付宝在线交易
+			<input id="tradetype_2" name="tradetype" onclick="$('tradeaccount').style.display = 'none'" value="0" checked="checked" type="radio"> 线下交易
+		</td>
+	</tr>
+	</tbody>
+	<tbody id="tradeaccount" style="display: none">
+	<tr>
+	<th><label for="account">支付宝账户</label></th>
+	<td> 	
+		<input type="text" id="account" name="account" size="30" value="" />
+	</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<td class="navformcommend"  colspan="2"><span style="color:#999; font-size:10px; padding-right:2px;"></span>其它信息</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="_now">开始时间</label></th>
+		<td>
+			<input id="serverdatetime" name="serverdatetime" value="{serverdatetime}" type="hidden">
+			<input name="_now" value="0" id="_now0" onclick="setTimeEnableAndInStock(false, 0)" type="radio"><label for="_now0">立刻</label>
+			<br>
+			<input name="_now" value="1" id="_now1" onclick="setTimeEnableAndInStock(true, 1)" type="radio"><label for="_now1">设定</label>
+			<select disabled="disabled" id="_date" name="_date" onchange="changeDate()"></select>
+			<select disabled="disabled" id="_hour" name="_hour" onchange="changeHour()"></select>时
+			<select disabled="disabled" id="_minute" name="_minute" onchange="setMinute()"></select>分
+			<span class="posttip" style="font-size: 12px;" id="durainfo">您可以设定商品的正式开始销售时间</span>
+			<br>
+			<input name="_now" value="2" id="inStock" onclick="setTimeEnableAndInStock(false, 2)" type="radio"><label for="inStock">暂不设置</label>
+		</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+		<th><label for="expiration">有效期至</label></th>
+		<td> 
+			<input name="expiration" type="text" id="expiration" size="10" value="{expiration}" style="cursor:default" onClick="showcalendar(event, 'expiration', 'cal_startdate', 'cal_enddate', '{expiration}');" readonly="readonly" /></span>
+			<input type="hidden" name="cal_startdate" id="cal_startdate" size="10"  value="{expiration}">
+			<input type="hidden" name="cal_enddate" id="cal_enddate" size="10"  value="">
+		</td>
+	</tr>
+	</tbody>
+<%if {enabletag}%>
+	<tbody>
+	<tr>
+		<th><label for="tags">标签(Tags)</label></th>
+		<td><input type="text" name="tags" id="tags" value=""/><input type="button" onclick="relatekw();" value="可用标签" />(用空格隔开多个标签，最多可填写 5 个)</td>
+	</tr>
+	</tbody>
+<%/if%>
+<%if {config.enablemall}==2%>
+	<tbody>
+	<tr>
+		<th><label for="recommend">推荐商品</label></th>
+		<td>
+			<input name="recommend" id="recommend" type="checkbox">
+		</td>
+	</tr>
+	</tbody>
+<%/if%>
+	<tbody>
+	<tr>
+		<th><label for="displayorder">上架</label></th>
+		<td>
+			<input name="displayorder" id="displayorder" type="checkbox" checked>
+		</td>
+	</tr>
+	</tbody>
+<%if {isseccode}%>
+	<tbody>
+	<tr>
+		<th><label for="vcode">验证码</label></th>
+				<td>
+					<div style="position: relative;">
+					<%template _vcode%>
+					</div>
+		        </td>
+	</tr>
+	</tbody>
+<%/if%>
+	<tbody>
+	<tr>
+		<th>&nbsp;</th>
+		<td>
+			<input name="topicsubmit" id="postsubmit" value="发布商品" style="margin-bottom: -3px; margin-right: 10px;" type="submit" >
+		</td>
+	</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script language="javascript" src="javascript/goodscategories.js"></script>
+<script language="javascript" src="javascript/locations.js"></script>
+<script language="javascript" src="javascript/template_postgoods.js"></script>
+
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

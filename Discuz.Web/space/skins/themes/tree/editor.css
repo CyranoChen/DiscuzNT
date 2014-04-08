@@ -1,0 +1,230 @@
+﻿body,div,ul,li,h1,h2,h3,h4,h5,h6,form,textarea,p,td{margin:0;padding:0;}
+body{font:12px arial,sans-serif;}
+img {border:0;}
+.dropmenu {font-size:12px;color:#000; }
+.editortoolbar a {text-decoration:none;}
+ul,li {list-style:none;}
+
+/* Editor */
+#posteditor_controls {
+	padding-top:6px;
+	padding-left:6px;
+}
+.editor input {
+	font: 12px Arail;
+	color: #333333;
+	font-weight: normal;
+	background-color: #F5FBFF;
+	border: 1px solid #7AC4EA;
+	height: 21px;
+}
+.editor	{
+	background: #fffbef;
+	border: 1px solid #ededdc;
+	border-bottom: 1px solid #ffe69c;
+	padding-bottom: 0px;
+}
+.editor_line {
+	border-top:1px solid #ffe69c;
+}
+.posteditor_switcher {
+	padding-left: 10px;
+	margin-top: 12px;
+}
+
+.posteditor_switcher button {
+background:#FFFFFF none repeat scroll 0%;
+border:1px solid #ffe69c;
+border-bottom:1px solid #fff;
+cursor:pointer;
+font-weight:bold;
+height:28px;
+line-height:28px;
+margin:0pt 2px;
+position:relative;
+top:2px;
+}
+* html .posteditor_switcher button { top: 2px; }
+*+html .posteditor_switcher button { top: 2px; }
+
+.posteditor_switcher .editor_switcher {
+border-bottom:1px solid #ffe69c;
+font-weight:normal;
+}
+.editor_button button{font-size:12px;}
+.dropmenu {
+	background-image:url(../../../../editor/images/menupop.gif) !important;
+	background-position:95% 50% !important;
+	background-repeat:no-repeat !important;
+	cursor:pointer;
+	padding-right:15px !important;
+}
+.popupmenu_popup { font-size:12px; text-align: left; line-height: 1.4em; padding: 10px; overflow: hidden; border: 1px solid #ededdc; background:#fffbef; }
+.fontname_menu { width: 97px; }
+.fontsize_menu { width: 47px; line-height: normal;}
+.popupmenu_option td{font-size:12px;}
+.popupmenu_option input {border:1px solid #e0e0e0; margin:2px;}
+
+.NtForumForm a span {
+	margin-left:0;
+}
+.editortoolbar {
+	line-height:180%;
+}
+.editortoolbar a {
+		display: block;
+		padding: 1px;
+		border: 1px solid #fffbef;
+		cursor: pointer;
+	}
+	.editortoolbar a.hover, .editortoolbar a:hover { 
+		background-color: #ffcc33; 
+		border: 1px solid #ffe69c; 
+		text-decoration: none;
+	}
+	.editor_button button {
+		font-family:Arial, Helvetica, sans-serif; 
+		color: #036; 
+		background-color: #fffbef; 
+		border: 1px solid #ffe69c; 
+		height: 24px;
+		padding:0 3px;
+		margin:0 3px;
+		line-height:24px;
+	}
+.editor_text {
+	font: 12px Tahoma, Verdana;
+	border: 1px solid #ffe69c;
+	border-top: 0px;
+	background: #FFFFFF;
+	padding: 6px;
+}
+.editor_text textarea {
+	border: 0px;
+	background: Transparent;
+	overflow: auto;
+	/*padding: 4px;*/
+	word-break: break-all;
+	behavior: url(#default#userdata);
+}
+.editor_button {
+	background-color: #fffbef; 
+	border: 1px solid #ffe69c; 
+	border-top: 1px solid #ffe69c;
+	position: relative;
+	top: -1px;
+	margin-bottom: 6px;
+}
+.editor_textexpand {
+	float: left;
+	position: relative;
+	top: -3px;
+	border-top: 0px;
+}
+.editor_buttonnormal {
+	background: #F5FBFF;
+	color: #000000;
+	padding: 1px;
+	border: none;
+}
+.editor_buttondown, .editor_buttonhover, .editor_buttonselected {
+	background: #F5FBFF;
+	color: #000000;
+	padding: 0px;
+	border: 1px solid #86B9D6;
+}
+.editor_menunormal, .editor_menuhover {
+	font: 11px tahoma;
+	height: 18px;
+	padding: 0px 3px 0px 3px;
+	white-space: nowrap;
+	overflow: hidden;
+	background: #FFFFFF;
+	color: #000000;
+}
+.editor_menunormal {
+	border-right: 1px solid #FFFFFF;
+}
+.editor_menuhover {
+	border-right: 1px solid #86B9D6;
+}
+.editor_menuhover div, .editor_menunormal div {
+	background: #FFFFFF;
+	color: #000000;
+}
+.editor_colormenunormal {
+	border-right: 1px solid #FFFFFF;
+}
+.editor_colormenuhover {
+	border-right: 1px solid #86B9D6;
+}
+.editor_colornormal {
+	padding: 2px;
+	font-size: 1px;
+}
+.editor_colorhover {
+	background: #86B9D6;
+	white-space: nowrap;
+	padding: 2px;
+	font-size: 1px;
+}
+.editor_colornormal div {
+	width: 10px;
+	height: 10px;
+	border: 1px solid #92A05A;
+}
+.editor_colorhover div {
+	width: 10px;
+	height: 10px;
+	border: 1px solid #86B9D6;
+}
+/*
+.tagSelected{
+	background:url(images/tagSelected.gif) no-repeat;
+	width: 101px;
+	height: 24px;
+	cursor:default;
+} 
+.tagNoSelect{
+	background:url(images/tagNoSelect.gif) no-repeat;
+	width:101px;
+	height:24px;
+	cursor:default;
+}
+.tagHover{
+	background:url(images/tagHover.gif) no-repeat;
+	width:101px;
+	height:24px;
+	cursor:default;
+}
+*/
+
+.editor_controlbar						
+{
+	padding: 2px;
+}
+.editor_title_line
+{
+	background-position: 50% bottom;
+	background-image: url(images/editor_title_line.gif);
+	background-repeat: repeat-x;
+	width:100%;
+}
+.editor_title_blank
+{
+	width: auto;
+}
+
+.editor table {
+	color: #333333;
+	empty-cells: show;
+	border-collapse: separate !important;
+	border-collapse: collapse;
+}
+.t_table {border-bottom:1px solid #ccc; border-right:1px solid #ccc;}
+.t_table td {border-left:1px solid #ccc; border-top:1px solid #ccc;}
+
+.editor_text iframe {
+	background:transparent;
+	margin-right:3px;
+}

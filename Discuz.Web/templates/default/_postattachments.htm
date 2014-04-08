@@ -1,0 +1,337 @@
+﻿            <div class="p_opt" unselectable="on" id="{editorid}_local" style="display: none;">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tbody id="imgattachbodyhidden" style="display:none"><tr>
+						<td class="atnu"><span id="imglocalno[]"><img src="images/attachicons/common_new.gif" /></span></td>
+						<td class="atna">
+							<span id="imgdeschidden[]" style="display:none">
+								<span id="imglocalfile[]"></span>
+							</span>
+							<input type="hidden" name="imglocalid[]" />
+						</td>
+						<td class="attc delete_msg"><span id="imgcpdel[]"></span></td>
+					</tr></tbody>
+				</table>
+				<div class="p_tbl"><table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="imgattachbody"></tbody></table></div>
+				<div class="upbk">
+					<div id="imgattachbtnhidden" style="display:none"><span><form name="imgattachform" id="imgattachform" method="post" autocomplete="off" action="tools/attachupload.aspx?forumid={forumid}" target="attachframe" enctype="multipart/form-data"><input type="file" name="Filedata" size="45" class="filedata" /></form></span></div>
+					<div id="imgattachbtn"></div>
+					<p id="imguploadbtn">						
+						<button class="pn" type="button" onclick="hideMenu();"><span>取消</span></button>
+						<button class="pn pnc" type="button" onclick="uploadAttach(0, 0, 'img')"><span>上传</span></button>
+					</p>
+					<p id="imguploading" style="display: none;">上传中</p>
+				</div>
+				<div class="notice upnf">
+					文件尺寸: <strong>{FormatBytes(usergroupinfo.Maxattachsize)}</strong>&nbsp;
+					上传限制: <strong>{config.maxattachments}</strong> 个文件&nbsp;&nbsp;
+					<br />可用扩展名: <strong>{attachextensionsnosize}</strong>&nbsp;
+				</div>
+			</div>
+	<iframe name="attachframe" id="attachframe" style="display: none;" onload="uploadNextAttach();"></iframe>
+
+<script type="text/javascript"  reload="1">
+     //获取silverlight插件已经上传的附件列表  //sl上传完返回
+    function getAttachmentList(sender, args) {
+        var attachment = args.AttchmentList;
+        if (isUndefined(attachment) || attachment == '[]') {
+            if (infloat == 1) {
+                pagescrolls('swfreturn'); return false;
+            }
+            else { swfuploadwin(); return; }
+        }
+        var attachmentList = eval("(" + attachment + ")");
+        switchAttachbutton('attachlist');
+        updateAttachList();
+       
+    }
+
+    function onLoad(plugin, userContext, sender) {
+        //只读属性,标识 Silverlight 插件是否已经加载。
+        //if (sender.getHost().IsLoaded) {
+        $("MultiUploadFile").content.JavaScriptObject.UploadAttchmentList = getAttachmentList;
+        // }
+    }
+
+</script>
+<div class="p_pof upf" id="{editorid}_attach_menu" style="display: none;width:600px;" unselectable="on">
+		<span class="y"><a href="javascript:;" class="flbc" onclick="hideMenu()">关闭</a></span>
+		<ul class="imguptype" id="{editorid}_attach_ctrl">
+			<li><a href="javascript:;" hidefocus="true" class="current" id="{editorid}_btn_attachlist" onclick="switchAttachbutton('attachlist');">附件列表</a></li>
+			<li><a href="javascript:;" hidefocus="true" id="{editorid}_btn_upload" onclick="switchAttachbutton('upload');">普通上传</a></li>
+			<li><a href="javascript:;" hidefocus="true" id="{editorid}_btn_swfupload" onclick="switchAttachbutton('swfupload');">批量上传</a></li>
+		</ul>
+			<div class="p_opt" unselectable="on" id="{editorid}_upload" style="display: none;">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tbody id="attachbodyhidden" style="display:none"><tr>
+						<td class="atnu"><span id="localno[]"><img src="images/attachicons/common_new.gif" /></span></td>
+						<td class="atna">
+							<span id="deschidden[]" style="display:none">
+								<span id="localfile[]"></span>
+							</span>
+							<input type="hidden" name="localid" />
+						</td>
+						<td class="attc delete_msg"><span id="cpdel[]"></span></td>
+					</tr></tbody>
+				</table>
+				<div class="p_tbl"><table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="attachbody"></tbody></table></div>
+				<div class="upbk">
+					<div id="attachbtnhidden" style="display:none"><span><form name="attachform" id="attachform" method="post" autocomplete="off" action="tools/attachupload.aspx?forumid={forumid}" target="attachframe" enctype="multipart/form-data"><input type="hidden" name="uid" value="$_G['uid']"><input type="hidden" name="hash" value="{echo md5(substr(md5($_G['config']['security']['authkey']), 8).$_G['uid'])}"><input type="file" name="Filedata" size="45" class="fldt" /></form></span></div>
+					<div id="attachbtn"></div>
+					<p id="uploadbtn">
+						<button type="button" class="pn" onclick="hideMenu();"><span>取消</span></button>
+						<button type="button" class="pn pnc" onclick="uploadAttach(0, 0)"><span>上传</span></button>
+					</p>
+					<p id="uploading" style="display: none;"><img src="images/common/uploading.gif" style="vertical-align: middle;" /> 上传中，请稍候，您可以<a href="javascript:;" onclick="hideMenu()">暂时关闭这个小窗口</a>，上传完成后您会收到通知。</p>
+				</div>
+				<div class="notice upnf">
+					文件尺寸: <strong>{FormatBytes(usergroupinfo.Maxattachsize)}</strong>&nbsp;
+					上传限制: <strong>{config.maxattachments}</strong> 个文件&nbsp;&nbsp;
+					<br />可用扩展名: <strong>{attachextensionsnosize}</strong>&nbsp;
+				</div>				
+			</div>
+			<div class="p_opt" unselectable="on" id="{editorid}_swfupload" style="display: none;">
+				<div class="floatboxswf" id="{editorid}_multiattach">
+			    <%if {config.Swfupload}==1 %>
+			    <embed width="470" height="268" type="application/x-shockwave-flash" wmode="transparent" allowscriptaccess="always" menu="false" quality="high" src="{rooturl}images/common/upload.swf?site={rooturl}tools/attachupload.aspx%3fmod=swfupload%26forumid={forumid}&amp;random={DateTime.Now.Ticks}">
+			    <%else%>
+					<%csharp%>
+					string authToken=Discuz.Common.DES.Encode(oluserinfo.Olid.ToString() + "," + oluserinfo.Username.ToString(), oluserinfo.Password.Substring(0, 10)).Replace("+", "[");
+					<%/csharp%> 
+					<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+					<script type="text/javascript" src="{rooturl}silverlight/uploadfile/silverlight.js" reload="1"></script> 
+					<div id="swfbox"> 
+					<object  id="MultiUploadFile" data="data:application/x-silverlight-2," type="application/x-silverlight-2" Width="100%" Height="340">
+					<param name="source" value="{rooturl}silverlight/UploadFile/ClientBin/MultiFileUpload.xap"/>
+					<param name="onError" value="onSilverlightError" />
+					<param name="onLoad" value="onLoad" />
+					<param name="background" value="aliceblue" />
+					<param name="minRuntimeVersion" value="4.0.50401.0" />
+					<param name="autoUpgrade" value="true" />
+					<param name="initParams" value="forumid={forumid},authToken={authToken},max={config.maxattachments}" />		  
+					<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none" target="_blank">
+					<img src="{rooturl}silverlight/uploadfile/uploadfile.jpg" alt="安装微软Silverlight控件,即刻使用批量上传附件" style="border-style:none"/>
+					</a>
+					</object></div>
+					<%/if%>
+				<%/if%>
+				</div>
+				<div class="notice upnf">
+					文件尺寸: <strong>{FormatBytes(usergroupinfo.Maxattachsize)}</strong>&nbsp;
+					上传限制: <strong>{config.maxattachments}</strong> 个文件&nbsp;&nbsp;
+					<br />可用扩展名: <strong>{attachextensionsnosize}</strong>&nbsp;
+				</div>
+			</div>
+		<div class="p_opt post_tablelist" unselectable="on" id="{editorid}_attachlist">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attachlist_edittablist">
+					<tbody>
+					    <tr>
+						<td class="atnu">&nbsp;</td>
+						<td class="atna">文件名&nbsp;(<a class="xg2" href="javascript:;" onclick="insertAllAttachTag();return false;" style="margin:0 4px;">插入全部附件</a>)</td>
+						<td class="atds">描述</td>
+						<%if {userid}!=-1 && {usergroupinfo.Allowsetattachperm}==1%><td class="attv">阅读权限</td><%/if%>
+						<%if {topicattachscorefield}>0 && usergroupinfo.Maxprice>0 %><td class="attp">{Scoresets.GetTopicAttachCreditsTransName()}</td><%/if%>
+						<td class="attc delete_msg"></td>
+					   </tr>
+					</tbody>
+					<%if {action}=="edit"%>
+					  <%loop attachment attachmentlist%>
+						<%if {strtoint({attachment[pid]})}=={postinfo.pid} && {attachment[isimage]}=="0"%>
+							<%set (string){filetypeimage} = ""%>
+							<%set (int){isimage} = 0 %>
+							<%set (string){inserttype} = ""%>
+							<%if {attachment[filetype]}.IndexOf("image")>-1%>
+								<%set {filetypeimage} = "image.gif"%>
+								<%set {inserttype} = "insertAttachimgTag"%>
+								<%set {isimage} = 1 %>
+							<%else%>
+							   <%set {inserttype} = "insertAttachTag"%>
+							   <%if Utils.GetFileExtName(attachment["attachment"].ToString().Trim())=="rar" || Utils.GetFileExtName(attachment["attachment"].ToString().Trim())=="zip"%>
+							   <%set {filetypeimage} = "rar.gif"%>
+							   <%else%>
+							   <%set {filetypeimage} = "attachment.gif"%>
+							   <%/if%>
+							<%/if%>		
+					        <tbody id="attach_{attachment[aid]}">
+					        <tr>
+					        <td class="atnu">
+					        <img id="attach{attachment[aid]}_type" border="0" src="images/attachicons/{filetypeimage}" class="vm" alt=""/>
+					        </td>
+					        <td class="atna">
+					        <span id="attach{attachment[aid]}">
+					        <a id="attachname{attachment[aid]}" onclick="{inserttype}({attachment[aid]})" href="javascript:;" isimage="{isimage}" title="{attachment[attachment]}"><%getsubstring({attachment[attachment]},25,"...")%></a> 
+ 					        <a href="javascript:;" class="atturl" title="添加附件地址" onclick="insertText('attach://')">
+					        <img alt="" src="images/attachicons/attachurl.gif"/>
+					        </a>
+					        </span>
+					        <span id="attachupdate{attachment[aid]}" style="display:none;">
+					        <form enctype="multipart/form-data" target="attachframe" action="tools/attachupload.aspx?forumid={forumid}&aid={attachment[aid]}" method="post" id="attachform_{attachment[aid]}" name="attachform_{attachment[aid]}" style="float:left;">
+					            <input type="file" name="Filedata" size="8" />
+					            <input type="hidden" value="{attachment[aid]}" name="attachupdatedid" />
+					            <input type="submit" value="上传" />
+					        </form>
+					        </span>
+					        <a id="attach{attachment[aid]}_opt" href="javascript:;" class="right" onclick="attachupdate('{attachment[aid]}', this)">更新</a>
+					        <input type="hidden" value="{attachment[aid]}" name="attachid" />
+                            <%if {isimage}==1%>
+                                <%set (string){attachkey} = Thumbnail.GetKey(TypeConverter.StrToInt({attachment[aid]}))%>
+					            <img src="tools/ajax.aspx?t=image&aid={attachment[aid]}&size=300x300&key={attachkey}&nocache=yes&type=fixnone" id="image_{attachment[aid]}" cwidth="{attachment[width]}" style="position: absolute; top: -10000px;"/>
+                            <%/if%>
+                            <script type="text/javascript">ATTACHNUM['attachused']++;</script>
+					        </td>
+					        <td class="atds"><input type="text" name="attachdesc_{attachment[aid]}" size="18" class="txt" value="{attachment[description]}"/></td>
+					        <td class="attv">
+                                <select id="readperm_{attachment[aid]}" onchange="$('readperm_hidden_{attachment[aid]}').value = this.value;" size="1">
+                                    <option value="">不限</option>
+                                </select>
+                                <script type="text/javascript">getreadpermoption($('readperm_{attachment[aid]}'), {attachment[readperm]});</script>
+                                <input type="hidden" id="readperm_hidden_{attachment[aid]}" value="{attachment[readperm]}" name="readperm_{attachment[aid]}"/>
+                            </td>
+					        <td class="attp"><input type="text" size="1" value="{attachment[attachprice]}" name="attachprice_{attachment[aid]}"/></td>
+					        <td class="attp"><input type="text" size="1" value="{attachment[attachprice]}" name="attachprice_{attachment[aid]}"/></td>
+					        <td class="attc delete_msg"><a href="javascript:;" class="d" onclick="delAttach('{attachment[aid]},{forumid}',0)">删除</a></td>
+					        </tr></tbody>
+						   <%/if%>
+						<%/loop%>
+					<%/if%>
+
+				</table>
+				<div id="attachlist_tablist_current"></div>
+				<div id="attachlist_tablist"></div>
+				<p class="ptm" id="attach_notice" style="display: none" >点击文件名插入到帖子内容中</p>
+
+				<%if {infloat}==0%>
+				<div id="uploadlist" class="upfilelist" style="height:auto">
+				<%else%>
+				<div id="uploadlist" class="upfilelist">
+				<%/if%>
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+					<tbody id="attachuploadedhidden" style="display:none"><tr>
+						<td class="attachnum"><span id="sl_localno[]"><img src="{rooturl}images/attachicons/common_new.gif" /></span></td>
+						<td class="attachctrl"><span id="sl_cpadd[]"></span></td>
+						<td class="attachname">
+							<span id="sl_deschidden[]" style="display:none">
+								<a href="javascript:;" onclick='parentNode.innerHTML="<input type=\"text\" name=\"attachdesc\" size=\"25\" class=\"txt\" />"'>描述</a>
+								<span id="attachfile[]"></span>
+								<input type="text" name="sl_attachdesc" style="display:none" />
+							</span>
+						</td>
+						<%if {userid}!=-1 && {usergroupinfo.Allowsetattachperm}==1%><td class="attachview"><input type="text" name="sl_readperm" value="0"size="1" class="txt" /></td><%/if%>
+						<%if {topicattachscorefield}>0 && usergroupinfo.Maxprice>0%><td class="attachpr"><input type="text" name="sl_attachprice" value="0" size="1" class="txt" /></td><%/if%>
+						<%if {config.enablealbum}==1 && {caninsertalbum}%>
+							<td  style="vertical-align:top;">
+								<select name="sl_albums" style="display:none">
+								<option value="0"></option>
+								<%loop album albumlist%>
+								<option value="{album[albumid]}">{album[title]}</option>
+								<%/loop%>
+								</select>
+							</td>
+						<%/if%>
+						<td class="attachdel"><span id="sl_cpdel[]"></span></td>
+					</tr></tbody>
+
+					<%/if%>
+					<tbody id="attachbodyhidden" style="display:none"><tr>
+						<td class="attachnum"><span id="localno[]"><img src="{rooturl}images/attachicons/common_new.gif" /></span></td>
+						<td class="attachctrl"><span id="cpadd[]"></span></td>
+						<td class="attachname">
+							<span id="deschidden[]" style="display:none">
+								<a href="javascript:;" onclick='parentNode.innerHTML="<input type=\"text\" name=\"attachdesc\" size=\"25\" class=\"txt\" />"'>描述</a>
+								<span id="localfile[]"></span>
+							</span>
+							<input type="hidden" name="localid" />
+						</td>
+
+						<%if {config.enablealbum}==1 && {caninsertalbum}%>
+							<td  style="vertical-align:top;">
+							<%if {albumlist.Rows.Count}!=0%>
+								<select name="albums"  style="display:none">
+								<option value="0"></option>
+								<%loop album albumlist%>
+								<option value="{album[albumid]}">{album[title]}</option>
+								<%/loop%>
+								</select>
+							<%/if%>
+							</td>
+						<%/if%>
+						<td class="attachdel"><span id="cpdel[]"></span></td>
+					</tr></tbody>
+				</table>
+				<%if {pagename}.IndexOf("goods")<0 && {config.silverlight}==1%>
+				<div id="swfattachlist">
+					<table cellspacing="0" cellpadding="0" id="attachuploadednote" style="display:none;">
+						<tbody>
+							<tr>
+								<td class="attachnum"></td>
+								<td>您有 <span id="attachuploadednotenum"></span> 个已经上传的附件<span id="maxattachnote" style="display: none;">, 只能使用前<span id="num2upload2"><strong>{config.maxattachments}</strong></span>个</span>  
+								<a onclick="addAttachUploaded(attaches);" href="javascript:;">使用</a>   <a onclick="attachlist()" href="javascript:;">忽略</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<%/if%>
+				<table cellpadding="0" cellspacing="0" summary="post_attachbody" border="0" width="100%"><tbody id="attachuploaded"></tbody><tbody id="attachbody"></tbody></table>
+			</div>
+		</div>
+<div id="img_hidden" alt="1" style="position:absolute;top:-100000px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image');width:{thumbwidth}px;height:{thumbheight}px"></div>		</div>
+	</div>
+<script type="text/javascript">
+	var editorform = $('testform');
+	var editorsubmit = $('testsubmit');
+	if (wysiwyg) {
+	    newEditor(1, bbcode2html(textobj.value));
+	} else {
+	    newEditor(0, textobj.value);
+	}
+	if (getQueryString('cedit') == 'yes') {
+	    loadData(true, '{config.antispampostmessage}');
+	}
+</script>
+<script type="text/javascript">
+function switchImagebutton(btn) {
+        var btns = ['www', 'imgattachlist'];
+        btns.push('multi'); switchButton(btn, btns);
+        $(editorid + '_image_menu').style.height = '';
+    }
+
+
+/*function switchImagebutton(btn) {
+var btns = ['www', 'albumlist'];
+switchButton(btn, btns);
+$(editorid + '_image_menu').style.height = '';
+}*/
+
+function switchAttachbutton(btn) {
+var btns = ['attachlist'];
+btns.push('upload');btns.push('swfupload');switchButton(btn, btns);
+}
+
+<%if {action}=="edit"%>
+    ATTACHNUM['imageused'] = uploadedimagelist?uploadedimagelist.length:ATTACHNUM['imageused'];//更新已使用图片的数量
+<%/if%>
+updateattachnum('attach');
+updateattachnum('image');
+
+<%if {userid}!=-1%>
+updateAttachList();
+updateImageList();
+<%/if%>
+
+if(ATTACHNUM['attachused'] + ATTACHNUM['attachunused']<=0)
+    switchAttachbutton('swfupload');
+else
+    switchAttachbutton('attachlist');
+setCaretAtEnd();
+
+if(!$('usedimgattachlist').childNodes.length && !$('unusedimgattachlist').childNodes.length)
+    switchImagebutton('multi');
+if(BROWSER.ie >= 5 || BROWSER.firefox >= '2') {
+    _attachEvent(window, 'beforeunload',function on(){ saveData(undefined, 'postform','{config.antispamposttitle}', '{config.antispampostmessage}')});
+}
+<%if {userid}!=-1%>
+getunusedattachlist_dialog();
+<%/if%>
+addAttach();
+</script>

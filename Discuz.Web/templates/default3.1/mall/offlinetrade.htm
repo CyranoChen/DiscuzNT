@@ -1,0 +1,507 @@
+﻿<%inherits "Discuz.Mall.Pages.offlinetrade"%>
+<%template _header%>
+
+<%if page_err==0%>
+<div id="foruminfo">
+	<div id="nav">
+			<p><a href="{config.forumurl}">{config.forumtitle}</a>  &raquo; <strong>线下交易</strong>
+	</div>
+</div>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+    <%if {ispay}%>
+          <%template _msgbox%>
+    <%else%>     
+<script language="javascript" src="javascript/template_trade.js"></script>
+<script type="text/javascript">
+zoomstatus = parseInt(1);
+</script>
+<form method="post" id="tradepost" name="tradepost" action="offlinetrade.aspx?goodstradelogid={goodstradelogid}">
+	<div class="mainbox">
+		<h3>线下交易</h3>
+		<table summary="交易单" border="0" cellspacing="0" cellpadding="0">
+		    <tr>
+				<th>状态</th>
+				<td> 
+				<%if {goodstradelog.status}<=0%>
+				    未生效的交易
+				<%/if%> 
+				<%if {goodstradelog.status}==1%>
+				    等待买家付款
+				<%/if%>   
+				<%if {goodstradelog.status}==2%>
+				    交易已创建, 等待卖家确认
+				<%/if%>  
+				<%if {goodstradelog.status}==3%>
+				    确认买家付款中,暂勿发货
+				<%/if%>  
+				<%if {goodstradelog.status}==4%>
+				    买家已付款,等待卖家发货
+				<%/if%>  
+				<%if {goodstradelog.status}==5%>
+				    卖家已发货,买家确认中
+				<%/if%>  
+				<%if {goodstradelog.status}==6%>
+				    买家确认收到货,等待支付宝打款给卖家
+				<%/if%>  
+				<%if {goodstradelog.status}==7%>
+				    交易成功结束
+				<%/if%>  
+				<%if {goodstradelog.status}==8%>
+				    交易中途关闭(未完成)
+				<%/if%>  
+				<%if {goodstradelog.status}==10%>
+				    等待卖家同意退款
+				<%/if%>  
+				<%if {goodstradelog.status}==11%>
+				    卖家拒绝买家条件，等待买家修改条件
+				<%/if%>  
+	    		<%if {goodstradelog.status}==12%>
+				    卖家同意退款，等待买家退货
+				<%/if%>  
+				<%if {goodstradelog.status}==13%>
+				    等待卖家收货
+				<%/if%>  
+				<%if {goodstradelog.status}==17%>
+				    退款成功
+				<%/if%> 
+				({goodstradelog.lastupdate})
+				<input id="status" name="status" type="hidden" value="" />	
+				</td>
+			</tr>
+		 <%if {goodstradelog.status}<=0%>
+		 	<tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+					<%if {isbuyer}%>
+		            <button type="button" onclick="$('status').value = '4';$('offlinesubmit').click();">我已付款，等待卖家发货</button>&nbsp;<button type="button" onclick="$('status').value = '8';$('offlinesubmit').click();">取消此次交易</button>
+					<%/if%>	
+					<%if {isseller}%>
+			        <button type="button" onclick="$('status').value = '1';$('offlinesubmit').click();">交易单生效</button>&nbsp;<button type="button" onclick="$('status').value = '8';$('offlinesubmit').click();">取消此次交易</button>
+					<%/if%>
+				</td>
+			</tr>
+        <%/if%>	
+        
+        <%if {goodstradelog.status}==1%>
+            <%if {isbuyer}%>
+		 	<tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password1" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="Textarea1" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>					
+		            <button type="button" onclick="$('status').value = '4';$('offlinesubmit').click();">我已付款，等待卖家发货</button>&nbsp;<button type="button" onclick="$('status').value = '8';$('offlinesubmit').click();">取消此次交易</button>
+				</td>
+			</tr>
+			<%/if%>	
+        <%/if%>	
+        
+        <%if {goodstradelog.status}==4%>
+            <%if {isseller}%>
+			<tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password6" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td><button type="button" onclick="$('status').value = '5';$('offlinesubmit').click();">我已发货</button>&nbsp;<button type="button" onclick="$('status').value = '8';$('offlinesubmit').click();">取消此次交易</button>
+				</td>
+			</tr>
+			<%/if%>
+		<%/if%>  
+		
+		<%if {goodstradelog.status}==5%>
+            <%if {isbuyer}%>
+			<tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th>留言<div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td><button class="mallbutton" type="button" onclick="$('status').value = '7';$('offlinesubmit').click();">我收到货，交易成功结束</button>&nbsp;<button type="button" onclick="$('status').value = '10';$('offlinesubmit').click();">我要退货，等待卖家同意退款</button>
+				</td>
+			</tr>
+			<%/if%>
+		<%/if%>  
+				
+		<%if {goodstradelog.status}==7%>	
+		    <tr>
+				<th><%if {goodstradelog.ratestatus}==3%>双方已评<%else%>&nbsp;<%/if%></th>
+				<td>
+				<%if !{israted} %>
+				    <button type="button" onclick="window.open('goodsrate.aspx?goodstradelogid={goodstradelog.id}', '', '')">评价</button>
+                <%else%>
+                    &nbsp;				    
+                <%/if%>			    
+				</td>
+			</tr>
+        <%/if%> 
+        
+        <%if {goodstradelog.status}==17%>	
+		    <tr>
+				<th><%if {goodstradelog.ratestatus}==3%>双方已评<%else%>&nbsp;<%/if%></th>
+				<td>
+				<%if !{israted} %>
+				    <button type="button" onclick="window.open('goodsrate.aspx?goodstradelogid={goodstradelog.id}', '', '')">评价</button>
+                <%else%>
+                    &nbsp;				    
+                <%/if%>						    
+				</td>
+			</tr>
+        <%/if%> 
+		<%if {goodstradelog.status}==8%>
+			<tr>
+				<th>论坛登录密码</th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<%if {isbuyer}%>
+				        <button type="button" onclick="$('status').value = '1';$('offlinesubmit').click();">交易单生效</button>&nbsp;<button type="button" onclick="$('status').value = '4';$('offlinesubmit').click();">我已付款，等待卖家发货</button>
+				<%/if%>		
+				<%if {isseller}%>
+				        <button type="button" onclick="$('status').value = '1';$('offlinesubmit').click();">交易单生效</button>&nbsp;
+				<%/if%>	
+				</td>
+			</tr>
+		<%/if%>
+        <%if {goodstradelog.status}==10%>
+            <%if {isseller}%>
+			<tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<button type="button" onclick="$('status').value = '12';$('offlinesubmit').click();">卖家同意退款</button>&nbsp;<button type="button" onclick="$('status').value = '11';$('offlinesubmit').click();">卖家拒绝退款</button>
+				</td>
+			</tr>
+			<%/if%>
+		<%/if%>  
+		<%if {goodstradelog.status}==11%>
+		    <%if {isbuyer}%>
+		    <tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				  <button type="button" onclick="$('status').value = '10';$('offlinesubmit').click();">我要退货，等待卖家同意退款</button>&nbsp;<button type="button" onclick="$('status').value = '7';$('offlinesubmit').click();">我收到货，交易成功结束</button>
+				</td>
+			</tr>
+			<%/if%>
+		<%/if%>			
+		<%if {goodstradelog.status}==12%>
+		    <%if {isbuyer}%>
+		    <tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				    <button type="button" onclick="$('status').value = '13';$('offlinesubmit').click();">我已退货</button>
+				</td>
+			</tr>
+		    <%/if%>
+        <%/if%> 
+        <%if {goodstradelog.status}==13%>
+		    <%if {isseller}%>
+		    <tr>
+				<th><label for="password">论坛登录密码</label></th>
+				<td><input id="password" name="password" type="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="message">留言</label><div class="tips">可输入付款方式、银行账号等信息<br /> 200 字以内</div></th>
+				<td><textarea  id="message" name="message" style="width: 95%" rows="3"></textarea></td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				  <button type="button" onclick="$('status').value = '17';$('offlinesubmit').click();">卖家收到退货, 已退款</button>
+				</td>
+			</tr>
+		    <%/if%>
+        <%/if%>  
+		</table>
+	</div>
+	<div class="mainbox">
+		<h3>交易单</h3>
+		<table summary="确认购买信息" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th>支付总额</th>
+				<td><strong id="caculate"></strong>&nbsp;元</td>
+			</tr>
+			<%if {isseller}%>
+			<tr>
+				<th>买家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.buyerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.buyer}</a>
+				&nbsp;<a href="usercppostpm.aspx?msgtoid={goodstradelog.buyerid}" target="_blank">[发短消息]</a></td>
+			</tr>
+			<tr>
+				<th>卖家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.sellerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.seller}</a>
+				 <a href="https://www.alipay.com/trade/i_credit.do?email={goodstradelog.selleraccount}" style="vertical-align: middle;" target="_blank"><img src="templates/{templatepath}/images/alipaysmall.gif" border="0" alt="支付宝账户信用信息" /></a>										</td>
+			</tr>
+			<tr>
+				<th>商品名称</th>
+				<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodstradelog.goodsid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.subject}</a></td>
+			</tr>
+			<tr>
+				<th><label for="newprice">商品现价</label></th>
+				<td>{goodstradelog.price} 元</td>
+			</tr>
+			<tr>
+				<th><label for="newnumber">购买数量</label></th>
+				<td>{goodstradelog.number}</td>
+			</tr>
+			<tr>
+				<th>物流方式</th>
+				<td>
+					<%if {goodstradelog.transportpay}==0%>
+						虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodstradelog.transportpay}==1%>
+						卖家承担运费
+					<%/if%> 
+					<%if {goodstradelog.transportpay}==2%>
+						买家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==3%>
+						买家收到货物后直接支付给物流公司
+					<%/if%>
+					
+					<%if {goodstradelog.sellerid}=={userid}%>
+						运费 
+						<%if {goodstradelog.status}<=0%>
+							<input type="text" id="fee" name="fee"  value="{goodstradelog.transportfee}">
+						<%else%>  
+							{goodstradelog.transportfee}  
+						<%/if%>
+						元
+					<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyername">收货人姓名</label></th>
+				<td>{goodstradelog.buyername}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyercontact">收货地址</label></th>
+				<td>{goodstradelog.buyercontact}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyerzip">收货人邮编</label></th>
+				<td>{goodstradelog.buyerzip}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyerphone">收货人电话</label></th>
+				<td>{goodstradelog.buyerphone}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyermobile">收货人手机</label></th>
+				<td>{goodstradelog.buyermobile}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyermsg">备注信息</label></th>
+				<td>{goodstradelog.buyermsg}</td>
+			</tr>
+				
+<%/if%>	
+
+<%if {isbuyer}%>				
+			<tr>
+				<th>买家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.buyerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.buyer}</a></td>
+			</tr>
+			<tr>
+				<th>卖家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.sellerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.seller}</a>
+				 &nbsp;<a href="usercppostpm.aspx?msgtoid={goodstradelog.sellerid}" target="_blank">[发短消息]</a>					
+				 <a href="https://www.alipay.com/trade/i_credit.do?email={goodstradelog.selleraccount}" style="vertical-align: middle;" target="_blank"><img src="templates/{templatepath}/images/alipaysmall.gif" border="0" alt="支付宝账户信用信息" /></a>
+				 </td>
+			</tr>
+			<tr>
+				<th>商品名称</th>
+				<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodstradelog.goodsid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.subject}</a></td>
+			</tr>
+			<tr>
+				<th><label for="newprice">商品现价</label></th>
+				<td>{goodstradelog.price} 元</td>
+			</tr>
+			<tr>
+				<th><label for="number">购买数量</label></th>
+				<td>{goodstradelog.number}</td>
+			</tr>
+			<tr>
+				<th>物流方式</th>
+				<td>
+					<%if {goodstradelog.transportpay}==0%>
+						虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodstradelog.transportpay}==1%>
+						卖家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==2%>
+						买家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==3%>
+						买家收到货物后直接支付给物流公司
+					<%/if%>
+					运费 {goodstradelog.transportfee}  元
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyername">收货人姓名</label></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+					<input type="text" id="buyername" name="buyername" maxlength="50" value="{goodstradelog.buyername}" />
+				<%else%>
+					{goodstradelog.buyername}
+				<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyercontact">收货地址</label></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+					<input type="text" id="buyercontact" name="buyercontact" maxlength="100" size="80" value="{goodstradelog.buyercontact}" />
+				<%else%>
+					{goodstradelog.buyercontact}
+				<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyerzip">收货人邮编</label></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+				<input type="text" id="buyerzip" name="buyerzip" maxlength="10" value="{goodstradelog.buyerzip}" />
+				<%else%>
+					{goodstradelog.buyercontact}
+				<%/if%>
+				</td>    
+			</tr>
+			<tr>
+				<th><label for="buyerphone">收货人电话</label></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+				<input type="text" id="buyerphone" name="buyerphone" maxlength="20" value="{goodstradelog.buyerphone}" />
+				<%else%>
+					{goodstradelog.buyercontact}
+				<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyermobile">收货人手机</label></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+				<input type="text" id="buyermobile" name="buyermobile" maxlength="20" value="{goodstradelog.buyermobile}" />
+				<%else%>
+					{goodstradelog.buyercontact}
+				<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyermsg">备注信息</label><div class="tips">200 字以内</div></th>
+				<td>
+				<%if {goodstradelog.status}<=0%>
+				<textarea id="buyermsg" name="buyermsg" style="width: 95%" rows="3">{goodstradelog.buyermsg}</textarea>
+				<%else%>
+					{goodstradelog.buyercontact}
+				<%/if%>
+				</td>
+			</tr>
+<%/if%>	
+
+<%if {goodstradelog.status}==0%>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<button type="submit" name="tradesubmit" value="true"  onclick="$('status').value = '0';$('offlinesubmit').click();">更新交易单</button>
+				</td>
+			</tr>
+<%/if%>			
+		</table>
+	    </div>
+	    
+<%if {goodsleavewordlist.count}>0 %>
+	    <div class="mainbox">
+			<h3>留言</h3>
+			<table summary="交易单" border="0"  cellspacing="0" cellpadding="0">
+			<%loop (Goodsleavewordinfo) leavewordinfo goodsleavewordlist%>
+				<tr>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({leavewordinfo.uid})%>
+					<th><a href="{aspxrewriteurl}" target="_blank">{leavewordinfo.username}</a><br /></th>
+					<td>{leavewordinfo.message}<BR /><div class="tips">[{leavewordinfo.postdatetime}]</div></td>
+				</tr>
+			<%/loop%>	
+			</table>
+		</div>
+<%/if%>		
+		<input type="submit" id="offlinesubmit" name="offlinesubmit" style="display: none" />
+</form>
+
+<script type="text/javascript">
+function calcsum() {
+
+	$('caculate').innerHTML = parseFloat({goodstradelog.number} * {goodstradelog.price} <%if {goodstradelog.Transportpay==2}%> + {goodstradelog.transportfee}<%/if%>).toFixed(2);
+}
+calcsum();
+</script>
+</div>
+     <%/if%>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>	

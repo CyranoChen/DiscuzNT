@@ -1,0 +1,84 @@
+<script type="text/javascript"  src="{jsdir}/bbcode.js"></script>
+<script type="text/javascript"  src="{jsdir}/post.js"></script>
+<form method="post" name="postform" id="quickpostform" action="postreply.aspx?topicid={topicid}" enctype="multipart/form-data" onsubmit="return validate(this);" >
+<div id="quickpost" class="mainbox viewthread">
+	<table summary="快速回复帖子" cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+		<td class="postauthor">
+			<div class="avatar">	
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(userid) %>	
+			<img src="{avatarurl}" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';" alt="回复者"/>
+			</div>
+		</td>
+		<td class="postcontent">
+			<%if {quickeditorad}!=""%>
+			<div class="leaderboard">{quickeditorad}</div>
+			<%/if%>
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个性设置">
+			<tr>
+				<td>
+				<input type="hidden" id="quickposttitle" name="{config.antispamposttitle}" size="84" tabindex="1" value=""/><input type="hidden" id="postid" name="postid" value="-1" />
+				<span style="display:none">
+		        <input type="checkbox" value="1" name="htmlon" id="htmlon" <%if {usergroupinfo.allowhtml}!=1%> disabled<%/if%>/>
+		        <input type="checkbox" name="parseurloff" id="parseurloff" value="1" <%if {parseurloff}==1%> checked <%/if%>/>
+		        <input type="checkbox" name="smileyoff" id="smileyoff" value="1" <%if {smileyoff}==1%> checked disabled <%/if%>/>
+		        <input type="checkbox" name="bbcodeoff" id="bbcodeoff" value="1" <%if {bbcodeoff}==1%> checked disabled <%/if%>/>
+		        <input type="checkbox" name="usesig" id="usesig" value="1" <%if {usesig}==1%> checked <%/if%>/>
+		        <input type="checkbox" name="emailnotify" id="emailnotify" <%if {replyemailstatus}==1%> checked <%/if%>/>
+		        <input type="checkbox" name="postreplynotice" id="postreplynotice" <%if {replynotificationstatus}==1%> checked <%/if%>/>
+		        </span>
+				<script type="text/javascript">
+					var bbinsert = parseInt('1');
+					var smiliesCount = 24;
+					var colCount = 8;
+				</script>
+				<%set (string){seditorid} = "quickpost"%>
+				<%set (char){comma} = ','%>
+				<em id="validatemessage"></em>
+				<%template _seditor%>
+				<textarea rows="5" cols="80" name="{config.antispampostmessage}" id="quickpostmessage" tabindex="2" class="txtarea"  style="background:#FFF url({quickbgad[1]}) no-repeat 50% 50%;" <%if {quickbgad[0]}!=""%> onfocus="$('adlinkbtn').style.display='';$('closebtn').style.display='';this.onfocus=null;"<%/if%> onkeydown="ajaxctlent(event, this.form, {topicid}, isendpage, '{imagedir}');"></textarea>
+				</td>
+			</tr>
+			<%if {isseccode}%>
+			<tr>
+				<td><div style="position: relative;">
+			<%template _vcode%>
+		</div></td>
+			</tr>
+			<%/if%>
+			<tr>
+				<td>
+					<%if {topic.Special}==4 && {isenddebate}==false%>
+					<div class="float_typeid left">
+						<select name="debateopinion" id="debateopinion">
+							<option value="0" selected>辩论观点</option>
+							<option value="1">正方</option>
+							<option value="2">反方</option>
+						</select>
+						<script type="text/javascript">loadselect("debateopinion");</script>
+					</div>
+					<%/if%>
+					<button type="button" id="quickpostsubmit" name="replysubmit" tabindex="3" onclick="ajaxreply(this.form, {topicid}, isendpage, '{imagedir}', false);">发表回复</button><span class="grayfont">[Ctrl+Enter快速发布]</span>
+					<a href="###" id="adlinkbtn" style="display:none;" onclick="window.open('{quickbgad[0]}','_blank');">查看背景广告</a>
+					<a href="###" id="closebtn" style="display:none;" onclick="$('quickpostmessage').style.background='';this.style.display='none';$('adlinkbtn').style.display='none';">隐藏</a>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	<script type="text/javascript">
+	var isendpage = ({pageid}=={pagecount});
+	var textobj = $('quickpostmessage');
+	
+	var smileyinsert = 1;
+	var showsmiliestitle = 0;
+	var smiliesIsCreate = 0;	
+	var smilies_HASH = {};
+	</script>
+</div>
+<script type="text/javascript" src="{jsdir}/template_quickreply.js"></script>
+</form>

@@ -1,0 +1,9 @@
+﻿<%if {userid}>0%>
+<div class="cm_header itemtitle s_clear">
+	<ul>
+		<li <%if {pagename}=="usercpprofile.aspx"%>class="current"<%/if%>><a href="usercpprofile.aspx"><span>个人档案</span></a></li>
+		<li <%if {pagename}=="usercpnewpassword.aspx"%>class="current"<%/if%>><a href="usercpnewpassword.aspx"><span>更改密码</span></a></li>
+		<li <%if {pagename}=="usercppreference.aspx"%>class="current"<%/if%>><a href="usercppreference.aspx"><span>个性设置</span></a></li>
+	</ul>
+</div>
+<%/if%>

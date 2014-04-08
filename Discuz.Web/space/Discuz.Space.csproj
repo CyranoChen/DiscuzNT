@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{69654816-4C83-429F-BC6D-E895DD94D2A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Discuz.Space</RootNamespace>
+    <AssemblyName>Discuz.Space</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CookComputing.XmlRpc, Version=1.0.0.8, Culture=neutral, PublicKeyToken=a7d6e17aa302004d">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RefDLL\CookComputing.XmlRpc.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.81.0.1407, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RefDLL\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RefDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DbProvider.cs" />
+    <Compile Include="Entities\EditbarTemplate.cs" />
+    <Compile Include="Entities\ISpaceCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\ISpaceTemplate.cs" />
+    <Compile Include="Entities\MainTemplate.cs" />
+    <Compile Include="Entities\ModuleBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\ModuleTemplate.cs" />
+    <Compile Include="Entities\RssTemplate.cs" />
+    <Compile Include="feedproxy.aspx.cs">
+      <DependentUpon>feedproxy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="feeds.aspx.cs">
+      <DependentUpon>feeds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ifr.aspx.cs">
+      <DependentUpon>ifr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\ajax.aspx.cs">
+      <DependentUpon>ajax.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\uploadfile.aspx.cs">
+      <DependentUpon>uploadfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxspaceconfigstatic.ascx.cs">
+      <DependentUpon>ajaxspaceconfigstatic.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxspacelink.ascx.cs">
+      <DependentUpon>ajaxspacelink.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxsubmitcomment.ascx.cs">
+      <DependentUpon>ajaxsubmitcomment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxtopnewcomment.ascx.cs">
+      <DependentUpon>ajaxtopnewcomment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxtopnewpost.ascx.cs">
+      <DependentUpon>ajaxtopnewpost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxuserbloglist.ascx.cs">
+      <DependentUpon>ajaxuserbloglist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxuserbloglistbydate.ascx.cs">
+      <DependentUpon>ajaxuserbloglistbydate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxuserspacecommentlist.ascx.cs">
+      <DependentUpon>ajaxuserspacecommentlist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\ajaxviewuserpost.ascx.cs">
+      <DependentUpon>ajaxviewuserpost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\DiscuzSpaceUCBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\frontleftnavmenu.ascx.cs">
+      <DependentUpon>frontleftnavmenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\fronttop.ascx.cs">
+      <DependentUpon>fronttop.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\spacecalendar.ascx.cs">
+      <DependentUpon>spacecalendar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manage\usercontrols\uploadfile.ascx.cs">
+      <DependentUpon>uploadfile.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_Code\ModuleXmlHelper.cs" />
+    <Compile Include="moregadgets.aspx.cs">
+      <DependentUpon>moregadgets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SpaceBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SpaceManageBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SpacePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacecategoryadd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacecategoryedit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacecomment.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspaceeditblog.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacelinkadd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacelinkedit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacelinklist.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacemanageattachment.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacemanageblog.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacemanagecategory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspacepostblog.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\usercpspaceset.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Provider\BlogProvider.cs" />
+    <Compile Include="Provider\SpaceProvider.cs" />
+    <Compile Include="Provider\StaticFileProvider.cs" />
+    <Compile Include="proxy.aspx.cs">
+      <DependentUpon>proxy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="setp.aspx.cs">
+      <DependentUpon>setp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_Code\SpaceFeeds.cs" />
+    <Compile Include="App_Code\Spaces.cs" />
+    <Compile Include="ss.aspx.cs">
+      <DependentUpon>ss.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Utilities\Globals.cs" />
+    <Compile Include="Utilities\ModuleValidate.cs" />
+    <Compile Include="Utilities\TemplateEngine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="viewspacepost.aspx.cs">
+      <DependentUpon>viewspacepost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="viewspacepostlist.aspx.cs">
+      <DependentUpon>viewspacepostlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Discuz.Aggregation\Discuz.Aggregation.csproj">
+      <Project>{6C7484B3-F4F9-4531-9D26-7D567324AFF8}</Project>
+      <Name>Discuz.Aggregation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Cache\Discuz.Cache.csproj">
+      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Name>Discuz.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Config\Discuz.Config.csproj">
+      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Name>Discuz.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Control\Discuz.Control.csproj">
+      <Project>{2A067E35-B67E-4D43-B9A3-5C2037CF2696}</Project>
+      <Name>Discuz.Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Data\Discuz.Data.csproj">
+      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Name>Discuz.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Entity\Discuz.Entity.csproj">
+      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Name>Discuz.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Forum\Discuz.Forum.csproj">
+      <Project>{A44D0E57-6EF1-4DF0-A73F-A7BA86B6C495}</Project>
+      <Name>Discuz.Forum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Discuz.Plugin\Discuz.Plugin.csproj">
+      <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
+      <Name>Discuz.Plugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Admin\Discuz.Web.Admin.csproj">
+      <Project>{A3263B57-6E20-4A9F-8D1F-9A020CF95F08}</Project>
+      <Name>Discuz.Web.Admin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="feedproxy.aspx" />
+    <Content Include="feeds.aspx" />
+    <Content Include="ifpc_relay.aspx" />
+    <Content Include="ifr.aspx" />
+    <Content Include="index.aspx" />
+    <Content Include="manage\ajax.aspx" />
+    <Content Include="manage\uploadfile.aspx" />
+    <Content Include="manage\usercontrols\ajaxspaceconfigstatic.ascx" />
+    <Content Include="manage\usercontrols\ajaxspacelink.ascx" />
+    <Content Include="manage\usercontrols\ajaxsubmitcomment.ascx" />
+    <Content Include="manage\usercontrols\ajaxtopnewcomment.ascx" />
+    <Content Include="manage\usercontrols\ajaxtopnewpost.ascx" />
+    <Content Include="manage\usercontrols\ajaxuserbloglist.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="manage\usercontrols\ajaxuserbloglistbydate.ascx" />
+    <Content Include="manage\usercontrols\ajaxuserspacecommentlist.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="manage\usercontrols\ajaxviewuserpost.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="manage\usercontrols\frontbottom.ascx" />
+    <Content Include="manage\usercontrols\frontleftnavmenu.ascx" />
+    <Content Include="manage\usercontrols\fronttop.ascx" />
+    <Content Include="manage\usercontrols\spacecalendar.ascx" />
+    <Content Include="manage\usercontrols\uploadfile.ascx" />
+    <Content Include="moregadgets.aspx" />
+    <Content Include="proxy.aspx" />
+    <Content Include="setp.aspx" />
+    <Content Include="ss.aspx" />
+    <Content Include="viewspacepost.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="viewspacepostlist.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\ajaxspaceinfo.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ajaxspacepostinfo.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\editmoduledef.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\editmoduledef.aspx.designer.cs">
+      <DependentUpon>editmoduledef.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\moduledefcategorymanage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\moduledefcategorymanage.aspx.designer.cs">
+      <DependentUpon>moduledefcategorymanage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\moduledefmanage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\moduledefmanage.aspx.designer.cs">
+      <DependentUpon>moduledefmanage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\postaggset.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\postaggset.aspx.designer.cs">
+      <DependentUpon>postaggset.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spaceaggset.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spaceaggset.aspx.designer.cs">
+      <DependentUpon>spaceaggset.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spaceapplymanage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spaceapplymanage.aspx.designer.cs">
+      <DependentUpon>spaceapplymanage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spaceapplysetting.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spaceapplysetting.aspx.designer.cs">
+      <DependentUpon>spaceapplysetting.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spacefooterinfo.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spacefooterinfo.aspx.designer.cs">
+      <DependentUpon>spacefooterinfo.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spaceindexaggset.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spaceindexaggset.aspx.designer.cs">
+      <DependentUpon>spaceindexaggset.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spacemanage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spacemanage.aspx.designer.cs">
+      <DependentUpon>spacemanage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spacethemegrid.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spacethemegrid.aspx.designer.cs">
+      <DependentUpon>spacethemegrid.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\spacethememanage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\spacethememanage.aspx.designer.cs">
+      <DependentUpon>spacethememanage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\bloglist.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\spaceindex.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\spaceregister.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\IMetaWeblog.cs" />
+    <Compile Include="Services\MetaWeblog.cs" />
+    <Compile Include="App_Code\SpacePlugin.cs" />
+    <Compile Include="App_Code\SpaceTags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\SqlDataProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MetaBlog.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

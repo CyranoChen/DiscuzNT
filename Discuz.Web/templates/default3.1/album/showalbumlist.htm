@@ -1,0 +1,70 @@
+<%inherits "Discuz.Album.Pages.showalbumlist"%>
+<%template _albumheader%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<%template _albumnavigation%>
+		<%if {currentcate}!=0%>
+			<a href="{config.albumurl}" class="title">{config.albumname}首页</a>  &raquo;  <strong>{currentalbumcategory.title}</strong>
+		<%else if {albumsuserid}!=0%>
+			<a href="{config.albumurl}" class="title">{config.albumname}首页</a>  &raquo;  <strong>{albumusername}</strong>
+		<%else if {currentcate}!=0 && {albumsuserid}!=0%>
+			<a href="{config.albumurl}" class="title">{config.albumname}首页</a>  &raquo;  <strong>{albumusername}的{currentalbumcategory.title}</strong>
+		<%else%>
+			<a href="{config.albumurl}" class="title">{config.albumname}首页</a>  &raquo;  <strong>全部{config.albumname}</strong>
+		<%/if%>
+	</div>
+</div>
+<%if {page_err}==0%>
+<div class="wrap">
+	<div class="modulebox">
+		<h2>{config.albumname}</h2>
+		<div class="albumcategorylist">
+		<%loop (AlbumCategoryInfo) albumcategory albumcategorylist%>
+			<a href="{albumurl}showalbumlist.aspx?cate={albumcategory.albumcateid}">{albumcategory.title}</a>
+			<%if {albumcategory[_id]}!={albumcategorylist.Count}%>
+				|
+			<%/if%>
+		<%/loop%>
+		</div>
+	<%if {albumlist.Count}>0%>
+	    <%if {pagecount}>1%>
+		<div class="album_pages">
+			{prevpage}
+			{pagenumbers}
+			{nextpage}
+		</div>
+		<%/if%>			
+		<ul class="album_list">						
+		<%loop (AlbumInfo) album albumlist%>
+			<li>								
+				<%if {album.logo}!=""%>
+				<div class="album_bg">
+					<a href="{albumurl}showalbum.aspx?albumid={album.albumid}"><img src="{album.logo}" alt="{album.title}" style="max-height: 80px; max-width: 105px" /></a>
+				</div>
+				<%else%>
+				<div class="nopicture">
+					<a href="{albumurl}showalbum.aspx?albumid={album.albumid}"><img src="templates/{templatepath}/album/images/nophoto.jpg" alt="{album.albumid}" /></a>
+				</div>
+				<%/if%>								
+				<h3><a href="{albumurl}showalbumlist.aspx?uid={album.userid}">{album.username}</a>的相册</h3>
+				<p><a href="{albumurl}showalbum.aspx?albumid={album.albumid}">{album.title}</a> ({album.imgcount})</p>
+			</li>
+		<%/loop%>
+		</ul>
+		<%if {pagecount}>1%>
+		<div class="album_pages">
+			{prevpage}
+			{pagenumbers}
+			{nextpage}
+		</div>
+		<%/if%>
+	<%else%>
+		<%template _photomsgbox%>		
+	<%/if%>
+	</div>
+</div>
+<%else%>
+<%template _photoerrmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

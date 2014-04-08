@@ -1,0 +1,40 @@
+﻿<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>切换模板</strong>
+	</div>
+</div>
+<%if page_err==0%>
+	<%if {request[templateid]}!=""%>
+	<script type="text/javascript">
+		if (top.frames["leftmenu"])
+		{
+			top.frames["leftmenu"].location.reload();
+		}
+	</script>
+	<%template _msgbox%>
+	<%else%>
+	<div class="wrap s_clear" id="wrap">
+	<div class="main">
+		<h1>界面</h1>
+		<form id="form1" name="form1" method="post" action="">
+		<ul id="forumtemplate">
+		<%loop template Templates.GetValidTemplateList()%>
+			<li>
+			<img src="templates/{template[directory]}/about.png" />
+			<p><input name="templateid" type="radio" value="{template[templateid]}" 
+			<%if {templatepath}=={template[directory]}%>checked <%/if%>/>
+			 {template[name]}</p>
+			</li>
+		<%/loop%>
+		</ul>
+		<div class="templatebutton"><button type="submit" name="Submit">确定</button></div>
+		</form>
+	</div>
+	</div>
+	<%/if%>
+<%else%>
+	<%template _errmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

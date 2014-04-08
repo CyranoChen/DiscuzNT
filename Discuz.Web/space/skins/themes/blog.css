@@ -1,0 +1,39 @@
+﻿#SpaceBody{ text-align: left; }
+	/*\*/ * html #SpaceBody { /**/ height: 1%; } *>#SpaceBody { overflow: hidden; }
+#SpaceBodyLeft{ float: left; width: 20%; }
+	/*\*/ * html #SpaceBodyLeft { /**/ height: 1%; } *>#SpaceBodyLeft { overflow: hidden; }
+ /*articlelist*/
+	.col{height:auto;}
+	#modules table { table-layout:fixed; }
+	#bodyrightcontent {position: relative;}
+	.SpaceArticleList{ clear: both; margin: 0 auto; border-top: 1px solid #EDEDDC; background: url(images/modbg.jpg) repeat-x scroll left top; line-height: 160%;width:98%; }
+	/*\*/ * html .SpaceArticleList { /**/ height: 1%; } *>.SpaceArticleList { overflow: hidden; }
+ 		.SpaceArticle{ margin-top: 32px; height: 42px; }
+		.ArticleList {width:98%; overflow:hidden; margin:2px 15px;position:relative;}
+		*html .ArticleList { width:100%; }
+		*+html .ArticleList { width:100%; }
+			.SpaceArticleTitle{ float: left; width: 80%; height: 40px; background: url(images/SpaceTime.gif) no-repeat scroll 6px center; }
+				.SpaceTime{ float: left; width: 44px; font-size: 12px; text-align: center; line-height: 160%; }
+					.SpaceTime .TimeYear{ color: #fff; font-family: Georgia, "Times New Roman", Times, serif; }
+					.SpaceTime .TimeMonth{ color: #000; font-family: "Times New Roman", Times, serif; font-weight: bold; }
+					*html .TimeYear, *html .TimeMonth{ text-align: left; margin-left: 6px; }
+				.SpaceTitle{ float: left; margin-left: 10px; margin-top: 6px; color: #000; font-weight: bold; }
+					.SpaceTitle span{ color: #817C77; font-size: 12px; line-height: 140%; font-weight: normal; }
+			.SpaceNumberBack{ float: right; width: 18%; height: 40px; background: url(images/SpaceBack.gif) no-repeat scroll top center; color: #000; font-family: Georgia, "Times New Roman", Times, serif; font-size: 16px; font-weight: bold; text-align: center; }
+		.SpaceArticleContent{ clear: both;  margin: 0 auto; margin-top: 10px; color: #817C77; font-size: 14px; text-align: left; overflow:hidden;  }
+	/*\*/ * html .SpaceArticleContent  { height: 1%; } /**/ *>.SpaceArticleContent{ overflow: hidden;} 
+	.tagbox {height: 28px; line-height:28px; padding-left:15px;font-size:12px;}
+	.tagbox a:link,.tagbox a:visited {text-decoration: underline;}
+/*articlelist*/
+#SpaceBodyRight{ float: right; overflow: hidden; zoom: 1; width: 78%; }
+	/*\*/ * html #SpaceBodyRight  { height: 1%; } /**/ *>#SpaceBodyRight{ overflow: hidden;} 
+	.SpaceItem{ clear: both; overflow: hidden; zoom: 1; margin: 0 auto; border-top: 1px solid #EDEDDC; background: url(images/modbg.jpg) repeat-x scroll left top; line-height: 160%; }
+		/*\*/ * html .SpaceItem  { height: 1%; } /**/ *>.SpaceItem{ overflow: hidden;} 	
+		.SpaceItem h2{ color: #000; font-size: 14px; font-weight: bold; line-height: 36px; padding-left: 6px; }
+		ul.ItemContent{ list-style: none; margin-left: 15px; margin-top: 0px; padding: 0; }
+		.ItemContent li{ color: #333; font-size: 12px; line-height: 160%; }
+			.ItemContent strong{ color: #C1646E; font-weight: normal; }
+			.ItemContent a:link,ItemContent a:visited{ color: #333; text-decoration: none; padding: 0; }
+			.ItemContent a:hover,ItemContent a:active{ color: #999; text-decoration: none; padding: 0; }
+	.dnt-leftmenu a:link,.dnt-leftmenu a:visited { padding: 0; }
+	#bodyrightcontent span a { font-weight: bold; font-size: 14px; }

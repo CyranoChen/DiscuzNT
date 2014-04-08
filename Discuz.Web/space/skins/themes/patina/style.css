@@ -1,0 +1,97 @@
+*{ margin: 0px; padding: 0px; }
+body{ margin: 0 auto; background: #fff url(images/background.jpg); color: #817C77; font: 14px/160% Arial, Helvetica, sans-serif; text-align: center; }
+#doc{ background: url(images/doc-bg.jpg) repeat-x left top; margin: 0 auto; text-align: center; padding-bottom: 10px; }
+ul,li { list-style: none; }
+/*topbar*/
+.menu{ background: url(images/topbar-bg2.jpg); padding: 0px; height: 29px; }
+#topbar,
+#duser{ height: 29px; line-height: 29px; padding-right: 3px; padding-left: 5px; color: #49230C; }
+	#duser{ width: 743px; background: url(images/topbar-bg.jpg) no-repeat left top; padding: 0px; }
+	#topbar a:link,a:visited{ color: #49230C; text-decoration: none; padding: 0 4px; }
+	#topbar a:hover,a:active{ color: #000; text-decoration: underline; padding: 0 4px; }
+	#duser a:link,a:visited{ color: #49230C; text-decoration: none; padding: 0 4px; }
+	#duser a:hover,a:active{ color: #000; text-decoration: underline; padding: 0 4px; }
+/*topbar*/
+/*heder*/
+#nhdrwrap{ background: url(images/banner-flower.jpg) no-repeat right top; height: 176px; }
+	#nhdrwrapsizer{ width: 992px; margin: 0 auto; text-align: align; height: 89px; padding-left: 16px; }
+		.title{ font-size: 14px; font-weight: bold; line-height: 260%; color: #000; text-align: left; margin-top: 15px; }
+			.title h1{ display: inline; font-size: 14px; font-weight: bold; line-height: 260%; color: #333; }
+			.title span a:link,.title span a:visited{ padding-left: 15px; font-size: 12px; color: #000; text-decoration: none; }
+			.title span a:hover,.title span a:active{ padding-left: 15px; font-size: 12px; color: #000; text-decoration: none; }
+		.subtitle{ color: #333; font-size: 12px; text-align: left; }
+		#nhdrwrapsizer td{ text-align: left; }
+/*heder*/
+/*tabs*/	
+#tabs{ width: 992px; margin: 0 auto; height: 67px; font-size: 14px; color: #61222A; font-weight: bold; margin-top: 10px; }
+	.tab{ border: 0px; margin-bottom: 0px; height: 67px; line-height: 67px; }
+		.tab a:link,.tab a:visited{ color: #61222A; font-size: 12px; text-decoration: none; }
+		.tab a:hover,.tab a:active{ color: #61222A; font-size: 12px; text-decoration: none; }
+		#addstuff{ line-height: 67px; }
+	.unselectedtab{ border: 0px; background: transparent; }
+		.unselectedtab span{ color: #61222A; margin-left: 8px; padding-left: 0px; padding-right: 8px; }
+	.selectedtab{ overflow: hidden; color: #fff; background: url(images/tabs-bg.gif) no-repeat left top; min-width: 110px; width: 110px; }
+			.selectedtab span input{ margin-top: 5px; margin-left: 0px; margin-right: 0px; }
+	.spacer{ width: 0px; }
+	.tab_hover{ color: #fff; }
+/*tabs*/
+/*body*/
+#main{ margin: 0 auto; }
+#modules{ text-align: center; margin: 0 auto; background: url(images/banner-flower2.jpg) no-repeat right top; }
+/*\*/ * html #modules { /**/ height: 1%; }*>#modules { overflow: hidden; }
+#modules #t_1{ width: 992px; margin: 0 auto; }
+#col_1{ padding-right: 30px; }
+#col_2  .modboxin a:link,#col_2 a:visited{ color: #333; text-decoration: none; }
+#col_2  .modboxin a:hover,#col_2 a:active{ color: #3D5906; text-decoration: none; }
+	.delbox{ margin-right: 15px; }
+	.modbox_e,
+	.modbox{ background: transparent; }
+	.modtitle{ height: 35px; line-height: 35px; background: url(images/modbglong.gif) no-repeat right top; border: 0px; padding: 0; }
+			.modtitle{ line-height: 25px; }
+			a.mtlink{ text-decoration: none; }
+			.modtitle_text{ font-weight: bold; color: #5E0000; padding-left: 15px; display: block; text-decoration: none; background: url(images/modbg.gif) no-repeat 0 0; height: 35px; line-height: 35px; }
+			.modboxin{ border: 0px; text-align: left; background: transparent; color: #49230C; font-family: ·ÂËÎ_GB2312; font-size: 14px; padding-left: 15px; }
+				.modboxin a:link,.modboxin a:visited{ color: #49230C; text-decoration: none; }
+				.modboxin a:hover,.modboxin a:active{ color: #3D5906; text-decoration: underline; }
+				a.mtlink{ color: #5E0000; }
+				.uftl{ border: 0px; }
+				.sftl{ border: 0px; }
+				.fpad{ margin-top: 6px; padding-left: 15px; font-size: 12px; color: #3D5906; line-height: 160%; }
+				.dnt-leftmenu,#category{ padding-left: 7px; line-height: 230%; }
+				.dnt-newpost,.dnt-newcomment,.dnt-statistic,.dnt-link,.dnt-bloglist,.dnt-commentlist { line-height: 160%; padding-left: 7px; overflow: hidden; word-break: break-all; letter-break: break-all; }
+				ul.ItemContent { margin-left: 0px; line-height: 25px; }
+				.modtitle .delbox,.modtitle .minbox,.modtitle .ddbox,.modtitle .maxbox{ margin-top: 10px; }
+	.meditbox{ border: 1px solid #ccc; margin: 10px 0; }
+	.meditbox input,.meditbox select,.cp_button input{ background-color: #ffffff; margin: 2px; }
+	.meditbox table{ font-size: 12px; }
+		a.hidding_box{ border: 1px solid #e3e3e3; background-color: #fbfbfb; color: #624326; text-decoration: none; }
+		a.hidding_box:hover{ border: 1px solid #e3e3e3; background-color: #fbfbfb; color: #624326; text-decoration: none; }
+.dnt-leftmenu,#category{ padding-left: 7px; line-height: 230%; }
+.dnt-newpost,.dnt-newcomment,.dnt-statistic,.dnt-link,.dnt-bloglist,.dnt-commentlist { line-height: 160%; padding-left: 15px; }
+.dnt-theme li{ padding-left: 7px; line-height: 180%; }
+.dnt-theme li img{ margin-right: 6px; }
+.dnt-theme .listcontent,.pagecontent{ margin-left: 30px; border-top: 1px dashed #ebebeb; margin-top: 10px; margin-bottom: 10px; }
+ 	.SpaceArticle { margin-top: 0; }
+	.SpaceArticleTitle{ background: url(images/SpaceTime.gif) no-repeat scroll left top; height: auto; }
+	.SpaceArticleContent { overflow:hidden; margin-top: 15px; color: #61222A; }
+	.SpaceNumberBack { background: transparent url(images/SpaceBack.gif) no-repeat scroll center top; }
+		.SpaceTime { margin: 7px 5px; }
+			*html .SpaceTime { margin: 10px 1px; }
+		.SpaceTime  .TimeYear { color: #000; height:22px; }
+			*html .SpaceTime .TimeMonth {height:22px;}
+			.SpaceTitle {padding-top:15px;}
+/*body*/
+/*openwindow*/
+.modal-dialog-bg { background-color: #999; position: absolute; left: 0px; top: 0px; opacity: 0.3; }
+.modal-dialog { background-color: #C1D9FF; border: 1px solid #3A5774; position: absolute; left: 0px; top: 0px; padding: 8px; }
+.modal-dialog-title { background-color: #E0EDFE; cursor: default; font-weight: bold; line-height: normal; padding: 8px; position: relative; }
+.modal-dialog-content { background-color: #FFFFFF; padding: 0px 1px; }
+.modal-dialog-buttons { background-color: #FFFFFF; padding: 4px; text-align: right; }
+.modal-dialog-buttons button { margin: 5px; overflow: visible; padding: 0pt 0.4em; }
+.modal-dialog-title-close { position: absolute; right: 0px; }
+/*openwindow*/
+/*footer*/
+#footer{ clear: both; margin: 0 auto; text-align: center; color: #333; height: 80px; }
+	#copyright{ padding-top: 25px; line-height: 25px; }
+
+/*footer*/

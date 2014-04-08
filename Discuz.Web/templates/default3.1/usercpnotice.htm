@@ -1,0 +1,65 @@
+﻿<%template _header%>
+<script type="text/javascript" src="{jsdir}/template_usercpnotice.js"></script>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>通知</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+    <%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>通知</h1>
+		<%template _smsmenu%>
+		<%if page_err==0%>
+		<%if ispost%>
+			<%template _usercpmsgbox%>
+		<%else%>
+			<div class="shopsearch">
+			<%if {filter}=="all" || {filter}==""%>全部通知<%/if%>
+			<%if {filter}=="spacecomment"%>{config.spacename}日志评论<%/if%>
+			<%if {filter}=="albumcomment"%>{config.albumname}图片评论<%/if%>
+			<%if {filter}=="goodstrade"%>商品交易<%/if%>
+			<%if {filter}=="goodsleaveword"%>商品留言<%/if%>
+			<%if {filter}=="postreply"%>主题回复<%/if%>
+			<%if {filter}=="application"%>应用通知<%/if%>
+			<%if {filter}=="topicadmin"%>管理通知<%/if%>
+			</div>
+			<%if {noticeinfolist.Count}==0%>
+				<div class="zerothreads">暂无新的通知</div>
+			<%else%>
+				<form id="noticelist" name="noticelist" method="post" action="">
+				<table width="100%" cellspacing="0" cellpadding="0" border="0" class="pm_list">
+					<tbody>
+					<%loop (NoticeInfo) noticeinfo noticeinfolist%>
+					 <tr>
+						<td class="notice_list">
+						<%set (string){note}=UBB.ParseUrl({noticeinfo.note}) %>
+								{note}
+						</td>
+						<td class="name_and_date">
+						<%set (string){postdatetime}=ForumUtils.ConvertDateTime({noticeinfo.postdatetime})%>	
+							<span class="date">{postdatetime}</span>
+						</td>
+					</tr>
+					<%/loop%>
+					</tbody>					
+				</table>
+				</form>
+				<div class="cpbox s_clear">
+					<div class="pages_btns">
+						<div class="pages">
+							{pagenumbers}<em>{pageid}/{pagecount}页</em>
+						</div>
+					</div>
+				</div>
+			<%/if%>
+		<%/if%>
+		<%else%>
+			<%template _usercperrmsgbox%>
+		<%/if%>
+    </div>
+</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

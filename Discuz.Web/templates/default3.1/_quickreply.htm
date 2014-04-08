@@ -1,0 +1,86 @@
+<script type="text/javascript" src="{jsdir}/post.js"></script>
+<script type="text/javascript" src="{jsdir}/bbcode.js"></script>
+<form method="post" name="postform" id="quickpostform" action="postreply.aspx?topicid={topicid}" enctype="multipart/form-data" onsubmit="return validate(this);">
+<div id="quickpost" class="main">
+	<table summary="快速发布帖子" cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+		<td class="quickpostauthor">
+			<div class="avatar">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(userid) %>
+			<img src="{avatarurl}" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';"  alt="头像"/>
+			</div>
+		</td>
+		<td class="postcontent">
+		<%if {quickeditorad}!=""%>
+			<div class="leaderboard">{quickeditorad}</div>
+		<%/if%>
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个性设置">
+			<tbody>
+			<tr>
+				<td>
+					<%if {topic.Special}==4 && {isenddebate}==false%>
+					<div class="float_typeid left">
+						<select name="debateopinion" id="debateopinion">
+							<option value="0" selected>辩论观点</option>
+							<option value="1">正方</option>
+							<option value="2">反方</option>
+						</select>
+						<script type="text/javascript">loadselect("debateopinion");</script>
+					</div>
+					<%/if%>
+					<input type="hidden" id="title" name="{config.antispamposttitle}" size="84" tabindex="1" value="" /><input type="hidden" id="postid" name="postid" value="-1" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<span style="display:none">
+				<input type="checkbox" value="1" name="htmlon" id="htmlon" <%if {usergroupinfo.allowhtml}!=1%> disabled<%/if%>/>
+		        <input type="checkbox" value="1" name="parseurloff" id="parseurloff" <%if {parseurloff}==1%>checked <%/if%> />
+		        <input type="checkbox" value="1" name="smileyoff" id="smileyoff" <%if {smileyoff}==1%> checked disabled <%/if%> />
+		        <input type="checkbox" value="1" name="bbcodeoff" id="bbcodeoff" <%if {bbcodeoff}==1%> checked disabled <%/if%> />
+		        <input type="checkbox" value="1" name="usesig" id="usesig" <%if {usesig}==1%>checked<%/if%>/>
+		        <input type="checkbox" name="emailnotify" id="emailnotify" <%if {replyemailstatus}==1%> checked <%/if%>/>
+		        <input type="checkbox" name="postreplynotice" id="postreplynotice" <%if {replynotificationstatus}==1%> checked <%/if%>/>
+		        </span>
+				<script type="text/javascript">
+					var bbinsert = parseInt('1');
+					var smiliesCount = 24;
+					var colCount = 8;
+				</script>
+					<%set (string){seditorid} = "quickpost"%>
+					<%set (char){comma} = ','%>
+				<%template _seditor%>
+				<textarea rows="5" cols="80" name="{config.antispampostmessage}" id="quickpostmessage" onKeyDown="seditor_ctlent(event, 'validate($(\'quickpostform\'))');" tabindex="2" class="txtarea"  style="background:#FFF url({quickbgad[1]}) no-repeat 50% 50%;" <%if {quickbgad[0]}!=""%> onfocus="$('adlinkbtn').style.display='';$('closebtn').style.display='';this.onfocus=null;"<%/if%>></textarea>
+				</td>
+			</tr>
+			<%if {isseccode}%>
+			<tr>
+				<td><div style="position: relative;">
+			<%template _vcode%>
+		</div></td>
+			</tr>
+			<%/if%>
+			<tr>
+				<td>
+					<button type="reset" type="submit" id="postsubmit" name="replysubmit" tabindex="3">发表回复</button> <span class="grayfont">[Ctrl+Enter快速发布]</span>
+					<a href="###" id="adlinkbtn" style="display:none;" onclick="window.open('{quickbgad[0]}','_blank');">查看背景广告</a>
+					<a href="###" id="closebtn" style="display:none;" onclick="$('quickpostmessage').style.background='';this.style.display='none';$('adlinkbtn').style.display='none';">隐藏</a>
+					<input type="hidden" id="postbytopictype" name="postbytopictype" value="{forum.postbytopictype}" tabindex="3" />
+				</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	<script type="text/javascript">
+	var smileyinsert = 1;
+	var showsmiliestitle = 0;
+	var smiliesIsCreate = 0;
+	var scrMaxLeft; //表情滚动条宽度
+	var smilies_HASH = {};
+	</script>
+</div>
+</form>

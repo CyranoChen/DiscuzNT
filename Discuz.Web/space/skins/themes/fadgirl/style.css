@@ -1,0 +1,91 @@
+*{ margin: 0px; padding: 0px; }
+body{ margin: 0 auto; text-align: center; background: #fff url(images/background.jpg) repeat-x center top; color: #817C77; font: 14px/160% Arial, Helvetica, sans-serif; }
+#doc{ width: 987px; margin: 0 auto; text-align: left; padding-bottom: 10px; }
+ul,li { list-style: none; }
+/*topbar*/
+#topbar,
+#duser{ height: 29px; line-height: 29px; padding-right: 3px; padding-left: 5px; color: #EDC9CD; font-size: 12px; }
+	#topbar a:link,a:visited{ color: #EDC9CD; text-decoration: none; padding: 0 4px; }
+	#topbar a:hover,a:active{ color: #fff; text-decoration: underline; padding: 0 4px; }
+	#duser a:link,a:visited{ color: #EDC9CD; text-decoration: none; padding: 0 4px; }
+	#duser a:hover,a:active{ color: #fff; text-decoration: underline; padding: 0 4px; }
+/*topbar*/
+/*header*/
+#nhdrwrapsizer{ height: 89px; text-align: left; padding-left: 16px; }
+	.title{ line-height: 260%; text-align: left; }
+	.title h1{ display: inline; font-size: 14px; font-weight: bold; line-height: 260%; color: #333; }
+			.title span a:link,.title span a:visited{ padding-left: 15px; font-size: 12px; color: #f7f7f7; text-decoration: none; }
+			.title span a:hover,.title span a:active{ padding-left: 15px; font-size: 12px; color: #fff; text-decoration: none; }
+	.subtitle{ color: #333; font-size: 12px; }
+	#nhdrwrapsizer td{ text-align: left; }
+/*header*/
+/*tabs*/	
+#tabs{ margin: 0 auto; height: 42px; font-size: 14px; color: #61222A; font-weight: bold; background: transparent; }
+	#tabs ul { margin: 0 25px; }
+	.tab{ border: 0px; margin-bottom: 0px; height: 42px; line-height: 34px; }
+		.tab a:link,.tab a:visited{ color: #61222A; font-size: 12px; text-decoration: none; padding: 0 4px; }
+		.tab a:hover,.tab a:active{ color: #61222A; font-size: 12px; text-decoration: underline; padding: 0 4px; }
+	.unselectedtab{ border: 0px; background: transparent; }
+		.unselectedtab span{ color: #61222A; margin-left: 8px; padding-left: 0px; padding-right: 8px; }
+	.selectedtab{ color: #B93B47; background: url(images/tabs-bg1.gif) no-repeat left top; padding-left: 8px; }
+		.selectedtab span{ padding: 8px 8px 18px 0px; background: #fff url(images/tabs-bg2.gif) no-repeat right top; }
+		*html .selectedtab span{ padding: 10px 8px 17px 0px; background: #fff url(images/tabs-bg2.gif) no-repeat right top; }
+		*+html .selectedtab span{ padding: 10px 8px 17px 0px; background: #fff url(images/tabs-bg2.gif) no-repeat right top; }
+			.selectedtab span input{ margin-top: 8px; margin-left: 0px; margin-right: 0px; }
+	.spacer{ width: 0px; }
+	#addstuff { padding-right: 25px; }
+/*tabs*/	
+/*body*/
+#main{ margin: 0 auto; }
+#modules{ margin: 0 auto; background: transparent; }
+	/*\*/ * html #modules { /**/ height: 1%; }*>#modules { overflow: hidden; }
+ 	.modbox_e,
+	.modbox{ border-top: 1px solid #EDEDDC; background: #fff url(images/modbg.jpg) repeat-x left top; }
+			.modtitle{ line-height: 25px; border: 0px; background: transparent; padding-top: 10px; }
+			.modtitle_text{ font-weight: bold; color: #AA4B53; padding-left: 15px; text-decoration: none; }
+			a.mtlink{ color: #AA4B53; text-decoration: none; }
+			.modboxin{ border: 0px; }
+				.modboxin a:link,.modboxin a:visited{ color: #333; text-decoration: none; }
+				.modboxin a:hover,.modboxin a:active{ color: #D49495; text-decoration: underline; }
+				.fpager a.prev { float: left; padding-left: 20px; border: 0; cursor: pointer; background: url(images/prev.gif) no-repeat left center; }
+				.fpager a.next { float: right; padding-right: 20px; border: 0; cursor: pointer; background: url(images/next.gif) no-repeat right center; }
+				.fpad{ font-size: 12px; padding-left: 18px; color: #666; margin-top: 4px; line-height: 160%; }
+				ul.ItemContent { margin-left: 0px; line-height: 25px; }
+				.ItemContent a{ line-height: 25px; }
+	.meditbox{ border: 1px solid #ccc; margin: 10px 0; }
+	.meditbox input,.meditbox select,.cp_button input{ background-color: #ffffff; margin: 2px; }
+	.meditbox table{ font-size: 12px; }
+		a.hidding_box{ border: 1px solid #e3e3e3; background-color: #fbfbfb; color: #624326; text-decoration: none; }
+		a.hidding_box:hover{ border: 1px solid #e3e3e3; background-color: #fbfbfb; color: #624326; text-decoration: none; }
+	.dnt-leftmenu,#category{ padding-left: 7px; line-height: 230%; }
+	.dnt-newpost,.dnt-newcomment,.dnt-statistic,.dnt-link,.dnt-bloglist,.dnt-commentlist,.dnt-leftmenu { line-height: 160%; padding-left: 15px; overflow: hidden; word-break: break-all; letter-break: break-all; }
+	.dnt-theme li{ padding-left: 15px; line-height: 180%; }
+	.dnt-theme li img{ margin-right: 6px; }
+	.dnt-theme .listcontent,.pagecontent{ margin-left: 30px; border-top: 1px dashed #ebebeb; margin-top: 10px; margin-bottom: 10px; }
+ 	.SpaceArticle { margin-top: 0; }
+		.SpaceArticleTitle{ background: url(images/SpaceTime.gif) no-repeat scroll left center; }
+	.SpaceArticleContent { overflow:hidden; margin-top: 15px; }
+		.SpaceNumberBack{ background: url(images/SpaceBack.gif) no-repeat scroll top center; }
+	#blognavigator { height: 25px; line-height: 25px; color: #61222A; }
+		#blognavigator a:link,#blognavigator a:visited{ color: #61222A; text-decoration: none; }
+		#blognavigator a:hover,#blognavigator a:active{ color: #61222A; text-decoration: underline; }
+	.submitComment { margin: 0 auto; color: #61222A; }
+		.submitComment p { margin: 0 25px; }
+		.viewcol .submitcomment input,.viewcol .submitcomment textarea{ border: 1px solid #ccc; margin: 2px; }
+/*body*/
+/*Eidter*/
+.cp_editor { background: #edc8cf; }
+/*Eidter*/
+/*openwindow*/
+.modal-dialog-bg { background-color: #999; position: absolute; left: 0px; top: 0px; opacity: 0.3; }
+.modal-dialog { background-color: #C1D9FF; border: 1px solid #3A5774; position: absolute; left: 0px; top: 0px; padding: 8px; }
+.modal-dialog-title { background-color: #E0EDFE; cursor: default; font-weight: bold; line-height: normal; padding: 8px; position: relative; }
+.modal-dialog-content { background-color: #FFFFFF; padding: 0px 1px; }
+.modal-dialog-buttons { background-color: #FFFFFF; padding: 4px; text-align: right; }
+.modal-dialog-buttons button { margin: 5px; overflow: visible; padding: 0pt 0.4em; }
+.modal-dialog-title-close { position: absolute; right: 0px; }
+/*openwindow*/
+/*footer*/
+#footer{ clear: both; margin: 0 auto; text-align: center; border-top: 1px solid #EDEDDC; background: #FAF1F2; color: #333; height: 80px; }
+	#copyright{ padding-top: 25px; line-height: 25px; }
+/*footer*/

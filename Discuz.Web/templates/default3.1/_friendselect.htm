@@ -1,0 +1,228 @@
+﻿<div id="friendselect" class="popupmenu_popup" style=" position:absolute;left:240px;top:30px;width:400px;display:none;">
+<div class="sel_friend">
+    <div class="fri_title">
+        <%csharp%>
+            Discuz.Common.Generic.List<FriendshipGroupInfo> grouplist = Discuz.Forum.Friendship.GetFriendshipGroupsList(userid);
+        <%/csharp%>
+        <select id="selectgrouplist" name="selectgrouplist" onchange="LoadFriendsList(1, 8, '', '', this.value);LoadFriendsCount(1, 8, '', '', this.value);">
+            <option value="-1">全部好友</option>
+            <option value="0">未分组</option>
+        <%loop (FriendshipGroupInfo) groupinfo grouplist%>
+            <option value="{groupinfo.groupId}">{groupinfo.GroupName}</option>
+        <%/loop%>
+        </select>
+        选择好友
+    </div>
+    <ul id="friendlist" class="fri_list" style="height:160px">
+        好友列表读取中......
+    </ul>
+    <div class="fri_pages"><button id="friendselectcomplete" onclick="">确定</button><cite id="friendpagebtn">1 2 3 4</cite></div>
+</div>
+</div>
+<input id="friendchoiceselectidlist" type="hidden" />
+<input id="friendchoiceselectnamelist" type="hidden" />
+<script type="text/javascript">
+    var friendslistjson = null;
+    var pagecount = 0;
+    var prevpageid = 0;
+    var prevfusername = '';
+    var prevlastdatetime = '';
+    var prevgroupid = 0;
+    var selecttype = '';
+    var friendgroups = null;
+    var oriselectid = 0;
+
+    function ShowPanel(left, top, type) {
+        $('friendselect').style.left = left;
+        $('friendselect').style.top = top;
+        $('friendselect').style.display = '';
+        selecttype = type;
+        LoadFriendsCount(1, 8, '', '', -1);
+        LoadFriendsList(1, 8, '', '', -1);
+    }
+
+    function Init() {
+        friendslistjson = null;
+        pagecount = 0;
+        prevpageid = 0;
+        prevfusername = '';
+        prevlastdatetime = '';
+        prevgroupid = 0;
+        friendgroups = null;
+        $('friendchoiceselectidlist').value = '';
+        $('friendchoiceselectnamelist').value = '';
+    }
+
+    function ClosePanel() {
+        $('friendselect').style.display = 'none';
+        Init();
+    }
+
+    function SetCompleteAction(action) {
+        $('friendselectcomplete').onclick = action;
+    }
+
+    function LoadFriendsList(pageid, pagesize, fusername, lastdatetime, groupid) {
+        if (friendslistjson == null||prevpageid!=pageid||prevgroupid!=groupid) {
+            _sendRequest("{rooturl}tools/sessionajax.aspx?t=getfriendsjsonlist&pageid=" + pageid + "&pagesize=" + pagesize + "&fusername=" + escape(fusername) + "&lastdatetime=" + escape(lastdatetime) + "&groupid=" + groupid, function(responseText) {
+                if (responseText) {
+                    friendslistjson = eval('(' + responseText + ')');
+                    if (friendslistjson != null)
+                        CreateFriendsListHTML(friendslistjson);
+                    prevpageid = pageid;
+                    prevgroupid = groupid;
+                    CreatePageNumberHTML(pagecount, pageid, pagesize, fusername, lastdatetime, groupid);
+                    LoadSelectedItems();
+                }
+            });
+        }
+    }
+
+    function LoadFriendsCount(pageid, pagesize, fusername, lastdatetime, groupid) {
+            ajaxRead("{rooturl}tools/sessionajax.aspx?t=getuserfriendshipcount&fusername=" + escape(fusername) + "&lastdatetime=" + escape(lastdatetime) + "&groupid=" + groupid, "OnLoadFriendsCount(obj,'" + pageid + "','" + pagesize + "','" + fusername + "','" + lastdatetime + "'," + groupid + ");");
+    }
+
+    function OnLoadFriendsCount(obj, pageid, pagesize, fusername, lastdatetime, groupid) {
+        var res = obj.getElementsByTagName('count');
+        var result = "";
+        if (res[0] != null && res[0] != undefined) {
+            if (res[0].childNodes.length > 1) {
+                result = res[0].childNodes[1].nodeValue;
+            } else {
+                result = res[0].firstChild.nodeValue;
+            }
+        }
+        var friendscount = parseInt(result, 10);
+        pagecount = parseInt(((friendscount - 1) / pagesize),10) + 1;
+        CreatePageNumberHTML(pagecount, pageid, pagesize, fusername, lastdatetime, groupid);
+    }
+
+    function CreatePageNumberHTML(pagecount, pageid, pagesize, fusername, lastdatetime, groupid) {
+        var appentText = "";
+        var startpage = pageid < 3 ? 1 : pageid - 2;
+        var lastpage = pageid > pagecount - 2 ? pagecount : pageid + 2;
+        var styleclass = "";
+        if (pagecount > 1) {
+            if (pageid > 1)
+                appentText += "<a href=\"javascript:void(0);\" id=\"fripagelinkprev\" onclick=\"LoadFriendsList(" + (pageid - 1) + "," + pagesize + ",'" + fusername + "','" + lastdatetime + "'," + groupid + ")\">上一页</a>";
+                
+            for (var i = startpage; i <= lastpage; i++) {
+                if (i == pageid)
+                    styleclass = " class=\"curpage\" ";
+                appentText += "<a href=\"javascript:void(0);\" id=\"fripagelink" + i + "\" " + styleclass + " onclick=\"LoadFriendsList(" + i + "," + pagesize + ",'" + fusername + "','" + lastdatetime + "'," + groupid + ")\">" + i + "</a>";
+                styleclass = "";
+            }
+
+            if (pageid < pagecount)
+                appentText += "<a href=\"javascript:void(0);\" id=\"fripagelinknext\" onclick=\"LoadFriendsList(" + (pageid + 1) + "," + pagesize + ",'" + fusername + "','" + lastdatetime + "'," + groupid + ")\">下一页</a>";
+
+        }
+        $('friendpagebtn').innerHTML = appentText;
+    }
+
+    function CreateFriendsListHTML(obj) {
+        var selectcontrol = "";
+        var appentText="";
+        for (var i = 0; i < obj.length; i++) {
+            appentText += "<li id=\"fribox" + obj[i].fuid + "\" >";
+            appentText += "<a href=\"javascript:void(0);\" id=\"friselectlink" + obj[i].fuid + "\" title=\"" + obj[i].fusername + "\" onclick=\"SetSelectItem(" + obj[i].fuid + ",'" + obj[i].fusername + "');\" onmouseover=\"SetBoxOnMouseOverStyle(" + obj[i].fuid + ",'on');\" onmouseout=\"SetBoxOnMouseOverStyle(" + obj[i].fuid + ",'out');\">";
+            appentText += "<img src=\"" + obj[i].avatarurl + "\" onerror=\"this.onerror=null;this.src='{imagedir}/noavatar_small.gif';\" />";
+            appentText += "<p>" + obj[i].fusername + "</p></a><input id=\"friselectcache" + obj[i].fuid + "\" type=\"hidden\" /></li>";
+        }
+        if (obj.length <= 0)
+            appentText += "未找到好友";
+        $('friendlist').innerHTML = appentText;
+    }
+
+    function SetSelectItem(id, name) {
+        var selected = $('friselectcache' + id).value == '';
+        if (selecttype == 'radio') {
+            if (selected == true) {
+                $('friendchoiceselectidlist').value = id;
+                $('friendchoiceselectnamelist').value = name;
+            }
+            else {
+                $('friendchoiceselectidlist').value = '';
+                $('friendchoiceselectnamelist').value = '';
+            }
+        }
+        else {
+            if (selected == true) {
+                $('friendchoiceselectidlist').value = $('friendchoiceselectidlist').value + id + ",";
+                $('friendchoiceselectnamelist').value = $('friendchoiceselectnamelist').value + name + ",";
+            }
+            else {
+                $('friendchoiceselectidlist').value = $('friendchoiceselectidlist').value.replace(id + ",", "");
+                $('friendchoiceselectnamelist').value = $('friendchoiceselectnamelist').value.replace(name + ",", "");
+            }
+        }
+        SetBoxOnSelectStyle(id);
+    }
+
+    function GetSelectID(elementID) {
+        if(selecttype=='radio')
+            $(elementID).value = $('friendchoiceselectidlist').value;
+        else
+            $(elementID).value = $('friendchoiceselectidlist').value.substring(0, $('friendchoiceselectidlist').value.length - 1);
+    }
+
+    function GetSelectName(elementID) {
+        if (selecttype == 'radio')
+            $(elementID).value = $('friendchoiceselectnamelist').value;
+        else
+            $(elementID).value = $('friendchoiceselectnamelist').value.substring(0, $('friendchoiceselectnamelist').value.length - 1);
+    }
+
+    function SetBoxOnMouseOverStyle(id, action) {
+        if (action == 'on')
+            $('friselectlink' + id).style.border = '1px solid #00CED1';
+        else
+            $('friselectlink' + id).style.border = '';
+    }
+
+    function SetBoxOnSelectStyle(id) {
+        if (selecttype == 'radio') {
+            try {
+                if (oriselectid != id) {
+                    $('fribox' + oriselectid).style.backgroundColor = '';
+                    $('friselectcache' + oriselectid).value = '';
+                }
+            }
+            catch (e) {
+            }
+        }
+        var cache = $('friselectcache' + id).value;
+
+        if (cache == '') {
+            $('fribox' + id).style.backgroundColor = '#87CEEB';
+            $('friselectcache' + id).value = '1';
+            oriselectid = id;
+        }
+        else {
+            $('fribox' + id).style.backgroundColor = '';
+            $('friselectcache' + id).value = '';
+        }
+    }
+
+    function LoadSelectedItems() {
+        var selecteditems;
+        if (selecttype == 'radio') {
+            selecteditems = $('friendchoiceselectidlist').value;
+            try {
+                SetBoxOnSelectStyle(parseInt(selecteditems, 10));
+            }
+            catch (e) {
+            }
+        }
+        else{
+            selecteditems = $('friendchoiceselectidlist').value.substring(0, $('friendchoiceselectidlist').value.length - 1).split(',');
+            for (var i = 0; i < selecteditems.length; i++) {
+                try {
+                    SetBoxOnSelectStyle(parseInt(selecteditems[i], 10));
+                }
+                catch (e) {
+                } 
+            }
+        }
+    }
+</script>

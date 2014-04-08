@@ -1,0 +1,1 @@
+<%@ Page Inherits="Discuz.Space.setp" CodeBehind="setp.aspx.cs" Language="c#" AutoEventWireup="false" %>

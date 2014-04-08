@@ -1,0 +1,85 @@
+
+<script type="text/javascript"  src="{jsdir}/post.js"></script>
+<form method="post" name="postform" id="quickpostform" action="{forumurl}posttopic.aspx?forumid={forumid}" enctype="multipart/form-data" onsubmit="return fastvalidate(this);">
+<div id="quickpost">
+	<table summary="快速发布帖子" cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+		<td class="quickpostauthor">
+			<div class="avatar">
+			<%set (string){avatarurl}=Avatars.GetAvatarUrl(userid) %>
+		    <img src="{avatarurl}" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';" alt="发帖者"/>
+			</div>
+		</td>
+		<td class="postcontent" style="padding-top:0;">
+			<%if {quickeditorad}!=""%>
+			<div class="leaderboard">{quickeditorad}</div>
+			<%/if%>
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个性设置">
+			<tbody>
+			<tr>
+				<td>
+				<em id="validatemessage"></em>
+				<input type="text" id="title" name="{config.antispamposttitle}" size="60" tabindex="1" value="" class="txt  left"/>
+				<%if {forum.applytopictype}==1 && {topictypeselectoptions}!=""%>
+					<div class="float_typeid " style="margin-left:10px;">
+						<select name="typeid" id="typeid">
+						{topictypeselectoptions}
+						</select>
+						<script type="text/javascript">loadselect('typeid', 0);</script>
+					</div>
+				<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding-top:0;">
+				<span style="display:none">
+		        <input type="checkbox" value="1" name="htmlon" id="htmlon" <%if {usergroupinfo.allowhtml}!=1%> disabled<%/if%>/>
+		        <input type="checkbox" value="1" name="parseurloff" id="parseurloff" <%if {parseurloff}==1%>checked <%/if%> />
+		        <input type="checkbox" value="1" name="smileyoff" id="smileyoff" <%if {smileyoff}==1%> checked disabled <%/if%> />
+		        <input type="checkbox" value="1" name="bbcodeoff" id="bbcodeoff" <%if {bbcodeoff}==1%> checked disabled <%/if%> />
+		        <input type="checkbox" value="1" name="usesig" id="usesig"<%if {usesig}==1%>checked<%/if%>/>
+		        </span>
+				<script type="text/javascript">
+					var bbinsert = parseInt('1');
+					var smiliesCount = 24;
+					var colCount = 8;
+				</script>
+				<!--				
+				<span class="right">
+					<a href="post.php?action=reply&fid=$fid&tid=$tid" onclick="floatwin('open_reply', this.href, 600, 410, '600,0');return false;">{lang post_expert_newreply}</a>
+					<span class="pipe">|</span>
+					<span id="newspecialtmp" onmouseover="$('newspecial').id = 'newspecialtmp';this.id = 'newspecial';showMenu(this.id)"><a href="post.php?action=newthread&fid=$fid" onclick="floatwin('open_newthread', this.href, 600, 410, '600,0');return false;">{lang post_newthread}</a></span>
+				</span>
+				{eval $seditor = array('fastpost', array('bold', 'color', 'img', 'link', 'quote', 'code', 'smilies'));}
+				-->
+				<%set (string){seditorid} = "quickpost"%>
+				<%set (char){comma} = ','%>
+				<%template _seditor%>
+				<textarea rows="5" cols="80" name="{config.antispampostmessage}" id="quickpostmessage" onKeyDown="seditor_ctlent(event, 'fastvalidate($(\'quickpostform\'))');" tabindex="2" class="txtarea"  style="background:#FFF url({quickbgad[1]}) no-repeat 50% 50%;" <%if {quickbgad[0]}!=""%> onfocus="$('adlinkbtn').style.display='';$('closebtn').style.display='';this.onfocus=null;"<%/if%>></textarea>
+				</td>
+			</tr>
+			<%if {isseccode}%>
+			<tr>
+				<td><div style="position: relative;">
+			<%template _vcode%>
+		</div></td>
+			</tr>
+			<%/if%>
+			<tr>
+				<td>
+					<button type="submit" id="quickpostsubmit" name="topicsubmit" tabindex="3">发表帖子</button> <span class="grayfont">[Ctrl+Enter快速发布]</span>
+					<a href="###" id="adlinkbtn" style="display:none;" onclick="window.open('{quickbgad[0]}','_blank');">查看背景广告</a>
+					<a href="###" id="closebtn" style="display:none;" onclick="$('quickpostmessage').style.background='';this.style.display='none';$('adlinkbtn').style.display='none';">隐藏</a>
+					<input type="hidden" id="postbytopictype" name="postbytopictype" value="{forum.postbytopictype}" tabindex="3" />
+				</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+		
+</div>
+</form>

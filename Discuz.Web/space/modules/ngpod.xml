@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs
+		title="National Geographic POD"
+		title_url="http://lava.nationalgeographic.com/pod/"
+		directory_title="National Geographic Photo of the Day"
+		description="National Geographic Photo of the Day"
+		author="Cameron Hall"
+		author_email="drbeagledotcom+modulefeedback@gmail.com"
+    author_affiliation="Cornell University Student"
+		author_location="Ithaca, NY, USA"
+		screenshot="http://drbeagledotcom.googlepages.com/ngpod.png"
+		thumbnail="http://drbeagledotcom.googlepages.com/ngpodtb.png"
+    scaling="false"
+		render_inline="optional"
+    author_photo="http://drbeagledotcom.googlepages.com/profile.png"
+    author_aboutme="2008 Information Science student at Cornell University. Enjoy doing work, but love getting distracted by google modules."
+    author_link="http://drbeagle.com/"
+    author_quote="So long, and thanks for all the fish"
+		>
+		<Require feature="dynamic-height" />
+	</ModulePrefs>
+	<UserPref name="per" 
+    display_name="Percent" 
+    datatype="string" 
+    default_value=".65" 
+    required="true" />
+	<Content type="html-inline">
+		<![CDATA[
+<div
+	id="NatGeoPOD"
+	style="
+		margin: 0px auto;
+		text-align: center;
+		font-size: .75em;
+		font-weight: bold;
+	">
+</div>
+	<script type="text/javascript">
+		var pod = "http://lava.nationalgeographic.com/pod/";
+		var base = "http://lava.nationalgeographic.com";
+		var html = "";
+		var imgW = "470";
+		var imgH = "325";
+		var error = "";
+		
+		function getPOD(percent) {
+			_IG_FetchContent(pod, function (responseText) {
+				if (responseText == "") {
+					html += 'Photo Data not available, please try a little later.<br />';
+					html += '<a href="'+pod+'" target="_blank">';
+					html += '<img id="ngpodimg" src="http://drbeagledotcom.googlepages.com/ngpoderror.png" border="0"></a><br />';
+					html += '<a href="'+base+'/cgi-bin/pod/archive.cgi"';
+					html += ' target="_blank">POD Archive</a>';
+					_gel('NatGeoPOD').innerHTML = html;
+					return;
+				} else {
+					var c = responseText;
+					RegExp.multiline = true;
+					var regExp = /\/pod\/pictures\/normal\/[a-zA-Z0-9._%\-]+\.jpg/;
+					var imgA = regExp.exec(c);
+					var imgL = base+imgA[0];
+					html += '<a href="'+pod+'" target="_blank">';
+					html += '<img id="ngpodimg" src="'+imgL+'" border="0"></a><br />';
+					_gel('NatGeoPOD').innerHTML = html;
+					var x = _gel('ngpodimg');
+					x.width = imgW * percent;
+					x.height = imgH * percent;
+					RegExp.multiline = true;
+					var regExpb = /<div class="place-photographer" style="margin-top:10px;margin-left:10px;">[a-zA-Z0-9._%\-,\s]+<\/div>/;
+					var info = regExpb.exec(responseText);
+					var end = info[0].length - 6;
+					var htmlb = '<a href="'+base+'/cgi-bin/pod/archive.cgi" style="font-size: .75em; font-weight: normal;" ';
+					htmlb += ' target="_blank">POD Archive</a> - ' + info[0].substring(74, end);
+					_gel('NatGeoPOD').innerHTML += htmlb;
+				}
+				_IG_AdjustIFrameHeight();
+			});
+		}
+		var prefs = new _IG_Prefs(__MODULE_ID__);
+		var pper = prefs.getString("per");
+		
+		_IG_RegisterOnloadHandler(getPOD(pper));
+		//_IG_Analytics("UA-1238140-1", "/ngpod");
+		//_IG_AdjustIFrameHeight();
+	</script>
+		]]>
+	</Content>
+</Module>

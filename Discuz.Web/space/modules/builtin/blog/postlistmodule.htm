@@ -1,0 +1,52 @@
+﻿<link rel="stylesheet" type="text/css" href="skins/themes/blog.css" />
+<link rel="stylesheet" type="text/css" href="skins/themes/{$Skin}/style.css" />
+
+<div class="ArticleList">
+    <span style='position: absolute;right:5px;top:0;'><a href='{$ForumPath}usercpspacepostblog.aspx' target='_blank'>发表新日志</a></span>
+    <div id="bodyrightcontent">
+        {$ItemTemplate}
+    </div>
+</div>
+
+/*Discuz Separator*/
+
+<div class="SpaceArticle">
+    <div class="SpaceArticleTitle">
+        <div class="SpaceTime">{$TimeTemplate}</div>
+        <div class="SpaceTitle">{$LinkTemplate}</div>
+    </div>
+</div>
+{$TagTemplate}
+<div class="SpaceArticleContent">
+    {$ContentTemplate}
+</div><br />
+
+/*Discuz Separator*/
+
+<span class="TimeYear">{$Year}</span><br><span class="TimeMonth">{$Month}-{$Date}</span>
+
+/*Discuz Separator*/
+
+<a target="_blank" href="{$Root}space/viewspacepost.aspx?postid={$PostId}&spaceid={$SpaceId}">
+    {$Title}
+</a>  
+{$Category}
+查看:   
+<strong>
+    <a href="{$Root}space/viewspacepost.aspx?postid={$PostId}&spaceid={$SpaceId}">{$Views}</a>
+</strong>
+<a href="{$Root}space/viewspacepost.aspx?postid={$PostId}&spaceid={$SpaceId}#comments">
+    <span>评论({$ComentCount})</span>
+</a>
+
+/*Discuz Separator*/
+<div class="tagbox">标签: {$TagItem}</div>
+/*Discuz Separator*/
+
+<a href="{$TagUrl}" target="_blank">{$TagName}</a>
+
+/*Discuz Separator*/
+
+<p>{$Content}</p>
+/*Discuz Separator*/
+<p><a href="{$Root}space/viewspacepost.aspx?postid={$PostId}&spaceid={$SpaceId}">点击此处查看原文</a></p>

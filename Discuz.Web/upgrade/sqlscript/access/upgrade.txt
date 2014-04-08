@@ -1,0 +1,235 @@
+﻿ALTER TABLE [dnt_forumfields] ADD [seokeywords] varchar (255) NULL
+GO
+ALTER TABLE [dnt_forumfields] ADD [seodescription] varchar (255) NULL
+GO
+ALTER TABLE [dnt_forumfields] ADD [rewritename] varchar (20)  NULL
+GO
+ALTER TABLE [dnt_online] ADD [newpms] integer NOT NULL   DEFAULT  0
+GO
+ALTER TABLE [dnt_online] ADD [newnotices] integer NOT NULL   DEFAULT  0
+GO
+ALTER TABLE [dnt_topics] ADD [attention] integer NOT NULL   DEFAULT  0
+GO
+ALTER TABLE [dnt_attachments] ADD [attachprice] integer NOT NULL   DEFAULT  0
+GO
+
+UPDATE [dnt_topics] SET [attention]=0
+GO
+	
+CREATE TABLE [dnt_attachpaymentlog] (
+	[id] integer IDENTITY (1,1) not null,
+	[uid] integer Default 0,
+	[username] char(50),
+	[aid] integer Default 0,
+	[authorid] integer Default 0,
+	[postdatetime] datetime,
+	[amount] integer Default 0,
+	[netamount] integer Default 0
+	)
+GO
+
+CREATE TABLE [dnt_navs] (
+	[id] integer IDENTITY (1,1) not null,
+	[parentid] integer Default 0,
+	[name] char(50),
+	[title] char(50),
+	[url] char(50),
+	[target] integer Default 0,
+	[type] integer Default 0,
+	[available] integer Default 0,
+	[displayorder] integer Default 0,
+	[highlight] integer Default 0,
+	[level] integer Default 0
+	)
+GO
+
+CREATE TABLE [dnt_banned] (
+	[id] integer IDENTITY (1,1) not null,
+	[ip1] integer Default 0,
+	[ip2] integer Default 0,
+	[ip3] integer Default 0,
+	[ip4] integer Default 0,
+	[admin] char(50),
+	[dateline] datetime,
+	[expiration] datetime
+	)
+GO
+
+
+CREATE TABLE [dnt_notices] (
+	[nid] integer IDENTITY (1,1) not null,
+	[uid] integer Default 0,
+	[type] integer Default 0,
+	[new] integer Default 0,
+	[posterid] integer Default 0,
+	[poster] char(50),
+	[note] text,
+	[postdatetime] datetime
+	)
+GO
+
+CREATE INDEX [uid] ON [dnt_notices]([uid])
+GO
+
+CREATE TABLE [dnt_orders] (
+	[orderid] char(50),
+	[status] char(50),
+	[buyer] char(50),
+	[admin] char(50),
+	[uid] integer Default 0,
+	[amount] integer Default 0,
+	[price] integer Default 0,
+	[submitdate] integer Default 0,
+	[confiremdate] integer Default 0
+	)
+GO
+
+CREATE TABLE [dnt_tradeoptionvars] (
+	[typeid] integer Default 0,
+	[pid] integer Default 0,
+	[optionid] integer Default 0,
+	[value] text
+	)
+GO
+
+
+UPDATE [dnt_usergroups] SET [allowhtml]=1 WHERE [groupid]=1
+GO
+ALTER TABLE [dnt_words] ALTER COLUMN [id] integer
+GO
+ALTER TABLE [dnt_forums] ALTER COLUMN [parentid] integer NOT NULL
+GO
+
+ALTER TABLE [dnt_forumfields] ALTER COLUMN [fid] integer NOT NULL
+GO
+
+ALTER TABLE [dnt_usergroups] ALTER COLUMN [creditslower] integer NOT NULL
+GO
+
+ALTER TABLE [dnt_polloptions] ALTER COLUMN [polloption] varchar (80) NOT NULL
+GO
+
+UPDATE [dnt_templates] SET [createdate]='2008-12-1',[ver]=2.6,[fordntver]=2.6
+GO
+
+CREATE INDEX [msgtoid] ON [dnt_pms] ([msgtoid])
+GO
+
+CREATE INDEX [getsearchid] ON [dnt_searchcaches] ([searchstring], [groupid])
+GO
+
+CREATE  INDEX [displayorder] ON [dnt_topics]([displayorder])
+GO
+CREATE  INDEX [fid] ON [dnt_topics]([fid])
+GO
+
+CREATE  INDEX [list_date] ON [dnt_topics]([fid], [displayorder], [postdatetime], [lastpostid] DESC )
+GO
+
+CREATE  INDEX [list_tid] ON [dnt_topics]([fid], [displayorder], [tid])
+GO
+
+CREATE  INDEX [list_replies] ON [dnt_topics]([fid], [displayorder], [postdatetime], [replies])
+GO
+
+CREATE  INDEX [list_views] ON [dnt_topics]([fid], [displayorder], [postdatetime], [views])
+GO
+CREATE  INDEX [displayorder_fid] ON [dnt_topics]([displayorder], [fid])
+GO
+
+CREATE  INDEX [fid_displayorder] ON [dnt_topics]([fid], [displayorder])
+GO
+
+CREATE  INDEX [parentid] ON [dnt_posts1]([parentid])
+GO
+
+CREATE  INDEX [showtopic] ON [dnt_posts1]([tid], [invisible], [pid])
+GO
+
+CREATE  INDEX [treelist] ON [dnt_posts1]([tid], [invisible], [parentid])
+GO
+
+CREATE  INDEX [tid] ON [dnt_attachments]([tid])
+GO
+
+CREATE  INDEX [pid] ON [dnt_attachments]([pid])
+GO
+
+CREATE  INDEX [uid] ON [dnt_attachments]([uid])
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'短消息','短消息','usercpinbox.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'用户中心','用户中心','usercp.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'系统设置','系统设置','admin/index.aspx',1,0,1,0,0,3)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'我的','我的','#',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'标签','标签','tags.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'统计','统计','stats.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'会员','会员','showuser.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'搜索','搜索','search.aspx',1,0,0,0,0,2)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(0,'帮助','帮助','help.aspx',1,0,0,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'基本状况','基本状况','usercpinbox.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'流量统计','流量统计','stats.aspx?type=views',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'客户软件','客户软件','stats.aspx?type=client',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'发帖量记录','发帖量记录','stats.aspx?type=posts',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'版块排行','版块排行','stats.aspx?type=forumsrank',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'主题排行','主题排行','stats.aspx?type=topicsrank',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'发帖排行','发帖排行','stats.aspx?type=postsrank',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'积分排行','积分排行','stats.aspx?type=creditsrank',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(6,'在线时间','在线时间','stats.aspx?type=onlinetime',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的主题','我的主题','mytopics.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的回复','我的回复','myposts.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的精华','我的精华','search.aspx?posterid=current&amp;type=digest',0,0,1,0,0,0)
+GO
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的附件','我的附件','myattachment.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的收藏','我的收藏','usercpsubscribe.aspx',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的空间','我的空间','space/',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的相册','我的相册','showalbumlist.aspx?uid=-1',0,0,1,0,0,0)
+GO
+
+INSERT INTO [dnt_navs]([parentid],[name],[title],[url],[target],[type],[available],[displayorder],[highlight],[level]) VALUES(4,'我的商品','我的商品','usercpmyods.aspx',0,0,1,0,0,0)

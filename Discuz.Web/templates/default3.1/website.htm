@@ -1,0 +1,832 @@
+﻿<%csharp%>
+/*
+聚合首面方法说明
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+方法名称: GetForumTopicList(count, views, forumid, timetype, ordertype, isdigest, onlyimg)
+方法说明: 返回指定条件的主题列表信息
+参数说明:
+          count : 返回的主题数 
+          views : 浏览量 [返回等于或大于当前浏览量的主题]
+          forumid : 版块ID [默认值 0 为所有版块]
+          timetype : 指定时间段内的主题 [ TopicTimeType.Day(一天内)  , TopicTimeType.Week(一周内),   TopicTimeType.Month(一个月内),   TopicTimeType.SixMonth(六个月内),  TopicTimeType.Year(一年内),  TopicTimeType.All(默认 从1754-1-1至今的所有主题)
+          ordertype : 排序字段(降序) [TopicOrderType.ID(默认 主题ID) , TopicOrderType.Views(浏览量),   TopicOrderType.LastPost(最后回复),    TopicOrderType.PostDateTime(按最新主题查),    TopicOrderType.Digest(按精华主题查),    TopicOrderType.Replies(按回复数)]  
+          isdigest : 是否精化 [true(仅返回精华主题)   false(不加限制)]
+          onlyimg : 是否包含附件 [true(仅返回包括图片附件的主题)   false(不加限制)]
+      
+//////////////////////////////////////////////////////////////////////////////////////////////    
+
+方法名称: GetHotForumList(count)   
+方法说明: 返回指定数量的热门版块列表
+参数说明:
+          count : 返回的版块数
+    
+//////////////////////////////////////////////////////////////////////////////////////////////      
+
+方法名称: GetForumList(forumid)   
+方法说明: 返回指定版块下的所有子段块列表
+参数说明:
+          forumid : 指定的版块id
+      
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetLastPostList(forumid, count)   
+方法说明: 返回指定版块下的最新回帖列表
+参数说明:
+          forumid : 指定的版块id     
+          count : 返回的回帖数
+ 
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetAlbumList(photoconfig.Focusalbumshowtype, count, days)   
+方法说明: 返回指定条件的相册列表
+参数说明:
+          photoconfig.Focusalbumshowtype : 排序字段(降序) [1(浏览量), 2(照片数), 3(创建时间)]    注:管理后台聚合设置项
+          count : 返回的相册数
+          days :有效天数 [指定天数内的相册]
+      
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetWeekHotPhotoList(photoconfig.Weekhot)
+方法说明: 返回指定数量的热门图片
+参数说明:
+          photoconfig.Weekhot : 返回的热图数量  注:管理后台聚合设置项
+          
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetSpaceTopComments(count)
+方法说明: 返回指定数量的空间最新评论
+参数说明:
+          count : 返回的评论数
+          
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetRecentUpdateSpaceList(count)
+方法说明: 返回指定数量的最新更新空间列表
+参数说明:
+          count : 返回的空间信息数
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetGoodsList(condition, orderby, categoryid, count)
+方法说明: 返回指定数量的最新更新空间列表
+参数说明:
+          condition : 条件 [recommend(仅返回推荐商品, 商城模式下可用) , quality_new(仅返回全新(状态)商品),    quality_old(仅返回二手(状态)商品)]  
+          orderby: 排序字段(降序) [viewcount(按浏览量排序),    hotgoods(按商品交易量排序),  newgoods(按发布商品先后顺序排序) ]
+          categoryid : 商品所属分类id [默认值 0 为不加限制]
+          count : 返回的商品数
+          
+ 
+//////////////////////////////////////////////////////////////////////////////////////////////  
+
+方法名称: GetUserList(count, orderby)
+方法说明: 返回指定数量及排序方式的用户列表
+参数说明:
+          count : 返回的用户数       
+          orderby: 排序字段(降序) [credits(用户积分), posts(用户发帖数), lastactivity(最后活动时间), joindate(注册时间), oltime(在线时间)]
+*/
+<%/csharp%> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{meta}
+<title>{pagetitle} {config.seotitle} - {config.webtitle} - Powered by Discuz!NT</title>
+<meta name="generator" content="Discuz!NT {forumversion}" />
+<meta name="author" content="Discuz!NT Team and Comsenz UI Team" />
+<meta name="copyright" content="2001-2010 Comsenz Inc." />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<link rel="icon" href="{forumurl}favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="{forumurl}favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="{forumurl}templates/{templatepath}/float.css" type="text/css" media="all"  />
+<link rel="stylesheet" href="{forumurl}templates/{templatepath}/website.css" type="text/css" media="all"  />
+{link}
+<script type="text/javascript">
+    var forumpath = "{forumpath}";
+</script>
+<script type="text/javascript"  src="{jsdir}/template_report.js"></script>
+<script type="text/javascript" src="{jsdir}/template_utils.js"></script>
+<script type="text/javascript" src="{jsdir}/template_website.js"></script>
+<script type="text/javascript" src="{jsdir}/common.js"></script>
+{script}
+<script type="text/javascript">
+	var aspxrewrite = {config.aspxrewrite};
+	var IMGDIR = '{forumurl}templates/{templatepath}/images';
+    var disallowfloat = '{config.disallowfloatwin}';
+	var rooturl="{rooturl}";
+</script>
+</head>
+<body onkeydown="if(event.keyCode==27) return false;">
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<div id="header">
+	<div class="wrap head s_clear">
+	<h2><a title="{config.seotitle}" href="/index.aspx"><img alt="{config.webtitle}" src="templates/{templatepath}/images/gather/sitelogo.gif"/></a></h2>
+	<%if {headerad}!=""%>
+		<div id="ad_headerbanner" style="display:none;">{headerad}</div>
+	<%/if%>
+	<div id="user_info" class="user_info">
+	<%if {userid}==-1%>
+	<form id="loginform" name="loginform" method="post" action="{rooturl}login.aspx?referer=website.aspx">
+	<dl class="login">		
+		<dt>用户名</dt>
+		<dd><input type="text" id="username" name="username" autocomplete="off" size="12" maxlength="20" value="" tabindex="1" class="txt"/></dd>
+		<dt>密码</dt>
+		<dd><input type="password" id="password3" name="password" size="12" class="txt" tabindex="1"/></dd>
+		<dd class="btn"><input type="image" src="{forumpath}templates/{templatepath}/images/gather/btn_login.gif" alt="登录" /></dd>
+		<dd class="btn"><input type="image" src="{forumpath}templates/{templatepath}/images/gather/btn_register.gif" alt="注册" onclick="window.location='{forumpath}register.aspx';return false" /></dd>
+	</dl>
+	<input type="checkbox" value="43200" tabindex="1" id="expires" name="expires" checked style="display:none"/>
+	</form>
+	<%else%>
+	<dl class="user">
+		<dt><a alt="用户名称" title="用户名称" target="_blank" href="usercp.aspx"><img src="{useravatar}" onerror="this.onerror=null;this.src='templates/{templatepath}/images/noavatar_small.gif';" /></a></dt>
+		<dd>
+		<ul>
+			<li><strong>欢迎{username}</strong>
+				<a target="_blank" href="usercpinbox.aspx" title="{oluserinfo.newpms}条新短消息">短消息<%if {oluserinfo.newpms}>0%>({oluserinfo.newpms})<%/if%></a>
+				<span class="pipe">|</span>
+				<a href="{forumpath}usercpnotice.aspx?filter=all">通知<%if {oluserinfo.newnotices}>0%>({oluserinfo.newnotices})<%/if%></a>
+				<span class="pipe">|</span>
+				<%if {useradminid}==1%>
+				<a href="{forumpath}admin/index.aspx" target="_blank">系统设置</a>
+				<span class="pipe">|</span>
+				<%/if%>
+				<a href="logout.aspx?userkey={userkey}">退出</a>
+			</li>
+			<li><%if {score[1]}!=""%>{score[1]}: {score1}<%/if%> <%if {score[2]}!=""%>, {score[2]}: {score2}<%/if%> <%if {score[3]}!=""%>, {score[3]}: {score3}<%/if%> </li>
+		</ul>
+		</dd>
+	</dl>
+	<%/if%>
+	</div>
+	</div>
+	<div id="menu">
+		<ul class="wrap s_clear">
+			{mainnavigation}
+		</ul>
+	</div>
+</div>
+<div id="nav">
+	<div class="wrap s_clear">
+		<span class="right">
+			<a href="showtopiclist.aspx?type=newtopic">查看新帖</a>
+			<a href="showtopiclist.aspx?type=digest&amp;forums=all">精华区</a>
+			<a target="_blank" href="tools/rss.aspx"><img alt="rss" src="templates/{templatepath}/images/icon_feed.gif"/></a>
+		</span>
+		<%if {usergroupinfo.allowsearch}>0%>
+		<div id="search">
+			<form method="post" action="{forumurl}search.aspx" target="_blank" onsubmit="bind_keyword(this);">
+			<input type="hidden" name="poster" />
+			<input type="hidden" name="keyword" />
+			<input type="hidden" name="type" value="" />
+			<input id="keywordtype" type="hidden" name="keywordtype" value="0" />
+			<dl>
+				<dt style="display:none;">快速搜索</dt>
+				<dd><input name="keywordf" type="text" class="keywords" id="keywordf" onblur="if(this.value=='')this.value=defaultValue" onclick="if(this.value==this.defaultValue)this.value = ''" onkeydown="if(this.value==this.defaultValue)this.value = ''" value="输入搜索关键字"/><div class="select_chose" id="quicksearch" onclick="showMenu(this.id, false);" onmouseover="MouseCursor(this);">标题</div>
+				</dd>
+				<dd style="padding:1px 4px 4px;"><input type="submit" class="btnsearch" value="搜索" name="searchsubmit"/></dd>
+			</dl>
+			</form>	
+		</div>
+		<script type="text/javascript">
+		function bind_keyword(form) {
+		if (form.keywordtype.value == '9') {
+		    form.action = '{forumurl}forumsearch.aspx?q=' + escape(form.keywordf.value);
+		} else if (form.keywordtype.value == '8') {
+			form.keyword.value = '';
+			form.poster.value = form.keywordf.value;
+		} else {
+			form.poster.value = '';
+			form.keyword.value = form.keywordf.value;
+			if (form.keywordtype.value == '2')
+				form.type.value = 'spacepost';
+			if (form.keywordtype.value == '3')
+				form.type.value = 'album';
+		}
+		}
+		</script>
+		<%/if%>
+		<a class="title" onmouseout="showMenu(this.id);" onmouseover="showMenu(this.id);" href="forumindex.aspx" id="forumlist">{config.forumtitle}</a> » 首页
+	</div>
+</div>
+<ul id="quicksearch_menu" class="popupmenu_popup" style="display:none;">
+	<li onclick="$('keywordtype').value='0';$('quicksearch').innerHTML='标题';$('quicksearch_menu').style.display='none';" onmouseover="MouseCursor(this);">标题</li>
+	<%if {config.Enablespace}==1%>
+	<li onclick="$('keywordtype').value='2';$('quicksearch').innerHTML='空间';$('quicksearch_menu').style.display='none';" onmouseover="MouseCursor(this);">空间</li>
+	<%/if%>
+	<%if {config.Enablealbum}==1%>
+	<li onclick="$('keywordtype').value='3';$('quicksearch').innerHTML='相册';$('quicksearch_menu').style.display='none';" onmouseover="MouseCursor(this);">相册</li>
+	<%/if%>
+	<li onclick="$('keywordtype').value='8';$('quicksearch').innerHTML='作者';$('quicksearch_menu').style.display='none';" onmouseover="MouseCursor(this);">作者</li>
+	<li onclick="$('keywordtype').value='9';$('quicksearch').innerHTML='版块';$('quicksearch_menu').style.display='none';" onmouseover="MouseCursor(this);">版块</li>
+</ul>
+<div class="wrap s_clear contentbox">
+<%if page_err==0%>
+<div id="websiteheaderad" class="ad s_clear"></div>
+<div id="forum_global" class="forum_global s_clear">
+	<div class="forum_main">
+		<div class="topic">
+            <%loop (PostInfo) toppost postlist%>
+                <%if {toppost[_id]}==3%>
+                </div>
+		        <div class="topic_list">
+		            <ul>		
+                <%/if%>
+                <%if {toppost[_id]}==11%>
+			        </ul><ul>
+                <%/if%>
+                <%if {toppost[_id]}<=2%>		
+				<a href="{forumurl}{ShowTopicAspxRewrite(toppost.Tid,0)}" target="_blank">
+				<h2><a href="{forumurl}{ShowTopicAspxRewrite(toppost.Tid,0)}" target="_blank">{toppost.title}</a></h2>
+				<p><a href="{forumurl}{ShowTopicAspxRewrite(toppost.Tid,0)}" target="_blank">{toppost.message}</a></p>
+				<%else%>
+                <li>
+                    <strong>
+                        <%set {aspxrewriteurl} = this.ShowForumAspxRewrite({toppost.fid},0,{toppost.ForumRewriteName})%>
+                        [<a href="{forumurl}{aspxrewriteurl}" target="_blank">{toppost.forumname}</a>]
+                    </strong>
+                    <%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({toppost.tid},0)%>
+                    <a href="{forumurl}{aspxrewriteurl}" target="_blank" title="{toppost.title}"><%getsubstring({toppost.title},43,"...")%></a>
+               </li>            
+				<%/if%>
+				<%if {toppost[_id]}==18%>
+				    <%break%>
+				<%/if%>
+            <%/loop%>	
+            <%if postlist.Length>=11||postlist.Length>2&&postlist.Length<11%>
+				</ul>
+		    <%/if%>
+		</div>
+		<%if postlist.Length<3%>
+		<div class="topic_list">
+		<ul>		
+		<%set {topiclist} = forumagg.GetForumTopicList(16, 0, 0, TopicTimeType.Year, topicordertype, false, false)%>	
+		<%loop toptopicinfo topiclist%> 
+			<%if {toptopicinfo[_id]}==9%>	
+			</ul><ul>
+			<%/if%>
+            <li>
+                <strong>
+                    <%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({toptopicinfo[fid]})},0,{toptopicinfo[rewritename]})%>
+                    [<a href="{forumurl}{aspxrewriteurl}" target="_blank">{toptopicinfo[name]}</a>]
+                </strong>
+                <%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({toptopicinfo[tid]},0)%>
+                <a href="{forumurl}{aspxrewriteurl}" target="_blank" title="{toptopicinfo[title]}"><%getsubstring({toptopicinfo[title]},43,"...")%></a>
+           </li>            
+        <%/loop%>
+		</ul>
+		</div>
+		<%/if%>
+	</div>
+	<div class="forum_exta">
+		<div class="flash s_clear">
+			<%if {rotatepicdata}!=null && {rotatepicdata}!=""%>			
+			<div class="modulebox" style="padding:1px;">
+				<script type='text/javascript'>
+				var imgwidth = 320;
+				var imgheight = 240;
+				</script>			
+				<!--图片轮换代码开始-->
+				<script type="text/javascript" src="{jsdir}/template_rotatepic.js"></script>
+				<script type="text/javascript">
+				var data = { };
+				
+				{rotatepicdata}
+				
+				var ri = new MzRotateImage();
+				ri.dataSource = data;
+				ri.width = 320;
+				ri.height = 240;
+				ri.interval = 3000;
+				ri.duration = 2000;
+				document.write(ri.render());
+				
+				</script>
+				<!--图片轮换代码结束-->
+			</div>
+        <%/if%>	    
+		</div>
+		<div class="hot_topic s_clear">
+			<h2>论坛热帖</h2>
+			<div class="content s_clear">				
+				<ul>
+				    <%set (int) {hottopicscount}=Discuz.Aggregation.TopicAggregationData.GetForumAggerationHotTopics().Rows.Count%>		
+				    <%if {hottopicscount}==0%>
+					<script language="JavaScript" type="text/javascript" src="tools/showtopics.aspx?aggregation=1&count=9&time=2&order=1"></script>
+					<%else%>	 
+				    <%set (DataTable){hottopicslist}=Discuz.Aggregation.TopicAggregationData.GetForumAggerationHotTopics()%>
+				    <%loop newhottopicinfo hottopicslist%>
+				    <li>
+				    <span>
+				        <%set {aspxrewriteurl}=this.ShowForumAspxRewrite({strtoint({newhottopicinfo[fid]})},0,{newhottopicinfo[forumnamerewritename]})%>
+				        <a href="{aspxrewriteurl}" target="_blank">[{newhottopicinfo[forumname]}]</a>
+				    </span>
+				    <%set {aspxrewriteurl}=this.ShowTopicAspxRewrite({newhottopicinfo[tid]},0)%>
+				    <a href="{aspxrewriteurl}" target="_blank" title="{newhottopicinfo[title]}">{newhottopicinfo[title]}</a>
+				    </li>
+				    <%/loop%>
+				    <%/if%>
+				</ul>			
+                <div class="ad_pic" style="padding-left:4px;"><div id="websitehottopicad"></div></div>
+			</div>
+		</div>
+	</div>
+	<div class="forum_slide">
+		<div class="hot_forum">
+			<div class="titlebar">
+			<ul>
+				<li id="li_hotforum" class="current"><a onclick="javascript:tabselect($('li_hotforum'));" href="javascript:;">热门版块</a></li>
+				<li id="li_bbsmessage"><a onclick="javascript:tabselect($('li_bbsmessage'));" href="javascript:;">论坛信息</a></li>
+			</ul>
+			</div>
+			<div class="content">
+				<ul id="hotforum">
+				<%loop __foruminfo forumagg.GetHotForumList(10)%> 						
+					<%set {aspxrewriteurl} = ShowForumAspxRewrite({strtoint({__foruminfo[fid]})},0, {__foruminfo[rewritename]})%>				
+					<li><em>{__foruminfo[posts]}帖</em><cite <%if {__foruminfo[_id]}==1%>class="first"<%/if%> <%if {__foruminfo[_id]}==2%>class="second"<%/if%> <%if {__foruminfo[_id]}==3%>class="third"<%/if%> > {__foruminfo[_id]}</cite><a href="{forumurl}{aspxrewriteurl}" target="_blank">{__foruminfo[name]}</a></li>
+				<%/loop%>
+				</ul>
+				<ul id="bbsmessage" style="display:none;">
+					<li>会员总数: <i>{totalusers}</i>人</li>
+					<li>最新注册会员:<i><%set {aspxrewriteurl} = this.UserInfoAspxRewrite({lastuserid})%><a href="{aspxrewriteurl}" target="_blank">{lastusername}</a></i></li>
+					<li>主题数:<i>{totaltopic}</i>主题</li>
+					<li>帖子数:<i>{totalpost}</i> 个(含回帖) </li>
+					<li>今  日:<i>{todayposts}</i>帖  昨 日: <i>{yesterdayposts}</i> 帖</li>
+					<%if {highestpostsdate}!=""%>
+						<li>	
+							最高日:<i>{highestposts}</i>帖
+						</li>
+						<li>	
+							最高发帖日:<i>{highestpostsdate}</i>
+						</li>
+					<%/if%>
+					<li>在线总数:<i>{totalonline}</i>人</li>
+					<li>最高在线:<i>{highestonlineusercount}</i> 人 </li>
+					<li>发生于:<i>{highestonlineusertime}</i></li>
+				</ul>
+			</div>
+		</div>		
+        <div id="websiteuserposttopad" class="ad_side"></div>
+		<div class="forum_info">
+			<div class="titlebar">
+			<strong>发帖排行</strong>
+			<ul class="posttime">
+			    <li id="li_postcount_day" class="current"><a onclick="javascript:tabselect($('li_postcount_day'));" href="javascript:;">日</a></li>
+				<li id="li_postcount_week"><a onclick="javascript:tabselect($('li_postcount_week'));" href="javascript:;">周</a></li>
+				<li id="li_postcount_month"><a onclick="javascript:tabselect($('li_postcount_month'));" href="javascript:;">月</a></li>
+			</ul>
+			</div>
+			<div class="content">
+				<div id="postcount_month" class="postcount" style="display:none;">
+					<%set {userPostCountInfoList} = forumagg.GetUserPostCountList(4, DateType.Month, 1)%>		
+					<%loop (UserPostCountInfo) userMonthPostCountInfo userPostCountInfoList%>
+					<dl>
+						<%set (string){avatarurl}=Avatars.GetAvatarUrl({userMonthPostCountInfo.Uid}, AvatarSize.Small) %>
+						<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"  alt="头像" " style="border:1px solid #E8E8E8;padding:1px;" />
+						<dt><%set {aspxrewriteurl} = this.UserInfoAspxRewrite({userMonthPostCountInfo.Uid})%>
+					      <a href="{forumurl}{aspxrewriteurl}" target="_blank"><%getsubstring({userMonthPostCountInfo.Username},20,"...")%></a></dt>
+						<dd>发帖<em>{userMonthPostCountInfo.PostCount}</em>篇</dd>
+					</dl>
+					<%/loop%> 
+				</div>
+				<div id="postcount_week" class="postcount" style="display:none;">
+					<%set {userPostCountInfoList} = forumagg.GetUserPostCountList(4, DateType.Week, 1)%>		
+					<%loop (UserPostCountInfo) userWeekPostCountInfo userPostCountInfoList%>
+					<dl>
+						<%set (string){avatarurl}=Avatars.GetAvatarUrl({userWeekPostCountInfo.Uid}, AvatarSize.Small) %>
+						<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"  alt="头像" " style="border:1px solid #E8E8E8;padding:1px;" />
+						<dt><%set {aspxrewriteurl} = this.UserInfoAspxRewrite({userWeekPostCountInfo.Uid})%>
+						<a href="{forumurl}{aspxrewriteurl}" target="_blank"><%getsubstring({userWeekPostCountInfo.Username},20,"...")%></a></dt>
+						<dd>发帖<em>{userWeekPostCountInfo.PostCount}</em>篇</dd>
+					</dl>
+					<%/loop%>
+				</div>
+				<div id="postcount_day" class="postcount">
+					<%set {userPostCountInfoList} = forumagg.GetUserPostCountList(4, DateType.Day, 1)%>		
+					<%loop (UserPostCountInfo) userDayPostCountInfo userPostCountInfoList%>
+					<dl>
+						<%set (string){avatarurl}=Avatars.GetAvatarUrl({userDayPostCountInfo.Uid}, AvatarSize.Small) %>
+						<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"  alt="头像" " style="border:1px solid #E8E8E8;padding:1px;" />
+						<dt><%set {aspxrewriteurl} = this.UserInfoAspxRewrite({userDayPostCountInfo.Uid})%>
+						<a href="{forumurl}{aspxrewriteurl}" target="_blank"><%getsubstring({userDayPostCountInfo.Username},20,"...")%></a></dt>
+						<dd>发帖<em>{userDayPostCountInfo.PostCount}</em>篇</dd>
+					</dl> 
+					<%/loop%>
+				</div>							
+			</div>
+		</div>
+	</div>
+</div>
+<div id="websiterecforumtopad" class="ad s_clear"></div>
+<script type="text/javascript">
+var reco_topic = {forumagg.GetTopicJsonFromFile()};
+var templatepath = "{templatepath}";
+var aspxrewrite = {config.aspxrewrite};
+</script>
+<%loop (int) forumid Discuz.Aggregation.AggregationFacade.ForumAggregation.GetRecommendForumID()%> 		
+<%set (ForumInfo) {foruminfo} = Forums.GetForumInfo(forumid)%>		
+<%if {foruminfo}!=null %>		
+<%set (int){tcount}={Forums.GetForumList(forumid).Rows.Count}!=0?12:8%>
+<div class="forum_list s_clear forum">
+	<div class="list_main">
+		<div class="forum_topic s_clear <%if {forumid[_id]}%2==0%>other<%/if%>">
+			<h3>
+			<cite>
+			<%loop sub_forum Forums.GetForumList(forumid)%>
+				<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({sub_forum[fid]})},0,{sub_forum[rewritename]})%>
+		        <a href="{aspxrewriteurl}" tabindex="_blank">{sub_forum[name]}</a>
+		        <%if {sub_forum[_id]}>4%>
+		            <%break%>
+		        <%/if%>
+			<%/loop%>
+			<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({forumid},0,{foruminfo.rewritename})%>
+			<a href="{aspxrewriteurl}" tabindex="_blank">更多&gt;&gt;</a>
+			</cite>
+			<a href="{aspxrewriteurl}" tabindex="_blank">{foruminfo.Name}</a></h3>
+			<div class="content main"  <%if {tcount}==8%>style="height:180px"<%/if%>>
+				<div class="showpic">
+					<script type="text/javascript">document.write(showtopicinfo({forumid}, {forumid[_id]}-1));</script>
+				</div>
+				 <%set (int) {listcount}=Discuz.Aggregation.TopicAggregationData.GetForumAggregationTopic(forumid).Rows.Count%>				 
+				 <%set {topiclist} = listcount==0?forumagg.GetForumTopicList(6, 0, forumid, TopicTimeType.All, TopicOrderType.PostDateTime, false, false):Discuz.Aggregation.TopicAggregationData.GetForumAggregationTopic(forumid)%>
+				 <%set (int) {listsize}=listcount==0?6 :4%>
+				 <%loop newtopicinfo topiclist%> 
+				 <%if {newtopicinfo[_id]}<={listsize}%>				 
+						<%if  {listcount}!=0 && {newtopicinfo[_id]}==1%>
+						<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({newtopicinfo[topicid]},0)%>
+							<div class="topic">
+								<h2><a href="{aspxrewriteurl}" target="_blank">{newtopicinfo[title]}</a></h2>
+								<p><a href="{aspxrewriteurl}" target="_blank">{newtopicinfo[shortdescription]}</a></p>
+							</div>
+							<%continue%>
+						<%/if%>
+						<%if  {listcount}!=0%>	
+							<%if {newtopicinfo[_id]}==2%>
+							<div class="topic_list">
+							<ul id="topiclist_ul_{forumid}">						
+							<%/if%>				
+						<%else%>
+							<%if {newtopicinfo[_id]}==1%>
+							<div class="topic_list">
+							<ul>
+							<%/if%>	
+						<%/if%>										
+							<li>
+								<strong>
+									<%if {listcount}==0%>
+									<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({newtopicinfo[fid]})},0)%>
+									<a href="{forumurl}{aspxrewriteurl}" target="_blank">[{newtopicinfo[name]}]</a>
+									<%else%>
+									<%set {aspxrewriteurl} = ShowForumAspxRewrite({strtoint({newtopicinfo[fid]})},0)%>
+									<%set (string) {name} = Forums.GetForumInfo({strtoint({newtopicinfo[fid]})}).Name%>
+									<a href="{forumurl}{aspxrewriteurl}" target="_blank">[{name}]</a>
+									<%/if%>
+								</strong>
+								<%if {listcount}==0%>
+								<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({newtopicinfo[tid]},0)%>
+								<%else%>
+								<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({newtopicinfo[topicid]},0)%>
+								<%/if%>
+								<a title="{newtopicinfo[title]}" href="{forumurl}{aspxrewriteurl}" target="_blank"><%getsubstring({newtopicinfo[title]},43,"...")%></a>
+							</li> 
+						<%if {newtopicinfo[_id]}=={listsize}%>
+						</ul>
+						</div> 
+						<%/if%>
+					<%/if%> 
+				 <%/loop%>
+				<%if {listcount}!=0 && {listcount}<4%>
+				<%if  {listcount}==1%>	
+				<div class="topic_list">
+				<ul id="topiclist_ul_{forumid}">
+				 <%/if%>
+				<%if {listcount}<6%>
+				</ul>
+					</div>
+				<script>
+				function addhtmltoul()
+				{
+				var lihtml="";
+				<%set {topiclist} = forumagg.GetForumTopicList(4-listcount, 0, forumid, TopicTimeType.All, TopicOrderType.PostDateTime, false, false)%>
+				<%loop newtopicinfos topiclist%> 
+					<%if {newtopicinfos[_id]}<={4-listcount}%>
+						lihtml+='<li>';
+							lihtml+='<strong>';
+							<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({newtopicinfos[fid]})},0)%>
+							lihtml+='<a href="{forumurl}{aspxrewriteurl}" target="_blank">[{newtopicinfos[name]}]</a>';
+							lihtml+='</strong>';
+						<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({newtopicinfos[tid]},0)%>
+						lihtml+=' <a title="{newtopicinfos[title]}" href="{forumurl}{aspxrewriteurl}" target="_blank">{newtopicinfos[title]}</a>';	
+						lihtml+='</li>';
+					<%/if%>
+				<%/loop%>
+				$('topiclist_ul_{forumid}').innerHTML+=(lihtml);
+				}
+				addhtmltoul();
+				</script>
+				<%/if%>
+				<%/if%>
+				<%if {Forums.GetForumList(forumid).Rows.Count}!=0%>
+				<div class="topic_box">		
+				<%loop subforum Forums.GetForumList(forumid)%>
+					<dl>	
+					<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({strtoint({subforum[fid]})},0,{subforum[rewritename]})%>
+						<dt><a href="{aspxrewriteurl}" tabindex="_blank">{subforum[name]}</a></dt>		
+						<dd>{subforum[description]}</dd>
+					</dl>
+					<%if {subforum[_id]}>2 %>
+					    <%break%>
+					<%/if%>
+				<%/loop%>
+				</div>
+				<%/if%>
+			</div>
+		</div>
+	</div>
+	<div class="list_side">
+		<div class="forum_side s_clear <%if {forumid[_id]}%2==0%>other<%/if%>">
+			<div class="titlebar">
+				<ul>
+					<li class="current" id="li_forum_{forumid}_topic"><a href="javascript:;" onclick="javascript:tabselect($('li_forum_{forumid}_topic'),{forumid});">最热主题</a></li>
+					<li id="li_forum_{forumid}_reply"><a href="javascript:;" onclick="javascript:tabselect($('li_forum_{forumid}_reply'), {forumid});">最新回复</a></li>
+					<li id="li_forum_{forumid}_digest"><a href="javascript:;" onclick="javascript:tabselect($('li_forum_{forumid}_digest'), {forumid});">精华</a></li>
+				</ul>
+			</div>
+			<div class="content s_clear" <%if {tcount}==8%>style="height:180px"<%/if%>>				
+				<ul id="forum_{forumid}_topic" class="forum_hot_topic">
+				<%set {topiclist} = forumagg.GetForumTopicList(tcount, 0, forumid, TopicTimeType.All, TopicOrderType.Replies, false, false)%>	
+				<%if {topiclist.Rows.Count}>0%>
+				<%loop hottopicinfo topiclist%> 
+				<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({hottopicinfo[tid]},0)%>
+					<li><em>{hottopicinfo[replies]}</em><a title="{hottopicinfo[title]}" href="{aspxrewriteurl}" target="_blank"><%getsubstring({hottopicinfo[title]},28,"...")%></a></li> 
+				<%/loop%>
+				<%else%>
+				暂无数据!
+				<%/if%>
+				</ul>
+				<ul id="forum_{forumid}_reply" class="forum_hot_topic" style="display:none;">
+				<%set {topiclist} = forumagg.GetForumTopicList(tcount, 0, forumid, TopicTimeType.All, TopicOrderType.LastPost, false, false)%>	
+				<%if {topiclist.Rows.Count}>0%>
+				<%loop replytopic topiclist%> 
+					<li><a title="{replytopic[title]}" href="{forumurl}showtopic.aspx?topicid={replytopic[tid]}&page=end#lastpost" target="_blank"><%getsubstring({replytopic[title]},28,"...")%></a></li> 
+				<%/loop%>
+				<%else%>
+				暂无数据!
+				<%/if%>
+				</ul>
+				<ul id="forum_{forumid}_digest" class="forum_hot_topic" style="display:none;">
+				<%set {topiclist} = forumagg.GetForumTopicList(tcount, 0, forumid, TopicTimeType.All, TopicOrderType.LastPost, true, false)%>	
+				<%if {topiclist.Rows.Count}>0%>
+				<%loop replytopic topiclist%> 
+					<li><a title="{replytopic[title]}" href="{forumurl}showtopic.aspx?topicid={replytopic[tid]}&page=end#lastpost" target="_blank"><%getsubstring({replytopic[title]},28,"...")%></a></li> 
+				<%/loop%>
+				<%else%>
+				暂无数据!
+				<%/if%>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<%/if%>
+<%/loop%>
+<div id="websiterecforumbottomad" class="ad s_clear"></div>
+<%if {Discuz.Plugin.Space.SpacePluginProvider.GetInstance()}!=null%>
+<%if {config.enablespace}==1%>
+<div class="forum_list s_clear space">
+	<div class="list_main">
+		<div class="forum_topic s_clear other">
+			<h3><cite><a href="spaceindex.aspx" target="_blank">空间首页&gt;&gt;</a></cite>个人空间</h3>
+			<div class="content main">
+				<div class="showpic" style="position:relative;">
+				    <script type='text/javascript'>
+				        var imgwidth = 300;
+				        var imgheight = 140;
+                    </script>
+					<script type='text/javascript'>
+					    var data = {};
+					    {spacerotatepicdata}
+					    var ri = new MzRotateImage();
+					    ri.dataSource = data;
+					    ri.width = 300;
+					    ri.height = 140;
+					    ri.interval = 3000;
+					    ri.duration = 2000;
+					    document.write(ri.render());
+                    </script>
+				</div>
+				<div class="topic_list">				
+					<ul class="spacepost">
+					<%loop (SpaceShortPostInfo) __spacepostinfo spacepostlist%> 
+						<li><cite><a href="{spaceurl}space/?uid={__spacepostinfo.uid}" target="_blank">{__spacepostinfo.author}</a></cite><a href="{spaceurl}space/viewspacepost.aspx?postid={__spacepostinfo.postid}"><%getsubstring({__spacepostinfo.title},56,"...")%></a> </li>
+					<%/loop%>
+					</ul>
+				</div>
+				<div class="space_list">
+					<%loop (SpaceConfigInfoExt) __spaceconfig spaceconfigs%>
+					<%if {__spaceconfig[_id]}<=3 %>
+					<%set (string){avatarurl}=Avatars.GetAvatarUrl(__spaceconfig.Userid,AvatarSize.Small) %>
+					<dl>
+						<a href="{spaceurl}space/?uid={__spaceconfig.userid}" target="_blank"><img src="{avatarurl}" alt="blogphoto" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"/></a>
+						<dt><a href="{spaceurl}space/?uid={__spaceconfig.userid}"><%getsubstring({__spaceconfig.spacetitle},20,"...")%></a></dt>
+						<dd><a href="{spaceurl}space/viewspacepost.aspx?postid={__spaceconfig.postid}" target="_blank"><%getsubstring({__spaceconfig.posttitle},30,"...")%></a></dd>
+					</dl>
+					<%/if%>
+					<%/loop%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="list_side">
+		<div class="forum_side s_clear other">
+			<div class="titlebar">
+				<ul>
+					<li id="li_space" class="current" ><a href="javascript:;" onclick="javascript:tabselect($('li_space'));">最新更新空间</a></li>
+					<li id="li_spacecomment"><a href="javascript:;" onclick="javascript:tabselect($('li_spacecomment'));">最新评论</a></li>
+				</ul>
+			</div>
+			<div class="content s_clear">
+				<ul id="spacecommentlist" class="topicdot" style="display:none;">
+				<%loop comment spaceagg.GetSpaceTopComments(13)%>
+					<li><a href="{spaceurl}space/viewspacepost.aspx?postid={comment[postid]}" target="_blank"><%getsubstring(Discuz.Common.Utils.HtmlEncode({comment[content]}),30,"...")%></a></li>
+				<%/loop%>
+					<!--<li><em>fanzjgw</em><a href="#">Discuz!NT程序发布</a></li>-->
+				</ul>				
+				<div id="spacelist" class="postcount" >
+				<%loop space spaceagg.GetRecentUpdateSpaceList(5)%> 
+                    <%if {space[_id]}<=5%>				
+					<dl>
+						<%set (string){avatarurl}=Avatars.GetAvatarUrl({space[userid]}, AvatarSize.Small) %>
+						<img src="{avatarurl}" onerror="this.onerror=null;this.src='{forumpath}templates/{templatepath}/images/noavatar_small.gif';"  alt="头像" " style="border:1px solid #E8E8E8;padding:1px;" />
+						<dt>
+							<a href="{spaceurl}space/?uid={space[userid]}" target="_blank"><%getsubstring({space[spacetitle]},30,"...")%></a>
+						</dt>
+						<dd>日志<em>{space[PostCount]}</em>篇</dd>
+					</dl>
+					<%/if%>
+				<%/loop%>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%/if%>
+<%/if%>
+<%if {Discuz.Plugin.Album.AlbumPluginProvider.GetInstance()}!=null%>
+<%if {config.enablealbum}==1%>
+<div class="forum_list s_clear album">
+	<div class="list_main">
+		<div class="forum_topic s_clear other">
+			<h3><cite>
+			<%loop (AlbumCategoryInfo) ac albumcategorylist%>
+			    <a href="showalbumlist.aspx?cate={ac.albumcateid}" target="_blank">{ac.title}</a>
+		        <%if {ac[_id]}>=4%>
+				    <%break%>
+		        <%/if%>
+			<%/loop%>
+			<a href="albumindex.aspx" target="_blank">更多&gt;&gt;</a></cite>相册</h3>
+			<div class="content main">
+				<div class="photo">
+					<ul>
+						<%loop (PhotoInfo) photo recommendphotolist%>
+						   <%if {photo[_id]}<=4%>
+							<li>
+							<a href="showphoto.aspx?photoid={photo.photoid}" target="_blank"><img src="{photo.filename}" onerror="this.onerror=null;this.src='templates/{templatepath}/images/album/errorphoto.gif';" alt="{photo.title}" title="{photo.title}"  height="100"/></a>
+							<p><a href="showphoto.aspx?photoid={photo.photoid}" target="_blank"><%if {photo.title}==""%>暂无标题<%else%>{photo.title}<%/if%></a></p>
+							</li>
+							<%/if%>
+						<%/loop%>
+					</ul>
+				</div>
+				<div class="album_list">					
+					<%loop (AlbumInfo) __albuminfo recommendalbumlist%>
+					<%if {__albuminfo[_id]}<=4 %>
+					<dl>
+						<dd>
+						<a href="{albumurl}showalbum.aspx?albumid={__albuminfo.albumid}">
+						<%if {__albuminfo.logo}!=""%>
+						<img src="{__albuminfo.logo}" alt="{__albuminfo.title}" style="height: 100px; width: 120px"/>
+						<%else%>
+						<img src="templates/{templatepath}/images/NoPhoto.jpg" alt="{__albuminfo.albumid}"  style="height: 75px; width: 115px"/>
+						<%/if%>	
+						</a>
+						</dd>
+						<dt><a href="{albumurl}showalbum.aspx?albumid={__albuminfo.albumid}" target="_blank">{__albuminfo.title}</a></dt>
+					</dl>
+					<%/if%>
+					<%/loop%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="list_side">
+		<div class="forum_side s_clear other">
+			<div class="titlebar">
+				<ul>
+					<li class="current" id="li_album"><a href="javascript:;" onclick="javascript:tabselect($('li_album'));">热门相册</a></li>
+					<li id="li_photo"><a href="javascript:;" onclick="javascript:tabselect($('li_photo'));">热门相片</a></li>
+				</ul>
+			</div>
+			<div class="content s_clear">
+				<ul id="albumlist" class="forum_hot_topic">
+				<%set {albumlist} = albumagg.GetAlbumList(photoconfig.Focusalbumshowtype, 7, 180)%>
+				<%if {albumlist.count}>0%>
+				<%loop (AlbumInfo) hotalbuminfo albumlist%>
+					<li><a href="showalbum.aspx?albumid={hotalbuminfo.albumid}" target="_blank">{hotalbuminfo.title}</a> (<a href="showalbumlist.aspx?uid={hotalbuminfo.userid}">{hotalbuminfo.username}</a>)</li>
+				<%/loop%>
+				<%else%>
+					暂无数据!
+				<%/if%>
+				</ul>
+				<ul id="photolist" class="forum_hot_topic" style="display:none;">
+				  <!--一周热图总排行-->
+				<%set {photolist} = albumagg.GetWeekHotPhotoList(photoconfig.Weekhot)%>
+				<%if {photolist.count}>0%>
+				<%loop (PhotoInfo) __photolist photolist%>
+					<li><em>{__photolist.Views}</em><a href="showphoto.aspx?photoid={__photolist.photoid}" target="_blank">{__photolist.title}</a> (<a href="showalbumlist.aspx?uid={__photolist.userid}">{__photolist.username}</a>)</li>
+				<%/loop%>
+				<%else%>
+					暂无数据!
+				<%/if%>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<%/if%>
+<%/if%>
+<div id="websiterecalbumAd" class="ad s_clear"></div>
+<%if {forumlinkcount}>0%>
+<div class="box links" id="forumlinks">
+	<h4>友情链接</h4>
+	<%set (bool){forumlinkend} = false%>
+	<%loop forumlink forumlinklist%>
+		<%if {forumlink[_id]}==1%>
+	<div class="forumlinks">	
+		<ul>	
+		<%/if%>
+	<%if {forumlink[logo]}!=""%>
+		<li>
+			<a href="{forumlink[url]}" target="_blank"><img src="{forumlink[logo]}" alt="{forumlink[name]}"  class="forumlink_logo"/></a>
+			<h5><a href="{forumlink[url]}" target="_blank">{forumlink[name]}</a></h5>
+			<p>{forumlink[note]}</p>
+		</li>
+	<%else if {forumlink[name]}!="$$otherlink$$"%>
+		<li>
+			<h5>
+				<a href="{forumlink[url]}" target="_blank">{forumlink[name]}</a>
+			</h5>
+			<p>{forumlink[note]}</p>
+		</li>
+	<%else%>
+	<%if {forumlinkend}==false%>
+		</ul>
+	</div>
+		<%set {forumlinkend} = true%>
+	<%/if%>
+	<div class="{forumlink[url]}">
+		{forumlink[note]}
+	</div>
+	<%/if%>
+	<%/loop%>
+	<%if {forumlinkend}==false%>
+	</ul>
+	</div>
+	<%/if%>
+</div>
+<%/if%>
+</div>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%set (string){webSiteBottomAd}={Advertisements.GetWebSiteAd(AdType.WebSiteBottomAd)}%>
+<%template _copyright%>
+<%set (string){webSiteHeaderAd}={Advertisements.GetWebSiteAd(AdType.WebSiteHeaderAd)}%>
+<%set (string){webSiteHotTopicAd}={Advertisements.GetWebSiteAd(AdType.WebSiteHotTopicAd)}%>
+<%set (string){webSiteUserPostTopAd}={Advertisements.GetWebSiteAd(AdType.WebSiteUserPostTopAd)}%>
+<%set (string){webSiteRecForumTopAd}={Advertisements.GetWebSiteAd(AdType.WebSiteRecForumTopAd)}%>
+<%set (string){webSiteRecForumBottomAd}={Advertisements.GetWebSiteAd(AdType.WebSiteRecForumBottomAd)}%>
+<%set (string){webSiteRecAlbumAd}={Advertisements.GetWebSiteAd(AdType.WebSiteRecAlbumAd)}%>
+<div id="websiteheaderad_nodisplay" style="display:none">{webSiteHeaderAd}</div>
+<div id="websitehottopicad_nodisplay" style="display:none">{webSiteHotTopicAd}</div>
+<div id="websiteuserposttopad_nodisplay" style="display:none">{webSiteUserPostTopAd}</div>
+<div id="websiterecforumtopad_nodisplay" style="display:none">{webSiteRecForumTopAd}</div>
+<div id="websiterecforumbottomad_nodisplay" style="display:none">{webSiteRecForumBottomAd}</div>
+<div id="websiterecalbumAd_nodisplay" style="display:none">{webSiteRecAlbumAd}</div>
+<div id="websitebottomad_nodisplay" style="display:none">{webSiteBottomAd}</div>
+<script type="text/javascript">
+var adDiv = ["websiteheaderad", "websitehottopicad", "websiteuserposttopad", "websiterecforumtopad", "websiterecforumbottomad", "websiterecalbumAd", "websitebottomad"];
+for (var i = 0; i < adDiv.length;  i++) {
+    if ($(adDiv[i] + '_nodisplay').innerHTML == '')
+        $(adDiv[i]).style.display = 'none';
+    else {
+        $(adDiv[i]).innerHTML = $(adDiv[i] + '_nodisplay').innerHTML;
+        $(adDiv[i] + '_nodisplay').parentNode.removeChild($(adDiv[i] + '_nodisplay'));
+    }
+}
+</script>
+<%template _adlist%>
+<%template _footer%>

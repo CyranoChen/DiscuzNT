@@ -1,0 +1,327 @@
+﻿<%inherits "Discuz.Mall.Pages.onlinetrade"%>
+<%template _header%>
+<!--TheCurrent start-->
+<%if page_err==0%>
+<%if {ispost}%>
+<%template _msgbox%>
+<%else%>
+    <%if {ispay}%>
+         <%template _msgbox%>
+    <%else%>     
+<script language="javascript" src="javascript/template_trade.js"></script>
+<script type="text/javascript">
+zoomstatus = parseInt(1);
+</script>
+	<form method="post" id="tradepost" name="tradepost" action="onlinetrade.aspx?goodstradelogid={goodstradelogid}">
+	<input id="operation" name="operation" type="hidden" value="" />
+	<div class="mainbox tradeinfo">
+		<h2>支付宝在线交易</h2>
+		<table summary="支付宝在线交易" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+				<th>状态</th>
+				<td> 
+				<%if {goodstradelog.status}<=0%>
+				    未生效的交易
+				<%/if%> 
+				<%if {goodstradelog.status}==1%>
+				    等待买家付款
+				<%/if%>   
+				<%if {goodstradelog.status}==2%>
+				    交易已创建, 等待卖家确认
+				<%/if%>  
+				<%if {goodstradelog.status}==3%>
+				    确认买家付款中,暂勿发货
+				<%/if%>  
+				<%if {goodstradelog.status}==4%>
+				    买家已付款,等待卖家发货
+				<%/if%>  
+				<%if {goodstradelog.status}==5%>
+				    卖家已发货,买家确认中
+				<%/if%>  
+				<%if {goodstradelog.status}==6%>
+				    买家确认收到货,等待支付宝打款给卖家
+				<%/if%>  
+				<%if {goodstradelog.status}==7%>
+				    交易成功结束
+				<%/if%>  
+				<%if {goodstradelog.status}==8%>
+				    交易中途关闭(未完成)
+				<%/if%>  
+				<%if {goodstradelog.status}==10%>
+				    等待卖家同意退款
+				<%/if%>  
+				<%if {goodstradelog.status}==11%>
+				    卖家拒绝买家条件，等待买家修改条件
+				<%/if%>  
+	    		<%if {goodstradelog.status}==12%>
+				    卖家同意退款，等待买家退货
+				<%/if%>  
+				<%if {goodstradelog.status}==13%>
+				    等待卖家收货
+				<%/if%>  
+				<%if {goodstradelog.status}==17%>
+				    退款成功
+				<%/if%>  
+				({goodstradelog.lastupdate})</td>
+			</tr>
+			<%if {goodstradelog.status}<=0%>
+			<tr>
+				<th>支付宝交易单</th>
+				<td>
+		        <%if {isbuyer}%>
+				    <button type="button" name="" onclick="window.open('onlinetrade.aspx?goodstradelogid={goodstradelogid}&pay=yes','','');">使用支付宝在线支付</button>
+			    <%/if%>	
+			    <%if {isseller}%>
+		    	    <button type="button" name="" onclick="window.open('https://www.alipay.com/trade/query_trade_detail.htm?trade_no={goodstradelog.tradeno}', '', '');">查看并确认支付宝交易单状态</button>
+			    <%/if%>	
+				</td>
+			</tr>
+            <%/if%>
+
+		<%if {goodstradelog.status}==7%>	
+		    <tr>
+				<th><%if {israted} %>您已发表过评价<%else%>&nbsp;<%/if%></th>
+				<td>
+				<%if !{israted} %>
+				    <button type="button" onclick="window.open('goodsrate.aspx?goodstradelogid={goodstradelog.id}', '', '')">评价</button>
+                <%else%>
+                    &nbsp;				    
+                <%/if%>			    
+				</td>
+			</tr>
+        <%/if%> 
+        
+        <%if {goodstradelog.status}==17%>	
+		    <tr>
+				<th><%if {israted} %>您已发表过评价<%else%>&nbsp;<%/if%></th>
+				<td>
+				<%if !{israted} %>
+				    <button type="button" onclick="window.open('goodsrate.aspx?goodstradelogid={goodstradelog.id}', '', '')">评价</button>
+                <%else%>
+                    &nbsp;				    
+                <%/if%>						    
+				</td>
+			</tr>
+        <%/if%> 
+		</table>
+	</div>
+    <div class="mainbox">
+		    <h2>交易单</h2>
+		<table summary="确认购买信息" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th>支付总额</th>
+				<td><strong id="caculate"></strong>&nbsp;元</td>
+			</tr>
+<%if {isseller}%>
+			<tr>
+				<th>买家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.buyerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.buyer}</a>
+				&nbsp;<a href="usercppostpm.aspx?msgtoid={goodstradelog.buyerid}" target="_blank">[发短消息]</a>					</td>
+			</tr>
+			<tr>
+				<th>卖家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.sellerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.seller}</a>
+				 <a href="https://www.alipay.com/trade/i_credit.do?email={goodstradelog.selleraccount}" style="vertical-align: middle;" target="_blank"><img src="templates/{templatepath}/images/alipaysmall.gif" border="0" alt="支付宝账户信用信息" /></a>										</td>
+			</tr>
+			<tr>
+				<th>商品名称</th>
+				<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodstradelog.goodsid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.subject}</a></td>
+			</tr>
+			<tr>
+				<th><label for="newprice">商品现价</label></th>
+				<td>{goodstradelog.price} 元</td>
+			</tr>
+			<tr>
+				<th><label for="newnumber">购买数量</label></th>
+				<td>{goodstradelog.number}</td>
+			</tr>
+			<tr>
+				<th>物流方式</th>
+				<td>
+					<%if {goodstradelog.transportpay}==0%>
+						虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodstradelog.transportpay}==1%>
+						卖家承担运费
+					<%/if%> 
+					<%if {goodstradelog.transportpay}==2%>
+						买家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==3%>
+						买家收到货物后直接支付给物流公司
+					<%/if%>
+					
+					<%if {goodstradelog.sellerid}=={userid}%>
+						运费 
+						<%if {goodstradelog.status}<=0%>
+							<input type="text" id="fee" name="fee"  value="{goodstradelog.transportfee}">
+						<%else%>  
+							{goodstradelog.transportfee}  
+						<%/if%>
+						元
+					<%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyername">收货人姓名</label></th>
+				<td>{goodstradelog.buyername}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyercontact">收货地址</label></th>
+				<td>{goodstradelog.buyercontact}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyerzip">收货人邮编</label></th>
+				<td>{goodstradelog.buyerzip}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyerphone">收货人电话</label></th>
+				<td>{goodstradelog.buyerphone}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyermobile">收货人手机</label></th>
+				<td>{goodstradelog.buyermobile}</td>
+			</tr>
+			<tr>
+				<th><label for="newbuyermsg">备注信息</label></th>
+				<td>{goodstradelog.buyermsg}</td>
+			</tr>
+<%/if%>	
+<%if {isbuyer}%>				
+	        <tr>
+				<th>买家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.buyerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.buyer}</a></td>
+			</tr>
+			<tr>
+				<th>卖家</th>
+				<%set {aspxrewriteurl} = this.UserInfoAspxRewrite({goodstradelog.sellerid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.seller}</a>
+				 &nbsp;<a href="usercppostpm.aspx?msgtoid={goodstradelog.sellerid}" target="_blank">[发短消息]</a>					
+				 <a href="https://www.alipay.com/trade/i_credit.do?email={goodstradelog.selleraccount}" style="vertical-align: middle;" target="_blank"><img src="templates/{templatepath}/images/alipaysmall.gif" border="0" alt="支付宝账户信用信息" /></a>
+				 </td>
+			</tr>
+			<tr>
+				<th>商品名称</th>
+				<%set {aspxrewriteurl} = this.ShowGoodsAspxRewrite({goodstradelog.goodsid})%>
+				<td><a href="{aspxrewriteurl}" target="_blank">{goodstradelog.subject}</a></td>
+			</tr>
+			<tr>
+				<th><label for="newprice">商品现价</label></th>
+				<td>{goodstradelog.price} 元</td>
+			</tr>
+			<tr>
+				<th><label for="number">购买数量</label></th>
+				<td>{goodstradelog.number}</td>
+			</tr>
+			<tr>
+				<th>物流方式</th>
+				<td>
+					<%if {goodstradelog.transportpay}==0%>
+					    虚拟物品或无需邮递 
+					<%/if%>
+					<%if {goodstradelog.transportpay}==1%>
+					    卖家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==2%>
+					    买家承担运费
+					<%/if%>
+					<%if {goodstradelog.transportpay}==3%>
+					    买家收到货物后直接支付给物流公司
+					<%/if%>
+					运费 {goodstradelog.transportfee}  元
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyername">收货人姓名</label></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+				        <input type="text" id="buyername" name="buyername" maxlength="50" value="{goodstradelog.buyername}" />
+				    <%else%>
+				        {goodstradelog.buyername}
+				    <%/if%>
+				   </td>
+			</tr>
+			<tr>
+				<th><label for="buyercontact">收货地址</label></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+				        <input type="text" id="buyercontact" name="buyercontact" maxlength="100" size="80" value="{goodstradelog.buyercontact}" />
+				    <%else%>
+				        {goodstradelog.buyercontact}
+				    <%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyerzip">收货人邮编</label></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+				    <input type="text" id="buyerzip" name="buyerzip" maxlength="10" value="{goodstradelog.buyerzip}" />
+				    <%else%>
+				        {goodstradelog.buyercontact}
+				    <%/if%>
+				</td>    
+			</tr>
+			<tr>
+				<th><label for="buyerphone">收货人电话</label></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+				    <input type="text" id="buyerphone" name="buyerphone" maxlength="20" value="{goodstradelog.buyerphone}" />
+				    <%else%>
+				        {goodstradelog.buyercontact}
+				    <%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyermobile">收货人手机</label></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+				    <input type="text" id="buyermobile" name="buyermobile" maxlength="20" value="{goodstradelog.buyermobile}" />
+				    <%else%>
+				        {goodstradelog.buyercontact}
+				    <%/if%>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="buyermsg">备注信息</label><div class="tips">200 字以内</div></th>
+				<td>
+				    <%if {goodstradelog.status}<=0%>
+					<textarea id="buyermsg" name="buyermsg" style="width: 95%" rows="3">{goodstradelog.buyermsg}</textarea>
+					<%else%>
+				        {goodstradelog.buyercontact}
+				    <%/if%>
+				</td>
+			</tr>
+<%/if%>	
+
+<%if {goodstradelog.status}==0%>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+					<button type="submit" name="tradesubmit" value="true"  >更新交易单</button>
+				</td>
+			</tr>
+<%/if%>			
+		</table>
+	    </div>
+</form>
+
+<script type="text/javascript">
+function calcsum() {
+
+	$('caculate').innerHTML = parseFloat({goodstradelog.number} * {goodstradelog.price} <%if {goodstradelog.Transportpay==2}%> + {goodstradelog.transportfee}<%/if%>).toFixed(2);
+}
+calcsum();
+</script>
+</div>
+     <%/if%>
+<%/if%>
+<%else%>
+<%template _errmsgbox%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>	

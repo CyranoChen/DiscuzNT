@@ -1,0 +1,67 @@
+﻿<%template _header%>
+<div class="wrap cl pageinfo">
+	<div id="nav">
+	<%if {usergroupinfo.allowsearch}>0%>
+		<%template _quicksearch%>
+	<%/if%>
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <strong>在线用户列表</strong>
+	</div>
+</div>
+<div class="wrap cl">
+<div class="main cl">
+	<h6><span class="y">
+		共{totalonline}人在线 - {totalonlineuser}位会员 
+		<%if {totalonlineinvisibleuser}>0%>
+		{totalonlineinvisibleuser}隐身
+		,<%/if%>{totalonlineguest}位游客 | 最高纪录是 {highestonlineusercount} 于 {highestonlineusertime}
+		</span>
+	在线用户列表</h6>
+	<table summary="用户列表" cellspacing="0" cellpadding="0" class="datatable">
+		<thead class="colplural">
+		<tr>
+			<th width="30">&nbsp;</th>
+			<th>用户名</th>
+			<th>时间</th>
+			<th>当前动作</th>
+			<th>所在论坛</th>
+			<th>所在主题</th>
+		</tr>
+		</thead>
+		<%loop onlineuserinfo onlineuserlist%>
+		<tbody>
+		<tr>
+			<td><img src="{forumpath}images/groupicons/member.gif" alt="用户" /></td>
+			<th class="datatitle">
+				<%if {onlineuserinfo[userid]}=="-1"%>
+					 游客
+				  <%else%>
+					 <%if {onlineuserinfo[invisible]}=="1"%>
+					 (隐身用户)
+					 <%else%>
+					 <%set {aspxrewriteurl} = this.UserInfoAspxRewrite({onlineuserinfo[userid]})%>
+					 <a href="{aspxrewriteurl}">{onlineuserinfo[username]}</a>
+					 <%/if%>
+				  <%/if%>
+			</td>
+			<td class="time">{onlineuserinfo[lastupdatetime]}</td>
+			<td>{onlineuserinfo[action]}&nbsp;</td>
+			<%set {aspxrewriteurl} = this.ShowForumAspxRewrite({onlineuserinfo[forumid]},0)%>
+			<td><a href="{aspxrewriteurl}">{onlineuserinfo[forumname]}</a>&nbsp;</td>
+			<%set {aspxrewriteurl} = this.ShowTopicAspxRewrite({onlineuserinfo[topicid]},0)%>
+			<td><a href="{aspxrewriteurl}">{onlineuserinfo[title]}</a>&nbsp;</td>
+		</tr>
+		</tbody>
+		<%/loop%>
+	</table>
+	<div class="pages_btns cl">
+		<div class="pages">
+			<em>共{onlineusernumber}名用户/{pagecount}页</em>{pagenumbers}
+			<kbd>跳转<input name="gopage" type="text" id="gopage" onKeyDown="if(event.keyCode==13) {
+		window.location='onlineuser.aspx?page='+this.value;}"  size="4" maxlength="9" class="colorblue2"/>页
+			</kbd>
+		</div>
+	</div>
+</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

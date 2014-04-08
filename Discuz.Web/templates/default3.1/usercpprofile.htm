@@ -1,0 +1,179 @@
+﻿<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+		<a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercpprofile.aspx">用户中心</a> &raquo; <strong>编辑个人档案</strong>
+	</div>
+</div>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent">
+		<h1>个人设置</h1>
+		<%template _permenu%>
+		<%if page_err==0%>
+		<%if ispost%>
+			<%template _usercpmsgbox%>
+		<%else%>
+			<form action="" method="post" ID="Form1" enctype="multipart/form-data">
+			<input name="avatarchanged" type="hidden" value="0" id="avatarchanged" />
+			<table cellspacing="0" cellpadding="0" class="formtable" summary="个人设置">
+			<tbody>
+			<tr>
+				<th></th>
+				<td>				
+				<div class="avatararea">
+                    <p><img id="avatar" src="images/common/none.gif" onerror="this.onerror=null;this.src='{imagedir}/noavatar_medium.gif';" /></p>
+                    <p><a href="javascript:;" onclick="$('avatarctrl').style.display = '';$('avatarSilverlight').style.display = 'none';">Flash头像</a>
+                    <a href="#/MainPage" onclick="$('avatarSilverlight').style.display = '';$('avatarctrl').style.display = 'none';">超级银光头像</a></p>
+                </div>
+                <div id="avatarctrl" style="display: none">
+                    <script type="text/javascript">                     
+                        document.write(AC_FL_RunContent('width', '540', 'height', '253', 'scale', 'exactfit', 'src', '{avatarFlashParam}', 'id', 'mycamera', 'name', 'mycamera', 'quality', 'high', 'bgcolor', '#ffffff', 'wmode', 'transparent', 'menu', 'false', 'swLiveConnect', 'true', 'allowScriptAccess', 'always'));
+                    </script>
+                </div>
+                <div id="avatarSilverlight" style="clear:both;display: none; width:520px;height:300px;">
+                     <%csharp%>
+                         string authToken=Discuz.Common.DES.Encode(oluserinfo.Olid.ToString() + "," + oluserinfo.Username.ToString(), oluserinfo.Password.Substring(0, 10)).Replace("+", "[");
+                      <%/csharp%>                
+                    <script type="text/javascript" src="{rooturl}silverlight/Avatar/silverlight.js" reload="1"></script>               
+                    <div id="silverlightControlHost" style="width:520px;height:300px;">
+                        <object  id="avatarUpload" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="520px" height="300px">
+                     	  <param name="source" value="{rooturl}silverlight/Avatar/ClientBin/Discuz.WebCam.xap"/>
+                		  <param name="onError" value="onSilverlightError" />
+                		  <param name="background" value="white" />
+                		  <param name="minRuntimeVersion" value="4.0.50401.0" />
+                          <param name="onLoad" value="onLoad" />
+                		  <param name="autoUpgrade" value="true" />  
+                                 
+                          <param name="initParams" value="authToken={authToken}<%if {FTPs.GetForumAvatarInfo.Allowupload}==1%>,ftpUrl={FTPs.GetForumAvatarInfo.Remoteurl}<%/if%>" />	
+                		  <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none" target="_blank">
+ 			                  <img src="{rooturl}silverlight/Avatar/avatar.jpg" alt="安装微软Silverlight控件,即刻使用银光头像" style="border-style:none"/>
+		                  </a>
+                	    </object>
+                   </div>              
+                   <script type="text/javascript">
+                       function onLoad(plugin, userContext, sender) {
+                            $("avatarUpload").content.JavaScriptObject.CloseAvatar = updateavatar;//注册js方法以便silverlight调用
+                       }                  
+                   </script>
+             
+               </div>
+               <script type="text/javascript">
+                   function updateavatar(sender, args) {
+                       $('avatar').src = '{avatarImage}?random=1' + Math.random();
+                       $('avatarctrl').style.display = 'none';             
+                       $('avatarSilverlight').style.display = 'none';                      
+                   }
+                   updateavatar();
+               </script>                
+			</tr>
+			<tr>
+				<th><label for="realname">真实姓名</label></th>
+				<td><input name="realname" type="text" id="realname" value="{user.realname}" size="25" class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="gender">性别</label></th>
+				<td>
+					<input type="radio" name="gender" value="1"  <%if {user.gender}==1%>checked="checked"<%/if%> ID="Radio1"/>男
+					<input type="radio" name="gender" value="2"  <%if {user.gender}==2%>checked="checked"<%/if%> ID="Radio2"/>女
+					<input type="radio" name="gender" value="0"  <%if {user.gender}==0%>checked="checked"<%/if%> ID="Radio3"/>保密 
+				</td>
+			</tr>
+			<tr>
+				<th><label for="bday">生日</label></th>
+				<td>
+					<input name="bday" type="text"  class="txt" id="bday" size="10" value="{user.bday}" style="cursor:default" onClick="showcalendar(event, 'bday', 'cal_startdate', 'cal_enddate', '1980-01-01');" readonly="readonly" />&nbsp;<button type="button" onclick="$('bday').value='';">清空</button>
+					<input type="hidden" name="cal_startdate" id="cal_startdate" size="10"  value="1900-01-01" />
+					<input type="hidden" name="cal_enddate" id="cal_enddate" size="10"  value="{nowdatetime}" />
+				</td>
+			</tr>
+			<tr>
+				<th><label for="location">来自</label></th>
+				<td>
+					<input name="location" type="text" class="txt" id="location" class="colorblue" value="{user.location}" size="25" />
+				</td>
+			</tr>
+			<tr>
+				<th><label for="idcard">身份证号码</label></th>
+				<td>
+					<input name="idcard" type="text" id="idcard" value="{user.idcard}" size="25"  class="txt"/>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="bio">自我介绍</label></th>
+				<td>
+					<textarea name="bio" cols="50" rows="4" id="bio" class="txtarea">{user.bio}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="signature">签名</label></th>
+				<td>
+					<textarea id="signature" rows="4" cols="50" name="signature" class="txtarea">{user.signature}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input name="sigstatus" type="checkbox" id="sigstatus" value="1" <%if {user.sigstatus}==1%> checked="checked"<%/if%>/>使用签名</td>
+			</tr>
+			<tr class="sep_space"><th colspan="2"/></tr>
+			<tr>
+				<th><label for="nickname">昵称</label></th>
+				<td><input type="text" class="txt" size="25" id="nickname" name="nickname" value="{user.nickname}"/></td>
+			</tr>
+			<tr>
+				<th><label for="mobile">移动电话号码</label></th>
+				<td><input name="mobile" type="text"  class="txt" id="mobile" value="{user.mobile}" size="25" /></td>
+			</tr>
+			<tr>
+				<th><label for="phone">固定电话号码</label></th>
+				<td><input name="phone" type="text" id="phone" value="{user.phone}" size="25" class="txt" /></td>
+			</tr>
+			<tr>
+				<th><label for="EMail">EMail</label></th>
+				<td><input name="email" type="text" id="email" value="{user.email}" size="25" class="txt"/> 
+					<input name="showemail" type="checkbox" id="showemail" value="0" <%if {user.showemail}==0%>checked="checked"<%/if%>/>Email保密
+				</td>
+			</tr>
+			<tr>
+				<th><label for="website">主页</label></th>
+				<td><input name="website" type="text" id="website" value="{user.website}" size="25" class="txt"/></td>
+			</tr>
+			<tr class="sep_space"><th colspan="2"/></tr>
+			<tr>
+				<th><label for="msn">MSN Messenger</label></th>
+				<td><input name="msn" type="text" id="msn" value="{user.msn}" size="25"  class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="qq">QQ</label></th>
+				<td><input name="qq" type="text" id="qq" value="{user.qq}" size="25"  class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="Skype">Skype</label></th>
+				<td><input name="skype" type="text" id="skype" value="{user.skype}" size="25"  class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="ICQ">ICQ</label></th>
+				<td><input name="icq" type="text" id="icq" value="{user.icq}" size="25"  class="txt"/></td>
+			</tr>
+			<tr>
+				<th><label for="yahoo">Yahoo Messenger</label></th>
+				<td><input name="yahoo" type="text" id="yahoo" value="{user.yahoo}" size="30"  class="txt"/></td>
+			</tr>
+			<tr>
+				<th> </th>
+				<td><button value="true" id="editsubmit" name="editsubmit" type="submit" onclick="if (document.getElementById('bio').value.length > 500) {alert('自我介绍长度最大为500字'); return false;}">提交</button></td>
+			</tr>
+			</tbody>
+			</table>
+			</form>
+		<%/if%>
+		<%else%>
+			<%template _usercperrmsgbox%>
+		<%/if%>
+	</div>
+	</div>
+</div>
+</div>
+<script type="text/javascript"  src="{jsdir}/template_calendar.js"></script>
+<%template _copyright%>
+<%template _footer%>

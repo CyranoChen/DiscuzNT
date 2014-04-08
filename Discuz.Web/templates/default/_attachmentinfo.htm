@@ -1,0 +1,96 @@
+﻿<%if {attachment.attachimgpost}==1%>
+<dl class="t_attachlist_img attachimg cl">
+<%else%>
+<dl class="t_attachlist attachimg cl">
+<%/if%>
+	<%if {attachment.attachimgpost}==1%>
+	<dt>
+	</dt>
+	<%else if {attachment.filename}.Trim().ToLower().EndsWith("rar")||{attachment.filename}.Trim().ToLower().EndsWith("zip")%>
+	<dt>
+	<img class="absmiddle" border="0" alt="" src="images/attachicons/rar.gif"/>
+	</dt>
+	<%else%>
+	<dt>
+	<img class="absmiddle" border="0" alt="" src="images/attachicons/attachment.gif"/>
+	</dt>
+	<%/if%>
+	</dt>
+	<dd>
+	<%if {attachment.attachprice}<=0%>
+	   <a target="_blank" onclick="return ShowDownloadTip({post.posterid});" href="attachment.aspx?attachmentid={attachment.aid}" class="xg2">{attachment.attachment}</a>
+	<%else%>
+		<%if {attachment.isbought}==1 || {post.posterid}=={userid}%>
+		   <a target="_blank" onclick="return ShowDownloadTip({post.posterid});"  href="attachment.aspx?attachmentid={attachment.aid}" class="xg2">{attachment.attachment}</a>
+		<%else%>
+		   <%if {usergroupinfo.radminid}==1%>
+			  <a target="_blank"  onclick="return ShowDownloadTip({post.posterid});" href="attachment.aspx?attachmentid={attachment.aid}" class="xg2">{attachment.attachment}</a>
+		   <%else%>
+			  {attachment.attachment}
+		   <%/if%>
+		<%/if%>
+	<%/if%>
+	<em class="xg1">(<script type="text/javascript">ShowFormatBytesStr({attachment.filesize});</script>, 下载次数:{attachment.downloads})</em>
+<%set (bool) {viewattach} = false %>									    
+<%if {attachment.attachprice}>0%>
+	<p>
+	售价({Scoresets.GetTopicAttachCreditsTransName()}):<strong>{attachment.attachprice} </strong>									
+	[<a onclick="loadattachpaymentlog({attachment.aid});" href="javascript:void(0);">记录</a>]
+	<%set {viewattach} = {attachment.isbought}==1%>
+	<%if {post.posterid}!={userid} && !{viewattach}%>
+	  <%if {usergroupinfo.radminid}!=1%>
+		[<a onclick="loadbuyattach({attachment.aid});" href="javascript:void(0);">购买</a>] 
+	  <%/if%>
+	<%/if%>	
+	</p>
+<%/if%>
+	<p><%if {attachment.description}!=""%>{attachment.description}<%/if%><span style="color:#666">({attachment.postdatetime} 上传)</span></p>
+	<%if {attachment.preview}!=""%>
+	<p>{attachment.preview}</p>
+	<%/if%>
+	<p>
+<%if {post.posterid}=={userid} || {usergroupinfo.radminid}==1%>
+	 <%set {viewattach} = true%>  
+<%/if%>									
+	<a name="attach{attachment.aid}"></a>
+<%if {UserAuthority.DownloadAttachment(forum,userid,usergroupinfo)}%><!--当用户有下载附件权限时-->
+	<%if {config.showimages}==1%>
+			<%if {attachment.attachimgpost}==1%>
+                <%if {attachment.attachprice}<=0 || {viewattach}%>
+                    <%if {config.showimgattachmode}==0%>
+                        <img imageid="{attachment.aid}" alt="{attachment.attachment}" 
+                        <%if {config.showattachmentpath}==1%>
+	                        <%if {attachment.filename}.IndexOf("http")>=0%>
+		                        src="{attachment.filename}"
+	                        <%else%>   
+		                        src="upload/{attachment.filename}"
+	                        <%/if%> 
+                        <%else%> 
+	                        src="attachment.aspx?attachmentid={attachment.aid}"
+                        <%/if%>
+                        onmouseover="attachimg(this, 'mouseover')" onload="attachimg(this, 'load');" onclick="zoom(this, this.src);" />
+                    <%else%>
+                        <img imageid="{attachment.aid}" alt="点击加载图片" 
+                        <%if {config.showattachmentpath}==1%>
+	                        <%if {attachment.filename}.IndexOf("http")>=0%>
+		                        newsrc="{attachment.filename}"
+	                        <%else%>   
+		                        newsrc="upload/{attachment.filename}"
+	                        <%/if%> 
+                        <%else%> 
+	                        newsrc="attachment.aspx?attachmentid={attachment.aid}"
+                        <%/if%>
+                            src="/images/common/imgloading.png"
+                        onload="attachimg(this, 'load');" onclick="loadImg(this);" />
+                    <%/if%>
+                <%/if%>
+		<%/if%>
+	<%/if%>
+<%else%>
+	<div class="hide">
+	   附件:<em><span class="attachnotdown">您需要<a href="{forumpath}login.aspx" onclick="showWindow('login', '{rooturl}login.aspx');hideWindow('register');return">登录</a>才可以下载或查看附件。没有帐号? <a href="{forumpath}register.aspx" onClick="showWindow('register', '{rooturl}register.aspx');hideWindow('login');">注册</a></span></em>
+	</div>    
+<%/if%>	
+	</p>
+	</dd>										
+</dl>

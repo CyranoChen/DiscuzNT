@@ -1,0 +1,106 @@
+<%inherits "Discuz.Album.Pages.showphotolist"%>
+<%template _albumheader%>
+<div id="nav">
+	<div class="wrap s_clear">
+	<%template _albumnavigation%>
+    <a href="{config.albumurl}" class="title">{config.forumtitle}</a>  &raquo; <strong>{config.albumname}首页</strong>
+	</div>
+</div>
+<%if page_err==0%>
+<div class="wrap">
+<div class="left space_main s_clear">
+	<div class="modulebox commend_photo">
+	<h2><%if {type}==0%>最多浏览<%else if {type}==1%>最多评论<%else if {type}==2%>最新图片<%else%>最多收藏<%/if%></h2>
+	<div class="photo arrangeboxbg" style="margin-bottom:10px;">
+	<%if {type}<3%>
+		<%set (int) {rowindex}=1%>
+		<%loop (PhotoInfo) photo photolist%>		
+		<div <%if {rowindex}%2==0%>class="arrangebox2"<%else%>class="arrangebox"<%/if%>>
+		<div class="arrangeboxLeft">{rowindex}</div>
+		<div class="arrangeboxright">
+		<dl>
+			<dt>
+			<div Class="albumimg" style="height:102px; min-height:102px;">
+					<a href="{albumurl}showphoto.aspx?photoid={photo.photoid}"><img src="{photo.filename}" alt="{photo.title}" onerror="this.onerror=null;this.src='templates/{templatepath}/images/album/errorphoto.gif'"/></a>	
+			</div>
+			</dt>
+			<dd>
+			<h5><em><a href="{albumurl}showphoto.aspx?photoid={photo.photoid}">{photo.title}</a></em><a href="{albumurl}showphoto.aspx?photoid={photo.photoid}#comments"> 评论({photo.comments})</a></h5>
+			<p>{photo.description}</p>
+			<p class="One">
+				<script language="javascript" type="text/javascript">
+					ShowFormatBytesStr({photo.filesize});
+				</script>
+			</p>
+			<p class="Two"><a href="{albumurl}showalbumlist.aspx?uid={photo.userid}">{photo.username}</a>      {photo.postdate}
+			</p>
+			</dd>
+		</dl>
+		</div>
+		</div>
+		<%set {rowindex}={rowindex}+1%>
+		<%/loop%>
+	<%else%>
+		<%set (int) {rowindex}=1%>
+		<%loop (AlbumInfo) album albumlist%>
+		<div <%if {rowindex}%2==0%>class="arrangebox2"<%else%>class="arrangebox"<%/if%>>
+		<div class="arrangeboxLeft">{rowindex}</div>
+		<div class="arrangeboxright">
+		<dl>
+			<dt>
+			<%if {album.logo}!=""%>
+				<div class="arrangepicture">
+					<a href="{albumurl}showalbum.aspx?albumid={album.albumid}"><img src="{album.logo}" alt="{album.title}" style="max-height: 80px; max-width: 105px" /></a>
+				</div>
+			<%else%>
+				<a href="{albumurl}showalbum.aspx?albumid={album.albumid}"><img src="templates/{templatepath}/images/nophoto.jpg" alt="{album.title}" /></a>
+			<%/if%>
+			</dt>
+			<dd>
+				<h5 style="padding-left:20px;"><em><a href="{albumurl}showalbum.aspx?albumid={album.albumid}">{album.title}</a></em> ({album.imgcount})</h5>
+				<p  style="padding-left:20px;">{album.description}</p>
+				<p class="Two"  style="padding-left:20px;"><a href="{albumurl}showalbumlist.aspx?uid={album.userid}">{album.username}</a>      {album.createdatetime}</p>
+			</dd>
+		</dl>
+		</div>
+		</div>
+		<%set {rowindex}={rowindex}+1%>
+		<%/loop%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<div class="right space_side s_clear">
+	<div class="sidebox">
+		<h2>一周热图总排行</h2>
+		<ul>
+			<%loop (PhotoInfo) weekhotphoto weekhotphotolist%>
+				<li><a href="{albumurl}showphoto.aspx?photoid={weekhotphoto.photoid}">{weekhotphoto.title}</a> (<a href="{albumurl}showalbumlist.aspx?uid={weekhotphoto.userid}">{weekhotphoto.username}</a>)</li>
+			<%/loop%>
+		</ul>
+	</div>
+	<div class="sidebox album_categories">
+		<h2>相册分类</h2>
+		<ul>
+			<%loop (AlbumCategoryInfo) ac albumcategorylist%>
+				<li><a href="{albumurl}showalbumlist.aspx?cate={ac.albumcateid}">{ac.title}</a></li>
+			<%/loop%>
+		</ul>
+	</div>
+	<%if {config.enablespace}==1%>
+	<div class="sidebox update_space">
+		<h2>最近更新的空间</h2>
+		<ul>
+		<%loop spaceinfo recentupdatespaceList%> 						
+			<li><a href="{spaceurl}space/?uid={spaceinfo[userid]}">{spaceinfo[spacetitle]}</a></li>
+		<%/loop%>
+		</ul>
+	</div>
+	<%/if%>
+</div>
+</div>
+<%else%>
+	<%template _photoerrmsgbox%>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

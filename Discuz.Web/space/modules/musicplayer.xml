@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="音乐播放器"  directory_title="音乐播放器" description="音乐播放器" category="工具" author="Discuz!NT" author_email="jiayanzhao@discuz.com" author_affiliation="Discuz!NT Space" author_location="Beijing, HaiDian, China" screenshot="" thumbnail="" scaling="false" render_inline="optional" author_photo="" author_aboutme="Discuz!NT Space Module" author_link="http://nt.discuz.net/" author_quote="good products ,good quality" singleton="true">
+        <Require feature="dynamic-height" />
+        <Require feature="settitle" />
+    </ModulePrefs>
+	
+	<UserPref name="title" display_name="标题" datatype="string" default_value="音乐播放器" />
+	<UserPref name="musicurl" display_name="音乐地址" datatype="string" default_value="http://" />
+	<UserPref name="musicautostart" display_name="自动播放" datatype="bool" default_value="true" />
+	
+    <Content type="html">	
+	<![CDATA[
+		<div id="mp__MODULE_ID__owner" style="background: transparent;"></div>
+		
+		<script type="text/javascript">
+			function initPlayer___MODULE_ID__()
+			{
+				var html;
+				var prefs = new _IG_Prefs();
+
+				var musicurl = prefs.getString('musicurl');
+				var autostart = prefs.getBool('musicautostart');
+				var autostartvalue = 0;
+				if (autostart)
+				{
+					autostartvalue = 1;
+				}
+				var title = prefs.getString('title');
+				if (title != '')
+				{					
+					_DS_SetTitle(title);
+				}
+				var patrn = /(http:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/ig;
+				if (DragUtil.isIE)
+				{					
+					if (musicurl != '' && patrn.test(musicurl))
+					{
+						html = '<div id="mpdiv__MODULE_ID__" style="background: transparent;">';
+						html += '<object id="MediaPlayer___MODULE_ID__" width="100%" height="64" classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" ';
+						html += 'codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112" ';
+						html += 'align="baseline" border="0" standby="Loading Microsoft Windows Media Player components..." ';
+						html += 'type="application/x-oleobject">';
+						html += '<param name="URL" value="' + musicurl + '">';
+						html += '<param name="autoStart" value="' + autostart + '">';
+						html += '<param name="invokeURLs" value="false">';
+						html += '<param name="playCount" value="100">';
+						html += '<param name="defaultFrame" value="datawindow">';
+						html += '<embed id="MediaPlayer___MODULE_ID___embed" src="' + musicurl + '" align="baseline" border="0" width="100%" height="68" ';
+						html += 'type="application/x-mplayer2" ';
+						html += 'pluginspage="" ';
+						html += 'name="MediaPlayer___MODULE_ID__" showcontrols="1" showpositioncontrols="0" ';
+						html += 'showaudiocontrols="1" showtracker="1" showdisplay="0" ';
+						html += 'showstatusbar="1" ';
+						html += 'autosize="0" ';
+						html += 'showgotobar="0" showcaptioning="0" autostart="' + autostartvalue + '" autorewind="0" ';
+						html += 'animationatstart="0" transparentatstart="0" allowscan="1" ';
+						html += 'enablecontextmenu="1" clicktoplay="0" ';
+						html += 'defaultframe="datawindow" invokeurls="0">';
+						html += '</embed>';
+						html += '</object>';
+						html += '';
+						html += '</div>';
+					}
+					else
+					{
+						html = '还没有设置音乐地址或音乐地址不正确';
+					}
+				}
+				else
+				{
+					html = '本模块仅支持IE浏览器';
+				}
+				_gel('mp__MODULE_ID__owner').innerHTML = html;
+				_DS_AdjustIFrameHeight();
+			}
+			initPlayer___MODULE_ID__();
+		</script>
+	]]>
+    </Content>
+</Module>

@@ -1,0 +1,75 @@
+﻿<%inherits "Discuz.Mall.Pages.usercpshopconfig"%>
+<%template _header%>
+
+<!--header end-->
+
+<div id="foruminfo">
+	<div id="nav">
+		<a href="{config.forumurl}" class="home">{config.forumtitle}</a>  &raquo; <a href="usercp.aspx">用户中心</a>  &raquo; <strong>管理店铺</strong>
+	</div>
+	<div id="headsearch">
+		<div id="search">
+			<%template _quicksearch%>
+		</div>
+	</div>
+</div>
+
+<!--主体-->
+<div class="controlpannel">
+<%template _menu%>
+	<div class="pannelcontent">
+		<div class="pcontent">
+		<!--panneldetail start-->
+			<div class="panneldetail">
+				<%template _shopmenu%>
+				<!--pannelbody start-->
+                <div class="pannelbody">
+					<div class="pannellist">
+					
+					<%if page_err==0%>
+						<%if ispost%>
+							<%template _msgbox%>
+						<%else%>
+						
+					<form id="shopconfig" name="shopconfig" method="post" enctype="multipart/form-data" action="">
+					    <label for="user">店 铺 名:</label>
+						<input name="shopname" type="text" id="shopname" value="{shopinfo.shopname}" size="40" maxlength="50"/>(50个汉字以内)<br />
+                           
+                        <label for="user">店铺类别:</label>
+						<select id="categoryid" name="categoryid">{categoryoptions}</select><br />
+                        
+						<label for="email">店铺风格:</label>
+						<select id="themeid" name="themeid">{themeoptions}</select><br />
+						
+						<label for="comment">店   标:</label>
+						<input type="file" onchange="PhotoView(this.value,document.getElementById('previewImage'))" id="upfileshoppic" name="postfile" size="40" /> 
+						<div class="shoplogo" id="previewImage"><%if {shopinfo.logo}!=""%><img width="75" height="75" src="/upload/{shopinfo.logo}" border="0" alt="" /><%else%>暂无图片<%/if%></div><br />
+						<label for="email">所 在 地:</label>
+                        {shopinfo.locus} &nbsp;<a href="#" onclick="javascript:$('span_locus').style.display='block';">选择</a>	
+                        <span id="span_locus" style="display:none;"><select class="input_gray" style="width: 130px;"  id="locus_1" name="locus_1"></select>城市:<select class="input_gray" style="width: 90px;" id="locus_2" name="locus_2"></select></span><br />	
+                  
+						<label for="email">公   告:</label>
+						<textarea name="bulletin" cols="30" rows="4" id="bulletin" maxlength="500" onkeyup="return ismaxlen(this);" style="width:60%; font-size:12px;" maxlength="200">{shopinfo.bulletin}</textarea>(500个汉字以内)<br />
+						
+						<label for="email">店铺介绍:</label>
+						<textarea name="introduce" cols="30" rows="4" id="introduce" maxlength="500" onkeyup="return ismaxlen(this);"  style="width:60%; font-size:12px;" maxlength="200">{shopinfo.introduce}</textarea>(500个汉字以内)<br />
+						<input id="submitshopconfig" name="submitshopconfig" type="submit" value="确定" />
+					</form>
+						<%/if%>
+					<%else%>
+					<%template _usercperrmsgbox%>
+					<%/if%>
+					 
+			        </div>
+			    </div>   
+			    <!--pannelbody end-->
+    	   </div>
+    	   <!--panneldetail end-->
+	   </div>
+   </div>
+</div>
+<script type="text/javascript" src="javascript/locations.js"></script>
+<script type="text/javascript" src="javascript/template_usercpshopconfig.js"></script>
+<!--主体-->
+<%template _copyright%>
+<%template _footer%>

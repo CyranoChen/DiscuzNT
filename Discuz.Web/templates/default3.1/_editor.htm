@@ -1,0 +1,419 @@
+<script type="text/javascript"  src="{jsdir}/bbcode.js" reload="1" ></script>
+<script type="text/javascript"  src="{jsdir}/ajax.js" reload="1" ></script>
+<%if {infloat}==1%>
+{link}
+<%/if%>
+<script type="text/javascript" reload="1" >
+	var infloat = {infloat};
+	var InFloat_Editor = 'floatlayout_{action}';
+	var editoraction = '{action}';
+	var lang	= new Array();
+	lang['post_discuzcode_code'] = '请输入要插入的代码';
+	lang['post_discuzcode_quote'] = '请输入要插入的引用';
+	lang['post_discuzcode_free'] = '请输入要插入的免费信息';
+	lang['post_discuzcode_hide'] = '请输入要插入的隐藏内容';
+	lang['board_allowed'] = '系统限制';
+	lang['lento'] = '到';
+	lang['bytes'] = '字节';
+	lang['post_curlength'] = '当前长度';
+	lang['post_title_and_message_isnull'] = '请完成标题或内容栏。';
+	lang['post_title_toolong'] = '您的标题超过 60 个字符的限制。';
+	lang['post_message_length_invalid'] = '您的帖子长度不符合要求。';
+	lang['post_type_isnull'] = '请选择主题对应的分类。';
+	lang['post_reward_credits_null'] = '对不起，您输入悬赏积分。';
+	lang['post_attachment_ext_notallowed']	= '对不起，不支持上传此类扩展名的附件。';
+	lang['post_attachment_img_invalid']		= '无效的图片文件。';
+	lang['post_attachment_deletelink']		= '删除';
+	lang['post_attachment_insert']			= '点击这里将本附件插入帖子内容中当前光标的位置';
+	lang['post_attachment_insertlink']		= '插入';
+
+	lang['enter_list_item']			= "输入一个列表项目.\r\n留空或者点击取消完成此列表.";
+	lang['enter_link_url']			= "请输入链接的地址:";
+	lang['enter_image_url']			= "请输入图片链接地址:";
+	lang['enter_email_link']		= "请输入此链接的邮箱地址:";
+	lang['fontname']				= "字体";
+	lang['fontsize']				= "大小";
+	lang['post_advanceeditor']		= "全部功能";
+	lang['post_simpleeditor']		= "简单功能";
+	lang['submit']					= "提交";
+	lang['cancel']					= "取消";
+	lang['post_autosave_none'] = "没有可以恢复的数据";
+	lang['post_autosave_confirm'] = "本操作将覆盖当前帖子内容，确定要恢复数据吗？";
+	lang['enter_tag_option']		= "请输入 %1 标签的选项:";
+	lang['enter_table_rows']		= "请输入行数，最多 30 行:";
+	lang['enter_table_columns']		= "请输入列数，最多 30 列:";
+	var editorcss = 'templates/{templatepath}/editor.css';
+
+	var typerequired = parseInt('0');
+	var seccodecheck = parseInt('0');
+	var secqaacheck = parseInt('0');
+	var special = 1;
+	<%if {special}==""%>
+	special = 0;
+	<%/if%>
+	var isfirstpost = 0;
+	<%if {isfirstpost}%>
+	isfirstpost = 1;
+	<%/if%>
+	var allowposttrade = parseInt('1');
+	var allowpostreward = parseInt('1');
+	var allowpostactivity = parseInt('1');
+
+	var bbinsert = parseInt('1');
+	var editorid = '{editorid}';
+	var allowhtml = parseInt('{htmlon}');
+	var forumallowhtml = parseInt('1');
+	var allowsmilies = 1 - parseInt('{smileyoff}');
+	var allowbbcode = parseInt('{usergroupinfo.allowcusbbcode}') == 1 && parseInt('{forum.allowbbcode}') == 1;
+	var allowimgcode = parseInt('{forum.allowimgcode}');
+
+	var wysiwyg = (is_ie || is_moz || (is_opera && opera.version() >= 9)) && parseInt('{config.Defaulteditormode}') && allowbbcode == 1 ? 1 : 0;//bbinsert == 1 ? 1 : 0;
+	var allowswitcheditor = parseInt('{config.allowswitcheditor}') && allowbbcode == 1 ;
+
+	var custombbcodes = { {Caches.GetCustomEditButtonList()} };
+
+	var smileyinsert = parseInt('1');
+	var smiliesCount = 32;//显示表情总数
+	var colCount = 8; //每行显示表情个数
+	var title = "";				   //标题
+	var showsmiliestitle = 1;        //是否显示标题（0不显示 1显示）
+	var smiliesIsCreate = 0;		   //编辑器是否已被创建(0否，1是）
+	var smilies_HASH = {};//得到表情符号信息
+
+	var maxpolloptions = parseInt('{config.maxpolloptions}');
+	function alloweditorhtml() {
+		if($('htmlon').checked) {
+			allowhtml = 1;
+			forumallowhtml = 1;
+		} else {
+			allowhtml = 0;
+			forumallowhtml = 0;
+		}
+	}
+</script>
+<input type="hidden" name="wysiwyg" id="{editorid}_mode" value="{config.Defaulteditormode}" />
+<div id="{editorid}_controls" class="editorrow">
+	<div class="editor">
+		<a id="{editorid}_switcher" class="plugeditor editormode"><input type="checkbox" name="checkbox" value="0" <%if {config.Defaulteditormode}==0%> checked="checked"<%/if%> onclick="switchEditor(this.checked?0:1)"/>源码</a>
+		<div class="editorbtn" id="editorbtn">
+			<a id="{editorid}_cmd_bold" title="粗体" href="javascript:;"></a>
+			<a id="{editorid}_popup_simple" title="粗体 斜体 下划线" href="javascript:;"></a>
+			<a id="{editorid}_popup_fontname" title="字体" href="javascript:;"></a>
+			<a id="{editorid}_popup_fontsize" title="大小" href="javascript:;"></a>
+			<a id="{editorid}_popup_forecolor" title="颜色" href="javascript:;"></a>
+			<a id="{editorid}_popup_justify" title="对齐" href="javascript:;"></a>
+			<a id="{editorid}_cmd_createlink" title="链接" href="javascript:;"></a>
+			<a id="{editorid}_cmd_email" title="Email" href="javascript:;"></a>
+			<a id="{editorid}_cmd_insertimage" title="图片" href="javascript:;"></a>
+			<a id="{editorid}_cmd_quote" title="引用" href="javascript:;"></a>
+			<a id="{editorid}_cmd_code" title="代码" href="javascript:;"></a>
+			<a id="{editorid}_popup_list" title="列表" href="javascript:;"></a>
+			<a id="{editorid}_popup_dent" title="缩进" href="javascript:;"></a>
+			<a id="{editorid}_popup_float" title="浮动" href="javascript:;"></a>
+			<a id="{editorid}_cmd_table" title="表格" style="display: none;" href="javascript:;"></a>
+			<a id="{editorid}_cmd_free" title="免费信息" href="javascript:;"></a>
+			<a id="{editorid}_cmd_hide" title="隐藏内容" href="javascript:;"></a>
+		<%if {config.smileyinsert}==1%>
+			<a id="{editorid}_popup_smilies" title="表情" href="javascript:;"></a>
+		<%/if%>
+			<a id="{editorid}_popup_media" title="多媒体" href="javascript:;"></a>
+			<a id="{editorid}_popup_tools" title="工具" href="javascript:;"></a>
+		</div>
+		<script type="text/javascript" reload="1">
+			//自定义按扭显示
+			if(typeof(custombbcodes) != 'undefined') {
+				for (var id in custombbcodes){
+					if (custombbcodes[id][1] == '')
+						continue;
+					var btn = document.createElement("a");
+					btn.id = "{editorid}_cmd_custom" + custombbcodes[id][5] + "_" + custombbcodes[id][0];
+					btn.className = "customedit";
+					btn.innerHTML = '<img title="' + custombbcodes[id][2] + '" alt="' + custombbcodes[id][2] + '" src = "{rooturl}editor/images/' + custombbcodes[id][1] + '" />';
+					$("editorbtn").appendChild(btn);
+				}
+			}
+		</script>
+	</div>
+	<div class="editortoolbar">
+		<div class="popupmenu_popup fontstyle_menu" id="{editorid}_popup_simple_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_italic" title="斜体">斜体</a></li>
+			<li><a id="{editorid}_cmd_underline" title="下划线">下划线</a></li>
+		</ul>
+		</div>
+
+		<%set (string){fontoptions} = "仿宋_GB2312,黑体,楷体_GB2312,宋体,新宋体,微软雅黑,TrebuchetMS,Tahoma,Arial,Impact,Verdana,TimesNewRoman"%>
+		<div class="popupmenu_popup fontname_menu" id="{editorid}_popup_fontname_menu" style="display: none">
+		<ul unselectable="on">
+		<%loop (string) fontname fontoptions.Split(comma)%>
+			<li onclick="discuzcode('fontname', '{fontname}')" style="font-family: {fontname}" unselectable="on">{fontname}</li>
+		<%/loop%>
+		</ul>
+		</div>
+
+		<%set (string){sizeoptions} = "1,2,3,4,5,6,7"%>
+		<div class="popupmenu_popup fontsize_menu" id="{editorid}_popup_fontsize_menu" style="display: none">
+		<ul unselectable="on">
+		<%loop (string) size sizeoptions.Split(comma)%>
+			<li onclick="discuzcode('fontsize', {size})" unselectable="on"><font size="{size}" unselectable="on">{size}</font></li>
+		<%/loop%>
+		</ul>
+		</div>
+
+		<%set (string){coloroptions} = "Black,Sienna,DarkOliveGreen,DarkGreen,DarkSlateBlue,Navy,Indigo,DarkSlateGray,DarkRed,DarkOrange,Olive,Green,Teal,Blue,SlateGray,DimGray,Red,SandyBrown,YellowGreen,SeaGreen,MediumTurquoise,RoyalBlue,Purple,Gray,Magenta,Orange,Yellow,Lime,Cyan,DeepSkyBlue,DarkOrchid,Silver,Pink,Wheat,LemonChiffon,PaleGreen,PaleTurquoise,LightBlue,Plum,White"%>
+		<div class="popupmenu_popup" id="{editorid}_popup_forecolor_menu" style="display: none">
+		<table cellpadding="0" cellspacing="0" border="0" unselectable="on" style="width: auto;">
+		<tr>
+		<%loop (string) colorname coloroptions.Split(comma)%>
+			<td class="editor_colornormal" onclick="discuzcode('forecolor', '{colorname}')" unselectable="on"><div style="background-color: {colorname}" unselectable="on"></div></td><%if {colorname[_id]}%8==0%></tr><tr><%/if%>
+		<%/loop%>
+		</tr>
+		</table>
+		</div>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_justify_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_justifyleft" title="居左">居左</a></li>
+			<li><a id="{editorid}_cmd_justifycenter" title="居中">居中</a></li>
+			<li><a id="{editorid}_cmd_justifyright" title="居右">居右</a></li>
+		</ul>
+		</div>
+
+		<%if {config.smileyinsert}==1%>
+		<div class="smilies popupmenu_popup" id="{editorid}_popup_smilies_menu" style="display: none;width:320px;">
+			<%template _smiley%>
+		</div>
+		<%/if%>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_dent_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_indent" title="增加缩进">增加缩进</a></li>
+			<li><a id="{editorid}_cmd_outdent" title="减少缩进">减少缩进</a></li>
+		</ul>
+		</div>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_float_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_floatleft" title="左浮动">左浮动</a></li>
+			<li><a id="{editorid}_cmd_floatright" title="右浮动">右浮动</a></li>
+		</ul>
+		</div>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_list_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_insertorderedlist" title="排序的列表">排序的列表</a></li>
+			<li><a id="{editorid}_cmd_insertunorderedlist" title="未排序的列表">未排序的列表</a></li>
+		</ul>
+		</div>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_hide_menu" style="display: none">
+		<ul unselectable="on">
+			<%if {usergroupinfo.Allowhidecode}==1%><li><a id="{editorid}_popup_hide" title="隐藏内容">隐藏内容</a></li><%/if%>
+			<li><a id="{editorid}_cmd_table" title="表格">表格</a></li>
+			<li><a id="{editorid}_cmd_free" title="免费信息">免费信息</a></li>
+		</ul>
+		</div>
+
+		<div class="popupmenu_popup" id="{editorid}_popup_tools_menu" style="display: none">
+		<ul unselectable="on">
+			<li><a id="{editorid}_cmd_removeformat" title="清除文本格式">清除文本格式</a></li>
+			<li><a id="{editorid}_cmd_unlink" title="移除链接">移除链接</a></li>
+			<li><a id="{editorid}_cmd_undo" title="撤销">撤销</a></li>
+			<li><a id="{editorid}_cmd_redo" title="重做">重做</a></li>
+			<li><a id="{editorid}_cmd_checklength" title="字数检查">字数检查</a></li>
+			<li><a id="{editorid}_cmd_clearcontent" title="清空内容">清空内容</a></li>
+			<br />
+			<li><a id="{editorid}_cmd_autosave" title="自动保存">自动保存<em id="autsavet">(60秒)</em></a></li>
+			<li><a id="{editorid}_cmd_saveData" title="保存数据">保存数据</a></li>
+			<li><a id="{editorid}_cmd_loadData" title="恢复数据">恢复数据</a></li>
+		</ul>
+		</div>
+	</div>
+</div>
+<div class="newediter">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed">
+		<tr>
+			<td>
+			<%if {infloat}==0%>
+			<textarea class="autosave max" name="{config.antispampostmessage}" id="{editorid}_textarea" tabindex="1" class="txt" style="height:300px">{message}</textarea>
+			<%else%>
+			<textarea class="autosave max" name="{config.antispampostmessage}" id="{editorid}_textarea" tabindex="1">{Discuz.Forum.Posts.ReplaceMessageChar(message)}</textarea>
+			<%/if%>
+			</td>
+		</tr>
+	</table>
+</div>
+<script type="text/javascript" reload="1" >
+var pagescroll = new pagescroll_class('floatlayout_{action}', 600, 410);
+<%if {infloat}==0%>
+	$('floatlayout_{action}').scrollLeft = 600;
+<%/if%>
+<%if {forum.applytopictype}==1 && {topictypeselectoptions}!=""&&{isfirstpost}%>
+	loadselect('typeid', 0, 'floatlayout_{action}');
+<%/if%>
+var editorid = '{editorid}';
+var textobj = $(editorid + '_textarea');
+var TABLEBG = '#FFF';//'{  WRAPBG  }';
+var uid = parseInt('{userid}');
+
+var special = parseInt('0');
+var charset = 'utf-8';
+var thumbwidth = parseInt(400);
+var thumbheight = parseInt(300);
+var extensions = '';
+
+var fontoptions = new Array("仿宋_GB2312", "黑体", "楷体_GB2312", "宋体", "新宋体", "微软雅黑", "Trebuchet MS", "Tahoma", "Arial", "Impact", "Verdana", "Times New Roman");
+</script>
+
+<script type="text/javascript" reload="1" >
+function messagehandle_{action}(key) {
+	if(!Editorwin) {
+		$('floatlayout_{action}').scrollTop = 0;
+		<%if !{adveditor}%>
+			$('more_1').style.display='none';pagescroll.up(1, '$(\'more_2\').style.display=\'\';$(\'custominfoarea\').style.display=\'\'');
+		<%else%>
+			$('custominfoarea').style.display=$('more_2').style.display='none';pagescroll.up(1, '$(\'more_1\').style.display=\'\'');
+		<%/if%>
+	}
+}
+
+function messagehandle() {
+	messagehandle_{action}();
+}
+
+function submithandle_{action}(locationhref, message) {
+	<%if {action}=="edit" || {action}=="reply"%>
+		try {
+			var pid = locationhref.lastIndexOf('#pid');
+			if(pid != -1) {
+				pid = locationhref.substr(pid + 4);
+				<%if {action}=="edit"%>
+					if(pid) {
+						ajaxget('viewthread.php?tid=$tid&viewpid=' + pid, 'post_' + pid, 'ajaxwaitid');
+					} else {
+						ajaxget('viewthread.php?tid=$tid&viewpid=$pid', 'post_$pid', 'ajaxwaitid');
+					}
+					$('postform').editsubmit.disabled = false;
+				<%else if {action}=="reply"%>
+					ajaxget('viewthread.php?tid=$tid&viewpid=' + pid, 'post_new', 'ajaxwaitid', '', null, 'appendreply()');
+					if(replyreload) {
+						var reloadpids = replyreload.split(',');
+						for(i = 1;i < reloadpids.length;i++) {
+							ajaxget('viewthread.php?tid=$tid&viewpid=' + reloadpids[i], 'post_' + reloadpids[i]);
+						}
+					}
+				<%/if%>
+			} else {
+				location.href = locationhref;
+			}
+		} catch(e) {
+			location.href = locationhref;
+		}
+	<%else if {action}=="newthread'"%>
+		var hastid = locationhref.lastIndexOf('tid=');
+		if(hastid == -1) {
+			dnotice(message, "location.href='" + locationhref + "'", 390, 130);
+		} else {
+			location.href = locationhref;
+		}
+	<%/if%>
+
+	floatwinreset = 1;
+	closeEditorwin();
+}
+
+function cedit() {
+	try {
+		loadData(1);
+	} catch(e) {
+		setTimeout('cedit()', 1000);
+	}
+}
+
+
+function openEditor() {
+	try {
+		<%if {action}=="reply" && {message}==""%>
+
+		<%/if%>
+		<%if {action}=="edit" || {action}=="reply"&&{request[quote]}=="yes"%>
+		if(wysiwyg) {
+			initialized = false;
+			newEditor(1, bbcode2html(textobj.value));
+		} else {
+			newEditor(0);
+		}
+		setCaretAtEnd();
+		<%else%>
+		newEditor(wysiwyg);
+		if(editbox) {
+			editbox.className = 'autosave max';
+		}
+		<%/if%>
+
+
+	} catch(e) {
+		setTimeout('openEditor()', 100);
+		return;
+	}
+	if(!$('floatlayout_{action}').scrollLeft) {
+		$('floatlayout_{action}').scrollLeft = 600;
+	}
+
+	// 需要开启tools
+	if(!getcookie('disableautosave')) {
+		clearInterval(autosaveDatai);
+		autosaveData(1);
+	}
+	if(is_ie >= 5 || is_moz >= 2) {
+		window.onbeforeunload = function () {
+			try {
+				saveData(wysiwyg ? editdoc.body.innerHTML : textobj.value);
+			} catch(e) {}
+		};
+	}
+}
+	
+</script>
+<script type="text/javascript" src="{jsdir}/post.js" reload="1" ></script>
+<script type="text/javascript" src="{jsdir}/editor.js" reload="1" ></script>
+<script type="text/javascript" src="{jsdir}/post_editor.js" reload="1" ></script>
+
+<!--{if $forum['allowmediacode']}-->
+<div class="popupmenu_popup" id="{editorid}_popup_media_menu" style="width: 280px;display: none" unselectable="on">
+<input type="hidden" id="{editorid}_mediatype" value="ra">
+<table cellpadding="4" cellspacing="0" border="0">
+	<tr class="popupmenu_option">
+		<td nowrap>
+			请输入在线视频的地址:<br />
+			<input id="{editorid}_mediaurl" style="width: 98%" value="" onkeyup="setmediatype('{editorid}')" class="txt" />
+		</td>
+	</tr>
+	<tr class="popupmenu_option">
+		<td nowrap>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_ra" onclick="$('{editorid}_mediatype').value = 'ra'" checked="checked">RA</label>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_wma" onclick="$('{editorid}_mediatype').value = 'wma'">WMA</label>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_mp3" onclick="$('{editorid}_mediatype').value = 'mp3'">MP3</label>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_rm" onclick="$('{editorid}_mediatype').value = 'rm'">RM/RMVB</label>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_wmv" onclick="$('{editorid}_mediatype').value = 'wmv'">WMV</label>
+			<label style="float: left; width: 32%"><input type="radio" name="{editorid}_mediatyperadio" id="{editorid}_mediatyperadio_mov" onclick="$('{editorid}_mediatype').value = 'mov'">MOV</label>
+		</td>
+	</tr>
+	<tr class="popupmenu_option">
+		<td nowrap>
+			<label style="float: left; width: 32%">宽度: <input id="{editorid}_mediawidth" size="5" value="400" class="txt" /></label>
+			<label style="float: left; width: 32%">高度: <input id="{editorid}_mediaheight" size="5" value="300"  class="txt"/></label>
+		</td>
+	</tr>
+	<tr class="popupmenu_option">
+		<td align="center" colspan="2"><input type="button" value="提交" onclick="setmediacode('{editorid}')"> &nbsp; <input type="button" onclick="hideMenu()" value="取消" /></td>
+	</tr>
+</table>
+</div>
+<!--{/if}-->
+<!--{if $_DCACHE['bbcodes_display']['img']}-->
+<div class="popupmenu_popup" id="{editorid}_cmd_insertimage_menu" style="display: none" unselectable="on">
+		请输入图片地址:<br /><input id="{editorid}_cmd_insertimage_param_url" style="width: 300px;" value="" class="txt" type="text" onkeydown="editorMenuEvent_onkeydown(this);" />
+		<br /><center><input id="{editorid}_cmd_insertimage_submit" value="提交" type="button" onclick="insertimagesubmit()" /> &nbsp; <input onclick="hideMenu();" value="取消" type="button" /></center>
+</div>
+<!--{/if}-->

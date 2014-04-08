@@ -1,0 +1,81 @@
+﻿<%inherits "Discuz.Space.Pages.usercpspacemanagecategory"%>
+<%template _header%>
+<div id="nav">
+	<div class="wrap s_clear">
+        <a href="{config.forumurl}" class="title">{config.forumtitle}</a> &raquo; <a href="usercp.aspx">用户中心</a> &raquo; <strong>管理分类</strong>
+	</div>
+</div>
+<script type="text/javascript">
+	function checkCheckBox(form,objtag)
+	{
+		for(var i = 0; i < form.elements.length; i++) 
+		{
+			var e = form.elements[i];
+			if(e.name == "categoryid") 
+			{
+				e.checked = objtag.checked;
+			}
+		}
+		objtag.checked = !objtag.checked;
+	}
+</script>
+<div class="wrap with_side s_clear" id="wrap">
+	<%template _menu%>
+	<div class="cpmain">
+	<div class="cpcontent datalist">
+		<h1>管理分类</h1>
+		<%template _spacemenu%>
+	<%if page_err==0%>
+		<%if ispost%>
+			<%template _usercpmsgbox%>
+		<%else%>
+			<form id="catelist" name="catelist" method="post" action="">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="datatable">
+			<tbody>
+			   <%if {categorycount}>0%>
+				<tr class="colplural">
+					<th width="30%">分类名称</th>
+					<th width="40%">分类描述</th>
+					<th width="10%">分类阅读数</th>
+					<th width="10%">序号</th>
+					<th width="10%">&nbsp;</th>
+				</tr>
+				<%loop currentcategory categorylist%>
+				<tr>
+					<td class="datatitle"><input name="categoryid" type="checkbox" id="categoryid{currentcategory[categoryid]}" value="{currentcategory[categoryid]}"/>{currentcategory[title]} <a href="usercpspacecategoryedit.aspx?categoryid={currentcategory[categoryid]}">[编辑]</a>
+					</td>
+					<td class="datatitle">{currentcategory[shortdescription]}&nbsp;</td>
+					<td>{currentcategory[categorycount]}</td>
+					<td>{currentcategory[displayorder]}</td>
+					<td><a href="###" onclick="$('categoryid{currentcategory[categoryid]}').checked=true;$('catelist').submit();">删除</a></td>
+				</tr>
+				<%/loop%>
+				<%else%>
+				<div class="zerothreads">日志暂无分类</div>
+				<%/if%>
+			</tbody>
+			</table>
+			</form>
+				<div class="cpbox s_clear">
+					<div class="pages_btns">
+					  <%if {categorycount}>0%>
+						<div class="pages">
+							{pagenumbers} <em>{pageid}/{pagecount}页</em> 
+						</div>
+						<a href="javascript:;"  onclick="checkCheckBox($('catelist'),this)" class="selectall">全选</a>
+						<span class="pipe">|</span>
+						<a href="###" onclick="if(confirm('您确认要将所选的分类删除吗？')) $('catelist').submit()" class="selectall">删除</a>
+						<span class="pipe">|</span>
+					  <%/if%>
+						<a href="usercpspacecategoryadd.aspx"><strong>增加日志分类</strong></a>
+					</div>
+				</div>
+		<%/if%>
+	<%else%>
+		<%template _usercperrmsgbox%>
+	<%/if%>
+	</div>
+	</div>
+</div>
+<%template _copyright%>
+<%template _footer%>

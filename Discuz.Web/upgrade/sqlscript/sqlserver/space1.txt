@@ -1,0 +1,84 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_createspaceposttags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_createspaceposttags]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_deletespaceposttags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_deletespaceposttags]
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dnt_getspacepostlistbytag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dnt_getspacepostlistbytag]
+GO
+
+
+CREATE  PROCEDURE [dnt_createspaceposttags]
+@tags nvarchar(55),
+@postid int,
+@userid int,
+@postdatetime datetime
+AS
+BEGIN
+	exec [dnt_createtags] @tags, @userid, @postdatetime
+
+	UPDATE [dnt_tags] SET [scount]=[scount]+1,[count]=[count]+1
+	WHERE EXISTS (SELECT [item] FROM [dnt_split](@tags, ' ') AS [newtags] WHERE [newtags].[item] = [tagname])
+
+	INSERT INTO [dnt_spaceposttags] (tagid, spacepostid)
+	SELECT tagid, @postid FROM [dnt_tags] WHERE EXISTS (SELECT * FROM [dnt_split](@tags, ' ') WHERE [item] = [dnt_tags].[tagname])
+END
+
+GO
+
+
+
+CREATE PROCEDURE [dnt_deletespaceposttags]
+	@spacepostid int
+ AS
+BEGIN       
+	UPDATE [dnt_tags] SET [count]=[count]-1,[scount]=[scount]-1 
+	WHERE EXISTS (SELECT [tagid] FROM [dnt_spaceposttags] WHERE [spacepostid] = @spacepostid AND [tagid] = [dnt_tags].[tagid])
+
+    DELETE FROM [dnt_spaceposttags] WHERE [spacepostid] = @spacepostid	
+END
+
+GO
+
+
+
+
+
+
+
+
+CREATE PROCEDURE [dnt_getspacepostlistbytag]	
+	@tagid int,
+	@pageindex int,
+	@pagesize int
+AS
+BEGIN
+	DECLARE @strSQL varchar(2000)
+	IF @pageindex = 1
+	BEGIN
+		SET @strSQL='SELECT TOP ' + STR(@pagesize) + ' [sp].[postid], [sp].[title],[sp].[author],[sp].[uid], [sp].[postdatetime],[sp].[commentcount],[sp].[views]  
+		FROM [dnt_spaceposttags] AS [spt], [dnt_spaceposts] AS [sp] 
+		WHERE [sp].[postid] = [spt].[spacepostid] AND [sp].[poststatus] = 1 AND [spt].[tagid] = ' + STR(@tagid) + ' 
+		ORDER BY [sp].[postid] DESC'
+	END
+	ELSE
+	BEGIN
+		SET @strSQL='SELECT TOP ' + STR(@pagesize) + ' [sp].[postid], [sp].[title],[sp].[author],[sp].[uid], [sp].[postdatetime],[sp].[commentcount],[sp].[views] 
+		FROM [dnt_spaceposttags] AS [spt], [dnt_spaceposts] AS [sp] 
+		WHERE [sp].[postid] = [spt].[spacepostid] AND [sp].[poststatus] = 1 AND [spt].[tagid] = ' + STR(@tagid) + ' 
+		AND [sp].[postid] < (SELECT MIN([postid]) FROM (SELECT TOP ' + STR((@pageindex-1)*@pagesize) + ' 
+		[postid] FROM [dnt_spaceposttags] AS [spt], [dnt_spaceposts] AS [sp] 
+		WHERE [sp].[postid] = [spt].[spacepostid] AND [sp].[poststatus] = 1 AND [spt].[tagid] = ' + STR(@tagid) + ' 
+		ORDER BY [sp].[postid] DESC) as tblTmp) 
+		ORDER BY [sp].[postid] DESC'
+	END
+	EXEC(@strSQL)
+END
+
+GO
