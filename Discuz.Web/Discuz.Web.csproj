@@ -235,6 +235,10 @@
       <DependentUpon>setnewpassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="aspx\1\showbonus.aspx.cs">
+      <DependentUpon>showbonus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="aspx\1\showdebate.aspx.cs">
       <DependentUpon>showdebate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1046,6 +1050,7 @@
     </Content>
     <Content Include="install\sqlscript\sqlserver\setup3.sql">
     </Content>
+    <Content Include="aspx\1\showbonus.aspx" />
     <None Include="silverlight\Avatar\ClientBin\Discuz.WebCam.xap" />
     <None Include="silverlight\Avatar\ClientBin\HaoRan.WebCam.xap" />
     <None Include="silverlight\PieChart\ClientBin\PieChart.xap" />
