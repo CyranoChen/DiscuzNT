@@ -351,8 +351,10 @@ namespace Discuz.Common
 			foreach (Match m in r[10].Matches(strTemplate))
 			{
 				IsCodeLine = true;
+
+                // Edit by Cyrano "TypeConverter.StrToDateTime()" -> "Convert.ToDateTime()"
 				strTemplate = strTemplate.Replace(m.Groups[0].ToString(),
-                              string.Format("\ttemplateBuilder.Append(TypeConverter.StrToDateTime({0}).ToString(\"{1}\"));", m.Groups[2], m.Groups[3].ToString().Replace("\\\"", string.Empty)));
+                              string.Format("\ttemplateBuilder.Append(Convert.ToDateTime({0}).ToString(\"{1}\"));", m.Groups[2], m.Groups[3].ToString().Replace("\\\"", string.Empty)));
 			}
 
 			//½âÎösubstring
