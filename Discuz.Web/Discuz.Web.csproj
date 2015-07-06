@@ -63,6 +63,83 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\global\global_addadminusergroup.aspx" />
+    <Content Include="admin\global\global_addadvs.aspx" />
+    <Content Include="admin\global\global_addannounce.aspx" />
+    <Content Include="admin\global\global_addgroup.aspx" />
+    <Content Include="admin\global\global_addhelp.aspx" />
+    <Content Include="admin\global\global_addhelpclass.aspx" />
+    <Content Include="admin\global\global_addmedal.aspx" />
+    <Content Include="admin\global\global_adduser.aspx" />
+    <Content Include="admin\global\global_addusergroup.aspx" />
+    <Content Include="admin\global\global_addusergroupspecial.aspx" />
+    <Content Include="admin\global\global_adminusergroupgrid.aspx" />
+    <Content Include="admin\global\global_advsgrid.aspx" />
+    <Content Include="admin\global\global_ajaxcall.aspx" />
+    <Content Include="admin\global\global_allowparticipatescore.aspx" />
+    <Content Include="admin\global\global_announcegrid.aspx" />
+    <Content Include="admin\global\global_announceprivatemessage.aspx" />
+    <Content Include="admin\global\global_attach.aspx" />
+    <Content Include="admin\global\global_backupandrestore.aspx" />
+    <Content Include="admin\global\global_cachemanage.aspx" />
+    <Content Include="admin\global\global_combinationuser.aspx" />
+    <Content Include="admin\global\global_combinationusergroup.aspx" />
+    <Content Include="admin\global\global_creditsordermanage.aspx" />
+    <Content Include="admin\global\global_detachtable.aspx" />
+    <Content Include="admin\global\global_editadminusergroup.aspx" />
+    <Content Include="admin\global\global_editadvs.aspx" />
+    <Content Include="admin\global\global_editannounce.aspx" />
+    <Content Include="admin\global\global_editgroup.aspx" />
+    <Content Include="admin\global\global_edithelp.aspx" />
+    <Content Include="admin\global\global_edithelpclass.aspx" />
+    <Content Include="admin\global\global_editorset.aspx" />
+    <Content Include="admin\global\global_editsysadminusergroup.aspx" />
+    <Content Include="admin\global\global_edituser.aspx" />
+    <Content Include="admin\global\global_editusergroup.aspx" />
+    <Content Include="admin\global\global_editusergroupspecial.aspx" />
+    <Content Include="admin\global\global_emailconfig.aspx" />
+    <Content Include="admin\global\global_forumlinksgrid.aspx" />
+    <Content Include="admin\global\global_ftpsetting.aspx" />
+    <Content Include="admin\global\global_givemedals.aspx" />
+    <Content Include="admin\global\global_helplist.aspx" />
+    <Content Include="admin\global\global_logandshrinkdb.aspx" />
+    <Content Include="admin\global\global_medalgrid.aspx" />
+    <Content Include="admin\global\global_navigationmanage.aspx" />
+    <Content Include="admin\global\global_onlinelistgrid.aspx" />
+    <Content Include="admin\global\global_passportmanage.aspx" />
+    <Content Include="admin\global\global_passportsetting.aspx" />
+    <Content Include="admin\global\global_refreshallcache.aspx" />
+    <Content Include="admin\global\global_registerandvisit.aspx" />
+    <Content Include="admin\global\global_resetpassword.aspx" />
+    <Content Include="admin\global\global_restoresetupinf.aspx" />
+    <Content Include="admin\global\global_runsql.aspx" />
+    <Content Include="admin\global\global_safecontrol.aspx" />
+    <Content Include="admin\global\global_schedulemanage.aspx" />
+    <Content Include="admin\global\global_schedulesetting.aspx" />
+    <Content Include="admin\global\global_scoreset.aspx" />
+    <Content Include="admin\global\global_screditset.aspx" />
+    <Content Include="admin\global\global_searchengine.aspx" />
+    <Content Include="admin\global\global_sendsmtogroup.aspx" />
+    <Content Include="admin\global\global_sharelistgrid.aspx" />
+    <Content Include="admin\global\global_siteoptimization.aspx" />
+    <Content Include="admin\global\global_siteset.aspx" />
+    <Content Include="admin\global\global_sysadminusergroupgrid.aspx" />
+    <Content Include="admin\global\global_templatesedit.aspx" />
+    <Content Include="admin\global\global_templatesgrid.aspx" />
+    <Content Include="admin\global\global_templatetree.aspx" />
+    <Content Include="admin\global\global_templatevariable.aspx" />
+    <Content Include="admin\global\global_timespan.aspx" />
+    <Content Include="admin\global\global_uiandshowstyle.aspx" />
+    <Content Include="admin\global\global_uploadavatar.aspx" />
+    <Content Include="admin\global\global_uploadonlieninco.aspx" />
+    <Content Include="admin\global\global_urlgrid.aspx" />
+    <Content Include="admin\global\global_usergrid.aspx" />
+    <Content Include="admin\global\global_usergroupgrid.aspx" />
+    <Content Include="admin\global\global_usergroupsendemail.aspx" />
+    <Content Include="admin\global\global_usergroupspecialgrid.aspx" />
+    <Content Include="admin\global\global_userrights.aspx" />
+    <Content Include="admin\global\global_wordgrid.aspx" />
+    <Content Include="admin\global\thumbnailremoteimage.aspx" />
     <Content Include="archiver\dntarchiver.css" />
     <Content Include="archiver\index.aspx" />
     <Content Include="archiver\showforum.aspx" />
@@ -114,6 +191,533 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\global\global_addadminusergroup.aspx.cs">
+      <DependentUpon>global_addadminusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addadminusergroup.aspx.designer.cs">
+      <DependentUpon>global_addadminusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addadvs.aspx.cs">
+      <DependentUpon>global_addadvs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addadvs.aspx.designer.cs">
+      <DependentUpon>global_addadvs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addannounce.aspx.cs">
+      <DependentUpon>global_addannounce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addannounce.aspx.designer.cs">
+      <DependentUpon>global_addannounce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addgroup.aspx.cs">
+      <DependentUpon>global_addgroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addgroup.aspx.designer.cs">
+      <DependentUpon>global_addgroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addhelp.aspx.cs">
+      <DependentUpon>global_addhelp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addhelp.aspx.designer.cs">
+      <DependentUpon>global_addhelp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addhelpclass.aspx.cs">
+      <DependentUpon>global_addhelpclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addhelpclass.aspx.designer.cs">
+      <DependentUpon>global_addhelpclass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addmedal.aspx.cs">
+      <DependentUpon>global_addmedal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addmedal.aspx.designer.cs">
+      <DependentUpon>global_addmedal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_adduser.aspx.cs">
+      <DependentUpon>global_adduser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_adduser.aspx.designer.cs">
+      <DependentUpon>global_adduser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addusergroup.aspx.cs">
+      <DependentUpon>global_addusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addusergroup.aspx.designer.cs">
+      <DependentUpon>global_addusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_addusergroupspecial.aspx.cs">
+      <DependentUpon>global_addusergroupspecial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_addusergroupspecial.aspx.designer.cs">
+      <DependentUpon>global_addusergroupspecial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_adminusergroupgrid.aspx.cs">
+      <DependentUpon>global_adminusergroupgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_adminusergroupgrid.aspx.designer.cs">
+      <DependentUpon>global_adminusergroupgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_advsgrid.aspx.cs">
+      <DependentUpon>global_advsgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_advsgrid.aspx.designer.cs">
+      <DependentUpon>global_advsgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_ajaxcall.aspx.cs">
+      <DependentUpon>global_ajaxcall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_allowparticipatescore.aspx.cs">
+      <DependentUpon>global_allowparticipatescore.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_allowparticipatescore.aspx.designer.cs">
+      <DependentUpon>global_allowparticipatescore.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_announcegrid.aspx.cs">
+      <DependentUpon>global_announcegrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_announcegrid.aspx.designer.cs">
+      <DependentUpon>global_announcegrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_announceprivatemessage.aspx.cs">
+      <DependentUpon>global_announceprivatemessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_announceprivatemessage.aspx.designer.cs">
+      <DependentUpon>global_announceprivatemessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_attach.aspx.cs">
+      <DependentUpon>global_attach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_attach.aspx.designer.cs">
+      <DependentUpon>global_attach.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_backupandrestore.aspx.cs">
+      <DependentUpon>global_backupandrestore.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_backupandrestore.aspx.designer.cs">
+      <DependentUpon>global_backupandrestore.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_cachemanage.aspx.cs">
+      <DependentUpon>global_cachemanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_cachemanage.aspx.designer.cs">
+      <DependentUpon>global_cachemanage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_combinationuser.aspx.cs">
+      <DependentUpon>global_combinationuser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_combinationuser.aspx.designer.cs">
+      <DependentUpon>global_combinationuser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_combinationusergroup.aspx.cs">
+      <DependentUpon>global_combinationusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_combinationusergroup.aspx.designer.cs">
+      <DependentUpon>global_combinationusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_creditsordermanage.aspx.cs">
+      <DependentUpon>global_creditsordermanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_detachtable.aspx.cs">
+      <DependentUpon>global_detachtable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_detachtable.aspx.designer.cs">
+      <DependentUpon>global_detachtable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editadminusergroup.aspx.cs">
+      <DependentUpon>global_editadminusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editadminusergroup.aspx.designer.cs">
+      <DependentUpon>global_editadminusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editadvs.aspx.cs">
+      <DependentUpon>global_editadvs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editadvs.aspx.designer.cs">
+      <DependentUpon>global_editadvs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editannounce.aspx.cs">
+      <DependentUpon>global_editannounce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editannounce.aspx.designer.cs">
+      <DependentUpon>global_editannounce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editgroup.aspx.cs">
+      <DependentUpon>global_editgroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editgroup.aspx.designer.cs">
+      <DependentUpon>global_editgroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_edithelp.aspx.cs">
+      <DependentUpon>global_edithelp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_edithelp.aspx.designer.cs">
+      <DependentUpon>global_edithelp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_edithelpclass.aspx.cs">
+      <DependentUpon>global_edithelpclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_edithelpclass.aspx.designer.cs">
+      <DependentUpon>global_edithelpclass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editorset.aspx.cs">
+      <DependentUpon>global_editorset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editorset.aspx.designer.cs">
+      <DependentUpon>global_editorset.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editsysadminusergroup.aspx.cs">
+      <DependentUpon>global_editsysadminusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editsysadminusergroup.aspx.designer.cs">
+      <DependentUpon>global_editsysadminusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_edituser.aspx.cs">
+      <DependentUpon>global_edituser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_edituser.aspx.designer.cs">
+      <DependentUpon>global_edituser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editusergroup.aspx.cs">
+      <DependentUpon>global_editusergroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editusergroup.aspx.designer.cs">
+      <DependentUpon>global_editusergroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_editusergroupspecial.aspx.cs">
+      <DependentUpon>global_editusergroupspecial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_editusergroupspecial.aspx.designer.cs">
+      <DependentUpon>global_editusergroupspecial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_emailconfig.aspx.cs">
+      <DependentUpon>global_emailconfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_emailconfig.aspx.designer.cs">
+      <DependentUpon>global_emailconfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_forumlinksgrid.aspx.cs">
+      <DependentUpon>global_forumlinksgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_forumlinksgrid.aspx.designer.cs">
+      <DependentUpon>global_forumlinksgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_ftpsetting.aspx.cs">
+      <DependentUpon>global_ftpsetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_ftpsetting.aspx.designer.cs">
+      <DependentUpon>global_ftpsetting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_givemedals.aspx.cs">
+      <DependentUpon>global_givemedals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_givemedals.aspx.designer.cs">
+      <DependentUpon>global_givemedals.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_helplist.aspx.cs">
+      <DependentUpon>global_helplist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_helplist.aspx.designer.cs">
+      <DependentUpon>global_helplist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_logandshrinkdb.aspx.cs">
+      <DependentUpon>global_logandshrinkdb.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_logandshrinkdb.aspx.designer.cs">
+      <DependentUpon>global_logandshrinkdb.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_medalgrid.aspx.cs">
+      <DependentUpon>global_medalgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_medalgrid.aspx.designer.cs">
+      <DependentUpon>global_medalgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_navigationmanage.aspx.cs">
+      <DependentUpon>global_navigationmanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_navigationmanage.aspx.designer.cs">
+      <DependentUpon>global_navigationmanage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_onlinelistgrid.aspx.cs">
+      <DependentUpon>global_onlinelistgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_onlinelistgrid.aspx.designer.cs">
+      <DependentUpon>global_onlinelistgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_passportmanage.aspx.cs">
+      <DependentUpon>global_passportmanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_passportmanage.aspx.designer.cs">
+      <DependentUpon>global_passportmanage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_passportsetting.aspx.cs">
+      <DependentUpon>global_passportsetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_passportsetting.aspx.designer.cs">
+      <DependentUpon>global_passportsetting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_refreshallcache.aspx.cs">
+      <DependentUpon>global_refreshallcache.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_registerandvisit.aspx.cs">
+      <DependentUpon>global_registerandvisit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_registerandvisit.aspx.designer.cs">
+      <DependentUpon>global_registerandvisit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_resetpassword.aspx.cs">
+      <DependentUpon>global_resetpassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_resetpassword.aspx.designer.cs">
+      <DependentUpon>global_resetpassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_restoresetupinf.aspx.cs">
+      <DependentUpon>global_restoresetupinf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_restoresetupinf.aspx.designer.cs">
+      <DependentUpon>global_restoresetupinf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_runsql.aspx.cs">
+      <DependentUpon>global_runsql.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_runsql.aspx.designer.cs">
+      <DependentUpon>global_runsql.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_safecontrol.aspx.cs">
+      <DependentUpon>global_safecontrol.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_safecontrol.aspx.designer.cs">
+      <DependentUpon>global_safecontrol.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_schedulemanage.aspx.cs">
+      <DependentUpon>global_schedulemanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_schedulemanage.aspx.designer.cs">
+      <DependentUpon>global_schedulemanage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_schedulesetting.aspx.cs">
+      <DependentUpon>global_schedulesetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_schedulesetting.aspx.designer.cs">
+      <DependentUpon>global_schedulesetting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_scoreset.aspx.cs">
+      <DependentUpon>global_scoreset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_scoreset.aspx.designer.cs">
+      <DependentUpon>global_scoreset.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_screditset.aspx.cs">
+      <DependentUpon>global_screditset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_searchengine.aspx.cs">
+      <DependentUpon>global_searchengine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_searchengine.aspx.designer.cs">
+      <DependentUpon>global_searchengine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_sendsmtogroup.aspx.cs">
+      <DependentUpon>global_sendsmtogroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_sendsmtogroup.aspx.designer.cs">
+      <DependentUpon>global_sendsmtogroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_sharelistgrid.aspx.cs">
+      <DependentUpon>global_sharelistgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_sharelistgrid.aspx.designer.cs">
+      <DependentUpon>global_sharelistgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_siteoptimization.aspx.cs">
+      <DependentUpon>global_siteoptimization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_siteoptimization.aspx.designer.cs">
+      <DependentUpon>global_siteoptimization.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_siteset.aspx.cs">
+      <DependentUpon>global_siteset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_siteset.aspx.designer.cs">
+      <DependentUpon>global_siteset.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_sysadminusergroupgrid.aspx.cs">
+      <DependentUpon>global_sysadminusergroupgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_sysadminusergroupgrid.aspx.designer.cs">
+      <DependentUpon>global_sysadminusergroupgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_templatesedit.aspx.cs">
+      <DependentUpon>global_templatesedit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_templatesedit.aspx.designer.cs">
+      <DependentUpon>global_templatesedit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_templatesgrid.aspx.cs">
+      <DependentUpon>global_templatesgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_templatesgrid.aspx.designer.cs">
+      <DependentUpon>global_templatesgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_templatetree.aspx.cs">
+      <DependentUpon>global_templatetree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_templatetree.aspx.designer.cs">
+      <DependentUpon>global_templatetree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_templatevariable.aspx.cs">
+      <DependentUpon>global_templatevariable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_templatevariable.aspx.designer.cs">
+      <DependentUpon>global_templatevariable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_timespan.aspx.cs">
+      <DependentUpon>global_timespan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_timespan.aspx.designer.cs">
+      <DependentUpon>global_timespan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_uiandshowstyle.aspx.cs">
+      <DependentUpon>global_uiandshowstyle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_uiandshowstyle.aspx.designer.cs">
+      <DependentUpon>global_uiandshowstyle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_uploadavatar.aspx.cs">
+      <DependentUpon>global_uploadavatar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_uploadavatar.aspx.designer.cs">
+      <DependentUpon>global_uploadavatar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_uploadonlieninco.aspx.cs">
+      <DependentUpon>global_uploadonlieninco.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_uploadonlieninco.aspx.designer.cs">
+      <DependentUpon>global_uploadonlieninco.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_urlgrid.aspx.cs">
+      <DependentUpon>global_urlgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_urlgrid.aspx.designer.cs">
+      <DependentUpon>global_urlgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_usergrid.aspx.cs">
+      <DependentUpon>global_usergrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_usergrid.aspx.designer.cs">
+      <DependentUpon>global_usergrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupgrid.aspx.cs">
+      <DependentUpon>global_usergroupgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupgrid.aspx.designer.cs">
+      <DependentUpon>global_usergroupgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupsendemail.aspx.cs">
+      <DependentUpon>global_usergroupsendemail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupsendemail.aspx.designer.cs">
+      <DependentUpon>global_usergroupsendemail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupspecialgrid.aspx.cs">
+      <DependentUpon>global_usergroupspecialgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_usergroupspecialgrid.aspx.designer.cs">
+      <DependentUpon>global_usergroupspecialgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_userrights.aspx.cs">
+      <DependentUpon>global_userrights.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_userrights.aspx.designer.cs">
+      <DependentUpon>global_userrights.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\global_wordgrid.aspx.cs">
+      <DependentUpon>global_wordgrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\global_wordgrid.aspx.designer.cs">
+      <DependentUpon>global_wordgrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\global\thumbnailremoteimage.aspx.cs">
+      <DependentUpon>thumbnailremoteimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\global\thumbnailremoteimage.aspx.designer.cs">
+      <DependentUpon>thumbnailremoteimage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="archiver\Index.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1121,83 +1725,6 @@
     <Content Include="admin\forum\forum_userrights.aspx" />
     <Content Include="admin\framepage\managerbody.aspx" />
     <Content Include="admin\framepage\top.aspx" />
-    <Content Include="admin\global\global_addadminusergroup.aspx" />
-    <Content Include="admin\global\global_addadvs.aspx" />
-    <Content Include="admin\global\global_addannounce.aspx" />
-    <Content Include="admin\global\global_addgroup.aspx" />
-    <Content Include="admin\global\global_addhelp.aspx" />
-    <Content Include="admin\global\global_addhelpclass.aspx" />
-    <Content Include="admin\global\global_addmedal.aspx" />
-    <Content Include="admin\global\global_adduser.aspx" />
-    <Content Include="admin\global\global_addusergroup.aspx" />
-    <Content Include="admin\global\global_addusergroupspecial.aspx" />
-    <Content Include="admin\global\global_adminusergroupgrid.aspx" />
-    <Content Include="admin\global\global_advsgrid.aspx" />
-    <Content Include="admin\global\global_ajaxcall.aspx" />
-    <Content Include="admin\global\global_allowparticipatescore.aspx" />
-    <Content Include="admin\global\global_announcegrid.aspx" />
-    <Content Include="admin\global\global_announceprivatemessage.aspx" />
-    <Content Include="admin\global\global_attach.aspx" />
-    <Content Include="admin\global\global_backupandrestore.aspx" />
-    <Content Include="admin\global\global_cachemanage.aspx" />
-    <Content Include="admin\global\global_combinationuser.aspx" />
-    <Content Include="admin\global\global_combinationusergroup.aspx" />
-    <Content Include="admin\global\global_creditsordermanage.aspx" />
-    <Content Include="admin\global\global_detachtable.aspx" />
-    <Content Include="admin\global\global_editadminusergroup.aspx" />
-    <Content Include="admin\global\global_editadvs.aspx" />
-    <Content Include="admin\global\global_editannounce.aspx" />
-    <Content Include="admin\global\global_editgroup.aspx" />
-    <Content Include="admin\global\global_edithelp.aspx" />
-    <Content Include="admin\global\global_edithelpclass.aspx" />
-    <Content Include="admin\global\global_editorset.aspx" />
-    <Content Include="admin\global\global_editsysadminusergroup.aspx" />
-    <Content Include="admin\global\global_edituser.aspx" />
-    <Content Include="admin\global\global_editusergroup.aspx" />
-    <Content Include="admin\global\global_editusergroupspecial.aspx" />
-    <Content Include="admin\global\global_emailconfig.aspx" />
-    <Content Include="admin\global\global_forumlinksgrid.aspx" />
-    <Content Include="admin\global\global_ftpsetting.aspx" />
-    <Content Include="admin\global\global_givemedals.aspx" />
-    <Content Include="admin\global\global_helplist.aspx" />
-    <Content Include="admin\global\global_logandshrinkdb.aspx" />
-    <Content Include="admin\global\global_medalgrid.aspx" />
-    <Content Include="admin\global\global_navigationmanage.aspx" />
-    <Content Include="admin\global\global_onlinelistgrid.aspx" />
-    <Content Include="admin\global\global_passportmanage.aspx" />
-    <Content Include="admin\global\global_passportsetting.aspx" />
-    <Content Include="admin\global\global_refreshallcache.aspx" />
-    <Content Include="admin\global\global_registerandvisit.aspx" />
-    <Content Include="admin\global\global_resetpassword.aspx" />
-    <Content Include="admin\global\global_restoresetupinf.aspx" />
-    <Content Include="admin\global\global_runsql.aspx" />
-    <Content Include="admin\global\global_safecontrol.aspx" />
-    <Content Include="admin\global\global_schedulemanage.aspx" />
-    <Content Include="admin\global\global_schedulesetting.aspx" />
-    <Content Include="admin\global\global_scoreset.aspx" />
-    <Content Include="admin\global\global_screditset.aspx" />
-    <Content Include="admin\global\global_searchengine.aspx" />
-    <Content Include="admin\global\global_sendsmtogroup.aspx" />
-    <Content Include="admin\global\global_sharelistgrid.aspx" />
-    <Content Include="admin\global\global_siteoptimization.aspx" />
-    <Content Include="admin\global\global_siteset.aspx" />
-    <Content Include="admin\global\global_sysadminusergroupgrid.aspx" />
-    <Content Include="admin\global\global_templatesedit.aspx" />
-    <Content Include="admin\global\global_templatesgrid.aspx" />
-    <Content Include="admin\global\global_templatetree.aspx" />
-    <Content Include="admin\global\global_templatevariable.aspx" />
-    <Content Include="admin\global\global_timespan.aspx" />
-    <Content Include="admin\global\global_uiandshowstyle.aspx" />
-    <Content Include="admin\global\global_uploadavatar.aspx" />
-    <Content Include="admin\global\global_uploadonlieninco.aspx" />
-    <Content Include="admin\global\global_urlgrid.aspx" />
-    <Content Include="admin\global\global_usergrid.aspx" />
-    <Content Include="admin\global\global_usergroupgrid.aspx" />
-    <Content Include="admin\global\global_usergroupsendemail.aspx" />
-    <Content Include="admin\global\global_usergroupspecialgrid.aspx" />
-    <Content Include="admin\global\global_userrights.aspx" />
-    <Content Include="admin\global\global_wordgrid.aspx" />
-    <Content Include="admin\global\thumbnailremoteimage.aspx" />
     <Content Include="admin\images\add.gif" />
     <Content Include="admin\images\addmenu.gif" />
     <Content Include="admin\images\addremoveprograms.gif" />

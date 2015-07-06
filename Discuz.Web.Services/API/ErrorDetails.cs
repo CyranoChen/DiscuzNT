@@ -24,7 +24,11 @@ namespace Discuz.Web.Services.API
             this.Add(104, "签名(sig)参数不正确");
             this.Add(105, "垃圾信息");
             this.Add(109, "当前不允许注册或不满足注册条件");
+            this.Add(110, "当前用户已存在"); // Edit By Cyrano
             this.Add(111, "Email已存在或非法");
+            this.Add(112, "当前用户名存在非法字符"); // Edit By Cyrano
+            this.Add(113, "当前用户已登录"); // Edit By Cyrano
+            this.Add(114, "当前用户不存在"); // Edit By Cyrano
             this.Add(121, "版块RewriteName已存在或非法");
             this.Add(131, "主题已关闭，无法通过API进行回复");
             this.Add(132, "当前用户阅读权限不足，无法查看主题或回复");

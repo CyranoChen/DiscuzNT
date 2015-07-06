@@ -382,6 +382,115 @@ namespace Discuz.Web.Services.API.Actions
             return SerializationHelper.Serialize(epr);
         }
 
+        /// <summary>
+        /// 验证用户 // Edit By Cyrano
+        /// </summary>
+        /// <returns></returns>
+        public string Validate()
+        {
+            string returnStr = string.Empty;
+
+            if (Signature != GetParam("sig").ToString())
+            {
+                ErrorCode = (int)ErrorType.API_EC_SIGNATURE;
+                return returnStr;
+            }
+
+            if (CallId <= LastCallId)
+            {
+                ErrorCode = (int)ErrorType.API_EC_CALLID;
+                return returnStr;
+            }
+
+            if (!CheckRequiredParams("user_name,password"))
+            {
+                ErrorCode = (int)ErrorType.API_EC_PARAM;
+                return returnStr;
+            }
+
+            if (this.App.ApplicationType == (int)ApplicationType.DESKTOP)//如果是桌面程序则不允许此方法
+            {
+                if (Uid < 1 || Discuz.Forum.UserGroups.GetUserGroupInfo(Discuz.Forum.Users.GetShortUserInfo(Uid).Groupid).Radminid != 1)
+                {
+                    ErrorCode = (int)ErrorType.API_EC_PERMISSION_DENIED;
+                    return "";
+                }
+            }
+            else if (Uid > 0)//已经登录的用户不能再验证
+            {
+                ErrorCode = (int)ErrorType.API_EC_USER_ONLINE;
+                return returnStr;
+            }
+
+            string username = GetParam("user_name").ToString();
+            string password = GetParam("password").ToString();
+
+            bool isMD5Passwd = GetParam("password_format") != null && GetParam("password_format").ToString() == "md5" ? true : false;
+
+            //用户名不符合规范
+            if (!CheckUsername(username))
+            {
+                ErrorCode = (int)ErrorType.API_EC_USERNAME_ILLEGAL;
+                return returnStr;
+            }
+
+            if (Discuz.Forum.Users.GetUserId(username) == 0)//如果用户名符合注册规则, 则判断是否已存在
+            {
+                ErrorCode = (int)ErrorType.API_EC_USER_NONEXIST;
+                return returnStr;
+            }
+
+            if (!isMD5Passwd && password.Length < 6)
+            {
+                ErrorCode = (int)ErrorType.API_EC_PARAM;
+                return returnStr;
+            }
+
+            ShortUserInfo userInfo = new ShortUserInfo();
+            var postpassword =  password;
+            var postusername = username;
+            int uid = -1;
+
+            uid = Discuz.Forum.Users.CheckPassword(postusername, postpassword, !isMD5Passwd);
+            userInfo = uid > 0 ? Discuz.Forum.Users.GetShortUserInfo(uid) : null;
+
+            if (userInfo != null)
+            {
+                #region 当前用户所在用户组为"禁止访问"或"等待激活"时
+
+                if (userInfo.Groupid == 5 || userInfo.Groupid == 8)// 5-禁止访问, 8-等待激活
+                {
+                    ErrorCode = (int)ErrorType.API_EC_USERNAME_ILLEGAL;
+                    return returnStr;
+                }
+
+                #endregion
+            }
+            else
+            {
+                int errcount = LoginLogs.UpdateLoginLog(DNTRequest.GetIP(), true);
+
+                if (errcount > 5)
+                {
+                    //AddErrLine("您已经输入密码5次错误, 请15分钟后再试");
+                }
+                else
+                {
+                    //AddErrLine(string.Format("密码或安全提问第{0}次错误, 您最多有5次机会重试", errcount));
+                }
+            }
+
+            //ForumUtils.WriteUserCreditsCookie(userInfo, usergroupinfo.Grouptitle);
+
+            if (Format == FormatType.JSON)
+                return string.Format("\"{0}\"", userInfo.Uid);
+
+            ValidateResponse vr = new ValidateResponse();
+            vr.Uid = userInfo.Uid;
+
+            return SerializationHelper.Serialize(vr);
+        }
+
         #region Helper
         private bool CheckUsername(string username)
         {
@@ -453,6 +562,7 @@ namespace Discuz.Web.Services.API.Actions
             }
             return true;
         }
+
         #endregion
     }
 }

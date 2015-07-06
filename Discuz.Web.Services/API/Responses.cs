@@ -57,6 +57,14 @@ namespace Discuz.Web.Services.API
         //public bool List;
     }
 
+    // Edit By Cyrano
+    [XmlRoot("auth_validate_response", Namespace = "http://nt.discuz.net/api/", IsNullable = false)]
+    public class ValidateResponse
+    {
+        [XmlText]
+        public int Uid;
+    }
+
     [XmlRoot("auth_encodePassword_response", Namespace = "http://nt.discuz.net/api/", IsNullable = false)]
     public class EncodePasswordResponse
     {

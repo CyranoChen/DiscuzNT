@@ -48,6 +48,7 @@ namespace Discuz.Web.Services.API
         API_EC_REGISTER_NOT_ALLOW = 109,//不允许注册
 
         API_EC_USER_ALREADY_EXIST = 110,//the username already exist
+        API_EC_USER_NONEXIST = 114, // the username doesn't exist // Edit By Cyrano
         API_EC_USERNAME_ILLEGAL = 112,//the username not allow
         API_EC_USER_ONLINE = 113,//this user already online
 
