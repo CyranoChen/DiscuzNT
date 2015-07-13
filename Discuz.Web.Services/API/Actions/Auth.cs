@@ -428,11 +428,11 @@ namespace Discuz.Web.Services.API.Actions
             bool isMD5Passwd = GetParam("password_format") != null && GetParam("password_format").ToString() == "md5" ? true : false;
 
             //用户名不符合规范
-            if (!CheckUsername(username))
-            {
-                ErrorCode = (int)ErrorType.API_EC_USERNAME_ILLEGAL;
-                return returnStr;
-            }
+            //if (!CheckUsername(username))
+            //{
+            //    ErrorCode = (int)ErrorType.API_EC_USERNAME_ILLEGAL;
+            //    return returnStr;
+            //}
 
             if (Discuz.Forum.Users.GetUserId(username) == 0)//如果用户名符合注册规则, 则判断是否已存在
             {
