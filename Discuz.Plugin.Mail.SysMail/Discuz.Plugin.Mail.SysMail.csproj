@@ -60,16 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
-      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
-      <Name>Discuz.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
-      <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
-      <Name>Discuz.Plugin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -85,6 +75,16 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
+      <Project>{8c0daf87-aba7-4e6d-b930-187ed559edb7}</Project>
+      <Name>Discuz.Plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

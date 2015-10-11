@@ -1023,48 +1023,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Discuz.Aggregation\Discuz.Aggregation.csproj">
-      <Project>{6c7484b3-f4f9-4531-9d26-7d567324aff8}</Project>
-      <Name>Discuz.Aggregation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Cache\Discuz.Cache.csproj">
-      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
-      <Name>Discuz.Cache</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
-      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
-      <Name>Discuz.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
-      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
-      <Name>Discuz.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Control\Discuz.Control.csproj">
-      <Project>{2A067E35-B67E-4D43-B9A3-5C2037CF2696}</Project>
-      <Name>Discuz.Control</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
-      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
-      <Name>Discuz.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
-      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
-      <Name>Discuz.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Forum\Discuz.Forum.csproj">
-      <Project>{A44D0E57-6EF1-4DF0-A73F-A7BA86B6C495}</Project>
-      <Name>Discuz.Forum</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Install\Discuz.Install.csproj">
-      <Project>{D16ECF86-E60C-4A3A-831B-89537C463E8B}</Project>
-      <Name>Discuz.Install</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
-      <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
-      <Name>Discuz.Plugin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="aspx\1\favorites.aspx" />
     <Content Include="aspx\1\Help.aspx" />
     <Content Include="aspx\1\myattachment.aspx" />
@@ -2463,6 +2421,44 @@
     <Folder Include="cache\showforum\" />
     <Folder Include="cache\topic\" />
     <Folder Include="upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Aggregation\Discuz.Aggregation.csproj">
+      <Project>{6c7484b3-f4f9-4531-9d26-7d567324aff8}</Project>
+      <Name>Discuz.Aggregation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Cache\Discuz.Cache.csproj">
+      <Project>{dec263a7-c844-46a2-b143-91fe1b3a3851}</Project>
+      <Name>Discuz.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
+      <Project>{f6a5f6c1-bd11-441d-b956-3bf52aeed890}</Project>
+      <Name>Discuz.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Control\Discuz.Control.csproj">
+      <Project>{2a067e35-b67e-4d43-b9a3-5c2037cf2696}</Project>
+      <Name>Discuz.Control</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
+      <Project>{caa860c2-28d3-4d1b-8d7b-3a83c94daa65}</Project>
+      <Name>Discuz.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
+      <Project>{41156c65-96b0-4026-a4ff-94cc299abcab}</Project>
+      <Name>Discuz.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Forum\Discuz.Forum.csproj">
+      <Project>{a44d0e57-6ef1-4df0-a73f-a7ba86b6c495}</Project>
+      <Name>Discuz.Forum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
+      <Project>{8c0daf87-aba7-4e6d-b930-187ed559edb7}</Project>
+      <Name>Discuz.Plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

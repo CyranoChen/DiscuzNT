@@ -81,27 +81,27 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Discuz.Cache\Discuz.Cache.csproj">
-      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Project>{dec263a7-c844-46a2-b143-91fe1b3a3851}</Project>
       <Name>Discuz.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
-      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
       <Name>Discuz.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
-      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Project>{f6a5f6c1-bd11-441d-b956-3bf52aeed890}</Project>
       <Name>Discuz.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Control\Discuz.Control.csproj">
-      <Project>{2A067E35-B67E-4D43-B9A3-5C2037CF2696}</Project>
+      <Project>{2a067e35-b67e-4d43-b9a3-5c2037cf2696}</Project>
       <Name>Discuz.Control</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
-      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Project>{caa860c2-28d3-4d1b-8d7b-3a83c94daa65}</Project>
       <Name>Discuz.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Forum\Discuz.Forum.csproj">
-      <Project>{A44D0E57-6EF1-4DF0-A73F-A7BA86B6C495}</Project>
+      <Project>{a44d0e57-6ef1-4df0-a73f-a7ba86b6c495}</Project>
       <Name>Discuz.Forum</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">

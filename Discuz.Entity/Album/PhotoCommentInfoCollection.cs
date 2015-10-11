@@ -1,5 +1,3 @@
-#if NET1
-
 using System;
 using System.Collections;
 
@@ -195,5 +193,3 @@ namespace Discuz.Entity
 	}
 
 }
-
-#endif

@@ -74,15 +74,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
-      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
       <Name>Discuz.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
-      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Project>{f6a5f6c1-bd11-441d-b956-3bf52aeed890}</Project>
       <Name>Discuz.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
-      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Project>{caa860c2-28d3-4d1b-8d7b-3a83c94daa65}</Project>
       <Name>Discuz.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">

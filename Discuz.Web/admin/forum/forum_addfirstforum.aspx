@@ -192,7 +192,7 @@
 	<tr><td class="item_title" colspan="2">模板风格</td></tr>
 	<tr>
 		<td class="vtop rowform">
-			<c2:DropDownList id="templateid" runat="server"></cc2:DropDownList>
+			<cc2:DropDownList id="templateid" runat="server"></cc2:DropDownList>
 		</td>
 		<td class="vtop"></td>
 	</tr>

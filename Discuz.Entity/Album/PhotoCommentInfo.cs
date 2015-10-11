@@ -78,6 +78,6 @@ namespace Discuz.Entity
         {
             get { return _parentID; }
             set { _parentID = value; }
-        }　　　　
+        }
     }
 }
