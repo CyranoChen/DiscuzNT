@@ -77,9 +77,7 @@
     <Compile Include="ForumHots.cs" />
     <Compile Include="Identifys.cs" />
     <Compile Include="AdminGroups.cs" />
-    <Compile Include="Admin\AdminCatchForumInfo.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Admin\AdminCatchForumInfo.cs" />
     <Compile Include="Admin\AdminConfigs.cs" />
     <Compile Include="Admin\AdminForums.cs" />
     <Compile Include="Admin\AdminForumStats.cs" />
@@ -92,9 +90,7 @@
     <Compile Include="Admin\AdminUserGroups.cs" />
     <Compile Include="Admin\AdminUsers.cs" />
     <Compile Include="Admin\AdminVistLogs.cs" />
-    <Compile Include="Admin\DiscuzControlContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Admin\DiscuzControlContainer.cs" />
     <Compile Include="Admin\SpaceThemes.cs" />
     <Compile Include="Advertisements.cs" />
     <Compile Include="Announcements.cs" />
@@ -163,23 +159,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Discuz.Cache\Discuz.Cache.csproj">
-      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Project>{dec263a7-c844-46a2-b143-91fe1b3a3851}</Project>
       <Name>Discuz.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
-      <Project>{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}</Project>
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
       <Name>Discuz.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
-      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Project>{f6a5f6c1-bd11-441d-b956-3bf52aeed890}</Project>
       <Name>Discuz.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Data\Discuz.Data.csproj">
-      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Project>{caa860c2-28d3-4d1b-8d7b-3a83c94daa65}</Project>
       <Name>Discuz.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
-      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Project>{41156c65-96b0-4026-a4ff-94cc299abcab}</Project>
       <Name>Discuz.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">

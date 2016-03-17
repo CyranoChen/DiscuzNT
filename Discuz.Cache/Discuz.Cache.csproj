@@ -81,7 +81,7 @@
       <Name>Discuz.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Config\Discuz.Config.csproj">
-      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Project>{f6a5f6c1-bd11-441d-b956-3bf52aeed890}</Project>
       <Name>Discuz.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">

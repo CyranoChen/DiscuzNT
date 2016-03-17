@@ -46,16 +46,6 @@
     <Compile Include="WmaMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
-      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
-      <Name>Discuz.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
-      <Project>{8C0DAF87-ABA7-4E6D-B930-187ED559EDB7}</Project>
-      <Name>Discuz.Plugin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="Shell32">
       <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -64,6 +54,20 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Discuz.Common\Discuz.Common.csproj">
+      <Project>{6a0ec5bd-742f-431d-a9ec-5c0342b2a76a}</Project>
+      <Name>Discuz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Entity\Discuz.Entity.csproj">
+      <Project>{41156c65-96b0-4026-a4ff-94cc299abcab}</Project>
+      <Name>Discuz.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Discuz.Plugin\Discuz.Plugin.csproj">
+      <Project>{8c0daf87-aba7-4e6d-b930-187ed559edb7}</Project>
+      <Name>Discuz.Plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

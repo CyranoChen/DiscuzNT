@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+
 namespace Discuz.Entity
 {
     /// <summary>
@@ -32,7 +33,7 @@ namespace Discuz.Entity
         /// <summary>
         /// TagID
         /// </summary>   
-        [JsonPropertyAttribute("tagid")]
+        //[JsonPropertyAttribute("tagid")]
         public int Tagid
         {
             set { _tagid = value; }
@@ -41,7 +42,7 @@ namespace Discuz.Entity
         /// <summary>
         /// TagÃû³Æ
         /// </summary>
-        [JsonPropertyAttribute("tagname")]
+        //[JsonPropertyAttribute("tagname")]
         public string Tagname
         {
             set { _tagname = value.Trim(); }

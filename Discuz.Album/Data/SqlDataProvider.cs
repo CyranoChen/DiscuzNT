@@ -12,7 +12,7 @@ using Discuz.Common;
 
 namespace Discuz.Album.Data
 {
-    public class DataProvider 
+    public class DataProvider
     {
         /// <summary>
         /// SQL SERVER SQL语句转义
@@ -58,7 +58,7 @@ namespace Discuz.Album.Data
         #region	相册 操作类
         public void AddAlbumCategory(AlbumCategoryInfo aci)
         {
-            DbParameter[] parms = { 
+            DbParameter[] parms = {
                                         DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50, aci.Title),
                                         DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 300, aci.Description),
                                         DbHelper.MakeInParam("@displayorder", (DbType)SqlDbType.Int, 4, aci.Displayorder)
@@ -71,7 +71,7 @@ namespace Discuz.Album.Data
 
         public void UpdateAlbumCategory(AlbumCategoryInfo aci)
         {
-            DbParameter[] parms = { 
+            DbParameter[] parms = {
                                         DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4, aci.Albumcateid),
                                         DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50, aci.Title),
                                         DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 300, aci.Description),
@@ -97,8 +97,8 @@ namespace Discuz.Album.Data
         {
             try
             {
-                return (int)DbHelper.ExecuteScalar(CommandType.Text, 
-                                                   "SELECT COUNT([albumid]) FROM [" + BaseConfigs.GetTablePrefix + "albums] WHERE [userid]=@userid", 
+                return (int)DbHelper.ExecuteScalar(CommandType.Text,
+                                                   "SELECT COUNT([albumid]) FROM [" + BaseConfigs.GetTablePrefix + "albums] WHERE [userid]=@userid",
                                                    DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4, userid));
             }
             catch
@@ -116,7 +116,7 @@ namespace Discuz.Album.Data
                 commandText = string.Format("SELECT TOP {0} * FROM [{1}albums] WHERE [userid]=@userid ORDER BY [albumid] DESC", pageSize, BaseConfigs.GetTablePrefix);
             else
                 commandText = string.Format("SELECT TOP {0} * FROM [{1}albums] WHERE [albumid] < (SELECT min([albumid])  FROM "
-                                            + "(SELECT TOP {2} [albumid] FROM [{1}albums] WHERE [userid]=@userid ORDER BY [albumid] DESC) AS tblTmp ) AND [userid]=@userid ORDER BY [albumid] DESC", 
+                                            + "(SELECT TOP {2} [albumid] FROM [{1}albums] WHERE [userid]=@userid ORDER BY [albumid] DESC) AS tblTmp ) AND [userid]=@userid ORDER BY [albumid] DESC",
                                             pageSize, BaseConfigs.GetTablePrefix, pageTop);
             return DbHelper.ExecuteDataset(CommandType.Text, commandText, parm).Tables[0];
         }
@@ -124,11 +124,11 @@ namespace Discuz.Album.Data
         public IDataReader SpaceAlbumsList(int userid, int albumcategoryid, int pageSize, int currentPage)
         {
             DbParameter[] parms = {
-										DbHelper.MakeInParam("@uid", (DbType)SqlDbType.Int, 4, userid),
-										DbHelper.MakeInParam("@pagesize", (DbType)SqlDbType.Int, 4, pageSize),
-										DbHelper.MakeInParam("@pageindex", (DbType)SqlDbType.Int, 4, currentPage),
+                                        DbHelper.MakeInParam("@uid", (DbType)SqlDbType.Int, 4, userid),
+                                        DbHelper.MakeInParam("@pagesize", (DbType)SqlDbType.Int, 4, pageSize),
+                                        DbHelper.MakeInParam("@pageindex", (DbType)SqlDbType.Int, 4, currentPage),
                                         DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4, albumcategoryid)
-								   };
+                                   };
             return DbHelper.ExecuteReader(CommandType.StoredProcedure, string.Format("{0}getalbumlist", BaseConfigs.GetTablePrefix), parms);
         }
 
@@ -136,9 +136,9 @@ namespace Discuz.Album.Data
         {
             string commandText = string.Format("SELECT COUNT(1) FROM [{0}albums] WHERE [imgcount]>0 ", BaseConfigs.GetTablePrefix);
             DbParameter[] parms = {
-									   DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int,  4, userid),
+                                       DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int,  4, userid),
                                        DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4, albumcategoryid)
-								   };
+                                   };
             if (userid > 0)
                 commandText += " AND [userid]=@userid";
             if (albumcategoryid != 0)
@@ -160,16 +160,16 @@ namespace Discuz.Album.Data
 
         public bool AddSpaceAlbum(AlbumInfo spaceAlbum)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,spaceAlbum.Userid),
-					DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4,spaceAlbum.Albumcateid),
-					DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50,spaceAlbum.Title),
-					DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 200,spaceAlbum.Description),
-					DbHelper.MakeInParam("@password", (DbType)SqlDbType.NChar, 50,spaceAlbum.Password),
-					DbHelper.MakeInParam("@type", (DbType)SqlDbType.Int, 8,spaceAlbum.Type),
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,spaceAlbum.Userid),
+                    DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4,spaceAlbum.Albumcateid),
+                    DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50,spaceAlbum.Title),
+                    DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 200,spaceAlbum.Description),
+                    DbHelper.MakeInParam("@password", (DbType)SqlDbType.NChar, 50,spaceAlbum.Password),
+                    DbHelper.MakeInParam("@type", (DbType)SqlDbType.Int, 8,spaceAlbum.Type),
                     DbHelper.MakeInParam("@username", (DbType)SqlDbType.NChar, 20, spaceAlbum.Username)
-				};
+                };
             string commandText = String.Format("INSERT INTO [{0}albums] ([userid], [username], [albumcateid], [title], [description], [password], [type]) VALUES ( @userid, @username, @albumcateid, @title, @description, @password, @type)", BaseConfigs.GetTablePrefix);
             //向关联表中插入相关数据
             DbHelper.ExecuteNonQuery(CommandType.Text, commandText, parms);
@@ -179,17 +179,17 @@ namespace Discuz.Album.Data
 
         public bool SaveSpaceAlbum(AlbumInfo spaceAlbum)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, spaceAlbum.Albumid),
-					DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4, spaceAlbum.Albumcateid),
-					DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50,spaceAlbum.Title),
-					DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 200,spaceAlbum.Description),
-					DbHelper.MakeInParam("@password", (DbType)SqlDbType.NChar, 50,spaceAlbum.Password),
-					DbHelper.MakeInParam("@imgcount", (DbType)SqlDbType.Int, 4,spaceAlbum.Imgcount),
-					DbHelper.MakeInParam("@logo", (DbType)SqlDbType.NChar, 255, spaceAlbum.Logo),
-					DbHelper.MakeInParam("@type", (DbType)SqlDbType.Int, 8,spaceAlbum.Type)
-				};
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, spaceAlbum.Albumid),
+                    DbHelper.MakeInParam("@albumcateid", (DbType)SqlDbType.Int, 4, spaceAlbum.Albumcateid),
+                    DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 50,spaceAlbum.Title),
+                    DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 200,spaceAlbum.Description),
+                    DbHelper.MakeInParam("@password", (DbType)SqlDbType.NChar, 50,spaceAlbum.Password),
+                    DbHelper.MakeInParam("@imgcount", (DbType)SqlDbType.Int, 4,spaceAlbum.Imgcount),
+                    DbHelper.MakeInParam("@logo", (DbType)SqlDbType.NChar, 255, spaceAlbum.Logo),
+                    DbHelper.MakeInParam("@type", (DbType)SqlDbType.Int, 8,spaceAlbum.Type)
+                };
             string commandText = String.Format("UPDATE [{0}albums] SET [albumcateid] = @albumcateid, [title] = @title, [description] = @description, [password] = @password, [imgcount] = @imgcount, [logo] = @logo, [type] = @type WHERE [albumid] = @albumid", BaseConfigs.GetTablePrefix);
 
             DbHelper.ExecuteNonQuery(CommandType.Text, commandText, parms);
@@ -256,7 +256,7 @@ namespace Discuz.Album.Data
 
             commandText += " ORDER BY [p].[postdate] DESC";
 
-            DbParameter[] parms = { 
+            DbParameter[] parms = {
                                         DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4, userid),
                                         DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, albumid)
                                     };
@@ -346,20 +346,20 @@ namespace Discuz.Album.Data
 
         public int AddSpacePhoto(PhotoInfo photoinfo)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,photoinfo.Userid),
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,photoinfo.Userid),
                     DbHelper.MakeInParam("@username", (DbType)SqlDbType.NChar, 20, photoinfo.Username),
-					DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 20,photoinfo.Title),
-					DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,photoinfo.Albumid),
-					DbHelper.MakeInParam("@filename", (DbType)SqlDbType.NVarChar, 255,photoinfo.Filename),
-					DbHelper.MakeInParam("@attachment", (DbType)SqlDbType.NVarChar, 255,photoinfo.Attachment),
-					DbHelper.MakeInParam("@filesize", (DbType)SqlDbType.Int, 4,photoinfo.Filesize),
-					DbHelper.MakeInParam("@description", (DbType)SqlDbType.NVarChar, 200,photoinfo.Description),
+                    DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 20,photoinfo.Title),
+                    DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,photoinfo.Albumid),
+                    DbHelper.MakeInParam("@filename", (DbType)SqlDbType.NVarChar, 255,photoinfo.Filename),
+                    DbHelper.MakeInParam("@attachment", (DbType)SqlDbType.NVarChar, 255,photoinfo.Attachment),
+                    DbHelper.MakeInParam("@filesize", (DbType)SqlDbType.Int, 4,photoinfo.Filesize),
+                    DbHelper.MakeInParam("@description", (DbType)SqlDbType.NVarChar, 200,photoinfo.Description),
                     DbHelper.MakeInParam("@isattachment",(DbType)SqlDbType.Int,4,photoinfo.IsAttachment),
                     DbHelper.MakeInParam("@commentstatus", (DbType)SqlDbType.TinyInt, 1, (byte)photoinfo.Commentstatus),
                     DbHelper.MakeInParam("@tagstatus", (DbType)SqlDbType.TinyInt, 1, (byte)photoinfo.Tagstatus)
-				};
+                };
             string commandText = String.Format("INSERT INTO [{0}photos] ([userid], [username], [title], [albumid], [filename], [attachment], [filesize], [description],[isattachment],[commentstatus], [tagstatus]) VALUES ( @userid, @username, @title, @albumid, @filename, @attachment, @filesize, @description,@isattachment, @commentstatus, @tagstatus);SELECT SCOPE_IDENTITY()", BaseConfigs.GetTablePrefix);
             //向关联表中插入相关数据
             return TypeConverter.ObjectToInt(DbHelper.ExecuteScalar(CommandType.Text, commandText, parms));
@@ -371,7 +371,7 @@ namespace Discuz.Album.Data
         /// <param name="photo"></param>
         public void UpdatePhotoInfo(PhotoInfo photo)
         {
-            DbParameter[] parms = { 
+            DbParameter[] parms = {
                                         DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4, photo.Photoid),
                                         DbHelper.MakeInParam("@title", (DbType)SqlDbType.NChar, 20, photo.Title),
                                         DbHelper.MakeInParam("@description", (DbType)SqlDbType.NChar, 200, photo.Description),
@@ -389,10 +389,10 @@ namespace Discuz.Album.Data
         /// <returns></returns>
         public DataTable GetSpacePhotoByAlbumID(int albumid)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,albumid)
-				};
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,albumid)
+                };
             //向关联表中插入相关数据
             return DbHelper.ExecuteDataset(CommandType.Text, String.Format("SELECT * FROM [{0}photos] WHERE [albumid] = @albumid", BaseConfigs.GetTablePrefix), parms).Tables[0];
         }
@@ -406,11 +406,11 @@ namespace Discuz.Album.Data
         /// <returns></returns>
         public IDataReader GetPhotoByID(int photoid, int albumid, byte mode)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4,photoid),
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4,photoid),
                     DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, albumid)
-				};
+                };
             string commandText;
 
             switch (mode)
@@ -431,8 +431,8 @@ namespace Discuz.Album.Data
 
         public void UpdatePhotoViews(int photoid)
         {
-            DbHelper.ExecuteNonQuery(CommandType.Text, 
-                                     string.Format("UPDATE [{0}photos] SET [views]=[views]+1 WHERE [photoid]=@photoid", BaseConfigs.GetTablePrefix), 
+            DbHelper.ExecuteNonQuery(CommandType.Text,
+                                     string.Format("UPDATE [{0}photos] SET [views]=[views]+1 WHERE [photoid]=@photoid", BaseConfigs.GetTablePrefix),
                                      DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4, photoid));
         }
 
@@ -449,7 +449,7 @@ namespace Discuz.Album.Data
         {
             try
             {
-                return (int)DbHelper.ExecuteScalar(CommandType.Text, 
+                return (int)DbHelper.ExecuteScalar(CommandType.Text,
                                                    string.Format("SELECT COUNT([photoid]) FROM [{0}photos] WHERE [albumid]=@albumid", BaseConfigs.GetTablePrefix),
                                                    DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, albumid));
             }
@@ -461,25 +461,25 @@ namespace Discuz.Album.Data
 
         public DataTable SpacePhotosList(int pageSize, int currentPage, int userid, int albumid)
         {
-            DbParameter[] parms = 
-				{
-					DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,userid),
-					DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,albumid)
-				};
+            DbParameter[] parms =
+                {
+                    DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4,userid),
+                    DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4,albumid)
+                };
             int pageTop = (currentPage - 1) * pageSize;
             string commandText = "";
             if (currentPage == 1)
                 commandText = string.Format("SELECT TOP {0} * FROM [{1}photos] WHERE [userid]=@userid AND [albumid]=@albumid ORDER BY [photoid] ASC", pageSize, BaseConfigs.GetTablePrefix);
             else
                 commandText = string.Format("SELECT TOP {0} * FROM [{1}photos] WHERE [photoid] > (SELECT MAX([photoid])  FROM (SELECT TOP {2} [photoid] FROM [{1}photos] WHERE "
-                                            + "[userid]=@userid AND [albumid]=@albumid ORDER BY [photoid] ASC) AS tblTmp ) AND [userid]=@userid AND [albumid]=@albumid ORDER BY [photoid] ASC", 
+                                            + "[userid]=@userid AND [albumid]=@albumid ORDER BY [photoid] ASC) AS tblTmp ) AND [userid]=@userid AND [albumid]=@albumid ORDER BY [photoid] ASC",
                                             pageSize, BaseConfigs.GetTablePrefix, pageTop);
             return DbHelper.ExecuteDataset(CommandType.Text, commandText, parms).Tables[0];
         }
 
         public DataTable SpacePhotosList(int albumid)
         {
-            return DbHelper.ExecuteDataset(CommandType.Text, 
+            return DbHelper.ExecuteDataset(CommandType.Text,
                                            string.Format("SELECT * FROM [{0}photos] WHERE [albumid]=@albumid ORDER BY [photoid] ASC", BaseConfigs.GetTablePrefix),
                                            DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, albumid)).Tables[0];
         }
@@ -513,7 +513,7 @@ namespace Discuz.Album.Data
             }
             reader.Close();
 
-            DbHelper.ExecuteNonQuery(CommandType.Text, string.Format("DELETE FROM [{0}photos] WHERE [photoid] IN ({1}) AND [userid]={2}",BaseConfigs.GetTablePrefix, photoidlist, userid));
+            DbHelper.ExecuteNonQuery(CommandType.Text, string.Format("DELETE FROM [{0}photos] WHERE [photoid] IN ({1}) AND [userid]={2}", BaseConfigs.GetTablePrefix, photoidlist, userid));
             return true;
         }
 
@@ -521,8 +521,8 @@ namespace Discuz.Album.Data
         {
             if (!Utils.IsNumericList(photoIdList))
                 return 0;
-                
-            string commandText = string.Format("UPDATE [{0}photos] SET albumid={1} WHERE photoid IN ({2}) AND [userid]={3}", BaseConfigs.GetTablePrefix,targetAlbumId, photoIdList,userid);
+
+            string commandText = string.Format("UPDATE [{0}photos] SET albumid={1} WHERE photoid IN ({2}) AND [userid]={3}", BaseConfigs.GetTablePrefix, targetAlbumId, photoIdList, userid);
             return DbHelper.ExecuteNonQuery(CommandType.Text, commandText);
         }
 
@@ -588,14 +588,14 @@ namespace Discuz.Album.Data
             return DbHelper.ExecuteDataset(CommandType.Text, commandText).Tables[0];
         }
 
-      
+
         public void CreatePhotoTags(string tags, int photoid, int userid, string postdatetime)
         {
             DbParameter[] parms = {
                 DbHelper.MakeInParam("@tags", (DbType)SqlDbType.NVarChar, 55, tags),
                 DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4, photoid),
                 DbHelper.MakeInParam("@userid", (DbType)SqlDbType.Int, 4, userid),
-                DbHelper.MakeInParam("@postdatetime", (DbType)SqlDbType.DateTime, 8, postdatetime)                
+                DbHelper.MakeInParam("@postdatetime", (DbType)SqlDbType.DateTime, 8, postdatetime)
             };
 
             DbHelper.ExecuteNonQuery(CommandType.StoredProcedure, string.Format("{0}createphototags", BaseConfigs.GetTablePrefix), parms);
@@ -644,7 +644,7 @@ namespace Discuz.Album.Data
             DbParameter[] parms = GetDateSpanParms(startdate, enddate);
             int pageTop = (currentPage - 1) * pageSize;
 
-            string strisshowall = (isshowall) ?　" 1=1" : " [type] = 0 AND  [imgcount] > 0 ";
+            string strisshowall = (isshowall) ? " 1=1" : " [type] = 0 AND  [imgcount] > 0 ";
             if (currentPage == 1)
                 commandText = string.Format("SELECT TOP {0} *  FROM [{1}albums] WHERE {2} {3} ORDER BY [albumid] DESC", pageSize,
                                            BaseConfigs.GetTablePrefix, strisshowall, condition);
@@ -728,11 +728,11 @@ namespace Discuz.Album.Data
 
         #endregion
 
-     
+
         public int GetUidByAlbumid(int albumid)
         {
             return TypeConverter.ObjectToInt(
-                                 DbHelper.ExecuteScalar(CommandType.Text, 
+                                 DbHelper.ExecuteScalar(CommandType.Text,
                                                         string.Format("SELECT [userid] FROM [{0}albums] WHERE [albumid]=@albumid", BaseConfigs.GetTablePrefix),
                                                         DbHelper.MakeInParam("@albumid", (DbType)SqlDbType.Int, 4, albumid)));
         }
@@ -795,7 +795,7 @@ namespace Discuz.Album.Data
             else
                 commandText = string.Format("SELECT TOP {0} p.* FROM [{1}photos] p LEFT JOIN [{1}albums] a ON p.[albumid]=a.[albumid] WHERE a.[type]=0 AND p.[photoid]<(SELECT MIN([photoid]) FROM (SELECT TOP {2}"
                                             + " p.[photoid] FROM [{1}photos] p LEFT JOIN [{1}albums] a ON p.[albumid]=a.[albumid] WHERE a.[type]=0 {3} ORDER BY p.[photoid] DESC) AS tblTmp) {3} ORDER BY p.[photoid] DESC",
-                                            pageSize, BaseConfigs.GetTablePrefix, pageTop, condition); 
+                                            pageSize, BaseConfigs.GetTablePrefix, pageTop, condition);
             return DbHelper.ExecuteDataset(CommandType.Text, commandText, parms).Tables[0];
         }
 
@@ -826,8 +826,8 @@ namespace Discuz.Album.Data
 
         public void DeletePhotoTags(int photoid)
         {
-            DbHelper.ExecuteNonQuery(CommandType.StoredProcedure, 
-                                     string.Format("{0}deletephototags", BaseConfigs.GetTablePrefix), 
+            DbHelper.ExecuteNonQuery(CommandType.StoredProcedure,
+                                     string.Format("{0}deletephototags", BaseConfigs.GetTablePrefix),
                                      DbHelper.MakeInParam("@photoid", (DbType)SqlDbType.Int, 4, photoid));
         }
 
